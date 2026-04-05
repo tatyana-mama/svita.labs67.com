@@ -3217,6 +3217,9 @@ function renderServices(){
     html+=`</div></div>`;
   });
   c.innerHTML=html;
+  // Update service counter
+  const sc=document.getElementById('svcCount');
+  if(sc)sc.textContent=DB.services.length;
 }
 
 function toggleEquip(el){
@@ -3346,8 +3349,84 @@ function recalc(){
   document.getElementById('totalItems').textContent=picked;
   updateSumbar();
   updateZoneStats();
+  updateOverviewStats();
   if(cur==='budget')updateBudget();
   if(cur==='profit')updateProfit();
+}
+
+function updateOverviewStats(){
+  // Stage progress based on real data
+  const stages=document.querySelectorAll('#stagesGrid .stg');
+  if(!stages.length)return;
+  const t=calcTotals();
+
+  // S1: Помещение — has property + rooms
+  const s1prog=activeProperty?50:0;
+  const s1rooms=FP&&FP.rooms?FP.rooms.length:0;
+  const s1full=Math.min(100,s1prog+(s1rooms>0?50:0));
+  updateStage(stages[0],s1full,activeProperty?activeProperty.area+' м²':'—');
+
+  // S2: Модернизация — checked engineering items
+  const engTotal=document.querySelectorAll('[data-cost^="elec_"],[data-cost^="water_"],[data-cost^="vent_"],[data-cost^="sec_"]').length;
+  const engDone=document.querySelectorAll('[data-cost^="elec_"],[data-cost^="water_"],[data-cost^="vent_"],[data-cost^="sec_"]');
+  let engChecked=0;
+  engDone.forEach(el=>{const ci=el.closest('.ci');if(ci&&ci.querySelector('.cx.ok'))engChecked++});
+  const s2prog=engTotal?Math.round(engChecked/engTotal*100):0;
+  updateStage(stages[1],s2prog,t.eng?t.eng.toLocaleString('ru')+' PLN':'—');
+
+  // S3: Оснащение — equipment from Supabase
+  const eqTotal=DB.suppliers.length;
+  const eqPicked=document.querySelectorAll('#equipCards .sel.picked').length;
+  const s3prog=eqTotal?Math.round(eqPicked/eqTotal*100):0;
+  updateStage(stages[2],s3prog,eqTotal+' позиций');
+
+  // S4: Услуги — services from Supabase
+  const svcTotal=DB.services.length;
+  const s4prog=svcTotal>0?100:0;
+  updateStage(stages[3],s4prog,svcTotal+' услуг');
+
+  // S5: Персонал
+  const staffTotal=DB.employees.length;
+  const s5prog=staffTotal>0?Math.min(100,Math.round(staffTotal/7*100)):0;
+  updateStage(stages[4],s5prog,staffTotal+' сотр.');
+
+  // S6: Концепция — docs checked
+  const docsTotal=document.querySelectorAll('[data-cost^="doc_"]').length;
+  let docsChecked=0;
+  document.querySelectorAll('[data-cost^="doc_"]').forEach(el=>{const ci=el.closest('.ci');if(ci&&ci.querySelector('.cx.ok'))docsChecked++});
+  const s6prog=docsTotal?Math.round(docsChecked/docsTotal*100):0;
+  updateStage(stages[5],s6prog,docsChecked+'/'+docsTotal+' док.');
+
+  // Overall progress
+  const overall=Math.round((s1full+s2prog+s3prog+s4prog+s5prog+s6prog)/6);
+  document.getElementById('ovProgress').innerHTML=overall+'<span style="font-size:14px;color:var(--tx2)">%</span>';
+  const pb=document.getElementById('ovProgressBar');
+  if(pb)pb.style.width=overall+'%';
+
+  // Current stage
+  const progs=[s1full,s2prog,s3prog,s4prog,s5prog,s6prog];
+  let curStage=1;
+  for(let i=0;i<progs.length;i++){if(progs[i]<100){curStage=i+1;break}if(i===5)curStage=6}
+  document.getElementById('ovStage').textContent='Этап '+curStage+' из 6';
+}
+
+function updateStage(el,pct,meta){
+  const pf=el.querySelector('.stg-pf');
+  if(pf){pf.style.width=pct+'%';if(pct>0)pf.style.background='var(--ac)'}
+  const m=el.querySelector('.stg-m');
+  if(m){
+    const sp=m.querySelector('span');
+    const st=m.querySelector('strong');
+    if(sp)sp.textContent=meta;
+    if(st)st.textContent=pct+'%';
+  }
+  // Update tag
+  const tag=el.querySelector('.tag');
+  if(tag){
+    if(pct>=100){tag.textContent='Готово';tag.className='tag t-ok'}
+    else if(pct>0){tag.textContent='В работе';tag.className='tag t-wip'}
+    else{tag.textContent='Ожидает';tag.className='tag t-w'}
+  }
 }
 
 function updateSumbar(){
