@@ -1800,7 +1800,7 @@ function renderRooms(){
   const c=document.getElementById('roomCards');
   c.innerHTML=DB.rooms.map(r=>{
     const picked=!!DB.pickedRooms[r.id];
-    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}"><div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:var(--acbg);color:var(--ac2)">${r.type}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Ширина</div><div class="db-card-val">${r.w} м</div></div><div class="db-card-field"><div class="db-card-label">Длина</div><div class="db-card-val">${r.l} м</div></div><div class="db-card-field"><div class="db-card-label">Высота</div><div class="db-card-val">${r.h} м</div></div><div class="db-card-field"><div class="db-card-label">Площадь</div><div class="db-card-val">${r.area} м²</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePick('pickedRooms',${r.id},'rooms')">${picked?'✓ В проекте':'+ Помещение → Таб 1'}</button><button class="btn sm" onclick="delItem('rooms',${r.id})">Удалить</button></div></div>`;
+    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}"><div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:var(--acbg);color:var(--ac2)">${r.type}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Ширина</div><div class="db-card-val">${r.w} м</div></div><div class="db-card-field"><div class="db-card-label">Длина</div><div class="db-card-val">${r.l} м</div></div><div class="db-card-field"><div class="db-card-label">Высота</div><div class="db-card-val">${r.h} м</div></div><div class="db-card-field"><div class="db-card-label">Площадь</div><div class="db-card-val">${r.area} м²</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePick('pickedRooms','${r.id}','rooms')">${picked?'✓ В проекте':'+ Помещение → Таб 1'}</button><button class="btn sm" onclick="delItem('rooms','${r.id}')">Удалить</button></div></div>`;
   }).join('');
 }
 
@@ -1808,7 +1808,7 @@ function renderContractors(){
   const c=document.getElementById('contractorCards');
   c.innerHTML=DB.contractors.map(r=>{
     const picked=!!DB.pickedContractors[r.id];
-    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}"><div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:rgba(249,115,22,.1);color:var(--or)">${r.spec}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Город</div><div class="db-card-val">${r.city}</div></div><div class="db-card-field"><div class="db-card-label">Цена</div><div class="db-card-val">${r.price}</div></div><div class="db-card-field"><div class="db-card-label">Рейтинг</div><div class="db-card-val">${r.rating} ★</div></div><div class="db-card-field"><div class="db-card-label">Контакт</div><div class="db-card-val">${r.phone}</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePick('pickedContractors',${r.id},'contractors')">${picked?'✓ Назначен':'+ Подрядчик → Таб 2'}</button><button class="btn sm" onclick="delItem('contractors',${r.id})">Удалить</button></div></div>`;
+    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}"><div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:rgba(249,115,22,.1);color:var(--or)">${r.spec}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Город</div><div class="db-card-val">${r.city}</div></div><div class="db-card-field"><div class="db-card-label">Цена</div><div class="db-card-val">${r.price}</div></div><div class="db-card-field"><div class="db-card-label">Рейтинг</div><div class="db-card-val">${r.rating} ★</div></div><div class="db-card-field"><div class="db-card-label">Контакт</div><div class="db-card-val">${r.phone}</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePick('pickedContractors','${r.id}','contractors')">${picked?'✓ Назначен':'+ Подрядчик → Таб 2'}</button><button class="btn sm" onclick="delItem('contractors','${r.id}')">Удалить</button></div></div>`;
   }).join('');
 }
 
@@ -1818,7 +1818,7 @@ function renderSuppliers(){
     const picked=!!DB.pickedEquip[r.id];
     const img=getItemImg('suppliers',r.id);
     const imgHtml=img?`<img class="db-card-img" src="${img}" onclick="openLightbox('suppliers',${r.id})">`:`<div class="db-card-img-placeholder" onclick="uploadPhoto('suppliers',${r.id})"><span>&#128247;</span><span>Добавить фото</span></div>`;
-    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}">${imgHtml}<div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:rgba(139,92,246,.1);color:#d946ef">${r.category}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Цена</div><div class="db-card-val" style="color:var(--ac2)">${r.price.toLocaleString('ru')} PLN</div></div><div class="db-card-field"><div class="db-card-label">Поставщик</div><div class="db-card-val">${r.supplier}</div></div><div class="db-card-field"><div class="db-card-label">Гарантия</div><div class="db-card-val">${r.warranty}</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePickEquip(${r.id})">${picked?'✓ В оснащении':'+ Товар → Таб 3'}</button><button class="btn sm" onclick="delItem('suppliers',${r.id})">Удалить</button></div></div>`;
+    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}">${imgHtml}<div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:rgba(139,92,246,.1);color:#d946ef">${r.category}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Цена</div><div class="db-card-val" style="color:var(--ac2)">${r.price.toLocaleString('ru')} PLN</div></div><div class="db-card-field"><div class="db-card-label">Поставщик</div><div class="db-card-val">${r.supplier}</div></div><div class="db-card-field"><div class="db-card-label">Гарантия</div><div class="db-card-val">${r.warranty}</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePickEquip(${r.id})">${picked?'✓ В оснащении':'+ Товар → Таб 3'}</button><button class="btn sm" onclick="delItem('suppliers','${r.id}')">Удалить</button></div></div>`;
   }).join('');
 }
 
@@ -1826,7 +1826,7 @@ function renderEmployees(){
   const c=document.getElementById('employeeCards');
   c.innerHTML=DB.employees.map(r=>{
     const picked=!!DB.pickedStaff[r.id];
-    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}"><div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:rgba(6,182,212,.1);color:#06b6d4">${r.status}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Специализация</div><div class="db-card-val">${r.spec}</div></div><div class="db-card-field"><div class="db-card-label">ФОТ</div><div class="db-card-val" style="color:var(--ac2)">${r.salary.toLocaleString('ru')} PLN/мес</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePick('pickedStaff',${r.id},'employees')">${picked?'✓ В штате':'+ Сотрудник → Таб 5'}</button><button class="btn sm" onclick="delItem('employees',${r.id})">Удалить</button></div></div>`;
+    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}"><div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:rgba(6,182,212,.1);color:#06b6d4">${r.status}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Специализация</div><div class="db-card-val">${r.spec}</div></div><div class="db-card-field"><div class="db-card-label">ФОТ</div><div class="db-card-val" style="color:var(--ac2)">${r.salary.toLocaleString('ru')} PLN/мес</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePick('pickedStaff','${r.id}','employees')">${picked?'✓ В штате':'+ Сотрудник → Таб 5'}</button><button class="btn sm" onclick="delItem('employees','${r.id}')">Удалить</button></div></div>`;
   }).join('');
 }
 
@@ -1852,7 +1852,7 @@ function renderPickedRooms(){
   ids.forEach(id=>{
     const r=DB.rooms.find(x=>x.id==id);
     if(!r)return;
-    html+=`<div class="ci cost-row"><div class="ct" style="flex:1">${r.name}<div class="ct-sub">${r.type} · ${r.area} м²</div></div><button class="btn sm" style="color:var(--rd)" onclick="togglePick('pickedRooms',${r.id},'rooms')">✕</button></div>`;
+    html+=`<div class="ci cost-row"><div class="ct" style="flex:1">${r.name}<div class="ct-sub">${r.type} · ${r.area} м²</div></div><button class="btn sm" style="color:var(--rd)" onclick="togglePick('pickedRooms','${r.id}','rooms')">✕</button></div>`;
   });
   c.innerHTML=html;
 }
@@ -1865,7 +1865,7 @@ function renderPickedContractors(){
   ids.forEach(id=>{
     const r=DB.contractors.find(x=>x.id==id);
     if(!r)return;
-    html+=`<div class="ci cost-row"><div class="ct" style="flex:1">${r.name}<div class="ct-sub">${r.spec} · ${r.city} · ${r.price}</div></div><button class="btn sm" style="color:var(--rd)" onclick="togglePick('pickedContractors',${r.id},'contractors')">✕</button></div>`;
+    html+=`<div class="ci cost-row"><div class="ct" style="flex:1">${r.name}<div class="ct-sub">${r.spec} · ${r.city} · ${r.price}</div></div><button class="btn sm" style="color:var(--rd)" onclick="togglePick('pickedContractors','${r.id}','contractors')">✕</button></div>`;
   });
   c.innerHTML=html;
 }
@@ -1920,7 +1920,7 @@ function renderEquip(){
     html+=`<div class="zone-body" id="zoneBody${zi}"><div class="zone-items">`;
     items.forEach(r=>{
       const added=!!picked[r.id];
-      html+=`<div class="ci cost-row" style="padding:8px 0"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.supplier} · ${r.warranty}</div></div><div class="cost-val" style="flex-shrink:0">${r.price.toLocaleString('ru')} PLN</div><button class="btn sm ${added?'gn':'pr'}" onclick="togglePickEquip(${r.id})" style="flex-shrink:0;min-width:90px">${added?'✓ Добавлено':'+ В оснащение'}</button></div>`;
+      html+=`<div class="ci cost-row" style="padding:8px 0"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.supplier} · ${r.warranty}</div></div><div class="cost-val" style="flex-shrink:0">${r.price.toLocaleString('ru')} PLN</div><button class="btn sm ${added?'gn':'pr'}" onclick="togglePickEquip('${r.id}')" style="flex-shrink:0;min-width:90px">${added?'✓ Добавлено':'+ В оснащение'}</button></div>`;
     });
     html+=`</div></div></div>`;
   });
@@ -1961,7 +1961,7 @@ function renderSelectedEquip(){
     if(cnt){
       html+='<div class="cb">';
       g.picked.forEach(r=>{
-        html+=`<div class="ci cost-row" style="flex-wrap:nowrap"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.supplier}</div></div><div class="sel-qty" style="margin:0 4px"><button onclick="eqSelQty(${r.id},-1)">−</button><span id="eq_${r.id}">${r.qty}</span><button onclick="eqSelQty(${r.id},1)">+</button></div><div class="cost-val" style="min-width:80px;justify-content:flex-end"><strong style="color:var(--ac2)">${(r.price*r.qty).toLocaleString('ru')}</strong> PLN</div><button class="btn sm" style="color:var(--rd);flex-shrink:0" onclick="togglePickEquip(${r.id})">✕</button></div>`;
+        html+=`<div class="ci cost-row" style="flex-wrap:nowrap"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.supplier}</div></div><div class="sel-qty" style="margin:0 4px"><button onclick="eqSelQty('${r.id}',-1)">−</button><span id="eq_${r.id}">${r.qty}</span><button onclick="eqSelQty('${r.id}',1)">+</button></div><div class="cost-val" style="min-width:80px;justify-content:flex-end"><strong style="color:var(--ac2)">${(r.price*r.qty).toLocaleString('ru')}</strong> PLN</div><button class="btn sm" style="color:var(--rd);flex-shrink:0" onclick="togglePickEquip('${r.id}')">✕</button></div>`;
       });
       html+='</div>';
     }
@@ -3426,7 +3426,7 @@ function renderServices(){
       if(subKeys.length>1)html+=`<div style="font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:1px;padding:8px 0 4px;border-top:1px solid var(--bd)">${sub}</div>`;
       subs[sub].forEach(r=>{
         const added=!!picked[r.id];
-        html+=`<div class="ci cost-row"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.desc||''} · ${r.unit} · ${r.difficulty}</div></div><div class="cost-val" style="flex-shrink:0">${r.price} PLN/${r.unit}</div><button class="btn sm ${added?'gn':'pr'}" onclick="toggleSvcPick(${r.id})" style="flex-shrink:0;min-width:70px">${added?'✓ Добавлено':'+ Добавить'}</button></div>`;
+        html+=`<div class="ci cost-row"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.desc||''} · ${r.unit} · ${r.difficulty}</div></div><div class="cost-val" style="flex-shrink:0">${r.price} PLN/${r.unit}</div><button class="btn sm ${added?'gn':'pr'}" onclick="toggleSvcPick('${r.id}')" style="flex-shrink:0;min-width:70px">${added?'✓ Добавлено':'+ Добавить'}</button></div>`;
       });
     });
     html+=`</div></div>`;
@@ -3469,7 +3469,7 @@ function renderSelectedServices(){
     if(cnt){
       html+='<div class="cb">';
       g.picked.forEach(r=>{
-        html+=`<div class="ci cost-row" style="flex-wrap:nowrap"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.desc||''}</div></div><div class="sel-qty" style="margin:0 4px"><button onclick="svcSelQty(${r.id},-1)">−</button><span id="sq_${r.id}">${r.qty}</span><button onclick="svcSelQty(${r.id},1)">+</button></div><span style="font-size:10px;color:var(--tx3);min-width:30px;text-align:center">${r.unit}</span><div class="cost-val" style="min-width:80px;justify-content:flex-end"><strong style="color:var(--ac2)">${(r.price*r.qty).toLocaleString('ru')}</strong> PLN</div><button class="btn sm" style="color:var(--rd);flex-shrink:0" onclick="removeSvcPick(${r.id})">✕</button></div>`;
+        html+=`<div class="ci cost-row" style="flex-wrap:nowrap"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.desc||''}</div></div><div class="sel-qty" style="margin:0 4px"><button onclick="svcSelQty('${r.id}',-1)">−</button><span id="sq_${r.id}">${r.qty}</span><button onclick="svcSelQty('${r.id}',1)">+</button></div><span style="font-size:10px;color:var(--tx3);min-width:30px;text-align:center">${r.unit}</span><div class="cost-val" style="min-width:80px;justify-content:flex-end"><strong style="color:var(--ac2)">${(r.price*r.qty).toLocaleString('ru')}</strong> PLN</div><button class="btn sm" style="color:var(--rd);flex-shrink:0" onclick="removeSvcPick('${r.id}')">✕</button></div>`;
       });
       html+='</div>';
     }
@@ -3516,7 +3516,7 @@ function updEquipPrice(inp,sid){
 }
 
 function delItem(table,id){
-  DB[table]=DB[table].filter(r=>r.id!==id);
+  DB[table]=DB[table].filter(r=>r.id!=id);
   renderAll();buildSidebar();recalc();
 }
 
