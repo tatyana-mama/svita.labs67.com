@@ -1667,6 +1667,7 @@ function buildSidebar(){
     html+='<div class="si" data-nav="budget"><span class="ico">&#128176;</span><span class="sl">Бюджет</span></div>';
     html+='<div class="si" data-nav="profit"><span class="ico">&#128200;</span><span class="sl">Рентабельность</span></div>';
     html+='<div class="si" data-nav="zones"><span class="ico">&#127968;</span><span class="sl">Зоны</span></div>';
+    html+='<div class="si" data-nav="cabinet-types"><span class="ico">🏥</span><span class="sl">Типы кабинетов</span><span class="sb wip">'+DB.cabinetTypes.length+'</span></div>';
   }
 
   if(currentRole==='admin'){
@@ -1677,8 +1678,7 @@ function buildSidebar(){
     html+='<div class="si" data-nav="db-employees"><span class="ico">&#129489;</span><span class="sl">Сотрудники</span><span class="sb wip">'+DB.employees.length+'</span></div>';
     html+='<div class="si" data-nav="db-services"><span class="ico">&#129657;</span><span class="sl">Услуги</span><span class="sb wip">'+DB.services.length+'</span></div>';
     html+='<div class="side-sec">Администрирование</div>';
-    html+='<div class="si" data-nav="users"><span class="ico">👥</span><span class="sl">Пользователи</span><span class="sb wip">'+DB.users.length+'</span></div>';
-    html+='<div class="si" data-nav="cabinet-types"><span class="ico">🏥</span><span class="sl">Типы кабинетов</span><span class="sb wip">'+DB.cabinetTypes.length+'</span></div>';
+    html+='<div class="si" data-nav="users"><span class="ico">&#128101;</span><span class="sl">Пользователи</span><span class="sb wip">'+DB.users.length+'</span></div>';
   }
 
   if(currentRole==='contractor'){
