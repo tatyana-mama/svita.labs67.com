@@ -3185,7 +3185,43 @@ function fpToggleSnap(){FP.snapEnabled=!FP.snapEnabled;fpDraw()}
 
 function renderStaff(){
   const c=document.getElementById('staffCards');
-  c.innerHTML=DB.employees.map(r=>`<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">${r.name}<div class="ct-sub">${r.spec}</div></div><div class="cost-val"><input class="price-edit" data-cost="st_${r.id}" value="${r.salary}" onchange="recalc()"> PLN/\u043c\u0435\u0441</div></div>`).join('');
+  c.innerHTML=DB.employees.map(r=>{
+    const statusColor=r.status==='Работает'?'var(--gn)':r.status==='Собеседование'?'var(--yl)':'var(--tx3)';
+    return `<div class="c" style="padding:16px;display:flex;align-items:center;gap:12px">
+<div class="cx" onclick="toggleCheck(this)"></div>
+<div style="flex:1;min-width:0">
+<div style="font-weight:600;font-size:13px">${r.name}</div>
+<div style="font-size:11px;color:var(--tx2);margin-top:2px">${r.spec}</div>
+<div style="display:flex;gap:8px;margin-top:6px;align-items:center">
+<span style="font-size:10px;padding:2px 8px;border-radius:6px;background:${statusColor}15;color:${statusColor};font-weight:600">${r.status||'Вакансия'}</span>
+</div>
+</div>
+<div style="text-align:right;flex-shrink:0">
+<div style="font-size:11px;color:var(--tx3)">ФОТ/мес</div>
+<div><input class="price-edit" data-cost="st_${r.id}" value="${r.salary}" onchange="recalc()" style="width:90px;text-align:right"> PLN</div>
+</div>
+<div style="display:flex;gap:4px;flex-shrink:0">
+<button class="btn sm" onclick="editStaff(${r.id})" style="font-size:10px;padding:4px 8px" title="Редактировать">✏️</button>
+<button class="btn sm" onclick="deleteStaff(${r.id})" style="font-size:10px;padding:4px 8px;color:var(--rd)" title="Удалить">✕</button>
+</div>
+</div>`;
+  }).join('');
+}
+
+function editStaff(id){
+  const item=DB.employees.find(e=>e.id===id);
+  if(!item)return;
+  editingId=id;
+  modalMode='staff';
+  document.getElementById('modalTitle').textContent='Редактировать: '+item.name;
+  const fields=MODAL_FIELDS.staff;
+  document.getElementById('modalFields').innerHTML=fields.map(f=>`<div class="modal-field"><label>${f.l}</label><input id="mf_${f.k}" type="${f.t||'text'}" placeholder="${f.ph||''}" value="${item[f.k]||''}"></div>`).join('');
+  document.getElementById('modalBg').classList.add('vis');
+}
+
+function deleteStaff(id){
+  DB.employees=DB.employees.filter(e=>e.id!==id);
+  renderStaff();buildSidebar();recalc();
 }
 
 // DB catalog of all services (sidebar БД Услуг)
@@ -3309,6 +3345,7 @@ function delItem(table,id){
 
 // ═══════════════ MODAL ═══════════════
 let modalMode='';
+let editingId=null;
 const MODAL_FIELDS={
   property:[{k:'name',l:'Адрес / Название',ph:'ул. Гданьская 15'},{k:'city',l:'Город',ph:'Быдгощ'},{k:'area',l:'Площадь (м²)',ph:'180',t:'number'},{k:'length',l:'Длина (м)',ph:'18.5',t:'number'},{k:'width',l:'Ширина (м)',ph:'9.7',t:'number'},{k:'height',l:'Высота потолков (м)',ph:'2.9',t:'number'},{k:'floor',l:'Этаж',ph:'1',t:'number'},{k:'floors_total',l:'Этажей в здании',ph:'3',t:'number'},{k:'type',l:'Тип',ph:'Коммерческое'},{k:'purpose',l:'Назначение',ph:'Стоматология'},{k:'price_m2',l:'Цена за м²/мес (PLN)',ph:'67',t:'number'},{k:'source',l:'Источник',ph:'OLX / Otodom'}],
   room:[{k:'name',l:'Название',ph:'Кабинет 8'},{k:'type',l:'Тип',ph:'Стоматологический'},{k:'w',l:'Ширина (м)',ph:'4.0',t:'number'},{k:'l',l:'Длина (м)',ph:'3.5',t:'number'},{k:'h',l:'Высота (м)',ph:'2.9',t:'number'}],
@@ -3322,6 +3359,7 @@ const MODAL_FIELDS={
 
 function openModal(mode){
   modalMode=mode;
+  editingId=null;
   const titles={property:'Карточка помещения',room:'Добавить комнату',contractor:'Заявка подрядчика',supplier:'Добавить товар',employee:'Добавить сотрудника',equip:'Добавить оборудование',staff:'Добавить должность',service:'Добавить услугу'};
   document.getElementById('modalTitle').textContent=titles[mode]||'Добавить';
   const fields=MODAL_FIELDS[mode]||[];
@@ -3336,7 +3374,7 @@ function closeModal(){document.getElementById('modalBg').classList.remove('vis')
 
 function saveModal(){
   const fields=MODAL_FIELDS[modalMode]||[];
-  const obj={id:++nextId};
+  const obj={};
   fields.forEach(f=>{
     const el=document.getElementById('mf_'+f.k);
     obj[f.k]=f.t==='number'?parseFloat(el.value)||0:el.value;
@@ -3345,6 +3383,7 @@ function saveModal(){
 
   // Property is special — sets activeProperty
   if(modalMode==='property'){
+    obj.id=editingId||++nextId;
     activeProperty=obj;
     closeModal();
     renderProperty();
@@ -3352,9 +3391,27 @@ function saveModal(){
   }
 
   const tableMap={room:'rooms',contractor:'contractors',supplier:'suppliers',employee:'employees',equip:'suppliers',staff:'employees',service:'services'};
+  const table=tableMap[modalMode];
+
+  // Edit existing item
+  if(editingId&&table){
+    const arr=DB[table];
+    const idx=arr.findIndex(x=>x.id===editingId);
+    if(idx!==-1){
+      Object.assign(arr[idx],obj);
+      editingId=null;
+      closeModal();
+      renderAll();buildSidebar();recalc();
+      return;
+    }
+  }
+
+  // Add new item
+  obj.id=++nextId;
   if(modalMode==='room')obj.area=Math.round((obj.w||0)*(obj.l||0)*100)/100;
   if(modalMode==='contractor')obj.rating=0;
-  DB[tableMap[modalMode]].push(obj);
+  DB[table].push(obj);
+  editingId=null;
   closeModal();
   renderAll();buildSidebar();recalc();
 }
