@@ -994,14 +994,14 @@ const DB={
     {id:2,name:'Демо-пользователь',email:'demo@svita.app',role:'owner',plan:'trial',status:'Активен'}
   ],
   cabinetTypes:[
-    {id:1,name:'Стоматологический',icon:'🦷',desc:'Стандартный кабинет врача-стоматолога',minArea:12,equipIds:[1,32,11,29,74]},
-    {id:2,name:'Хирургический',icon:'🔬',desc:'Имплантация, удаление, хирургические операции',minArea:18,equipIds:[2,42,43,46,48]},
-    {id:3,name:'Ортодонтический',icon:'🔧',desc:'Брекеты, элайнеры, коррекция прикуса',minArea:12,equipIds:[3,59,62]},
-    {id:4,name:'Рентген',icon:'📡',desc:'Панорамный снимок, КЛКТ, прицельные',minArea:6,equipIds:[]},
-    {id:5,name:'Стерилизаторная',icon:'♨️',desc:'Обработка и стерилизация инструментов',minArea:8,equipIds:[]},
-    {id:6,name:'Ресепшен',icon:'🏛️',desc:'Приём, регистрация, ожидание',minArea:15,equipIds:[]},
-    {id:7,name:'Серверная',icon:'🖥️',desc:'ИТ-инфраструктура, Jetson, NAS',minArea:4,equipIds:[]},
-    {id:8,name:'Санузел',icon:'🚿',desc:'Санузлы для пациентов и персонала',minArea:3,equipIds:[]}
+    {id:1,name:'Стоматологический',icon:'🦷',desc:'Стандартный кабинет врача-стоматолога',minArea:12,equipCats:['Стом. кабинет — Установки','Стом. кабинет — Диагностика','Стом. кабинет — Мебель','Стом. кабинет — Прочее']},
+    {id:2,name:'Хирургический',icon:'🔬',desc:'Имплантация, удаление, хирургические операции',minArea:18,equipCats:['Стом. кабинет — Установки','Стом. кабинет — Хирургия','Стом. кабинет — Мебель']},
+    {id:3,name:'Ортодонтический',icon:'🔧',desc:'Брекеты, элайнеры, коррекция прикуса',minArea:12,equipCats:['Стом. кабинет — Установки','Стом. кабинет — Ортопедия','Стом. кабинет — Мебель']},
+    {id:4,name:'Рентген',icon:'📡',desc:'Панорамный снимок, КЛКТ, прицельные',minArea:6,equipCats:['Стом. кабинет — Рентген']},
+    {id:5,name:'Стерилизаторная',icon:'♨️',desc:'Обработка и стерилизация инструментов',minArea:8,equipCats:['Стерилизационная']},
+    {id:6,name:'Ресепшен',icon:'🏛️',desc:'Приём, регистрация, ожидание',minArea:15,equipCats:[]},
+    {id:7,name:'Серверная',icon:'🖥️',desc:'ИТ-инфраструктура, Jetson, NAS',minArea:4,equipCats:['Техническая комната']},
+    {id:8,name:'Санузел',icon:'🚿',desc:'Санузлы для пациентов и персонала',minArea:3,equipCats:['Туалет']}
   ],
   rooms:[
     {id:1,name:'Кабинет 1',type:'Стоматологический',w:4.2,h:2.9,l:3.8,area:15.96},
@@ -3514,20 +3514,28 @@ function deleteUser(id){
 }
 
 // ═══════════════ CABINET TYPES ═══════════════
+function getEquipCats(){
+  const cats={};
+  DB.suppliers.forEach(s=>{
+    if(!cats[s.category])cats[s.category]={count:0,totalPrice:0};
+    cats[s.category].count++;
+    cats[s.category].totalPrice+=s.price;
+  });
+  return cats;
+}
 function renderCabinetTypes(){
   const c=document.getElementById('cabinetTypeCards');
   if(!c)return;
-  // Build category groups from suppliers
-  const cats={};
-  DB.suppliers.forEach(s=>{if(!cats[s.category])cats[s.category]=[];cats[s.category].push(s)});
-  const catKeys=Object.keys(cats).sort();
+  const allCats=getEquipCats();
+  const allCatNames=Object.keys(allCats).sort();
 
   let html='';
   DB.cabinetTypes.forEach(ct=>{
-    const ids=ct.equipIds||[];
+    const assigned=ct.equipCats||[];
     const assignedRooms=DB.rooms.filter(r=>r.type===ct.name).length;
-    const equipItems=ids.map(eid=>DB.suppliers.find(s=>s.id===eid)).filter(Boolean);
-    const totalCost=equipItems.reduce((s,e)=>s+e.price,0);
+    const totalItems=assigned.reduce((s,cat)=>(allCats[cat]?s+allCats[cat].count:s),0);
+    const totalCost=assigned.reduce((s,cat)=>(allCats[cat]?s+allCats[cat].totalPrice:s),0);
+    const available=allCatNames.filter(cat=>!assigned.includes(cat));
 
     html+=`<div class="c" style="padding:0;overflow:hidden;margin-bottom:16px">
 <div style="padding:16px;display:flex;align-items:center;gap:12px">
@@ -3545,42 +3553,43 @@ function renderCabinetTypes(){
 </div>
 <div style="padding:0 16px 12px;border-top:1px solid var(--bd)">
 <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0 8px">
-<div style="font-size:12px;font-weight:700">Оборудование <span style="color:var(--tx3);font-weight:400">(${equipItems.length} позиций · ${totalCost.toLocaleString('ru')} PLN)</span></div>
-<div style="display:flex;gap:6px;align-items:center">
-<select id="eqSel_${ct.id}" style="font-size:10px;padding:4px 8px;border:1px solid var(--bd);border-radius:8px;background:var(--sf);color:var(--tx);max-width:220px">
-${catKeys.map(cat=>`<optgroup label="${cat}">${cats[cat].filter(s=>!ids.includes(s.id)).map(s=>`<option value="${s.id}">${s.name} — ${s.price.toLocaleString('ru')} PLN</option>`).join('')}</optgroup>`).join('')}
+<div style="font-size:12px;font-weight:700">Типы оборудования <span style="color:var(--tx3);font-weight:400">(${assigned.length} типов · ${totalItems} позиций · ${totalCost.toLocaleString('ru')} PLN)</span></div>
+${available.length?`<div style="display:flex;gap:6px;align-items:center">
+<select id="eqCatSel_${ct.id}" style="font-size:10px;padding:4px 8px;border:1px solid var(--bd);border-radius:8px;background:var(--sf);color:var(--tx);max-width:240px">
+${available.map(cat=>`<option value="${cat}">${cat} (${allCats[cat].count} шт.)</option>`).join('')}
 </select>
-<button class="btn sm pr" onclick="addEquipToCab(${ct.id})" style="font-size:10px;padding:4px 10px">+ Добавить</button>
-</div>
+<button class="btn sm pr" onclick="addCatToCab(${ct.id})" style="font-size:10px;padding:4px 10px">+ Добавить тип</button>
+</div>`:''}
 </div>`;
-    if(equipItems.length){
-      equipItems.forEach(e=>{
-        html+=`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--bd)">
-<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:500">${e.name}</div><div style="font-size:10px;color:var(--tx3)">${e.category} · ${e.supplier}</div></div>
-<div style="font-size:12px;font-weight:700;color:var(--ac2);flex-shrink:0">${e.price.toLocaleString('ru')} PLN</div>
-<button class="btn sm" onclick="removeEquipFromCab(${ct.id},${e.id})" style="font-size:10px;padding:2px 6px;color:var(--rd)">✕</button>
+    if(assigned.length){
+      assigned.forEach(cat=>{
+        const info=allCats[cat]||{count:0,totalPrice:0};
+        html+=`<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--bd)">
+<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600">${cat}</div><div style="font-size:10px;color:var(--tx3)">${info.count} позиций в каталоге</div></div>
+<div style="font-size:12px;font-weight:700;color:var(--ac2);flex-shrink:0">${info.totalPrice.toLocaleString('ru')} PLN</div>
+<button class="btn sm" onclick="removeCatFromCab(${ct.id},'${cat.replace(/'/g,"\\'")}')" style="font-size:10px;padding:2px 6px;color:var(--rd)">✕</button>
 </div>`;
       });
     } else {
-      html+=`<div style="padding:12px 0;text-align:center;font-size:11px;color:var(--tx3)">Нет назначенного оборудования — выберите из каталога</div>`;
+      html+=`<div style="padding:12px 0;text-align:center;font-size:11px;color:var(--tx3)">Нет назначенных типов — выберите из каталога</div>`;
     }
     html+=`</div></div>`;
   });
   c.innerHTML=html;
 }
-function addEquipToCab(ctId){
-  const sel=document.getElementById('eqSel_'+ctId);
+function addCatToCab(ctId){
+  const sel=document.getElementById('eqCatSel_'+ctId);
   if(!sel||!sel.value)return;
   const ct=DB.cabinetTypes.find(x=>x.id===ctId);
   if(!ct)return;
-  const eid=parseInt(sel.value);
-  if(!ct.equipIds.includes(eid))ct.equipIds.push(eid);
+  if(!ct.equipCats)ct.equipCats=[];
+  if(!ct.equipCats.includes(sel.value))ct.equipCats.push(sel.value);
   renderCabinetTypes();
 }
-function removeEquipFromCab(ctId,eqId){
+function removeCatFromCab(ctId,cat){
   const ct=DB.cabinetTypes.find(x=>x.id===ctId);
   if(!ct)return;
-  ct.equipIds=ct.equipIds.filter(id=>id!==eqId);
+  ct.equipCats=(ct.equipCats||[]).filter(c=>c!==cat);
   renderCabinetTypes();
 }
 function editCabinetType(id){
@@ -3667,7 +3676,7 @@ function saveModal(){
   obj.id=++nextId;
   if(modalMode==='room')obj.area=Math.round((obj.w||0)*(obj.l||0)*100)/100;
   if(modalMode==='contractor')obj.rating=0;
-  if(modalMode==='cabinetType')obj.equipIds=[];
+  if(modalMode==='cabinetType')obj.equipCats=[];
   DB[table].push(obj);
   editingId=null;
   closeModal();
