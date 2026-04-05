@@ -273,9 +273,7 @@
 </style>
 </head>
 <body>
-
-<!-- DEMO BANNER -->
-<div style="position:fixed;top:0;left:0;right:0;z-index:9999;background:linear-gradient(90deg,#3b82f6,#8b5cf6);padding:6px 16px;text-align:center;font-size:11px;color:#fff;font-family:'JetBrains Mono',monospace;letter-spacing:.04em" id="demoBanner">DEMO &mdash; данная версия является демонстрационной и не предназначена для коммерческого использования &middot; <a href="index.html" style="color:#fde68a;text-decoration:underline">Подробнее</a></div>
+<div style="position:fixed;top:0;left:0;right:0;z-index:9999;background:linear-gradient(90deg,#3b82f6,#8b5cf6);padding:6px 16px;text-align:center;font-size:11px;color:#fff;font-family:'JetBrains Mono',monospace;letter-spacing:.04em">DEMO &mdash; демонстрационная версия, не для коммерческого использования &middot; <a href="index.html" style="color:#fde68a;text-decoration:underline">Подробнее</a></div>
 
 <!-- ═══════════════ LOGIN SCREEN ═══════════════ -->
 <div class="login-bg" id="loginScreen" style="padding-top:32px">
@@ -406,7 +404,9 @@
 
 <!-- БЛОК 1.5: ПЛАНИРОВКА (конструктор) -->
 <div class="c"><div class="ch"><h3>&#128208; Планировка</h3><div style="display:flex;gap:6px">
-<button class="btn sm" onclick="fpImportImage()">&#128247; Загрузить чертёж</button>
+<button class="btn sm" onclick="fpImportImage()">Подложка</button>
+<button class="btn sm" onclick="fpImportProject()">Загрузить</button>
+<button class="btn sm" onclick="fpExportProject()">Скачать</button>
 <button class="btn sm" onclick="fpClear()">Очистить</button>
 <button class="btn sm pr" onclick="fpSave()">Сохранить</button>
 </div></div>
@@ -488,12 +488,27 @@
 <div style="height:1px;background:var(--bd);margin:4px 0"></div>
 <button class="fp-tb2" onclick="fpToggleElemPalette()" id="fpElemBtn" style="color:var(--ac2)"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg><span>Элементы</span><kbd>E</kbd></button>
 <div style="height:1px;background:var(--bd);margin:4px 0"></div>
-<button class="fp-tb2" onclick="fpUndo()" title="Ctrl+Z"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7l-3 3 3 3"/><path d="M1 10h10a3 3 0 0 0 0-6H8"/></svg><span>Отменить</span></button>
+<span style="font-size:8px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;padding:2px 6px">Правка</span>
+<div style="display:flex;gap:2px;padding:0 4px">
+<button class="fp-tb" onclick="fpUndo()" title="Отменить (Ctrl+Z)" style="flex:1"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7l-3 3 3 3"/><path d="M1 10h10a3 3 0 0 0 0-6H8"/></svg></button>
+<button class="fp-tb" onclick="fpRedo()" title="Вернуть (Ctrl+Shift+Z)" style="flex:1"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 7l3 3-3 3"/><path d="M15 10H5a3 3 0 0 1 0-6h3"/></svg></button>
+</div>
+<div style="display:flex;gap:2px;padding:0 4px">
+<button class="fp-tb" onclick="fpCopy()" title="Копировать (Ctrl+C)" style="flex:1;font-size:10px">&#128203;</button>
+<button class="fp-tb" onclick="fpPaste()" title="Вставить (Ctrl+V)" style="flex:1;font-size:10px">&#128196;</button>
+</div>
+<div style="height:1px;background:var(--bd);margin:4px 0"></div>
+<span style="font-size:8px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;padding:2px 6px">Вид</span>
 <div style="display:flex;gap:2px;padding:0 4px">
 <button class="fp-tb" onclick="fpZoom(1.2)" title="Увеличить" style="flex:1">+</button>
 <button class="fp-tb" onclick="fpZoom(0.8)" title="Уменьшить" style="flex:1">−</button>
 </div>
 <button class="fp-tb2" onclick="fpFitAll()"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="10" height="10" rx="1" stroke-dasharray="3 2"/><path d="M1 5V1h4M11 1h4v4M15 11v4h-4M5 15H1v-4"/></svg><span>Вписать</span></button>
+<button class="fp-tb2" onclick="FP.showGrid=!FP.showGrid;fpDraw()"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2"><line x1="4" y1="0" x2="4" y2="16"/><line x1="8" y1="0" x2="8" y2="16"/><line x1="12" y1="0" x2="12" y2="16"/><line x1="0" y1="4" x2="16" y2="4"/><line x1="0" y1="8" x2="16" y2="8"/><line x1="0" y1="12" x2="16" y2="12"/></svg><span>Сетка</span><kbd>G</kbd></button>
+<div style="height:1px;background:var(--bd);margin:4px 0"></div>
+<span style="font-size:8px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;padding:2px 6px">Проект</span>
+<button class="fp-tb2" onclick="fpExportProject()"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 13h10M8 2v8M5 7l3 3 3-3"/></svg><span>Скачать</span></button>
+<button class="fp-tb2" onclick="fpImportProject()"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 13h10M8 10V2M5 5l3-3 3 3"/></svg><span>Загрузить</span></button>
 <span style="flex:1"></span>
 <span style="font-size:8px;color:var(--tx3);text-align:center;padding:4px 0" id="fpCursor">0 × 0</span>
 </div>
@@ -1805,6 +1820,9 @@ const FP={
   rooms:[],       // each: {name,type,abbr,pts:[[x,y],...],doors:[]}
   elements:[],    // architectural elements: {type,x,y,angle,w,h}
   history:[],     // undo stack (snapshots of {rooms,elements})
+  future:[],      // redo stack
+  clipboard:null, // {rooms:[], elements:[]}
+  showGrid:true,  // toggle grid visibility
   maxHistory:30,
   scale:20,ox:40,oy:40,
   tool:'select',sel:new Set(),selElem:-1,drag:null,resize:null,vtxDrag:null,bgImg:null,
@@ -1843,14 +1861,27 @@ function fpSnap(v){return Math.round(v*10)/10}
 function fpToScreen(px,py){return[FP.ox+px*FP.scale,FP.oy+py*FP.scale]}
 function fpToGrid(sx,sy){return[fpSnap((sx-FP.ox)/FP.scale),fpSnap((sy-FP.oy)/FP.scale)]}
 
-// Undo system
+// Undo/Redo system
 function fpPushHistory(){
   FP.history.push(JSON.stringify({rooms:FP.rooms,elements:FP.elements}));
   if(FP.history.length>FP.maxHistory)FP.history.shift();
+  FP.future=[]; // clear redo on new action
 }
 function fpUndo(){
   if(!FP.history.length)return;
+  // Save current state to future (redo) stack
+  FP.future.push(JSON.stringify({rooms:FP.rooms,elements:FP.elements}));
   const snap=JSON.parse(FP.history.pop());
+  FP.rooms=(snap.rooms||[]).map(r=>fpEnsurePoly(r));
+  FP.elements=snap.elements||[];
+  FP.sel.clear();FP.selElem=-1;
+  fpDraw();fpUpdateList();
+}
+function fpRedo(){
+  if(!FP.future||!FP.future.length)return;
+  // Save current state to history (undo) stack
+  FP.history.push(JSON.stringify({rooms:FP.rooms,elements:FP.elements}));
+  const snap=JSON.parse(FP.future.pop());
   FP.rooms=(snap.rooms||[]).map(r=>fpEnsurePoly(r));
   FP.elements=snap.elements||[];
   FP.sel.clear();FP.selElem=-1;
@@ -1935,8 +1966,15 @@ function fpInit(){
   c.addEventListener('contextmenu',e=>e.preventDefault());
   document.addEventListener('keydown',e=>{
     if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT'||e.target.tagName==='TEXTAREA')return;
-    if(e.key==='Escape'){FP.polyPts=[];FP.rectStart=null;fpDraw()}
+    if(e.key==='Escape'){FP.polyPts=[];FP.rectStart=null;FP.sel.clear();FP.selElem=-1;fpDraw();fpUpdateList()}
     if((e.ctrlKey||e.metaKey)&&e.key==='z'&&!e.shiftKey){e.preventDefault();fpUndo()}
+    if((e.ctrlKey||e.metaKey)&&(e.key==='Z'||(e.key==='z'&&e.shiftKey))){e.preventDefault();fpRedo()}
+    if((e.ctrlKey||e.metaKey)&&e.key==='y'){e.preventDefault();fpRedo()}
+    if((e.ctrlKey||e.metaKey)&&e.key==='c'){e.preventDefault();fpCopy()}
+    if((e.ctrlKey||e.metaKey)&&e.key==='v'&&!e.shiftKey){e.preventDefault();fpPaste()}
+    if((e.ctrlKey||e.metaKey)&&e.key==='d'){e.preventDefault();fpDuplicate()}
+    if((e.ctrlKey||e.metaKey)&&e.key==='a'){e.preventDefault();fpSelectAll()}
+    if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();fpSave()}
     if(!e.ctrlKey&&!e.metaKey){
       if(e.key==='v')fpSetTool('select');
       if(e.key==='r')fpSetTool('rect');
@@ -1946,9 +1984,10 @@ function fpInit(){
       if(e.key==='n')fpSetTool('vertex');
       if(e.key==='l')fpSetTool('wall');
       if(e.key==='e')fpToggleElemPalette();
+      if(e.key==='g')FP.showGrid=!FP.showGrid;fpDraw();
       if(e.key==='Delete'||e.key==='Backspace'){
         if(FP.selElem>=0){fpDelElement(FP.selElem);FP.selElem=-1}
-        else if(FP.sel.size===1){fpDelRoom([...FP.sel][0])}
+        else if(FP.sel.size>=1){const ids=[...FP.sel].sort((a,b)=>b-a);fpPushHistory();ids.forEach(i=>FP.rooms.splice(i,1));FP.sel.clear();fpDraw();fpUpdateList()}
       }
     }
   });
@@ -1968,10 +2007,16 @@ function fpDraw(){
   ctx.fillStyle='#f1f5f9';ctx.fillRect(0,0,W,500);
   if(FP.bgImg){ctx.globalAlpha=.3;ctx.drawImage(FP.bgImg,FP.ox,FP.oy,FP.bgImg.width*(FP.scale/20),FP.bgImg.height*(FP.scale/20));ctx.globalAlpha=1}
   // Grid
-  ctx.strokeStyle='rgba(0,0,0,.06)';ctx.lineWidth=1;
-  const gs=FP.scale;
-  for(let x=FP.ox%gs;x<W;x+=gs){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,500);ctx.stroke()}
-  for(let y=FP.oy%gs;y<500;y+=gs){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+  if(FP.showGrid!==false){
+    ctx.strokeStyle='rgba(0,0,0,.06)';ctx.lineWidth=1;
+    const gs=FP.scale;
+    for(let x=FP.ox%gs;x<W;x+=gs){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,500);ctx.stroke()}
+    for(let y=FP.oy%gs;y<500;y+=gs){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+    // Axis origin cross
+    ctx.strokeStyle='rgba(0,0,0,.15)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(FP.ox,0);ctx.lineTo(FP.ox,500);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(0,FP.oy);ctx.lineTo(W,FP.oy);ctx.stroke();
+  }
   // Rooms
   FP.rooms.forEach((r,i)=>{
     fpEnsurePoly(r);
@@ -2166,6 +2211,7 @@ function fpDown(e){
   if(FP.tool==='select'){
     // Check resize handle first
     if(fpHitElemResize(mx,my)){
+      fpPushHistory();
       const el=FP.elements[FP.selElem];
       FP.elemResize={idx:FP.selElem,sx:mx,sy:my,ow:el.w,oh:el.h};
       return;
@@ -2175,6 +2221,7 @@ function fpDown(e){
     if(elemHit>=0){
       FP.selElem=elemHit;FP.sel.clear();
       const el=FP.elements[elemHit];
+      fpPushHistory();
       FP.elemDrag={idx:elemHit,sx:mx,sy:my,ox:el.x,oy:el.y};
       fpDraw();fpUpdateList();return;
     }
@@ -2194,6 +2241,7 @@ function fpDown(e){
         if(!FP.sel.has(hit)){FP.sel.clear();FP.sel.add(hit)}
       }
       // Save origPts for ALL selected rooms (group drag)
+      fpPushHistory();
       const dragRooms={};
       FP.sel.forEach(idx=>{dragRooms[idx]=FP.rooms[idx].pts.map(p=>[...p])});
       FP.drag={sx:mx,sy:my,rooms:dragRooms};
@@ -2248,7 +2296,7 @@ function fpDown(e){
         const px=ax+t*dx,py=ay+t*dy;const dist=Math.hypot(gx-px,gy-py);
         if(dist<bestDist){bestDist=dist;bestEdge=i;bestT=t}
       }
-      if(bestEdge>=0&&bestDist<2){r.doors.push({edge:bestEdge,t:bestT,width:0.9,side:'left',dir:'in'});fpDraw();fpUpdateList()}
+      if(bestEdge>=0&&bestDist<2){fpPushHistory();r.doors.push({edge:bestEdge,t:bestT,width:0.9,side:'left',dir:'in'});fpDraw();fpUpdateList()}
     }
   }
   if(FP.tool==='window'){
@@ -2264,7 +2312,7 @@ function fpDown(e){
         const px=ax+t*dx,py=ay+t*dy;const dist=Math.hypot(gx-px,gy-py);
         if(dist<bestDist){bestDist=dist;bestEdge=i;bestT=t}
       }
-      if(bestEdge>=0&&bestDist<2){r.windows.push({edge:bestEdge,t:bestT,width:1.2});fpDraw();fpUpdateList()}
+      if(bestEdge>=0&&bestDist<2){fpPushHistory();r.windows.push({edge:bestEdge,t:bestT,width:1.2});fpDraw();fpUpdateList()}
     }
   }
 }
@@ -2836,7 +2884,7 @@ function fpUpdateList(){
   // Merge button
   let html='';
   if(FP.sel.size>=2){
-    html+='<div style="display:flex;align-items:center;gap:8px;padding:6px 8px;margin-bottom:6px;background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.15);border-radius:8px"><span style="font-size:11px;color:var(--ac2);flex:1">Выбрано '+FP.sel.size+' комнат</span><button class="btn sm pr" onclick="fpMergeSelected()">Объединить</button></div>';
+    html+='<div style="display:flex;align-items:center;gap:6px;padding:6px 8px;margin-bottom:6px;background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.15);border-radius:8px;flex-wrap:wrap"><span style="font-size:11px;color:var(--ac2);flex:1">Выбрано '+FP.sel.size+'</span><button class="btn sm pr" onclick="fpMergeSelected()">Объединить</button><button class="btn sm" onclick="fpAlignSelected(\'left\')" title="По левому краю">⫷</button><button class="btn sm" onclick="fpAlignSelected(\'top\')" title="По верхнему краю">⫠</button><button class="btn sm" onclick="fpAlignSelected(\'hcenter\')" title="По центру X">⫿</button><button class="btn sm" onclick="fpAlignSelected(\'vcenter\')" title="По центру Y">⫾</button></div>';
   }
   html+=FP.rooms.map((r,i)=>{
     const col=FP.colors[i%FP.colors.length];
@@ -2928,8 +2976,107 @@ function fpClear(){
 
 function fpSave(){
   localStorage.setItem('svita_floorplan',JSON.stringify({rooms:FP.rooms,elements:FP.elements,scale:FP.scale,ox:FP.ox,oy:FP.oy}));
-  const btn=event.target;btn.textContent='✓ Сохранено';btn.classList.add('gn');setTimeout(()=>{btn.textContent='Сохранить';btn.classList.remove('gn')},1500);
+  // Visual feedback
+  const btn=document.querySelector('[onclick*="fpSave"]');
+  if(btn){btn.textContent='✓ Сохранено';btn.classList.add('gn');setTimeout(()=>{btn.textContent='Сохранить';btn.classList.remove('gn')},1500)}
 }
+
+// ═══ EXPORT / IMPORT PROJECT FILE ═══
+function fpExportProject(){
+  const data={version:1,name:'SVITA Project',date:new Date().toISOString(),rooms:FP.rooms,elements:FP.elements,scale:FP.scale,ox:FP.ox,oy:FP.oy};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='svita-project-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();URL.revokeObjectURL(a.href);
+}
+function fpImportProject(){
+  const inp=document.createElement('input');inp.type='file';inp.accept='.json';
+  inp.onchange=e=>{
+    const f=e.target.files[0];if(!f)return;
+    const reader=new FileReader();reader.onload=ev=>{
+      try{
+        const d=JSON.parse(ev.target.result);
+        if(!d.rooms){alert('Неверный формат файла');return}
+        fpPushHistory();
+        FP.rooms=(d.rooms||[]).map(r=>fpEnsurePoly(r));
+        FP.elements=d.elements||[];
+        FP.scale=d.scale||20;FP.ox=d.ox||40;FP.oy=d.oy||40;
+        FP.sel.clear();FP.selElem=-1;
+        fpDraw();fpUpdateList();fpSave();
+      }catch(err){alert('Ошибка чтения файла: '+err.message)}
+    };reader.readAsText(f);
+  };inp.click();
+}
+
+// ═══ COPY / PASTE / DUPLICATE ═══
+function fpCopy(){
+  const data={rooms:[],elements:[]};
+  if(FP.selElem>=0){
+    data.elements.push(JSON.parse(JSON.stringify(FP.elements[FP.selElem])));
+  }
+  if(FP.sel.size){
+    FP.sel.forEach(i=>{data.rooms.push(JSON.parse(JSON.stringify(FP.rooms[i])))});
+  }
+  if(!data.rooms.length&&!data.elements.length)return;
+  FP.clipboard=data;
+}
+function fpPaste(){
+  if(!FP.clipboard)return;
+  fpPushHistory();
+  const offset=0.5; // offset pasted items 0.5m
+  if(FP.clipboard.rooms.length){
+    FP.sel.clear();
+    FP.clipboard.rooms.forEach(r=>{
+      const copy=JSON.parse(JSON.stringify(r));
+      copy.name+=' (копия)';
+      copy.pts=copy.pts.map(p=>[fpSnap(p[0]+offset),fpSnap(p[1]+offset)]);
+      FP.rooms.push(copy);
+      FP.sel.add(FP.rooms.length-1);
+    });
+  }
+  if(FP.clipboard.elements.length){
+    FP.clipboard.elements.forEach(el=>{
+      const copy=JSON.parse(JSON.stringify(el));
+      copy.x=fpSnap(copy.x+offset);copy.y=fpSnap(copy.y+offset);
+      FP.elements.push(copy);
+      FP.selElem=FP.elements.length-1;
+    });
+  }
+  fpDraw();fpUpdateList();
+}
+function fpDuplicate(){
+  // Quick duplicate selection in place (Ctrl+D)
+  fpCopy();fpPaste();
+}
+function fpSelectAll(){
+  FP.sel.clear();
+  FP.rooms.forEach((_,i)=>FP.sel.add(i));
+  fpDraw();fpUpdateList();
+}
+
+// ═══ ALIGNMENT HELPERS ═══
+function fpAlignSelected(mode){
+  if(FP.sel.size<2)return;
+  fpPushHistory();
+  const indices=[...FP.sel];
+  const bboxes=indices.map(i=>{const bb=fpPolyBBox(FP.rooms[i].pts);return{i,...bb}});
+  if(mode==='left'){const minX=Math.min(...bboxes.map(b=>b.x1));bboxes.forEach(b=>{const dx=minX-b.x1;FP.rooms[b.i].pts.forEach(p=>p[0]=fpSnap(p[0]+dx))})}
+  if(mode==='right'){const maxX=Math.max(...bboxes.map(b=>b.x2));bboxes.forEach(b=>{const dx=maxX-b.x2;FP.rooms[b.i].pts.forEach(p=>p[0]=fpSnap(p[0]+dx))})}
+  if(mode==='top'){const minY=Math.min(...bboxes.map(b=>b.y1));bboxes.forEach(b=>{const dy=minY-b.y1;FP.rooms[b.i].pts.forEach(p=>p[1]=fpSnap(p[1]+dy))})}
+  if(mode==='bottom'){const maxY=Math.max(...bboxes.map(b=>b.y2));bboxes.forEach(b=>{const dy=maxY-b.y2;FP.rooms[b.i].pts.forEach(p=>p[1]=fpSnap(p[1]+dy))})}
+  if(mode==='hcenter'){
+    const avgCx=bboxes.reduce((s,b)=>(s+(b.x1+b.x2)/2),0)/bboxes.length;
+    bboxes.forEach(b=>{const dx=avgCx-(b.x1+b.x2)/2;FP.rooms[b.i].pts.forEach(p=>p[0]=fpSnap(p[0]+dx))});
+  }
+  if(mode==='vcenter'){
+    const avgCy=bboxes.reduce((s,b)=>(s+(b.y1+b.y2)/2),0)/bboxes.length;
+    bboxes.forEach(b=>{const dy=avgCy-(b.y1+b.y2)/2;FP.rooms[b.i].pts.forEach(p=>p[1]=fpSnap(p[1]+dy))});
+  }
+  fpDraw();fpUpdateList();
+}
+
+// ═══ SNAP-TO-GRID TOGGLE ═══
+function fpToggleSnap(){FP.snapEnabled=!FP.snapEnabled;fpDraw()}
 
 function renderStaff(){
   const c=document.getElementById('staffCards');
