@@ -293,12 +293,32 @@
 </div>
 <div id="loginError" style="font-size:11px;color:var(--rd);min-height:20px;margin-bottom:10px"></div>
 <button class="btn pr" style="width:100%;padding:12px;font-size:13px" onclick="loginCheck()">Войти</button>
+
+<div style="display:flex;align-items:center;gap:12px;margin:20px 0 16px">
+<div style="flex:1;height:1px;background:var(--bd)"></div>
+<span style="font-size:10px;color:var(--tx3);letter-spacing:0.08em;font-family:var(--fm)">ИЛИ</span>
+<div style="flex:1;height:1px;background:var(--bd)"></div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:8px">
+<button class="btn" onclick="oauthLogin('google')" style="width:100%;padding:10px;font-size:12px;background:var(--sf2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--f)">
+<svg width="16" height="16" viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#34A853" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59A14.5 14.5 0 019.5 24c0-1.59.28-3.14.76-4.59l-7.98-6.19A23.99 23.99 0 000 24c0 3.77.87 7.34 2.56 10.78l7.97-6.19z"/><path fill="#EA4335" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+Google</button>
+<button class="btn" onclick="oauthLogin('github')" style="width:100%;padding:10px;font-size:12px;background:var(--sf2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--f)">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+GitHub</button>
+<button class="btn" onclick="oauthLogin('apple')" style="width:100%;padding:10px;font-size:12px;background:var(--sf2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--f)">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+Apple</button>
+</div>
+
 <div style="margin-top:16px;font-size:10px;color:var(--tx3)">Нет аккаунта? <span style="color:var(--ac2);cursor:pointer" onclick="showRegister()">Регистрация</span></div>
 </div>
 
 <!-- STEP 2: ROLE SELECT (after login) -->
 <div id="loginStep2" style="display:none">
-<div style="font-size:12px;color:var(--tx2);margin-bottom:16px">Добро пожаловать, <strong id="loginUserName"></strong></div>
+<div style="font-size:12px;color:var(--tx2);margin-bottom:8px">Добро пожаловать, <strong id="loginUserName"></strong></div>
+<div id="emailBadge" style="font-size:10px;margin-bottom:14px;font-family:var(--fm)"></div>
 <div class="login-roles" id="loginRoles">
 <div class="login-role" data-role="admin" onclick="selectRole(this)" style="display:none" id="roleOptAdmin">
 <div class="lr-icon" style="background:linear-gradient(135deg,var(--ac),#8b5cf6)">&#128081;</div>
@@ -335,7 +355,30 @@
 </div>
 <div id="regError" style="font-size:11px;color:var(--rd);min-height:20px;margin-bottom:10px"></div>
 <button class="btn pr" style="width:100%;padding:12px;font-size:13px" onclick="registerUser()">Зарегистрироваться</button>
+
+<div style="display:flex;align-items:center;gap:12px;margin:18px 0 14px">
+<div style="flex:1;height:1px;background:var(--bd)"></div>
+<span style="font-size:10px;color:var(--tx3);letter-spacing:0.08em;font-family:var(--fm)">ИЛИ</span>
+<div style="flex:1;height:1px;background:var(--bd)"></div>
+</div>
+<div style="display:flex;gap:8px">
+<button class="btn" onclick="oauthLogin('google')" style="flex:1;padding:10px;font-size:11px;background:var(--sf2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);cursor:pointer;font-family:var(--f)">Google</button>
+<button class="btn" onclick="oauthLogin('github')" style="flex:1;padding:10px;font-size:11px;background:var(--sf2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);cursor:pointer;font-family:var(--f)">GitHub</button>
+<button class="btn" onclick="oauthLogin('apple')" style="flex:1;padding:10px;font-size:11px;background:var(--sf2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);cursor:pointer;font-family:var(--f)">Apple</button>
+</div>
+
 <div style="margin-top:16px;font-size:10px;color:var(--tx3)">Уже есть аккаунт? <span style="color:var(--ac2);cursor:pointer" onclick="showLogin()">Войти</span></div>
+</div>
+
+<!-- EMAIL VERIFICATION SCREEN -->
+<div id="loginVerify" style="display:none;text-align:center">
+<div style="font-size:48px;margin-bottom:16px">&#9993;</div>
+<div style="font-size:14px;font-weight:600;color:var(--tx);margin-bottom:8px">Подтвердите email</div>
+<div style="font-size:12px;color:var(--tx2);margin-bottom:4px">Мы отправили письмо на</div>
+<div style="font-size:13px;font-weight:600;color:var(--ac2);margin-bottom:20px" id="verifyEmail"></div>
+<div style="font-size:11px;color:var(--tx3);margin-bottom:16px">Перейдите по ссылке в письме, затем вернитесь сюда и войдите</div>
+<button class="btn" id="resendBtn" onclick="resendVerification()" style="width:100%;padding:10px;font-size:12px;background:var(--sf2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);cursor:pointer;margin-bottom:12px">Отправить повторно</button>
+<button class="btn pr" style="width:100%;padding:10px;font-size:12px" onclick="showLogin()">Войти</button>
 </div>
 
 </div>
@@ -1332,10 +1375,11 @@ const DB={
 };
 let nextId=200;
 
-// ═══════════════ SUPABASE SYNC ═══════════════
+// ═══════════════ SUPABASE INIT ═══════════════
 const SB_URL='https://ctdleobjnzniqkqomlrq.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZGxlb2JqbnpuaXFrcW9tbHJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMzE4MTEsImV4cCI6MjA4NzgwNzgxMX0.AMHtY7zGPemKYCxMy2bqRTOEAp8trA_Slor9wmg7C38';
-let sb=null;
+const sb=(typeof supabase!=='undefined')?supabase.createClient(SB_URL,SB_KEY):null;
+const ADMIN_EMAILS=['scyraai@proton.me','artem@labs67.com'];
 // Helper: extract ru name from multilingual JSON or string
 function i18n(v){
   if(!v)return'—';
@@ -1343,10 +1387,10 @@ function i18n(v){
   return v.ru||v.en||v.pl||Object.values(v)[0]||'—';
 }
 
+// ═══════════════ SUPABASE DATA SYNC ═══════════════
 async function loadSupabaseData(){
   try{
-    if(typeof supabase==='undefined')return;
-    sb=supabase.createClient(SB_URL,SB_KEY);
+    if(!sb)return;
 
     // 1. Equipment categories (multilingual names)
     const{data:eqCats}=await sb.from('equipment_categories').select('id,name,slug');
@@ -1560,79 +1604,99 @@ function loadPropertyParams(){
   }catch(e){}
 }
 
-// ═══════════════ AUTH SYSTEM ═══════════════
-const USERS_KEY='svita_users';
+// ═══════════════ AUTH SYSTEM (Supabase Auth) ═══════════════
 let currentRole='admin';
 let currentUser=null;
 const ROLE_COLORS={admin:'linear-gradient(135deg,var(--ac),#8b5cf6)',owner:'linear-gradient(135deg,var(--gn),#059669)',contractor:'linear-gradient(135deg,var(--or),var(--yl))',supplier:'linear-gradient(135deg,#8b5cf6,#d946ef)',employee:'linear-gradient(135deg,#06b6d4,var(--ac))'};
 const ROLE_NAMES={admin:'Администратор',owner:'Владелец',contractor:'Подрядчик',supplier:'Поставщик',employee:'Сотрудник'};
 
-function getUsers(){
-  try{const raw=localStorage.getItem(USERS_KEY);return raw?JSON.parse(raw):[]}catch(e){return[]}
-}
-function saveUsers(users){localStorage.setItem(USERS_KEY,JSON.stringify(users))}
-
-// Seed default admin — always ensure exists with correct password
-(function seedAdmin(){
-  let users=getUsers();
-  const idx=users.findIndex(u=>u.email==='scyraai@proton.me');
-  const admin={email:'scyraai@proton.me',pass:'BMWg20m5@',name:'\u0410\u0440\u0442\u0451\u043c \u0412\u0435\u0435\u043b\u043a\u043e',isAdmin:true,created:'2026-04-04'};
-  if(idx>=0)users[idx]=admin; else users.push(admin);
-  saveUsers(users);
-})();
-
 function showLogin(){
   document.getElementById('loginStep1').style.display='block';
   document.getElementById('loginStep2').style.display='none';
   document.getElementById('loginRegister').style.display='none';
+  document.getElementById('loginVerify').style.display='none';
   document.getElementById('loginError').textContent='';
 }
 function showRegister(){
   document.getElementById('loginStep1').style.display='none';
   document.getElementById('loginStep2').style.display='none';
   document.getElementById('loginRegister').style.display='block';
+  document.getElementById('loginVerify').style.display='none';
   document.getElementById('regError').textContent='';
 }
 
-function loginCheck(){
+async function loginCheck(){
   const email=document.getElementById('loginEmail').value.trim().toLowerCase();
   const pass=document.getElementById('loginPass').value;
   if(!email||!pass){document.getElementById('loginError').textContent='Введите email и пароль';return}
-  const users=getUsers();
-  const user=users.find(u=>u.email===email&&u.pass===pass);
-  if(!user){document.getElementById('loginError').textContent='Неверный email или пароль';return}
-  currentUser=user;
-  // Show role selection
+  if(!sb){document.getElementById('loginError').textContent='Supabase не загружен';return}
+  document.getElementById('loginError').textContent='Входим...';
+  const{data,error}=await sb.auth.signInWithPassword({email,password:pass});
+  if(error){document.getElementById('loginError').textContent=error.message==='Invalid login credentials'?'Неверный email или пароль':error.message;return}
+  const user=data.user;
+  const isAdmin=ADMIN_EMAILS.includes(user.email);
+  currentUser={email:user.email,name:user.user_metadata?.name||user.email.split('@')[0],isAdmin,emailConfirmed:!!user.email_confirmed_at,id:user.id};
+  proceedToRoleSelect();
+}
+
+async function registerUser(){
+  const name=document.getElementById('regName').value.trim();
+  const email=document.getElementById('regEmail').value.trim().toLowerCase();
+  const pass=document.getElementById('regPass').value;
+  if(!name||!email||!pass){document.getElementById('regError').textContent='Заполните все поля';return}
+  if(pass.length<6){document.getElementById('regError').textContent='Пароль минимум 6 символов';return}
+  if(!sb){document.getElementById('regError').textContent='Supabase не загружен';return}
+  document.getElementById('regError').textContent='Регистрируем...';
+  const{data,error}=await sb.auth.signUp({email,password:pass,options:{data:{name},emailRedirectTo:location.origin+location.pathname}});
+  if(error){document.getElementById('regError').textContent=error.message;return}
+  // If email confirmation required
+  if(data.user&&!data.user.email_confirmed_at){
+    document.getElementById('loginRegister').style.display='none';
+    document.getElementById('loginVerify').style.display='block';
+    document.getElementById('verifyEmail').textContent=email;
+    return;
+  }
+  // Auto-login if no confirmation needed
+  const user=data.user;
+  currentUser={email:user.email,name:name,isAdmin:ADMIN_EMAILS.includes(user.email),emailConfirmed:!!user.email_confirmed_at,id:user.id};
+  proceedToRoleSelect();
+}
+
+async function resendVerification(){
+  const email=document.getElementById('verifyEmail').textContent;
+  if(!sb||!email)return;
+  const btn=document.getElementById('resendBtn');
+  btn.textContent='Отправляем...';btn.disabled=true;
+  const{error}=await sb.auth.resend({type:'signup',email,options:{emailRedirectTo:location.origin+location.pathname}});
+  btn.textContent=error?'Ошибка: '+error.message:'Отправлено повторно!';
+  setTimeout(()=>{btn.textContent='Отправить повторно';btn.disabled=false},4000);
+}
+
+async function oauthLogin(provider){
+  if(!sb)return;
+  const{error}=await sb.auth.signInWithOAuth({provider,options:{redirectTo:location.origin+location.pathname}});
+  if(error)document.getElementById('loginError').textContent=error.message;
+}
+
+function proceedToRoleSelect(){
   document.getElementById('loginStep1').style.display='none';
+  document.getElementById('loginRegister').style.display='none';
+  document.getElementById('loginVerify').style.display='none';
   document.getElementById('loginStep2').style.display='block';
-  document.getElementById('loginUserName').textContent=user.name;
-  // Show admin option only for admins
-  document.getElementById('roleOptAdmin').style.display=user.isAdmin?'flex':'none';
-  // Auto-select first available role
-  if(user.isAdmin){
+  document.getElementById('loginUserName').textContent=currentUser.name;
+  // Email badge
+  const badge=document.getElementById('emailBadge');
+  if(badge){
+    badge.innerHTML=currentUser.emailConfirmed?'<span style="color:var(--gn)">&#10003; Email подтверждён</span>':'<span style="color:var(--or)">&#9888; Email не подтверждён</span>';
+  }
+  document.getElementById('roleOptAdmin').style.display=currentUser.isAdmin?'flex':'none';
+  if(currentUser.isAdmin){
     document.querySelector('[data-role="admin"]').classList.add('sel');
     currentRole='admin';
   }else{
     document.querySelector('#loginStep2 [data-role="owner"]').classList.add('sel');
     currentRole='owner';
   }
-}
-
-function registerUser(){
-  const name=document.getElementById('regName').value.trim();
-  const email=document.getElementById('regEmail').value.trim().toLowerCase();
-  const pass=document.getElementById('regPass').value;
-  if(!name||!email||!pass){document.getElementById('regError').textContent='Заполните все поля';return}
-  if(pass.length<6){document.getElementById('regError').textContent='Пароль минимум 6 символов';return}
-  const users=getUsers();
-  if(users.find(u=>u.email===email)){document.getElementById('regError').textContent='Этот email уже зарегистрирован';return}
-  users.push({email:email,pass:pass,name:name,isAdmin:false,created:new Date().toISOString().split('T')[0]});
-  saveUsers(users);
-  // Auto-login
-  document.getElementById('loginEmail').value=email;
-  document.getElementById('loginPass').value=pass;
-  showLogin();
-  loginCheck();
 }
 
 function selectRole(el){
@@ -1652,8 +1716,8 @@ function enterApp(){
   document.getElementById('roleLabel').textContent=ROLE_NAMES[currentRole];
   document.getElementById('roleLabel').style.background=currentRole==='admin'?'rgba(59,130,246,.1)':currentRole==='contractor'?'rgba(249,115,22,.1)':currentRole==='supplier'?'rgba(139,92,246,.1)':currentRole==='employee'?'rgba(6,182,212,.1)':'rgba(34,197,94,.1)';
   document.getElementById('roleLabel').style.color=currentRole==='admin'?'var(--ac2)':currentRole==='contractor'?'var(--or)':currentRole==='supplier'?'#d946ef':currentRole==='employee'?'#06b6d4':'var(--gn)';
-  // Save session
-  localStorage.setItem('svita_session',JSON.stringify({email:currentUser.email,role:currentRole}));
+  // Save role in localStorage (Supabase handles session)
+  localStorage.setItem('svita_role',currentRole);
   // Restore property card state
   const savedProp=localStorage.getItem('svita_property');
   if(savedProp){try{activeProperty=JSON.parse(savedProp)}catch(e){}}
@@ -1664,9 +1728,10 @@ function enterApp(){
   loadSupabaseData();
 }
 
-function logout(){
+async function logout(){
   currentUser=null;
-  localStorage.removeItem('svita_session');
+  localStorage.removeItem('svita_role');
+  if(sb)await sb.auth.signOut();
   document.getElementById('loginScreen').classList.remove('hidden');
   document.getElementById('appContainer').style.display='none';
   showLogin();
@@ -1674,18 +1739,16 @@ function logout(){
   document.getElementById('loginPass').value='';
 }
 
-// Auto-restore session
-(function restoreSession(){
+// Auto-restore session from Supabase Auth
+(async function restoreSession(){
   try{
-    const raw=localStorage.getItem('svita_session');
-    if(!raw)return;
-    const sess=JSON.parse(raw);
-    const users=getUsers();
-    const user=users.find(u=>u.email===sess.email);
-    if(!user)return;
-    currentUser=user;
-    currentRole=sess.role;
-    // Skip login screen
+    if(!sb)return;
+    const{data:{session}}=await sb.auth.getSession();
+    if(!session||!session.user)return;
+    const user=session.user;
+    const isAdmin=ADMIN_EMAILS.includes(user.email);
+    currentUser={email:user.email,name:user.user_metadata?.name||user.email.split('@')[0],isAdmin,emailConfirmed:!!user.email_confirmed_at,id:user.id};
+    currentRole=localStorage.getItem('svita_role')||(isAdmin?'admin':'owner');
     setTimeout(()=>{
       document.getElementById('loginScreen').classList.add('hidden');
       document.getElementById('appContainer').style.display='flex';
@@ -1700,6 +1763,16 @@ function logout(){
       window.addEventListener('resize',()=>{fpDraw()});
     },50);
   }catch(e){}
+
+  // Listen for OAuth callback (user returns from Google/GitHub/Apple)
+  sb.auth.onAuthStateChange((event,session)=>{
+    if(event==='SIGNED_IN'&&session&&!currentUser){
+      const user=session.user;
+      const isAdmin=ADMIN_EMAILS.includes(user.email);
+      currentUser={email:user.email,name:user.user_metadata?.full_name||user.user_metadata?.name||user.email.split('@')[0],isAdmin,emailConfirmed:!!user.email_confirmed_at,id:user.id};
+      proceedToRoleSelect();
+    }
+  });
 })();
 
 function buildSidebar(){
