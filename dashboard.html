@@ -275,9 +275,9 @@
 <body>
 
 <!-- DEMO BANNER -->
-<div style="position:fixed;top:0;left:0;right:0;z-index:9999;background:linear-gradient(90deg,#3b82f6,#8b5cf6);padding:6px 16px;text-align:center;font-size:11px;color:#fff;font-family:'JetBrains Mono',monospace;letter-spacing:.04em" id="demoBanner">DEMO &mdash; данная версия является демонстрационной и не предназначена для коммерческого использования &middot; <a href="index.html" style="color:#fde68a;text-decoration:underline">Подр��бнее</a></div>
+<div style="position:fixed;top:0;left:0;right:0;z-index:9999;background:linear-gradient(90deg,#3b82f6,#8b5cf6);padding:6px 16px;text-align:center;font-size:11px;color:#fff;font-family:'JetBrains Mono',monospace;letter-spacing:.04em" id="demoBanner">DEMO &mdash; данная версия является демонстрационной и не предназначена для коммерческого использования &middot; <a href="index.html" style="color:#fde68a;text-decoration:underline">Подробнее</a></div>
 
-<!-- ═══════════════ LOGIN SCREEN ═���═════════════ -->
+<!-- ═══════════════ LOGIN SCREEN ═══════════════ -->
 <div class="login-bg" id="loginScreen" style="padding-top:32px">
 <div class="login-box">
 <h1><span style="color:var(--ac)">&#9679;</span> SVITA</h1>
@@ -425,6 +425,7 @@
 <button class="ep-btn" onclick="fpAddElement('stairs')">Лестница</button>
 <button class="ep-btn" onclick="fpAddElement('elevator')">Лифт</button>
 <button class="ep-btn" onclick="fpAddElement('wall_part')">Перегородка</button>
+<button class="ep-btn" onclick="fpAddElement('arch')">Арка</button>
 </div>
 </div>
 <div>
@@ -1811,6 +1812,7 @@ const FP={
   polyPts:[],     // temp points while drawing polygon
   rectStart:null, // temp start while drawing rect
   elemDrag:null,  // {idx,sx,sy,ox,oy}
+  elemResize:null, // {idx,sx,sy,ow,oh}
   colors:['#3b82f6','#22c55e','#f97316','#8b5cf6','#06b6d4','#ef4444','#eab308','#d946ef','#14b8a6','#f43f5e'],
   types:[
     // Лечебные кабинеты
@@ -1911,6 +1913,15 @@ function fpHitElement(mx,my){
     const el=FP.elements[i];
     if(gx>=el.x&&gx<=el.x+el.w&&gy>=el.y&&gy<=el.y+el.h)return i;
   }return-1;
+}
+// Hit-test element resize handle (bottom-right corner, 7px square)
+function fpHitElemResize(mx,my){
+  if(FP.selElem<0)return false;
+  const el=FP.elements[FP.selElem];if(!el)return false;
+  const sx=FP.ox+el.x*FP.scale,sy=FP.oy+el.y*FP.scale;
+  const sw=el.w*FP.scale,sh=el.h*FP.scale;
+  const hx=sx+sw,hy=sy+sh;
+  return Math.abs(mx-hx)<10&&Math.abs(my-hy)<10;
 }
 
 function fpInit(){
@@ -2059,6 +2070,10 @@ function fpDraw(){
       // Hinge dot
       ctx.fillStyle='#b45309';ctx.beginPath();ctx.arc(sH[0],sH[1],3.5,0,Math.PI*2);ctx.fill();
       ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(sH[0],sH[1],1.5,0,Math.PI*2);ctx.fill();
+      // Door width label
+      const dmx=(sH[0]+sF[0])/2,dmy=(sH[1]+sF[1])/2;
+      ctx.font='bold 8px JetBrains Mono,monospace';ctx.fillStyle='#b45309';ctx.textAlign='center';ctx.textBaseline='bottom';
+      ctx.fillText((dw*100).toFixed(0)+'cm',dmx,dmy-4);
     });
     // Windows — double line with gap on wall
     if(r.windows)r.windows.forEach(w=>{
@@ -2105,6 +2120,18 @@ function fpDraw(){
     ctx.font='7px Inter,sans-serif';ctx.fillStyle=isSel?'#2563eb':'#94a3b8';
     ctx.textAlign='center';ctx.textBaseline='top';
     ctx.fillText(def.label,0,sh/2+2);
+    // Resize handle on selected element (bottom-right corner)
+    if(isSel){
+      const hs=7;
+      ctx.fillStyle='#3b82f6';
+      ctx.fillRect(sw/2-hs,sh/2-hs,hs,hs);
+      ctx.strokeStyle='#fff';ctx.lineWidth=1;
+      ctx.strokeRect(sw/2-hs,sh/2-hs,hs,hs);
+      // Size label
+      ctx.font='bold 8px JetBrains Mono,monospace';ctx.fillStyle='#3b82f6';
+      ctx.textAlign='center';ctx.textBaseline='top';
+      ctx.fillText(el.w+'×'+el.h+'м',0,sh/2+12);
+    }
     ctx.restore();
   });
 
@@ -2137,6 +2164,12 @@ function fpDown(e){
   const shift=e.shiftKey;
 
   if(FP.tool==='select'){
+    // Check resize handle first
+    if(fpHitElemResize(mx,my)){
+      const el=FP.elements[FP.selElem];
+      FP.elemResize={idx:FP.selElem,sx:mx,sy:my,ow:el.w,oh:el.h};
+      return;
+    }
     // Check elements first (they are on top)
     const elemHit=fpHitElement(mx,my);
     if(elemHit>=0){
@@ -2248,6 +2281,14 @@ function fpMove(e){
     FP.elements[FP.elemDrag.idx].y=fpSnap(FP.elemDrag.oy+dy);
     fpDraw();return;
   }
+  if(FP.elemResize){
+    const dx=(mx-FP.elemResize.sx)/FP.scale,dy=(my-FP.elemResize.sy)/FP.scale;
+    const nw=Math.max(0.1,fpSnap(FP.elemResize.ow+dx));
+    const nh=Math.max(0.1,fpSnap(FP.elemResize.oh+dy));
+    FP.elements[FP.elemResize.idx].w=nw;
+    FP.elements[FP.elemResize.idx].h=nh;
+    fpDraw();fpUpdateList();return;
+  }
   if(FP.vtxDrag){
     FP.rooms[FP.vtxDrag.ri].pts[FP.vtxDrag.vi]=[gx,gy];fpDraw();return;
   }
@@ -2269,8 +2310,9 @@ function fpMove(e){
   if(FP.polyPts.length>0){fpDraw();return}
   const c=e.target;
   if(FP.tool==='select'){
+    if(fpHitElemResize(mx,my)){c.style.cursor='nwse-resize';return}
     const vh=FP.sel.size?fpHitVertex(mx,my):null;
-    c.style.cursor=vh?'grab':fpHitRoom(mx,my)>=0?'move':'default';
+    c.style.cursor=vh?'grab':fpHitElement(mx,my)>=0||fpHitRoom(mx,my)>=0?'move':'default';
   }else if(FP.tool==='vertex'){
     c.style.cursor=fpHitVertex(mx,my)?'grab':'crosshair';
   }else c.style.cursor='crosshair';
@@ -2295,7 +2337,7 @@ function fpUp(e){
     }
     FP.rectStart=null;
   }
-  FP.drag=null;FP.vtxDrag=null;FP.elemDrag=null;fpDraw();fpUpdateList();
+  FP.drag=null;FP.vtxDrag=null;FP.elemDrag=null;FP.elemResize=null;fpDraw();fpUpdateList();
 }
 
 function fpDblClick(e){
@@ -2645,6 +2687,19 @@ const ELEM_DEFS={
     ctx.strokeStyle=s?'#1e293b':'#64748b';ctx.lineWidth=1.5;
     ctx.beginPath();ctx.arc(0,0,w/2,0,Math.PI*2);ctx.stroke();
     ctx.beginPath();ctx.moveTo(-w/4,0);ctx.lineTo(w/4,0);ctx.moveTo(0,-h/4);ctx.lineTo(0,h/4);ctx.stroke();
+  }},
+  arch:{label:'Арка',w:1.2,h:0.2,draw(ctx,w,h,s){
+    ctx.strokeStyle=s?'#b45309':'#d97706';ctx.lineWidth=2;
+    // Gap on wall
+    ctx.beginPath();ctx.moveTo(-w/2,0);ctx.lineTo(w/2,0);ctx.stroke();
+    // Arch curve above
+    ctx.setLineDash([4,3]);
+    ctx.beginPath();ctx.moveTo(-w/2,0);ctx.quadraticCurveTo(0,-w*0.4,w/2,0);ctx.stroke();
+    ctx.setLineDash([]);
+    // Endpoints
+    ctx.fillStyle=s?'#b45309':'#d97706';
+    ctx.beginPath();ctx.arc(-w/2,0,2.5,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(w/2,0,2.5,0,Math.PI*2);ctx.fill();
   }}
 };
 
@@ -2671,7 +2726,8 @@ const ELEM_SPECS={
   elevator:{fields:[{k:'capacity_kg',l:'Грузоподъёмность (кг)',t:'number',v:630}]},
   stairs:{fields:[{k:'width_m',l:'Ширина (м)',t:'number',v:1.2},{k:'type',l:'Тип',t:'select',opts:['Маршевая','Винтовая','Пожарная'],v:'Маршевая'}]},
   toilet:{fields:[{k:'type',l:'Тип',t:'select',opts:['Подвесной','Напольный'],v:'Подвесной'}]},
-  shower:{fields:[{k:'type',l:'Тип',t:'select',opts:['Кабина','Поддон','Безбарьерный'],v:'Кабина'}]}
+  shower:{fields:[{k:'type',l:'Тип',t:'select',opts:['Каби��а','Поддон','Безбарьерный'],v:'Кабина'}]},
+  arch:{fields:[{k:'width_m',l:'Ширина проёма (м)',t:'number',v:1.2},{k:'style',l:'Стиль',t:'select',opts:['Полукруглая','Стрельчатая','Прямая'],v:'Полукруглая'}]}
 };
 
 // Show element info panel on double-click
@@ -2817,30 +2873,37 @@ function fpUpdateList(){
       </div>`:''}
     </div>`;
   }).join('');
-  // Elements list
+  // Elements list — grouped by category
   if(FP.elements.length){
-    html+=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--bd)"><span style="font-size:9px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:1px">Элементы (${FP.elements.length})</span></div>`;
-    html+=FP.elements.map((el,i)=>{
-      const def=ELEM_DEFS[el.type];if(!def)return'';
-      const isSel=(FP.selElem===i);
-      const spec=ELEM_SPECS[el.type];
-      let specHint='';
-      if(el.specs&&spec){const vals=spec.fields.filter(f=>el.specs[f.k]!==undefined&&el.specs[f.k]!==f.v).map(f=>el.specs[f.k]);if(vals.length)specHint=vals.join(', ')}
-      return`<div class="fp-row${isSel?' sel':''}" onclick="FP.selElem=${i};FP.sel.clear();fpDraw();fpUpdateList()" ondblclick="event.stopPropagation();fpShowElemInfo(${i})" style="padding:4px 8px">
-        <span style="font-size:9px;font-weight:600;color:var(--tx2);width:60px">${def.label}</span>
-        <span style="font-size:9px;color:var(--tx3)">${el.w}×${el.h}м${el.angle?' · '+el.angle+'°':''}</span>
-        ${specHint?`<span style="font-size:8px;color:var(--ac2);max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${specHint}">${specHint}</span>`:''}
-        <span style="flex:1"></span>
-        ${isSel?`<div style="display:flex;gap:3px;align-items:center" onclick="event.stopPropagation()">
-          <input type="number" step="0.1" min="0.1" value="${el.w}" onchange="fpResizeElem(${i},'w',parseFloat(this.value))" style="width:36px;font-size:8px;padding:1px 3px;border:1px solid var(--bd);border-radius:3px;background:var(--sf);color:var(--tx);text-align:center" title="Ширина (м)">
-          <span style="font-size:8px;color:var(--tx3)">×</span>
-          <input type="number" step="0.1" min="0.1" value="${el.h}" onchange="fpResizeElem(${i},'h',parseFloat(this.value))" style="width:36px;font-size:8px;padding:1px 3px;border:1px solid var(--bd);border-radius:3px;background:var(--sf);color:var(--tx);text-align:center" title="Высота (м)">
-          <button style="font-size:8px;padding:1px 5px;border:1px solid var(--acbd);border-radius:3px;background:var(--acbg);color:var(--ac2);cursor:pointer" onclick="fpRotateElement(${i});fpUpdateList()">↻</button>
-          <button style="font-size:8px;padding:1px 5px;border:1px solid var(--acbd);border-radius:3px;background:var(--acbg);color:var(--ac2);cursor:pointer" onclick="fpShowElemInfo(${i})" title="Характеристики">⚙</button>
-        </div>`:''}
-        <span class="fp-del" onclick="event.stopPropagation();fpDelElement(${i})" title="Удалить элемент">✕</span>
-      </div>`;
-    }).join('');
+    const ELEM_GROUPS={
+      'Конструктив':['column','stairs','elevator','wall_part','arch'],
+      'Инженерные сети':['radiator','ac','vent','electric','socket','switch','lamp'],
+      'Сантехника':['sink','toilet','shower','water','drain'],
+      'Безопасность':['camera','fire_ext','fire_alarm','exit_sign'],
+      'Стоматология':['dental_unit','dental_chair','autoclave','compressor','xray','suction']
+    };
+    const typeToGroup={};Object.entries(ELEM_GROUPS).forEach(([g,types])=>types.forEach(t=>typeToGroup[t]=g));
+    // Group elements
+    const groups={};
+    FP.elements.forEach((el,i)=>{const g=typeToGroup[el.type]||'Другое';if(!groups[g])groups[g]=[];groups[g].push({el,i})});
+    html+=`<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--bd)"><span style="font-size:9px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:1px">Элементы на чертеже (${FP.elements.length})</span></div>`;
+    Object.entries(groups).forEach(([gName,items])=>{
+      html+=`<div style="font-size:8px;font-weight:600;color:var(--tx3);padding:6px 8px 2px;text-transform:uppercase;letter-spacing:.5px">${gName} · ${items.length}</div>`;
+      items.forEach(({el,i})=>{
+        const def=ELEM_DEFS[el.type];if(!def)return;
+        const isSel=(FP.selElem===i);
+        return html+=`<div class="fp-row${isSel?' sel':''}" onclick="FP.selElem=${i};FP.sel.clear();fpDraw();fpUpdateList()" ondblclick="event.stopPropagation();fpShowElemInfo(${i})" style="padding:4px 8px">
+          <span style="font-size:9px;font-weight:600;color:var(--tx2);width:60px">${def.label}</span>
+          <span style="font-size:9px;color:var(--tx3)">${el.w}×${el.h}м${el.angle?' · '+el.angle+'°':''}</span>
+          <span style="flex:1"></span>
+          ${isSel?`<div style="display:flex;gap:3px;align-items:center" onclick="event.stopPropagation()">
+            <button style="font-size:8px;padding:1px 5px;border:1px solid var(--acbd);border-radius:3px;background:var(--acbg);color:var(--ac2);cursor:pointer" onclick="fpRotateElement(${i});fpUpdateList()">↻</button>
+            <button style="font-size:8px;padding:1px 5px;border:1px solid var(--acbd);border-radius:3px;background:var(--acbg);color:var(--ac2);cursor:pointer" onclick="fpShowElemInfo(${i})" title="Характеристики">⚙</button>
+          </div>`:''}
+          <span class="fp-del" onclick="event.stopPropagation();fpDelElement(${i})" title="Удалить элемент">✕</span>
+        </div>`;
+      });
+    });
   }
   el.innerHTML=html;
 }
