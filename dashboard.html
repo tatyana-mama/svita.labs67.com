@@ -753,13 +753,19 @@
 <div class="ph"><div><h2>06 &middot; Концепция</h2><div class="ph-s">Бизнес-модель, рентабельность, документация</div></div><span class="tag t-wip">В работе</span></div>
 
 <!-- Бизнес-модель -->
-<div class="c"><div class="ch"><h3>&#127973; Бизнес-модель</h3></div>
+<div class="c"><div class="ch"><h3>&#127973; Бизнес-модель</h3><span style="font-size:10px;color:var(--ac2);font-weight:600">РЕДАКТИРУЕМАЯ</span></div>
 <div class="cb">
 <div class="g2">
-<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Тип учреждения</div><div class="db-card-val" style="font-size:14px;font-weight:700;margin-top:4px">Стоматологическая клиника</div></div>
-<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Бренд</div><div class="db-card-val" style="font-size:14px;font-weight:700;margin-top:4px">Свитлица</div></div>
-<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Город</div><div class="db-card-val" style="font-size:14px;font-weight:700;margin-top:4px">Быдгощ, Польша</div></div>
-<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Целевое открытие</div><div class="db-card-val" style="font-size:14px;font-weight:700;margin-top:4px;color:var(--ac2)">Сентябрь 2026</div></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Тип учреждения</div><input class="price-edit" id="cType" value="Стоматологическая клиника" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Бренд</div><input class="price-edit" id="cBrand" value="Свитлица" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Город</div><input class="price-edit" id="cCity" value="Быдгощ, Польша" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Целевое открытие</div><input class="price-edit" id="cDate" value="Сентябрь 2026" style="font-size:13px;font-weight:700;margin-top:4px;width:100%;color:var(--ac2)"></div>
+</div>
+<div class="g2" style="margin-top:12px">
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Формат</div><input class="price-edit" id="cFormat" value="Премиум-сегмент" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Целевая аудитория</div><input class="price-edit" id="cAudience" value="Средний+ класс, 25-55 лет" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">УТП</div><input class="price-edit" id="cUsp" value="AI-клиника нового поколения" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Технология</div><input class="price-edit" id="cTech" value="ŠČYRA.AI + Jetson Edge" style="font-size:13px;font-weight:700;margin-top:4px;width:100%;color:var(--gn)"></div>
 </div>
 </div></div>
 
@@ -853,6 +859,26 @@
 <div id="dbServiceCards"></div>
 </div>
 
+<!-- ═══ USERS ═══ -->
+<div class="sec" id="sec-users">
+<div class="bk" onclick="nav('overview')">&larr; Обзор</div>
+<div class="ph"><div><h2>👥 Пользователи</h2><div class="ph-s">Управление доступом и ролями</div></div><button class="btn sm pr" onclick="openModal('user')">+ Пригласить</button></div>
+<div class="sts" id="userStats" style="grid-template-columns:repeat(4,1fr)">
+<div class="st"><div class="st-l">Всего</div><div class="st-v" id="usersTotal">0</div><div class="st-s">пользователей</div></div>
+<div class="st"><div class="st-l">Админы</div><div class="st-v" id="usersAdmins">0</div><div class="st-s">полный доступ</div></div>
+<div class="st"><div class="st-l">Владельцы</div><div class="st-v" id="usersOwners">0</div><div class="st-s">проекты</div></div>
+<div class="st"><div class="st-l">Остальные</div><div class="st-v" id="usersOther">0</div><div class="st-s">подрядчик/поставщик/сотрудник</div></div>
+</div>
+<div id="userCards"></div>
+</div>
+
+<!-- ═══ CABINET TYPES ═══ -->
+<div class="sec" id="sec-cabinet-types">
+<div class="bk" onclick="nav('overview')">&larr; Обзор</div>
+<div class="ph"><div><h2>🏥 Типы кабинетов</h2><div class="ph-s">Шаблоны помещений: требования, оборудование, нормативы</div></div><button class="btn sm pr" onclick="openModal('cabinetType')">+ Добавить тип</button></div>
+<div id="cabinetTypeCards"></div>
+</div>
+
 <!-- ═══ BUDGET ═══ -->
 <div class="sec" id="sec-budget">
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
@@ -939,6 +965,20 @@
 // ═══════════════ DATA STORE ═══════════════
 const DB={
   pickedServices:{},
+  users:[
+    {id:1,name:'Артём Вейалко',email:'artem@labs67.com',role:'admin',status:'Активен'},
+    {id:2,name:'Демо-пользователь',email:'demo@svita.app',role:'owner',status:'Активен'}
+  ],
+  cabinetTypes:[
+    {id:1,name:'Стоматологический',icon:'🦷',desc:'Стандартный кабинет врача-стоматолога',minArea:12,equipment:'Кресло, установка, светильник'},
+    {id:2,name:'Хирургический',icon:'🔬',desc:'Имплантация, удаление, хирургические операции',minArea:18,equipment:'Кресло, хирургический блок, автоклав'},
+    {id:3,name:'Ортодонтический',icon:'🔧',desc:'Брекеты, элайнеры, коррекция прикуса',minArea:12,equipment:'Кресло, установка, 3D-сканер'},
+    {id:4,name:'Рентген',icon:'📡',desc:'Панорамный снимок, КЛКТ, прицельные',minArea:6,equipment:'Ортопантомограф, КЛКТ, защитный фартук'},
+    {id:5,name:'Стерилизаторная',icon:'♨️',desc:'Обработка и стерилизация инструментов',minArea:8,equipment:'Автоклав, термодезинфектор, упаковщик'},
+    {id:6,name:'Ресепшен',icon:'🏛️',desc:'Приём, регистрация, ожидание',minArea:15,equipment:'Стойка, терминал, касса'},
+    {id:7,name:'Серверная',icon:'🖥️',desc:'ИТ-инфраструктура, Jetson, NAS',minArea:4,equipment:'Jetson AGX, NAS, UPS, Switch'},
+    {id:8,name:'Санузел',icon:'🚿',desc:'Санузлы для пациентов и персонала',minArea:3,equipment:'Сантехника, диспенсеры'}
+  ],
   rooms:[
     {id:1,name:'Кабинет 1',type:'Стоматологический',w:4.2,h:2.9,l:3.8,area:15.96},
     {id:2,name:'Кабинет 2',type:'Стоматологический',w:4.2,h:2.9,l:3.8,area:15.96},
@@ -1636,6 +1676,9 @@ function buildSidebar(){
     html+='<div class="si" data-nav="db-suppliers"><span class="ico">&#128230;</span><span class="sl">Поставщики</span><span class="sb wip">'+DB.suppliers.length+'</span></div>';
     html+='<div class="si" data-nav="db-employees"><span class="ico">&#129489;</span><span class="sl">Сотрудники</span><span class="sb wip">'+DB.employees.length+'</span></div>';
     html+='<div class="si" data-nav="db-services"><span class="ico">&#129657;</span><span class="sl">Услуги</span><span class="sb wip">'+DB.services.length+'</span></div>';
+    html+='<div class="side-sec">Администрирование</div>';
+    html+='<div class="si" data-nav="users"><span class="ico">👥</span><span class="sl">Пользователи</span><span class="sb wip">'+DB.users.length+'</span></div>';
+    html+='<div class="si" data-nav="cabinet-types"><span class="ico">🏥</span><span class="sl">Типы кабинетов</span><span class="sb wip">'+DB.cabinetTypes.length+'</span></div>';
   }
 
   if(currentRole==='contractor'){
@@ -1658,7 +1701,7 @@ function buildSidebar(){
 }
 
 // ═══════════════ NAVIGATION ═══════════════
-const secNames={overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Услуги',s5:'Персонал',s6:'Концепция',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны','db-rooms':'БД Помещений','db-contractors':'БД Подрядчиков','db-suppliers':'БД Поставщиков','db-employees':'БД Сотрудников','db-services':'БД Услуг'};
+const secNames={overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Услуги',s5:'Персонал',s6:'Концепция',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны','db-rooms':'БД Помещений','db-contractors':'БД Подрядчиков','db-suppliers':'БД Поставщиков','db-employees':'БД Сотрудников','db-services':'БД Услуг',users:'Пользователи','cabinet-types':'Типы кабинетов'};
 const stageOrder=['s1','s2','s3','s4','s5','s6'];
 let cur='overview';
 
@@ -1706,7 +1749,7 @@ function toggleCheck(el){
 
 // ═══════════════ RENDER DB CARDS ═══════════════
 function renderAll(){
-  renderProperty();renderRooms();renderContractors();renderSuppliers();renderEmployees();renderEquip();renderStaff();renderServices();renderSelectedServices();loadPropertyParams();updateZoneStats();updateRightPanel();
+  renderProperty();renderRooms();renderContractors();renderSuppliers();renderEmployees();renderEquip();renderStaff();renderServices();renderSelectedServices();renderUsers();renderCabinetTypes();loadPropertyParams();updateZoneStats();updateRightPanel();
 }
 
 function renderRooms(){
@@ -3343,6 +3386,104 @@ function delItem(table,id){
   renderAll();buildSidebar();recalc();
 }
 
+// ═══════════════ USERS ═══════════════
+function renderUsers(){
+  const c=document.getElementById('userCards');
+  if(!c)return;
+  const roleColors={admin:'var(--ac2)',owner:'var(--gn)',contractor:'var(--or)',supplier:'#8b5cf6',employee:'#06b6d4'};
+  const roleIcons={admin:'👑',owner:'🏠',contractor:'🔧',supplier:'📦',employee:'🧑'};
+  let html='';
+  DB.users.forEach(u=>{
+    const rc=roleColors[u.role]||'var(--tx3)';
+    html+=`<div class="c" style="padding:16px;display:flex;align-items:center;gap:12px">
+<div style="width:36px;height:36px;border-radius:10px;background:${rc}15;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">${roleIcons[u.role]||'👤'}</div>
+<div style="flex:1;min-width:0">
+<div style="font-weight:600;font-size:13px">${u.name}</div>
+<div style="font-size:11px;color:var(--tx2)">${u.email}</div>
+</div>
+<div style="flex-shrink:0;display:flex;align-items:center;gap:8px">
+<select onchange="changeUserRole(${u.id},this.value)" style="font-size:11px;padding:4px 8px;border:1px solid var(--bd);border-radius:8px;background:var(--sf);color:var(--tx);cursor:pointer">
+<option value="admin" ${u.role==='admin'?'selected':''}>Администратор</option>
+<option value="owner" ${u.role==='owner'?'selected':''}>Владелец</option>
+<option value="contractor" ${u.role==='contractor'?'selected':''}>Подрядчик</option>
+<option value="supplier" ${u.role==='supplier'?'selected':''}>Поставщик</option>
+<option value="employee" ${u.role==='employee'?'selected':''}>Сотрудник</option>
+</select>
+<span style="font-size:10px;padding:2px 8px;border-radius:6px;background:${u.status==='Активен'?'rgba(22,163,74,.1)':'rgba(136,136,136,.1)'};color:${u.status==='Активен'?'var(--gn)':'var(--tx3)'};font-weight:600">${u.status}</span>
+<button class="btn sm" onclick="editUser(${u.id})" style="font-size:10px;padding:4px 8px">✏️</button>
+<button class="btn sm" onclick="deleteUser(${u.id})" style="font-size:10px;padding:4px 8px;color:var(--rd)">✕</button>
+</div></div>`;
+  });
+  c.innerHTML=html;
+  // Stats
+  document.getElementById('usersTotal').textContent=DB.users.length;
+  document.getElementById('usersAdmins').textContent=DB.users.filter(u=>u.role==='admin').length;
+  document.getElementById('usersOwners').textContent=DB.users.filter(u=>u.role==='owner').length;
+  document.getElementById('usersOther').textContent=DB.users.filter(u=>!['admin','owner'].includes(u.role)).length;
+}
+function changeUserRole(id,role){
+  const u=DB.users.find(x=>x.id===id);
+  if(u)u.role=role;
+  renderUsers();buildSidebar();
+}
+function editUser(id){
+  const item=DB.users.find(e=>e.id===id);
+  if(!item)return;
+  editingId=id;
+  modalMode='user';
+  document.getElementById('modalTitle').textContent='Редактировать: '+item.name;
+  const fields=MODAL_FIELDS.user;
+  document.getElementById('modalFields').innerHTML=fields.map(f=>`<div class="modal-field"><label>${f.l}</label><input id="mf_${f.k}" type="${f.t||'text'}" placeholder="${f.ph||''}" value="${item[f.k]||''}"></div>`).join('');
+  document.getElementById('modalBg').classList.add('vis');
+}
+function deleteUser(id){
+  DB.users=DB.users.filter(e=>e.id!==id);
+  renderUsers();buildSidebar();
+}
+
+// ═══════════════ CABINET TYPES ═══════════════
+function renderCabinetTypes(){
+  const c=document.getElementById('cabinetTypeCards');
+  if(!c)return;
+  let html='';
+  DB.cabinetTypes.forEach(ct=>{
+    const assignedRooms=DB.rooms.filter(r=>r.type===ct.name).length;
+    html+=`<div class="c" style="padding:16px">
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+<div style="font-size:24px">${ct.icon}</div>
+<div style="flex:1">
+<div style="font-weight:700;font-size:14px">${ct.name}</div>
+<div style="font-size:11px;color:var(--tx2);margin-top:2px">${ct.desc}</div>
+</div>
+<div style="display:flex;gap:4px;flex-shrink:0">
+<button class="btn sm" onclick="editCabinetType(${ct.id})" style="font-size:10px;padding:4px 8px">✏️</button>
+<button class="btn sm" onclick="deleteCabinetType(${ct.id})" style="font-size:10px;padding:4px 8px;color:var(--rd)">✕</button>
+</div>
+</div>
+<div style="display:flex;gap:12px;flex-wrap:wrap">
+<div style="font-size:10px;padding:4px 10px;border-radius:8px;background:var(--acbg);color:var(--ac2);font-weight:600">мин. ${ct.minArea} м²</div>
+<div style="font-size:10px;padding:4px 10px;border-radius:8px;background:var(--gnbg);color:var(--gn);font-weight:600">${assignedRooms} назначено</div>
+</div>
+<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--bd);font-size:11px;color:var(--tx2)"><strong>Оборудование:</strong> ${ct.equipment}</div>
+</div>`;
+  });
+  c.innerHTML=html;
+}
+function editCabinetType(id){
+  const item=DB.cabinetTypes.find(e=>e.id===id);
+  if(!item)return;
+  editingId=id;
+  modalMode='cabinetType';
+  document.getElementById('modalTitle').textContent='Редактировать: '+item.name;
+  const fields=MODAL_FIELDS.cabinetType;
+  document.getElementById('modalFields').innerHTML=fields.map(f=>`<div class="modal-field"><label>${f.l}</label><input id="mf_${f.k}" type="${f.t||'text'}" placeholder="${f.ph||''}" value="${item[f.k]||''}"></div>`).join('');
+  document.getElementById('modalBg').classList.add('vis');
+}
+function deleteCabinetType(id){
+  DB.cabinetTypes=DB.cabinetTypes.filter(e=>e.id!==id);
+  renderCabinetTypes();buildSidebar();
+}
+
 // ═══════════════ MODAL ═══════════════
 let modalMode='';
 let editingId=null;
@@ -3354,13 +3495,15 @@ const MODAL_FIELDS={
   employee:[{k:'name',l:'Должность',ph:'Стоматолог'},{k:'spec',l:'Специализация',ph:'Терапия'},{k:'salary',l:'ФОТ/мес (PLN)',ph:'0',t:'number'},{k:'status',l:'Статус',ph:'Вакансия'}],
   equip:[{k:'name',l:'Название',ph:'Оборудование'},{k:'category',l:'Категория',ph:'Категория'},{k:'price',l:'Цена (PLN)',ph:'0',t:'number'},{k:'supplier',l:'Поставщик',ph:'Компания'},{k:'warranty',l:'Гарантия',ph:'24 мес'}],
   staff:[{k:'name',l:'Должность',ph:'Должность'},{k:'spec',l:'Описание',ph:'Полная ставка'},{k:'salary',l:'ФОТ/мес (PLN)',ph:'0',t:'number'},{k:'status',l:'Статус',ph:'Вакансия'}],
-  service:[{k:'name',l:'Услуга',ph:'Название'},{k:'time',l:'Время',ph:'30 мин'},{k:'price',l:'Цена (PLN)',ph:'0',t:'number'}]
+  service:[{k:'name',l:'Услуга',ph:'Название'},{k:'time',l:'Время',ph:'30 мин'},{k:'price',l:'Цена (PLN)',ph:'0',t:'number'}],
+  user:[{k:'name',l:'Имя',ph:'Иван Иванов'},{k:'email',l:'Email',ph:'user@clinic.com'},{k:'role',l:'Роль',ph:'owner'},{k:'status',l:'Статус',ph:'Активен'}],
+  cabinetType:[{k:'name',l:'Название типа',ph:'Стоматологический'},{k:'icon',l:'Иконка',ph:'🦷'},{k:'desc',l:'Описание',ph:'Стандартный кабинет'},{k:'minArea',l:'Мин. площадь (м²)',ph:'12',t:'number'},{k:'equipment',l:'Оборудование',ph:'Кресло, установка'}]
 };
 
 function openModal(mode){
   modalMode=mode;
   editingId=null;
-  const titles={property:'Карточка помещения',room:'Добавить комнату',contractor:'Заявка подрядчика',supplier:'Добавить товар',employee:'Добавить сотрудника',equip:'Добавить оборудование',staff:'Добавить должность',service:'Добавить услугу'};
+  const titles={property:'Карточка помещения',room:'Добавить комнату',contractor:'Заявка подрядчика',supplier:'Добавить товар',employee:'Добавить сотрудника',equip:'Добавить оборудование',staff:'Добавить должность',service:'Добавить услугу',user:'Пригласить пользователя',cabinetType:'Добавить тип кабинета'};
   document.getElementById('modalTitle').textContent=titles[mode]||'Добавить';
   const fields=MODAL_FIELDS[mode]||[];
   document.getElementById('modalFields').innerHTML=fields.map(f=>{
@@ -3390,7 +3533,7 @@ function saveModal(){
     return;
   }
 
-  const tableMap={room:'rooms',contractor:'contractors',supplier:'suppliers',employee:'employees',equip:'suppliers',staff:'employees',service:'services'};
+  const tableMap={room:'rooms',contractor:'contractors',supplier:'suppliers',employee:'employees',equip:'suppliers',staff:'employees',service:'services',user:'users',cabinetType:'cabinetTypes'};
   const table=tableMap[modalMode];
 
   // Edit existing item
