@@ -273,7 +273,7 @@
 </style>
 </head>
 <body>
-<div style="background:linear-gradient(90deg,#3b82f6,#8b5cf6);padding:6px 16px;text-align:center;font-size:11px;color:#fff;font-family:'JetBrains Mono',monospace;letter-spacing:.04em">DEMO &mdash; демонстрационная версия, не для коммерческого использования &middot; <a href="index.html" style="color:#fde68a;text-decoration:underline">Подробнее</a></div>
+<div style="background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;text-align:center;padding:10px 16px;font-size:12px;font-weight:600;letter-spacing:.5px">🚀 ДЕМО-ВЕРСИЯ — данные тестовые, функционал ограничен</div>
 
 <!-- ═══════════════ LOGIN SCREEN ═══════════════ -->
 <div class="login-bg" id="loginScreen">
@@ -305,13 +305,16 @@
 <div><div class="lr-name">Администратор</div><div class="lr-desc">Полный доступ ко всем базам и данным</div></div></div>
 <div class="login-role" data-role="owner" onclick="selectRole(this)">
 <div class="lr-icon" style="background:linear-gradient(135deg,var(--gn),#059669)">&#127970;</div>
-<div><div class="lr-name">Пользователь</div><div class="lr-desc">Конструктор клиники: планировка, бюджет</div></div></div>
+<div><div class="lr-name">Владелец / Заказчик</div><div class="lr-desc">Конструктор клиники: этапы, бюджет</div></div></div>
 <div class="login-role" data-role="contractor" onclick="selectRole(this)">
 <div class="lr-icon" style="background:linear-gradient(135deg,var(--or),var(--yl))">&#128736;</div>
-<div><div class="lr-name">Исполнитель работ</div><div class="lr-desc">Подрядчик: услуги и стоимость работ</div></div></div>
+<div><div class="lr-name">Подрядчик</div><div class="lr-desc">Внесение услуг и цен</div></div></div>
 <div class="login-role" data-role="supplier" onclick="selectRole(this)">
 <div class="lr-icon" style="background:linear-gradient(135deg,#8b5cf6,#d946ef)">&#128230;</div>
 <div><div class="lr-name">Поставщик</div><div class="lr-desc">Каталог оборудования</div></div></div>
+<div class="login-role" data-role="employee" onclick="selectRole(this)" style="display:none">
+<div class="lr-icon" style="background:linear-gradient(135deg,#06b6d4,var(--ac))">&#129489;</div>
+<div><div class="lr-name">Сотрудник</div><div class="lr-desc">Профиль специалиста</div></div></div>
 </div>
 <button class="btn pr" style="width:100%;padding:12px" onclick="enterApp()">Продолжить</button>
 </div>
@@ -723,7 +726,7 @@
 <!-- ═══ S4: УСЛУГИ ═══ -->
 <div class="sec" id="sec-s4">
 <div class="ph"><div><h2>04 &middot; Услуги</h2><div class="ph-s">Выбранные услуги для проекта</div></div><button class="btn sm pr" onclick="nav('db-services')">Каталог услуг →</button></div>
-<div class="sts" id="svcStats">
+<div class="sts" id="svcStats" style="grid-template-columns:repeat(4,1fr)">
 <div class="st"><div class="st-l">Услуг в прайсе</div><div class="st-v" id="svcCount">0</div><div class="st-s">позиций</div></div>
 <div class="st"><div class="st-l">Средний чек (расч.)</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="svcAvgCalc">0</div><div class="st-s">PLN</div></div>
 <div class="st"><div class="st-l">Мин. цена</div><div class="st-v" style="font-size:16px" id="svcMin">0</div><div class="st-s">PLN</div></div>
@@ -3218,36 +3221,50 @@ function renderServices(){
   c.innerHTML=html;
 }
 
-// Selected services in tab 4
+// Selected services in tab 4 — show ALL categories, picked items inside
 function renderSelectedServices(){
   const c=document.getElementById('serviceCards');
   const picked=DB.pickedServices||{};
-  const ids=Object.keys(picked);
-  if(!ids.length){
-    c.innerHTML='<div style="padding:40px;text-align:center;color:var(--tx3);font-size:12px">Нет выбранных услуг.<br><br><button class="btn pr" onclick="nav(\'db-services\')">Перейти в каталог услуг</button></div>';
-    document.getElementById('svcCount').textContent='0';
+  const pickedIds=Object.keys(picked);
+
+  // Build all categories from loaded services
+  const allCats={};
+  DB.services.forEach(s=>{
+    const cat=s.category||'Другое';
+    if(!allCats[cat])allCats[cat]={icon:s.categoryIcon||'',total:0,picked:[]};
+    allCats[cat].total++;
+    if(picked[s.id])allCats[cat].picked.push({...s,qty:picked[s.id].qty||1});
+  });
+
+  const catKeys=Object.keys(allCats);
+  if(!catKeys.length){
+    c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Загрузка категорий...</div>';
     return;
   }
+
   let html='';
-  const groups={};
-  ids.forEach(id=>{
-    const svc=DB.services.find(s=>s.id==id);
-    if(!svc)return;
-    const cat=svc.category||'Другое';
-    if(!groups[cat])groups[cat]={icon:svc.categoryIcon||'',items:[]};
-    groups[cat].items.push({...svc,qty:picked[id].qty||1});
+  catKeys.forEach(cat=>{
+    const g=allCats[cat];
+    const cnt=g.picked.length;
+    const catTotal=g.picked.reduce((s,r)=>s+r.price*r.qty,0);
+    const statusTag=cnt>0
+      ?`<span style="font-size:10px;color:var(--gn);font-weight:600">${cnt} / ${g.total} выбрано · ${catTotal.toLocaleString('ru')} PLN</span>`
+      :`<span style="font-size:10px;color:var(--tx3)">0 / ${g.total} — не выбрано</span>`;
+
+    html+=`<div class="c" style="${cnt?'':'opacity:0.7'}"><div class="ch"><h3>${g.icon} ${cat}</h3><div style="display:flex;align-items:center;gap:8px">${statusTag}<button class="btn sm pr" onclick="nav('db-services')" style="font-size:9px">+ Добавить</button></div></div>`;
+
+    if(cnt){
+      html+='<div class="cb">';
+      g.picked.forEach(r=>{
+        html+=`<div class="ci cost-row" style="flex-wrap:nowrap"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.desc||''}</div></div><div class="sel-qty" style="margin:0 4px"><button onclick="svcSelQty(${r.id},-1)">−</button><span id="sq_${r.id}">${r.qty}</span><button onclick="svcSelQty(${r.id},1)">+</button></div><span style="font-size:10px;color:var(--tx3);min-width:30px;text-align:center">${r.unit}</span><div class="cost-val" style="min-width:80px;justify-content:flex-end"><strong style="color:var(--ac2)">${(r.price*r.qty).toLocaleString('ru')}</strong> PLN</div><button class="btn sm" style="color:var(--rd);flex-shrink:0" onclick="removeSvcPick(${r.id})">✕</button></div>`;
+      });
+      html+='</div>';
+    }
+    html+='</div>';
   });
-  Object.keys(groups).forEach(cat=>{
-    const g=groups[cat];
-    const catTotal=g.items.reduce((s,r)=>s+r.price*r.qty,0);
-    html+=`<div class="c"><div class="ch"><h3>${g.icon} ${cat}</h3><span style="font-size:10px;color:var(--tx3)">${g.items.length} поз. · ${catTotal.toLocaleString('ru')} PLN</span></div><div class="cb">`;
-    g.items.forEach(r=>{
-      html+=`<div class="ci cost-row" style="flex-wrap:nowrap"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.desc||''}</div></div><div class="sel-qty" style="margin:0 4px"><button onclick="svcSelQty(${r.id},-1)">−</button><span id="sq_${r.id}">${r.qty}</span><button onclick="svcSelQty(${r.id},1)">+</button></div><span style="font-size:10px;color:var(--tx3);min-width:30px;text-align:center">${r.unit}</span><div class="cost-val" style="min-width:80px;justify-content:flex-end"><strong style="color:var(--ac2)">${(r.price*r.qty).toLocaleString('ru')}</strong> PLN</div><button class="btn sm" style="color:var(--rd);flex-shrink:0" onclick="removeSvcPick(${r.id})">✕</button></div>`;
-    });
-    html+=`</div></div>`;
-  });
+
   c.innerHTML=html;
-  document.getElementById('svcCount').textContent=ids.length;
+  document.getElementById('svcCount').textContent=pickedIds.length;
 }
 
 function toggleSvcPick(id){
