@@ -273,7 +273,7 @@
 </style>
 </head>
 <body>
-<div style="background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;text-align:center;padding:10px 16px;font-size:12px;font-weight:600;letter-spacing:.5px">🚀 ДЕМО-ВЕРСИЯ — данные тестовые, функционал ограничен</div>
+<div style="background:linear-gradient(90deg,#ff4d6d,#B8860B);color:#fff;text-align:center;padding:8px 16px;font:600 12px/1.4 'JetBrains Mono',monospace;letter-spacing:0.06em;position:relative;z-index:9999">DEMO VERSION — svita.labs67.com</div>
 
 <!-- ═══════════════ LOGIN SCREEN ═══════════════ -->
 <div class="login-bg" id="loginScreen">
@@ -1817,8 +1817,8 @@ function renderSuppliers(){
   c.innerHTML=DB.suppliers.map(r=>{
     const picked=!!DB.pickedEquip[r.id];
     const img=getItemImg('suppliers',r.id);
-    const imgHtml=img?`<img class="db-card-img" src="${img}" onclick="openLightbox('suppliers',${r.id})">`:`<div class="db-card-img-placeholder" onclick="uploadPhoto('suppliers',${r.id})"><span>&#128247;</span><span>Добавить фото</span></div>`;
-    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}">${imgHtml}<div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:rgba(139,92,246,.1);color:#d946ef">${r.category}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Цена</div><div class="db-card-val" style="color:var(--ac2)">${r.price.toLocaleString('ru')} PLN</div></div><div class="db-card-field"><div class="db-card-label">Поставщик</div><div class="db-card-val">${r.supplier}</div></div><div class="db-card-field"><div class="db-card-label">Гарантия</div><div class="db-card-val">${r.warranty}</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePickEquip(${r.id})">${picked?'✓ В оснащении':'+ Товар → Таб 3'}</button><button class="btn sm" onclick="delItem('suppliers','${r.id}')">Удалить</button></div></div>`;
+    const imgHtml=img?`<img class="db-card-img" src="${img}" onclick="openLightbox('suppliers','${r.id}')">`:`<div class="db-card-img-placeholder" onclick="uploadPhoto('suppliers','${r.id}')"><span>&#128247;</span><span>Добавить фото</span></div>`;
+    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}">${imgHtml}<div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:rgba(139,92,246,.1);color:#d946ef">${r.category}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Цена</div><div class="db-card-val" style="color:var(--ac2)">${r.price.toLocaleString('ru')} PLN</div></div><div class="db-card-field"><div class="db-card-label">Поставщик</div><div class="db-card-val">${r.supplier}</div></div><div class="db-card-field"><div class="db-card-label">Гарантия</div><div class="db-card-val">${r.warranty}</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePickEquip('${r.id}')">${picked?'✓ В оснащении':'+ Товар → Таб 3'}</button><button class="btn sm" onclick="delItem('suppliers','${r.id}')">Удалить</button></div></div>`;
   }).join('');
 }
 
@@ -3378,15 +3378,15 @@ function renderStaff(){
 <div><input class="price-edit" data-cost="st_${r.id}" value="${r.salary}" onchange="recalc()" style="width:90px;text-align:right"> PLN</div>
 </div>
 <div style="display:flex;gap:4px;flex-shrink:0">
-<button class="btn sm" onclick="editStaff(${r.id})" style="font-size:10px;padding:4px 8px" title="Редактировать">✏️</button>
-<button class="btn sm" onclick="deleteStaff(${r.id})" style="font-size:10px;padding:4px 8px;color:var(--rd)" title="Удалить">✕</button>
+<button class="btn sm" onclick="editStaff('${r.id}')" style="font-size:10px;padding:4px 8px" title="Редактировать">✏️</button>
+<button class="btn sm" onclick="deleteStaff('${r.id}')" style="font-size:10px;padding:4px 8px;color:var(--rd)" title="Удалить">✕</button>
 </div>
 </div>`;
   }).join('');
 }
 
 function editStaff(id){
-  const item=DB.employees.find(e=>e.id===id);
+  const item=DB.employees.find(e=>e.id==id);
   if(!item)return;
   editingId=id;
   modalMode='staff';
@@ -3397,7 +3397,7 @@ function editStaff(id){
 }
 
 function deleteStaff(id){
-  DB.employees=DB.employees.filter(e=>e.id!==id);
+  DB.employees=DB.employees.filter(e=>e.id!=id);
   renderStaff();buildSidebar();recalc();
 }
 
@@ -3510,7 +3510,7 @@ function eqQty(btn,d){
   recalc();
 }
 function updEquipPrice(inp,sid){
-  const item=DB.suppliers.find(s=>s.id===sid);
+  const item=DB.suppliers.find(s=>s.id==sid);
   if(item)item.price=parseInt(inp.value)||0;
   recalc();
 }
@@ -3530,7 +3530,7 @@ function renderUsers(){
   DB.users.forEach(u=>{
     const rc=roleColors[u.role]||'var(--tx3)';
     const planBadge=u.role==='admin'?'<span style="font-size:10px;padding:2px 8px;border-radius:6px;background:rgba(59,130,246,.1);color:var(--ac2);font-weight:700">FULL</span>'
-      :`<select onchange="changeUserPlan(${u.id},this.value)" style="font-size:10px;padding:2px 6px;border:1px solid var(--bd);border-radius:6px;background:var(--sf);color:var(--tx);cursor:pointer">
+      :`<select onchange="changeUserPlan('${u.id}',this.value)" style="font-size:10px;padding:2px 6px;border:1px solid var(--bd);border-radius:6px;background:var(--sf);color:var(--tx);cursor:pointer">
 <option value="trial" ${u.plan==='trial'?'selected':''}>Триал</option>
 <option value="paid" ${u.plan==='paid'?'selected':''}>PRO</option>
 </select>`;
@@ -3541,7 +3541,7 @@ function renderUsers(){
 <div style="font-size:11px;color:var(--tx2)">${u.email}</div>
 </div>
 <div style="flex-shrink:0;display:flex;align-items:center;gap:8px">
-<select onchange="changeUserRole(${u.id},this.value)" style="font-size:11px;padding:4px 8px;border:1px solid var(--bd);border-radius:8px;background:var(--sf);color:var(--tx);cursor:pointer">
+<select onchange="changeUserRole('${u.id}',this.value)" style="font-size:11px;padding:4px 8px;border:1px solid var(--bd);border-radius:8px;background:var(--sf);color:var(--tx);cursor:pointer">
 <option value="admin" ${u.role==='admin'?'selected':''}>Администратор</option>
 <option value="owner" ${u.role==='owner'?'selected':''}>Владелец</option>
 <option value="contractor" ${u.role==='contractor'?'selected':''}>Подрядчик</option>
@@ -3550,8 +3550,8 @@ function renderUsers(){
 </select>
 ${planBadge}
 <span style="font-size:10px;padding:2px 8px;border-radius:6px;background:${u.status==='Активен'?'rgba(22,163,74,.1)':'rgba(136,136,136,.1)'};color:${u.status==='Активен'?'var(--gn)':'var(--tx3)'};font-weight:600">${u.status}</span>
-<button class="btn sm" onclick="editUser(${u.id})" style="font-size:10px;padding:4px 8px">✏️</button>
-<button class="btn sm" onclick="deleteUser(${u.id})" style="font-size:10px;padding:4px 8px;color:var(--rd)">✕</button>
+<button class="btn sm" onclick="editUser('${u.id}')" style="font-size:10px;padding:4px 8px">✏️</button>
+<button class="btn sm" onclick="deleteUser('${u.id}')" style="font-size:10px;padding:4px 8px;color:var(--rd)">✕</button>
 </div></div>`;
   });
   c.innerHTML=html;
@@ -3599,17 +3599,17 @@ function renderRoleCabinets(){
 }
 
 function changeUserRole(id,role){
-  const u=DB.users.find(x=>x.id===id);
+  const u=DB.users.find(x=>x.id==id);
   if(u){u.role=role;if(role==='admin')u.plan='admin';else if(!u.plan||u.plan==='admin')u.plan='trial';}
   renderUsers();buildSidebar();
 }
 function changeUserPlan(id,plan){
-  const u=DB.users.find(x=>x.id===id);
+  const u=DB.users.find(x=>x.id==id);
   if(u)u.plan=plan;
   renderUsers();
 }
 function editUser(id){
-  const item=DB.users.find(e=>e.id===id);
+  const item=DB.users.find(e=>e.id==id);
   if(!item)return;
   editingId=id;
   modalMode='user';
@@ -3619,7 +3619,7 @@ function editUser(id){
   document.getElementById('modalBg').classList.add('vis');
 }
 function deleteUser(id){
-  DB.users=DB.users.filter(e=>e.id!==id);
+  DB.users=DB.users.filter(e=>e.id!=id);
   renderUsers();buildSidebar();
 }
 
@@ -3685,8 +3685,8 @@ function renderCabinetTypes(){
 <div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
 <div style="font-size:10px;padding:4px 10px;border-radius:8px;background:var(--acbg);color:var(--ac2);font-weight:600">мин. ${ct.minArea} м²</div>
 <div style="font-size:10px;padding:4px 10px;border-radius:8px;background:var(--gnbg);color:var(--gn);font-weight:600">${assignedRooms} комнат</div>
-<button class="btn sm" onclick="editCabinetType(${ct.id})" style="font-size:10px;padding:4px 8px">✏️</button>
-<button class="btn sm" onclick="deleteCabinetType(${ct.id})" style="font-size:10px;padding:4px 8px;color:var(--rd)">✕</button>
+<button class="btn sm" onclick="editCabinetType('${ct.id}')" style="font-size:10px;padding:4px 8px">✏️</button>
+<button class="btn sm" onclick="deleteCabinetType('${ct.id}')" style="font-size:10px;padding:4px 8px;color:var(--rd)">✕</button>
 </div>
 </div>
 
@@ -3703,7 +3703,7 @@ ${available.length?`<div style="display:flex;gap:6px;align-items:center">
 <select id="eqCatSel_${ct.id}" style="font-size:10px;padding:4px 8px;border:1px solid var(--bd);border-radius:8px;background:var(--sf);color:var(--tx);max-width:240px">
 ${available.map(cat=>`<option value="${cat}">${cat} (${allCats[cat].count} шт.)</option>`).join('')}
 </select>
-<button class="btn sm pr" onclick="addCatToCab(${ct.id})" style="font-size:10px;padding:4px 10px">+ Тип</button>
+<button class="btn sm pr" onclick="addCatToCab('${ct.id}')" style="font-size:10px;padding:4px 10px">+ Тип</button>
 </div>`:''}
 </div>`;
     if(assigned.length){
@@ -3715,7 +3715,7 @@ ${available.map(cat=>`<option value="${cat}">${cat} (${allCats[cat].count} шт.
         html+=`<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--bd)">
 <div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600">${cat}</div><div style="font-size:10px;color:var(--tx3)">${pCnt} / ${info.count} выбрано в Оснащении</div></div>
 <div style="font-size:12px;font-weight:700;color:${pCost>0?'var(--ac2)':'var(--tx3)'};flex-shrink:0">${pCost>0?pCost.toLocaleString('ru')+' PLN':'—'}</div>
-<button class="btn sm" onclick="removeCatFromCab(${ct.id},'${cat.replace(/'/g,"\\'")}')" style="font-size:10px;padding:2px 6px;color:var(--rd)">✕</button>
+<button class="btn sm" onclick="removeCatFromCab('${ct.id}','${cat.replace(/'/g,"\\'")}')" style="font-size:10px;padding:2px 6px;color:var(--rd)">✕</button>
 </div>`;
       });
     } else {
@@ -3728,20 +3728,20 @@ ${available.map(cat=>`<option value="${cat}">${cat} (${allCats[cat].count} шт.
 function addCatToCab(ctId){
   const sel=document.getElementById('eqCatSel_'+ctId);
   if(!sel||!sel.value)return;
-  const ct=DB.cabinetTypes.find(x=>x.id===ctId);
+  const ct=DB.cabinetTypes.find(x=>x.id==ctId);
   if(!ct)return;
   if(!ct.equipCats)ct.equipCats=[];
   if(!ct.equipCats.includes(sel.value))ct.equipCats.push(sel.value);
   renderCabinetTypes();
 }
 function removeCatFromCab(ctId,cat){
-  const ct=DB.cabinetTypes.find(x=>x.id===ctId);
+  const ct=DB.cabinetTypes.find(x=>x.id==ctId);
   if(!ct)return;
   ct.equipCats=(ct.equipCats||[]).filter(c=>c!==cat);
   renderCabinetTypes();
 }
 function editCabinetType(id){
-  const item=DB.cabinetTypes.find(e=>e.id===id);
+  const item=DB.cabinetTypes.find(e=>e.id==id);
   if(!item)return;
   editingId=id;
   modalMode='cabinetType';
@@ -3751,7 +3751,7 @@ function editCabinetType(id){
   document.getElementById('modalBg').classList.add('vis');
 }
 function deleteCabinetType(id){
-  DB.cabinetTypes=DB.cabinetTypes.filter(e=>e.id!==id);
+  DB.cabinetTypes=DB.cabinetTypes.filter(e=>e.id!=id);
   renderCabinetTypes();buildSidebar();
 }
 
@@ -3810,7 +3810,7 @@ function saveModal(){
   // Edit existing item
   if(editingId&&table){
     const arr=DB[table];
-    const idx=arr.findIndex(x=>x.id===editingId);
+    const idx=arr.findIndex(x=>x.id==editingId);
     if(idx!==-1){
       Object.assign(arr[idx],obj);
       editingId=null;
