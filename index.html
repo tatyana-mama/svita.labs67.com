@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SVITA — Конструктор бизнес-концепций</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0c14;--bg2:#10131e;--bg3:#181c2a;--ac:#3b82f6;--ac2:#60a5fa;--acbg:rgba(59,130,246,.08);--tx:#e8eaf0;--tx2:#94a3b8;--tx3:#64748b;--bd:rgba(255,255,255,.06);--gn:#22c55e;--rd:#ef4444;--f:'Inter',sans-serif;--fm:'JetBrains Mono',monospace;--fs:'Syne',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--tx);font-family:var(--f);line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:var(--ac2);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;height:48px;background:rgba(10,12,20,.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 40px;z-index:999;gap:16px}
+.nav-logo{display:flex;align-items:center;gap:8px;font-family:var(--fs);font-weight:700;font-size:16px;color:var(--tx);letter-spacing:-.02em}
+.nav-logo .badge{width:28px;height:28px;background:var(--ac);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:7px;font-weight:600;color:#fff}
+.nav-links{display:flex;gap:20px;margin-left:auto;font-family:var(--fm);font-size:10px;text-transform:uppercase;letter-spacing:.12em}
+.nav-links a{color:var(--tx2);transition:color .2s}
+.nav-links a:hover{color:var(--tx);text-decoration:none}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:10px;font-family:var(--fm);font-size:12px;font-weight:600;letter-spacing:.04em;cursor:pointer;transition:all .2s;border:1px solid transparent;text-decoration:none}
+.btn.pr{background:var(--ac);color:#fff;border-color:var(--ac)}
+.btn.pr:hover{background:#4f8df7;transform:translateY(-1px);box-shadow:0 4px 16px rgba(59,130,246,.25);text-decoration:none}
+.btn.sc{border-color:var(--bd);color:var(--tx2);background:transparent}
+.btn.sc:hover{border-color:var(--ac);color:var(--ac2);text-decoration:none}
+
+/* Hero */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 40px 80px}
+.hero h1{font-family:var(--fs);font-size:clamp(36px,5vw,64px);font-weight:800;line-height:1.1;margin-bottom:20px;background:linear-gradient(135deg,var(--tx) 0%,var(--ac2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero .sub{font-size:clamp(14px,1.5vw,18px);color:var(--tx2);max-width:600px;margin-bottom:40px;line-height:1.8}
+.hero .actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+
+/* Features */
+.section{padding:100px 40px;max-width:1100px;margin:0 auto}
+.section h2{font-family:var(--fs);font-size:clamp(24px,3vw,36px);font-weight:700;margin-bottom:16px;line-height:1.15}
+.section .desc{color:var(--tx2);font-size:15px;max-width:600px;margin-bottom:48px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.card{border:1px solid var(--bd);border-radius:12px;padding:24px;transition:all .2s}
+.card:hover{border-color:var(--ac);transform:translateY(-2px);box-shadow:0 8px 24px rgba(59,130,246,.06)}
+.card .icon{font-size:24px;margin-bottom:12px}
+.card h3{font-size:15px;font-weight:600;margin-bottom:8px}
+.card p{font-size:13px;color:var(--tx2);line-height:1.6}
+
+/* Demo notice */
+.demo-notice{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:32px;max-width:700px;margin:0 auto 60px;text-align:center}
+.demo-notice h3{font-size:16px;font-weight:600;margin-bottom:12px;color:var(--ac2)}
+.demo-notice p{font-size:13px;color:var(--tx2);line-height:1.7}
+
+/* Footer */
+footer{border-top:1px solid var(--bd);padding:36px 40px;text-align:center}
+footer .copy{font-family:var(--fm);font-size:11px;color:var(--tx3)}
+footer .links{display:flex;gap:16px;justify-content:center;margin-bottom:12px;font-family:var(--fm);font-size:10px;text-transform:uppercase;letter-spacing:.1em}
+
+@media(max-width:768px){
+  nav{padding:0 20px}
+  .hero{padding:100px 20px 60px}
+  .section{padding:60px 20px}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="nav-logo"><div class="badge">SVT</div> SVITA</div>
+<div class="nav-links">
+<a href="#features">Возможности</a>
+<a href="#demo">Демо</a>
+<a href="https://labs67.com" target="_blank">LABS67</a>
+</div>
+<a href="dashboard.html" class="btn pr" style="margin-left:12px;padding:6px 14px;font-size:10px">Открыть SVITA</a>
+</nav>
+
+<div class="hero">
+<h1>SVITA</h1>
+<div class="sub">Конструктор бизнес-концепций для стоматологических клиник. Планировка, оснащение, бюджет, персонал и рентабельность — всё в одном инструменте.</div>
+<div class="actions">
+<a href="dashboard.html" class="btn pr">Попробовать демо</a>
+<a href="https://labs67.com" class="btn sc" target="_blank">О LABS67</a>
+</div>
+</div>
+
+<div class="section" id="features">
+<h2>Что умеет SVITA</h2>
+<div class="desc">Единая платформа для планирования стоматологического бизнеса — от помещения до финансовой модели.</div>
+<div class="grid">
+<div class="card">
+<div class="icon">&#9634;</div>
+<h3>Планировка помещения</h3>
+<p>Конструктор планов с комнатами, дверями, окнами, инженерными сетями и стоматологическим оборудованием. Чертёжный стиль ISO/ГОСТ.</p>
+</div>
+<div class="card">
+<div class="icon">&#9874;</div>
+<h3>Модернизация</h3>
+<p>Подбор подрядчиков, калькулятор стоимости ремонта и адаптации помещения под медицинские требования.</p>
+</div>
+<div class="card">
+<div class="icon">&#9881;</div>
+<h3>Оснащение</h3>
+<p>Каталог оборудования из Supabase: юниты, автоклавы, рентген — с ценами и поставщиками. Калькулятор бюджета.</p>
+</div>
+<div class="card">
+<div class="icon">&#9733;</div>
+<h3>Услуги</h3>
+<p>Полный каталог стоматологических услуг, ценообразование, группировка по категориям.</p>
+</div>
+<div class="card">
+<div class="icon">&#9786;</div>
+<h3>Персонал</h3>
+<p>Штатное расписание, ФОТ, распределение специалистов по кабинетам.</p>
+</div>
+<div class="card">
+<div class="icon">&#9830;</div>
+<h3>Концепция и P&L</h3>
+<p>Финансовая модель: инвестиции, операционные расходы, прогноз доходов, точка безубыточности.</p>
+</div>
+</div>
+</div>
+
+<div class="section" id="demo">
+<div class="demo-notice">
+<h3>Демо-версия</h3>
+<p>Данная версия является демонстрационной и не предназначена для использования в коммерческих целях. Если вы хотите помочь или потестировать — можете войти в систему и ознакомиться со всеми доступными функциями. Все данные в демо-режиме являются примерными.</p>
+<div style="margin-top:20px">
+<a href="dashboard.html" class="btn pr">Попробовать демо-версию</a>
+</div>
+</div>
+</div>
+
+<footer>
+<div class="links">
+<a href="https://labs67.com" target="_blank">LABS67</a>
+<a href="https://svyatlitsa.com" target="_blank">Svyatlitsa</a>
+<a href="https://scyra.labs67.com" target="_blank">SCYRA</a>
+</div>
+<div class="copy">&copy; 2026 SVITA &middot; LABS67</div>
+</footer>
+
+</body>
+</html>
