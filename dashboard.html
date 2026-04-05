@@ -674,6 +674,11 @@
 </div>
 </div></div>
 
+<!-- Комнаты проекта из БД -->
+<div class="c"><div class="ch"><h3>🚪 Комнаты проекта</h3><button class="btn sm pr" onclick="nav('db-rooms')">Каталог помещений →</button></div>
+<div class="cb" id="pickedRoomsCards"><div style="padding:12px;text-align:center;font-size:11px;color:var(--tx3)">Добавьте комнаты из БД Помещений</div></div>
+</div>
+
 </div>
 
 <!-- ═══ S2: МОДЕРНИЗАЦИЯ ═══ -->
@@ -714,6 +719,11 @@
 <div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Охранная + пожарная сигнализация</div><div class="cost-val"><input class="price-edit" data-cost="sec_alarm" value="9000" onchange="recalc()"> PLN</div></div>
 </div></div></div></div></div>
 <div style="text-align:right;padding:8px 0"><span style="font-size:12px;color:var(--tx3)">Итого инженерия: </span><span style="font-size:16px;font-weight:800;color:var(--ac2)" id="s2Total">0 PLN</span></div>
+
+<!-- Подрядчики проекта из БД -->
+<div class="c"><div class="ch"><h3>🔧 Подрядчики проекта</h3><button class="btn sm pr" onclick="nav('db-contractors')">Каталог подрядчиков →</button></div>
+<div class="cb" id="pickedContractorCards"><div style="padding:12px;text-align:center;font-size:11px;color:var(--tx3)">Назначьте подрядчиков из БД</div></div>
+</div>
 
 </div>
 
@@ -971,6 +981,10 @@
 // ═══════════════ DATA STORE ═══════════════
 const DB={
   pickedServices:{},
+  pickedRooms:{},
+  pickedContractors:{},
+  pickedEquip:{},
+  pickedStaff:{},
   rolePlans:{
     owner:{icon:'🏠',name:'Владелец / Заказчик',
       trial:{price:0,days:14,label:'Триал 14 дней',features:['1 проект','Обзор этапов','Базовый бюджет','Экспорт PDF (водяной знак)']},
@@ -1773,31 +1787,87 @@ function toggleCheck(el){
 
 // ═══════════════ RENDER DB CARDS ═══════════════
 function renderAll(){
-  renderProperty();renderRooms();renderContractors();renderSuppliers();renderEmployees();renderEquip();renderStaff();renderServices();renderSelectedServices();renderUsers();renderCabinetTypes();loadPropertyParams();updateZoneStats();updateRightPanel();
+  renderProperty();renderRooms();renderContractors();renderSuppliers();renderEmployees();renderEquip();renderStaff();renderServices();renderSelectedServices();renderUsers();renderCabinetTypes();renderPickedRooms();renderPickedContractors();loadPropertyParams();updateZoneStats();updateRightPanel();
 }
 
 function renderRooms(){
   const c=document.getElementById('roomCards');
-  c.innerHTML=DB.rooms.map(r=>`<div class="db-card"><div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:var(--acbg);color:var(--ac2)">${r.type}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Ширина</div><div class="db-card-val">${r.w} м</div></div><div class="db-card-field"><div class="db-card-label">Длина</div><div class="db-card-val">${r.l} м</div></div><div class="db-card-field"><div class="db-card-label">Высота</div><div class="db-card-val">${r.h} м</div></div><div class="db-card-field"><div class="db-card-label">Площадь</div><div class="db-card-val">${r.area} м\u00b2</div></div></div><div class="db-card-actions"><button class="btn sm" onclick="delItem('rooms',${r.id})">Удалить</button></div></div>`).join('');
+  c.innerHTML=DB.rooms.map(r=>{
+    const picked=!!DB.pickedRooms[r.id];
+    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}"><div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:var(--acbg);color:var(--ac2)">${r.type}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Ширина</div><div class="db-card-val">${r.w} м</div></div><div class="db-card-field"><div class="db-card-label">Длина</div><div class="db-card-val">${r.l} м</div></div><div class="db-card-field"><div class="db-card-label">Высота</div><div class="db-card-val">${r.h} м</div></div><div class="db-card-field"><div class="db-card-label">Площадь</div><div class="db-card-val">${r.area} м²</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePick('pickedRooms',${r.id},'rooms')">${picked?'✓ В проекте':'+ Помещение → Таб 1'}</button><button class="btn sm" onclick="delItem('rooms',${r.id})">Удалить</button></div></div>`;
+  }).join('');
 }
 
 function renderContractors(){
   const c=document.getElementById('contractorCards');
-  c.innerHTML=DB.contractors.map(r=>`<div class="db-card"><div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:rgba(249,115,22,.1);color:var(--or)">${r.spec}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Город</div><div class="db-card-val">${r.city}</div></div><div class="db-card-field"><div class="db-card-label">Цена</div><div class="db-card-val">${r.price}</div></div><div class="db-card-field"><div class="db-card-label">Рейтинг</div><div class="db-card-val">${r.rating} &#9733;</div></div><div class="db-card-field"><div class="db-card-label">Контакт</div><div class="db-card-val">${r.phone}</div></div></div><div class="db-card-actions"><button class="btn sm gn">Выбрать</button><button class="btn sm" onclick="delItem('contractors',${r.id})">Удалить</button></div></div>`).join('');
+  c.innerHTML=DB.contractors.map(r=>{
+    const picked=!!DB.pickedContractors[r.id];
+    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}"><div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:rgba(249,115,22,.1);color:var(--or)">${r.spec}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Город</div><div class="db-card-val">${r.city}</div></div><div class="db-card-field"><div class="db-card-label">Цена</div><div class="db-card-val">${r.price}</div></div><div class="db-card-field"><div class="db-card-label">Рейтинг</div><div class="db-card-val">${r.rating} ★</div></div><div class="db-card-field"><div class="db-card-label">Контакт</div><div class="db-card-val">${r.phone}</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePick('pickedContractors',${r.id},'contractors')">${picked?'✓ Назначен':'+ Подрядчик → Таб 2'}</button><button class="btn sm" onclick="delItem('contractors',${r.id})">Удалить</button></div></div>`;
+  }).join('');
 }
 
 function renderSuppliers(){
   const c=document.getElementById('supplierCards');
   c.innerHTML=DB.suppliers.map(r=>{
+    const picked=!!DB.pickedEquip[r.id];
     const img=getItemImg('suppliers',r.id);
     const imgHtml=img?`<img class="db-card-img" src="${img}" onclick="openLightbox('suppliers',${r.id})">`:`<div class="db-card-img-placeholder" onclick="uploadPhoto('suppliers',${r.id})"><span>&#128247;</span><span>Добавить фото</span></div>`;
-    return `<div class="db-card">${imgHtml}<div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:rgba(139,92,246,.1);color:#d946ef">${r.category}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Цена</div><div class="db-card-val" style="color:var(--ac2)">${r.price.toLocaleString('ru')} PLN</div></div><div class="db-card-field"><div class="db-card-label">Поставщик</div><div class="db-card-val">${r.supplier}</div></div><div class="db-card-field"><div class="db-card-label">Гарантия</div><div class="db-card-val">${r.warranty}</div></div></div><div class="db-card-actions"><button class="btn sm gn">В проект</button><button class="btn sm" onclick="delItem('suppliers',${r.id})">Удалить</button></div></div>`;
+    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}">${imgHtml}<div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:rgba(139,92,246,.1);color:#d946ef">${r.category}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Цена</div><div class="db-card-val" style="color:var(--ac2)">${r.price.toLocaleString('ru')} PLN</div></div><div class="db-card-field"><div class="db-card-label">Поставщик</div><div class="db-card-val">${r.supplier}</div></div><div class="db-card-field"><div class="db-card-label">Гарантия</div><div class="db-card-val">${r.warranty}</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePickEquip(${r.id})">${picked?'✓ В оснащении':'+ Товар → Таб 3'}</button><button class="btn sm" onclick="delItem('suppliers',${r.id})">Удалить</button></div></div>`;
   }).join('');
 }
 
 function renderEmployees(){
   const c=document.getElementById('employeeCards');
-  c.innerHTML=DB.employees.map(r=>`<div class="db-card"><div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:rgba(6,182,212,.1);color:#06b6d4">${r.status}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Специализация</div><div class="db-card-val">${r.spec}</div></div><div class="db-card-field"><div class="db-card-label">ФОТ</div><div class="db-card-val" style="color:var(--ac2)">${r.salary.toLocaleString('ru')} PLN/мес</div></div></div><div class="db-card-actions"><button class="btn sm" onclick="delItem('employees',${r.id})">Удалить</button></div></div>`).join('');
+  c.innerHTML=DB.employees.map(r=>{
+    const picked=!!DB.pickedStaff[r.id];
+    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}"><div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:rgba(6,182,212,.1);color:#06b6d4">${r.status}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Специализация</div><div class="db-card-val">${r.spec}</div></div><div class="db-card-field"><div class="db-card-label">ФОТ</div><div class="db-card-val" style="color:var(--ac2)">${r.salary.toLocaleString('ru')} PLN/мес</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePick('pickedStaff',${r.id},'employees')">${picked?'✓ В штате':'+ Сотрудник → Таб 5'}</button><button class="btn sm" onclick="delItem('employees',${r.id})">Удалить</button></div></div>`;
+  }).join('');
+}
+
+// Universal pick toggle for DB → Tab
+function togglePick(store,id,renderTable){
+  if(DB[store][id]){delete DB[store][id]}else{DB[store][id]={qty:1}}
+  renderAll();renderPickedRooms();renderPickedContractors();recalc();
+}
+
+// Equipment pick — also syncs with tab 3 visual state
+function togglePickEquip(id){
+  if(DB.pickedEquip[id]){delete DB.pickedEquip[id]}else{DB.pickedEquip[id]={qty:1}}
+  const el=document.querySelector('#equipCards .sel[data-sid="'+id+'"]');
+  if(el){
+    const isPicked=!!DB.pickedEquip[id];
+    if(isPicked&&!el.classList.contains('picked')){el.classList.add('picked');el.querySelector('.sel-check').textContent='✓'}
+    if(!isPicked&&el.classList.contains('picked')){el.classList.remove('picked');el.querySelector('.sel-check').textContent=''}
+  }
+  renderSuppliers();recalc();renderCabinetTypes();
+}
+
+// Render picked items inside tabs
+function renderPickedRooms(){
+  const c=document.getElementById('pickedRoomsCards');
+  if(!c)return;
+  const ids=Object.keys(DB.pickedRooms);
+  if(!ids.length){c.innerHTML='<div style="padding:12px;text-align:center;font-size:11px;color:var(--tx3)">Добавьте комнаты из БД Помещений</div>';return}
+  let html='';
+  ids.forEach(id=>{
+    const r=DB.rooms.find(x=>x.id==id);
+    if(!r)return;
+    html+=`<div class="ci cost-row"><div class="ct" style="flex:1">${r.name}<div class="ct-sub">${r.type} · ${r.area} м²</div></div><button class="btn sm" style="color:var(--rd)" onclick="togglePick('pickedRooms',${r.id},'rooms')">✕</button></div>`;
+  });
+  c.innerHTML=html;
+}
+function renderPickedContractors(){
+  const c=document.getElementById('pickedContractorCards');
+  if(!c)return;
+  const ids=Object.keys(DB.pickedContractors);
+  if(!ids.length){c.innerHTML='<div style="padding:12px;text-align:center;font-size:11px;color:var(--tx3)">Назначьте подрядчиков из БД</div>';return}
+  let html='';
+  ids.forEach(id=>{
+    const r=DB.contractors.find(x=>x.id==id);
+    if(!r)return;
+    html+=`<div class="ci cost-row"><div class="ct" style="flex:1">${r.name}<div class="ct-sub">${r.spec} · ${r.city} · ${r.price}</div></div><button class="btn sm" style="color:var(--rd)" onclick="togglePick('pickedContractors',${r.id},'contractors')">✕</button></div>`;
+  });
+  c.innerHTML=html;
 }
 
 // Zone colors for dynamic categories
