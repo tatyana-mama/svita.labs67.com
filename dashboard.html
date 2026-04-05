@@ -44,7 +44,7 @@
 .role-badge{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600}
 
 /* MAIN — 3 columns */
-.main{flex:1;margin-left:240px;margin-right:300px;min-height:100vh}
+.main{margin-left:240px;margin-right:300px;min-height:100vh;overflow:hidden;width:calc(100% - 240px - 300px)}
 
 /* RIGHT PANEL */
 .rpanel{width:300px;flex-shrink:0;background:var(--sf);border-left:1px solid var(--bd);position:fixed;top:0;right:0;bottom:0;z-index:100;display:flex;flex-direction:column;overflow-y:auto}
@@ -83,7 +83,7 @@
 .tab .tab-icon{font-size:14px;flex-shrink:0}
 
 /* CONTENT */
-.sec{display:none;padding:20px 24px;animation:fi .2s ease;max-width:100%}.sec.vis{display:block}
+.sec{display:none;padding:20px 24px;animation:fi .2s ease;max-width:100%;box-sizing:border-box;overflow-x:hidden}.sec.vis{display:block}
 @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .bk{font-size:11px;color:var(--tx3);cursor:pointer;margin-bottom:14px;display:inline-flex;align-items:center;gap:4px}.bk:hover{color:var(--ac2)}
 .ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:8px}.ph h2{font-size:20px;font-weight:800}.ph-s{font-size:12px;color:var(--tx2);margin-top:3px}
@@ -267,9 +267,9 @@
 .prop-empty-icon{font-size:40px;opacity:.2;margin-bottom:12px}
 
 /* RESPONSIVE */
-@media(max-width:1400px){.rpanel{width:260px}.main{margin-right:260px}}
-@media(max-width:1100px){.sts,.g3{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}.rpanel{display:none}.main{margin-right:0}}
-@media(max-width:768px){.side{display:none}.main{margin-left:0!important}.sts{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}.sec{padding:12px}.login-box{width:90%;padding:24px}.tab{padding:10px 8px;font-size:10px;gap:4px}.tab .tab-icon{display:none}}
+@media(max-width:1400px){.rpanel{width:260px}.main{margin-right:260px;width:calc(100% - 240px - 260px)}}
+@media(max-width:1100px){.sts,.g3{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}.rpanel{display:none}.main{margin-right:0;width:calc(100% - 240px)}}
+@media(max-width:768px){.side{display:none}.main{margin-left:0!important;width:100%}.sts{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}.sec{padding:12px}.login-box{width:90%;padding:24px}.tab{padding:10px 8px;font-size:10px;gap:4px}.tab .tab-icon{display:none}}
 </style>
 </head>
 <body>
