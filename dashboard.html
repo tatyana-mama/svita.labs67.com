@@ -722,7 +722,7 @@
 
 <!-- ═══ S4: УСЛУГИ ═══ -->
 <div class="sec" id="sec-s4">
-<div class="ph"><div><h2>04 &middot; Услуги</h2><div class="ph-s">Прайс-лист стоматологических услуг</div></div><button class="btn sm pr" onclick="openModal('service')">+ Добавить</button></div>
+<div class="ph"><div><h2>04 &middot; Услуги</h2><div class="ph-s">Выбранные услуги для проекта</div></div><button class="btn sm pr" onclick="nav('db-services')">Каталог услуг →</button></div>
 <div class="sts" id="svcStats">
 <div class="st"><div class="st-l">Услуг в прайсе</div><div class="st-v" id="svcCount">0</div><div class="st-s">позиций</div></div>
 <div class="st"><div class="st-l">Средний чек (расч.)</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="svcAvgCalc">0</div><div class="st-s">PLN</div></div>
@@ -844,6 +844,12 @@
 <div id="employeeCards"></div>
 </div>
 
+<div class="sec" id="sec-db-services">
+<div class="bk" onclick="nav('overview')">&larr; Обзор</div>
+<div class="ph"><div><h2>&#129657; БД Услуг</h2><div class="ph-s">Каталог всех услуг из Supabase</div></div><button class="btn sm pr" onclick="openModal('service')">+ Добавить</button></div>
+<div id="dbServiceCards"></div>
+</div>
+
 <!-- ═══ BUDGET ═══ -->
 <div class="sec" id="sec-budget">
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
@@ -929,6 +935,7 @@
 <script>
 // ═══════════════ DATA STORE ═══════════════
 const DB={
+  pickedServices:{},
   rooms:[
     {id:1,name:'Кабинет 1',type:'Стоматологический',w:4.2,h:2.9,l:3.8,area:15.96},
     {id:2,name:'Кабинет 2',type:'Стоматологический',w:4.2,h:2.9,l:3.8,area:15.96},
@@ -1625,7 +1632,7 @@ function buildSidebar(){
     html+='<div class="si" data-nav="db-contractors"><span class="ico">&#128736;</span><span class="sl">Подрядчики</span><span class="sb wip">'+DB.contractors.length+'</span></div>';
     html+='<div class="si" data-nav="db-suppliers"><span class="ico">&#128230;</span><span class="sl">Поставщики</span><span class="sb wip">'+DB.suppliers.length+'</span></div>';
     html+='<div class="si" data-nav="db-employees"><span class="ico">&#129489;</span><span class="sl">Сотрудники</span><span class="sb wip">'+DB.employees.length+'</span></div>';
-    html+='<div class="si" data-nav="s4"><span class="ico">&#129657;</span><span class="sl">Услуги</span><span class="sb wip">'+DB.services.length+'</span></div>';
+    html+='<div class="si" data-nav="db-services"><span class="ico">&#129657;</span><span class="sl">Услуги</span><span class="sb wip">'+DB.services.length+'</span></div>';
   }
 
   if(currentRole==='contractor'){
@@ -1648,7 +1655,7 @@ function buildSidebar(){
 }
 
 // ═══════════════ NAVIGATION ═══════════════
-const secNames={overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Услуги',s5:'Персонал',s6:'Концепция',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны','db-rooms':'БД Помещений','db-contractors':'БД Подрядчиков','db-suppliers':'БД Поставщиков','db-employees':'БД Сотрудников'};
+const secNames={overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Услуги',s5:'Персонал',s6:'Концепция',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны','db-rooms':'БД Помещений','db-contractors':'БД Подрядчиков','db-suppliers':'БД Поставщиков','db-employees':'БД Сотрудников','db-services':'БД Услуг'};
 const stageOrder=['s1','s2','s3','s4','s5','s6'];
 let cur='overview';
 
@@ -1696,7 +1703,7 @@ function toggleCheck(el){
 
 // ═══════════════ RENDER DB CARDS ═══════════════
 function renderAll(){
-  renderProperty();renderRooms();renderContractors();renderSuppliers();renderEmployees();renderEquip();renderStaff();renderServices();loadPropertyParams();updateZoneStats();updateRightPanel();
+  renderProperty();renderRooms();renderContractors();renderSuppliers();renderEmployees();renderEquip();renderStaff();renderServices();renderSelectedServices();loadPropertyParams();updateZoneStats();updateRightPanel();
 }
 
 function renderRooms(){
@@ -3178,9 +3185,10 @@ function renderStaff(){
   c.innerHTML=DB.employees.map(r=>`<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">${r.name}<div class="ct-sub">${r.spec}</div></div><div class="cost-val"><input class="price-edit" data-cost="st_${r.id}" value="${r.salary}" onchange="recalc()"> PLN/\u043c\u0435\u0441</div></div>`).join('');
 }
 
+// DB catalog of all services (sidebar БД Услуг)
 function renderServices(){
-  const c=document.getElementById('serviceCards');
-  // Group services by category
+  const c=document.getElementById('dbServiceCards');
+  if(!c)return;
   const groups={};
   DB.services.forEach(s=>{
     const cat=s.category||'Другое';
@@ -3188,30 +3196,76 @@ function renderServices(){
     groups[cat].items.push(s);
   });
   const catKeys=Object.keys(groups);
-  if(!catKeys.length){c.innerHTML='<div class="c"><div class="ch"><h3>Услуги</h3></div><div class="cb" style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Загрузка...</div></div>';return}
+  if(!catKeys.length){c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Загрузка услуг из базы данных...</div>';return}
 
-  let html=`<div style="padding:8px 16px;font-size:11px;color:var(--tx2);border-bottom:1px solid var(--bd)">Загружено из Supabase: <strong>${DB.services.length}</strong> услуг в <strong>${catKeys.length}</strong> категориях</div>`;
+  const picked=DB.pickedServices||{};
+  let html=`<div style="padding:8px 16px;font-size:11px;color:var(--tx2);border-bottom:1px solid var(--bd)">Каталог: <strong>${DB.services.length}</strong> услуг в <strong>${catKeys.length}</strong> категориях · Выбрано: <strong>${Object.keys(picked).length}</strong></div>`;
   catKeys.forEach(cat=>{
     const g=groups[cat];
-    // Sub-group by subcategory
     const subs={};
     g.items.forEach(s=>{const sc=s.subcategory||'Общие';if(!subs[sc])subs[sc]=[];subs[sc].push(s)});
     const subKeys=Object.keys(subs);
-    const totalCost=g.items.reduce((s,r)=>s+r.price,0);
-    html+=`<div class="c"><div class="ch"><h3>${g.icon} ${cat}</h3><span style="font-size:10px;color:var(--tx3)">${g.items.length} позиций · ~${totalCost.toLocaleString('ru')} PLN</span></div><div class="cb">`;
+    html+=`<div class="c"><div class="ch"><h3>${g.icon} ${cat}</h3><span style="font-size:10px;color:var(--tx3)">${g.items.length} позиций</span></div><div class="cb">`;
     subKeys.forEach(sub=>{
       if(subKeys.length>1)html+=`<div style="font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:1px;padding:8px 0 4px;border-top:1px solid var(--bd)">${sub}</div>`;
       subs[sub].forEach(r=>{
-        const priceRange=r.priceMax&&r.priceMax!==r.price?`${r.price}–${r.priceMax}`:`${r.price}`;
-        html+=`<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">${r.name}<div class="ct-sub">${r.desc||''} · ${r.unit} · ${r.difficulty}</div></div><div class="cost-val"><input class="price-edit svc-price" value="${r.price}" onchange="recalc()"> PLN/${r.unit}</div></div>`;
+        const added=!!picked[r.id];
+        html+=`<div class="ci cost-row"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.desc||''} · ${r.unit} · ${r.difficulty}</div></div><div class="cost-val" style="flex-shrink:0">${r.price} PLN/${r.unit}</div><button class="btn sm ${added?'gn':'pr'}" onclick="toggleSvcPick(${r.id})" style="flex-shrink:0;min-width:70px">${added?'✓ Добавлено':'+ Добавить'}</button></div>`;
       });
     });
     html+=`</div></div>`;
   });
   c.innerHTML=html;
-  // Update service counter
-  const sc=document.getElementById('svcCount');
-  if(sc)sc.textContent=DB.services.length;
+}
+
+// Selected services in tab 4
+function renderSelectedServices(){
+  const c=document.getElementById('serviceCards');
+  const picked=DB.pickedServices||{};
+  const ids=Object.keys(picked);
+  if(!ids.length){
+    c.innerHTML='<div style="padding:40px;text-align:center;color:var(--tx3);font-size:12px">Нет выбранных услуг.<br><br><button class="btn pr" onclick="nav(\'db-services\')">Перейти в каталог услуг</button></div>';
+    document.getElementById('svcCount').textContent='0';
+    return;
+  }
+  let html='';
+  const groups={};
+  ids.forEach(id=>{
+    const svc=DB.services.find(s=>s.id==id);
+    if(!svc)return;
+    const cat=svc.category||'Другое';
+    if(!groups[cat])groups[cat]={icon:svc.categoryIcon||'',items:[]};
+    groups[cat].items.push({...svc,qty:picked[id].qty||1});
+  });
+  Object.keys(groups).forEach(cat=>{
+    const g=groups[cat];
+    const catTotal=g.items.reduce((s,r)=>s+r.price*r.qty,0);
+    html+=`<div class="c"><div class="ch"><h3>${g.icon} ${cat}</h3><span style="font-size:10px;color:var(--tx3)">${g.items.length} поз. · ${catTotal.toLocaleString('ru')} PLN</span></div><div class="cb">`;
+    g.items.forEach(r=>{
+      html+=`<div class="ci cost-row" style="flex-wrap:nowrap"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.desc||''}</div></div><div class="sel-qty" style="margin:0 4px"><button onclick="svcSelQty(${r.id},-1)">−</button><span id="sq_${r.id}">${r.qty}</span><button onclick="svcSelQty(${r.id},1)">+</button></div><span style="font-size:10px;color:var(--tx3);min-width:30px;text-align:center">${r.unit}</span><div class="cost-val" style="min-width:80px;justify-content:flex-end"><strong style="color:var(--ac2)">${(r.price*r.qty).toLocaleString('ru')}</strong> PLN</div><button class="btn sm" style="color:var(--rd);flex-shrink:0" onclick="removeSvcPick(${r.id})">✕</button></div>`;
+    });
+    html+=`</div></div>`;
+  });
+  c.innerHTML=html;
+  document.getElementById('svcCount').textContent=ids.length;
+}
+
+function toggleSvcPick(id){
+  if(!DB.pickedServices)DB.pickedServices={};
+  if(DB.pickedServices[id]){delete DB.pickedServices[id]}
+  else{DB.pickedServices[id]={qty:1}}
+  renderServices();renderSelectedServices();recalc();
+}
+function removeSvcPick(id){
+  if(DB.pickedServices)delete DB.pickedServices[id];
+  renderServices();renderSelectedServices();recalc();
+}
+function svcSelQty(id,d){
+  if(!DB.pickedServices||!DB.pickedServices[id])return;
+  DB.pickedServices[id].qty=Math.max(1,(DB.pickedServices[id].qty||1)+d);
+  const sp=document.getElementById('sq_'+id);
+  if(sp)sp.textContent=DB.pickedServices[id].qty;
+  recalc();
 }
 
 function toggleEquip(el){
