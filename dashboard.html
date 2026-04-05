@@ -1937,22 +1937,38 @@ function fpEnsurePoly(r){
   return r;
 }
 
-// Hit-test element (returns index or -1)
+// Transform screen-space point into element's local coordinate system
+// Returns [lx, ly] relative to element center, accounting for rotation
+function fpElemLocalPoint(el,mx,my){
+  // Element center in screen space
+  const cx=FP.ox+(el.x+el.w/2)*FP.scale;
+  const cy=FP.oy+(el.y+el.h/2)*FP.scale;
+  // Vector from center to mouse
+  const dx=mx-cx,dy=my-cy;
+  // Inverse rotate
+  const a=-(el.angle||0)*Math.PI/180;
+  const lx=dx*Math.cos(a)-dy*Math.sin(a);
+  const ly=dx*Math.sin(a)+dy*Math.cos(a);
+  return[lx,ly];
+}
+
+// Hit-test element (returns index or -1) — rotation-aware OBB test
 function fpHitElement(mx,my){
-  const gx=(mx-FP.ox)/FP.scale,gy=(my-FP.oy)/FP.scale;
   for(let i=FP.elements.length-1;i>=0;i--){
     const el=FP.elements[i];
-    if(gx>=el.x&&gx<=el.x+el.w&&gy>=el.y&&gy<=el.y+el.h)return i;
+    const[lx,ly]=fpElemLocalPoint(el,mx,my);
+    const hw=el.w*FP.scale/2,hh=el.h*FP.scale/2;
+    if(lx>=-hw&&lx<=hw&&ly>=-hh&&ly<=hh)return i;
   }return-1;
 }
-// Hit-test element resize handle (bottom-right corner, 7px square)
+
+// Hit-test element resize handle (bottom-right in local space)
 function fpHitElemResize(mx,my){
   if(FP.selElem<0)return false;
   const el=FP.elements[FP.selElem];if(!el)return false;
-  const sx=FP.ox+el.x*FP.scale,sy=FP.oy+el.y*FP.scale;
-  const sw=el.w*FP.scale,sh=el.h*FP.scale;
-  const hx=sx+sw,hy=sy+sh;
-  return Math.abs(mx-hx)<10&&Math.abs(my-hy)<10;
+  const[lx,ly]=fpElemLocalPoint(el,mx,my);
+  const hw=el.w*FP.scale/2,hh=el.h*FP.scale/2;
+  return Math.abs(lx-hw)<12&&Math.abs(ly-hh)<12;
 }
 
 function fpInit(){
@@ -1984,7 +2000,7 @@ function fpInit(){
       if(e.key==='n')fpSetTool('vertex');
       if(e.key==='l')fpSetTool('wall');
       if(e.key==='e')fpToggleElemPalette();
-      if(e.key==='g')FP.showGrid=!FP.showGrid;fpDraw();
+      if(e.key==='g'){FP.showGrid=!FP.showGrid;fpDraw()}
       if(e.key==='Delete'||e.key==='Backspace'){
         if(FP.selElem>=0){fpDelElement(FP.selElem);FP.selElem=-1}
         else if(FP.sel.size>=1){const ids=[...FP.sel].sort((a,b)=>b-a);fpPushHistory();ids.forEach(i=>FP.rooms.splice(i,1));FP.sel.clear();fpDraw();fpUpdateList()}
@@ -2330,11 +2346,15 @@ function fpMove(e){
     fpDraw();return;
   }
   if(FP.elemResize){
-    const dx=(mx-FP.elemResize.sx)/FP.scale,dy=(my-FP.elemResize.sy)/FP.scale;
-    const nw=Math.max(0.1,fpSnap(FP.elemResize.ow+dx));
-    const nh=Math.max(0.1,fpSnap(FP.elemResize.oh+dy));
-    FP.elements[FP.elemResize.idx].w=nw;
-    FP.elements[FP.elemResize.idx].h=nh;
+    const el=FP.elements[FP.elemResize.idx];
+    // Transform screen delta into element's local axes (inverse rotation)
+    const sdx=mx-FP.elemResize.sx,sdy=my-FP.elemResize.sy;
+    const a=-(el.angle||0)*Math.PI/180;
+    const ldx=(sdx*Math.cos(a)-sdy*Math.sin(a))/FP.scale;
+    const ldy=(sdx*Math.sin(a)+sdy*Math.cos(a))/FP.scale;
+    const nw=Math.max(0.1,fpSnap(FP.elemResize.ow+ldx));
+    const nh=Math.max(0.1,fpSnap(FP.elemResize.oh+ldy));
+    el.w=nw;el.h=nh;
     fpDraw();fpUpdateList();return;
   }
   if(FP.vtxDrag){
@@ -2970,7 +2990,7 @@ function fpClear(){
   if(!n)return;
   if(!confirm('ВНИМАНИЕ: Это действие необратимо!\n\nБудет удалено: '+FP.rooms.length+' комнат, '+FP.elements.length+' элементов.\nВсе данные планировки будут потеряны.\n\nВы уверены?'))return;
   fpPushHistory();
-  FP.rooms=[];FP.elements=[];FP.bgImg=null;FP.sel.clear();FP.selElem=-1;FP.polyPts=[];FP.history=[];
+  FP.rooms=[];FP.elements=[];FP.bgImg=null;FP.sel.clear();FP.selElem=-1;FP.polyPts=[];FP.history=[];FP.future=[];
   fpDraw();fpUpdateList();
 }
 
