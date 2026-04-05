@@ -729,8 +729,14 @@
 
 <!-- ═══ S3: ОСНАЩЕНИЕ ═══ -->
 <div class="sec" id="sec-s3">
-<div class="ph"><div><h2>03 &middot; Оснащение</h2><div class="ph-s">Оборудование, инструменты, расходники</div></div><button class="btn sm pr" onclick="openModal('equip')">+ Добавить</button></div>
-<div id="equipCards"></div>
+<div class="ph"><div><h2>03 &middot; Оснащение</h2><div class="ph-s">Выбранное оборудование для проекта</div></div><button class="btn sm pr" onclick="nav('db-suppliers')">Каталог оборудования →</button></div>
+<div class="sts" id="eqStats" style="grid-template-columns:repeat(4,1fr)">
+<div class="st"><div class="st-l">Позиций</div><div class="st-v" id="eqCount">0</div><div class="st-s">выбрано</div></div>
+<div class="st"><div class="st-l">Общая стоимость</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="eqTotal">0</div><div class="st-s">PLN</div></div>
+<div class="st"><div class="st-l">Категорий</div><div class="st-v" id="eqCats">0</div><div class="st-s">типов</div></div>
+<div class="st"><div class="st-l">Средняя цена</div><div class="st-v" style="font-size:16px" id="eqAvg">0</div><div class="st-s">PLN</div></div>
+</div>
+<div id="selectedEquipCards"></div>
 </div>
 
 <!-- ═══ S4: УСЛУГИ ═══ -->
@@ -853,8 +859,8 @@
 
 <div class="sec" id="sec-db-suppliers">
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
-<div class="ph"><div><h2>&#128230; БД Поставщиков</h2><div class="ph-s">Оборудование и материалы</div></div><button class="btn sm or" onclick="openModal('supplier')">+ Добавить товар</button></div>
-<div id="supplierCards"></div>
+<div class="ph"><div><h2>&#128230; БД Оборудования</h2><div class="ph-s">Каталог оборудования — добавляйте в проект</div></div><button class="btn sm or" onclick="openModal('supplier')">+ Новый товар</button></div>
+<div id="equipCards"></div>
 </div>
 
 <div class="sec" id="sec-db-employees">
@@ -1787,7 +1793,7 @@ function toggleCheck(el){
 
 // ═══════════════ RENDER DB CARDS ═══════════════
 function renderAll(){
-  renderProperty();renderRooms();renderContractors();renderSuppliers();renderEmployees();renderEquip();renderStaff();renderServices();renderSelectedServices();renderUsers();renderCabinetTypes();renderPickedRooms();renderPickedContractors();loadPropertyParams();updateZoneStats();updateRightPanel();
+  renderProperty();renderRooms();renderContractors();renderEmployees();renderEquip();renderSelectedEquip();renderStaff();renderServices();renderSelectedServices();renderUsers();renderCabinetTypes();renderPickedRooms();renderPickedContractors();loadPropertyParams();updateRightPanel();
 }
 
 function renderRooms(){
@@ -1833,13 +1839,7 @@ function togglePick(store,id,renderTable){
 // Equipment pick — also syncs with tab 3 visual state
 function togglePickEquip(id){
   if(DB.pickedEquip[id]){delete DB.pickedEquip[id]}else{DB.pickedEquip[id]={qty:1}}
-  const el=document.querySelector('#equipCards .sel[data-sid="'+id+'"]');
-  if(el){
-    const isPicked=!!DB.pickedEquip[id];
-    if(isPicked&&!el.classList.contains('picked')){el.classList.add('picked');el.querySelector('.sel-check').textContent='✓'}
-    if(!isPicked&&el.classList.contains('picked')){el.classList.remove('picked');el.querySelector('.sel-check').textContent=''}
-  }
-  renderSuppliers();recalc();renderCabinetTypes();
+  renderEquip();renderSelectedEquip();renderCabinetTypes();recalc();
 }
 
 // Render picked items inside tabs
@@ -1892,45 +1892,97 @@ const ZONE_ICONS={
 
 function renderEquip(){
   const c=document.getElementById('equipCards');
+  if(!c)return;
   if(!DB.suppliers.length){c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Загрузка оборудования из базы данных...</div>';return}
 
-  // Group by category dynamically
   const groups={};
-  DB.suppliers.forEach(r=>{
-    const cat=r.category||'Другое';
-    if(!groups[cat])groups[cat]=[];
-    groups[cat].push(r);
-  });
-
+  DB.suppliers.forEach(r=>{const cat=r.category||'Другое';if(!groups[cat])groups[cat]=[];groups[cat].push(r)});
   const catKeys=Object.keys(groups).sort((a,b)=>groups[b].length-groups[a].length);
-  let html='';
-  html+=`<div style="padding:8px 16px;font-size:11px;color:var(--tx2);border-bottom:1px solid var(--bd)">Загружено из Supabase: <strong>${DB.suppliers.length}</strong> позиций в <strong>${catKeys.length}</strong> категориях</div>`;
+  const picked=DB.pickedEquip||{};
+  const pickedCount=Object.keys(picked).length;
+
+  let html=`<div style="padding:8px 16px;font-size:11px;color:var(--tx2);border-bottom:1px solid var(--bd)">Каталог: <strong>${DB.suppliers.length}</strong> позиций в <strong>${catKeys.length}</strong> категориях · Добавлено в оснащение: <strong>${pickedCount}</strong></div>`;
 
   catKeys.forEach((cat,zi)=>{
     const items=groups[cat];
     const zc=ZONE_COLORS[zi%ZONE_COLORS.length];
     const icon=ZONE_ICONS[cat]||'&#128230;';
-    const totalCost=items.reduce((s,r)=>s+r.price,0);
+    const catPicked=items.filter(r=>!!picked[r.id]).length;
 
     html+=`<div class="zone-card" id="zone-${zi}">`;
     html+=`<div class="zone-head" onclick="toggleZone(${zi})">`;
     html+=`<div class="zone-icon" style="background:${zc.bg};color:${zc.color}">${icon}</div>`;
     html+=`<div class="zone-info"><div class="zone-name">${cat}</div><div class="zone-desc">${items.length} позиций</div></div>`;
-    html+=`<div class="zone-meta"><div class="zone-cost">${totalCost.toLocaleString('ru')} PLN</div><div class="zone-count" id="zonePicked${zi}">0 выбрано</div></div>`;
+    html+=`<div class="zone-meta"><div class="zone-cost">${items.reduce((s,r)=>s+r.price,0).toLocaleString('ru')} PLN</div><div class="zone-count">${catPicked} / ${items.length} добавлено</div></div>`;
     html+=`<span class="zone-arrow" id="zoneArrow${zi}">&#9654;</span>`;
     html+=`</div>`;
-    html+=`<div class="zone-bar"><div class="zone-bar-fill" id="zoneBar${zi}" style="width:0%;background:${zc.color}"></div></div>`;
-    html+=`<div class="zone-body" id="zoneBody${zi}">`;
-    html+=`<div class="zone-items">`;
+    html+=`<div class="zone-bar"><div class="zone-bar-fill" id="zoneBar${zi}" style="width:${items.length?Math.round(catPicked/items.length*100):0}%;background:${zc.color}"></div></div>`;
+    html+=`<div class="zone-body" id="zoneBody${zi}"><div class="zone-items">`;
     items.forEach(r=>{
-      const imgSrc=r.img||getItemImg('suppliers',r.id);
-      const imgEl=imgSrc?`<img class="equip-img" src="${imgSrc}" onclick="event.stopPropagation();openLightbox('suppliers','${r.id}')" onerror="this.style.display='none'">`:`<div class="equip-img-ph" onclick="event.stopPropagation();uploadPhoto('suppliers','${r.id}')">&#128247;</div>`;
-      html+=`<div class="sel" onclick="toggleEquip(this)" data-sid="${r.id}" data-zone="${zi}"><div class="sel-check"></div>${imgEl}<div class="sel-info"><div class="sel-name">${r.name}</div><div class="sel-desc">${r.supplier} · ${r.notes?r.notes.substring(0,60):'—'}</div></div><input class="price-edit" value="${r.price}" onclick="event.stopPropagation()" onchange="updEquipPrice(this,'${r.id}')"> PLN<div class="sel-qty"><button onclick="event.stopPropagation();eqQty(this,-1)">−</button><span>1</span><button onclick="event.stopPropagation();eqQty(this,1)">+</button></div></div>`;
+      const added=!!picked[r.id];
+      html+=`<div class="ci cost-row" style="padding:8px 0"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.supplier} · ${r.warranty}</div></div><div class="cost-val" style="flex-shrink:0">${r.price.toLocaleString('ru')} PLN</div><button class="btn sm ${added?'gn':'pr'}" onclick="togglePickEquip(${r.id})" style="flex-shrink:0;min-width:90px">${added?'✓ Добавлено':'+ В оснащение'}</button></div>`;
     });
     html+=`</div></div></div>`;
   });
 
   c.innerHTML=html;
+}
+
+// Tab 3: show only picked equipment, grouped by category
+function renderSelectedEquip(){
+  const c=document.getElementById('selectedEquipCards');
+  if(!c)return;
+  const picked=DB.pickedEquip||{};
+  const pickedIds=Object.keys(picked);
+
+  const allCats={};
+  DB.suppliers.forEach(s=>{
+    const cat=s.category||'Другое';
+    if(!allCats[cat])allCats[cat]={total:0,picked:[]};
+    allCats[cat].total++;
+    if(picked[s.id])allCats[cat].picked.push({...s,qty:picked[s.id].qty||1});
+  });
+
+  const catKeys=Object.keys(allCats);
+  if(!catKeys.length){c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Загрузка каталога...</div>';return}
+
+  let totalCost=0;
+  let html='';
+  catKeys.forEach(cat=>{
+    const g=allCats[cat];
+    const cnt=g.picked.length;
+    const catTotal=g.picked.reduce((s,r)=>s+r.price*r.qty,0);
+    totalCost+=catTotal;
+    const statusTag=cnt>0
+      ?`<span style="font-size:10px;color:var(--gn);font-weight:600">${cnt} / ${g.total} выбрано · ${catTotal.toLocaleString('ru')} PLN</span>`
+      :`<span style="font-size:10px;color:var(--tx3)">0 / ${g.total} — не выбрано</span>`;
+
+    html+=`<div class="c" style="${cnt?'':'opacity:0.7'}"><div class="ch"><h3>${cat}</h3><div style="display:flex;align-items:center;gap:8px">${statusTag}<button class="btn sm pr" onclick="nav('db-suppliers')" style="font-size:9px">+ Добавить</button></div></div>`;
+    if(cnt){
+      html+='<div class="cb">';
+      g.picked.forEach(r=>{
+        html+=`<div class="ci cost-row" style="flex-wrap:nowrap"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.supplier}</div></div><div class="sel-qty" style="margin:0 4px"><button onclick="eqSelQty(${r.id},-1)">−</button><span id="eq_${r.id}">${r.qty}</span><button onclick="eqSelQty(${r.id},1)">+</button></div><div class="cost-val" style="min-width:80px;justify-content:flex-end"><strong style="color:var(--ac2)">${(r.price*r.qty).toLocaleString('ru')}</strong> PLN</div><button class="btn sm" style="color:var(--rd);flex-shrink:0" onclick="togglePickEquip(${r.id})">✕</button></div>`;
+      });
+      html+='</div>';
+    }
+    html+='</div>';
+  });
+  c.innerHTML=html;
+
+  // Update stats
+  const prices=pickedIds.map(id=>{const s=DB.suppliers.find(x=>x.id==id);return s?s.price:0});
+  document.getElementById('eqCount').textContent=pickedIds.length;
+  document.getElementById('eqTotal').textContent=totalCost.toLocaleString('ru');
+  document.getElementById('eqCats').textContent=catKeys.filter(cat=>allCats[cat].picked.length>0).length;
+  document.getElementById('eqAvg').textContent=pickedIds.length?Math.round(totalCost/pickedIds.length).toLocaleString('ru'):'0';
+}
+
+function eqSelQty(id,d){
+  if(!DB.pickedEquip||!DB.pickedEquip[id])return;
+  DB.pickedEquip[id].qty=Math.max(1,(DB.pickedEquip[id].qty||1)+d);
+  const sp=document.getElementById('eq_'+id);
+  if(sp)sp.textContent=DB.pickedEquip[id].qty;
+  renderSelectedEquip();recalc();renderCabinetTypes();
 }
 
 function toggleZone(zi){
@@ -1940,19 +1992,7 @@ function toggleZone(zi){
   arrow.classList.toggle('open');
 }
 
-function updateZoneStats(){
-  // Dynamic zones — iterate all zone-* elements
-  for(let zi=0;zi<100;zi++){
-    const body=document.getElementById('zoneBody'+zi);
-    if(!body)break;
-    const items=body.querySelectorAll('.sel');
-    const picked=body.querySelectorAll('.sel.picked');
-    const el=document.getElementById('zonePicked'+zi);
-    if(el)el.textContent=picked.length+' / '+items.length+' выбрано';
-    const bar=document.getElementById('zoneBar'+zi);
-    if(bar)bar.style.width=(items.length?Math.round(picked.length/items.length*100):0)+'%';
-  }
-}
+function updateZoneStats(){}
 
 // ═══════════════ FLOOR PLAN CONSTRUCTOR ═══════════════
 const FP={
@@ -3459,10 +3499,10 @@ function svcSelQty(id,d){
 }
 
 function toggleEquip(el){
+  // Legacy — kept for compatibility
   if(event.target.classList.contains('price-edit'))return;
-  el.classList.toggle('picked');
-  el.querySelector('.sel-check').textContent=el.classList.contains('picked')?'\u2713':'';
-  recalc();renderCabinetTypes();
+  const sid=parseInt(el.dataset.sid);
+  if(sid)togglePickEquip(sid);
 }
 function eqQty(btn,d){
   const sp=btn.parentElement.querySelector('span');
@@ -3585,18 +3625,16 @@ function deleteUser(id){
 
 // ═══════════════ CABINET TYPES ═══════════════
 function getPickedEquipByCat(){
-  // Scan picked items from Оснащение tab
   const result={};
-  document.querySelectorAll('#equipCards .sel.picked').forEach(el=>{
-    const sid=parseInt(el.dataset.sid);
-    const item=DB.suppliers.find(s=>s.id===sid);
+  const picked=DB.pickedEquip||{};
+  Object.entries(picked).forEach(([id,p])=>{
+    const item=DB.suppliers.find(s=>s.id==id);
     if(!item)return;
     const cat=item.category;
-    const price=parseInt(el.querySelector('.price-edit')?.value)||item.price;
-    const qty=parseInt(el.querySelector('.sel-qty span')?.textContent)||1;
+    const qty=p.qty||1;
     if(!result[cat])result[cat]={items:[],totalPrice:0,pickedCount:0};
-    result[cat].items.push({...item,price,qty});
-    result[cat].totalPrice+=price*qty;
+    result[cat].items.push({...item,qty});
+    result[cat].totalPrice+=item.price*qty;
     result[cat].pickedCount++;
   });
   return result;
@@ -3809,10 +3847,9 @@ function calcTotals(){
   const rent=deposit+renovation;
   const eng=getAllCosts('elec_')+getAllCosts('water_')+getAllCosts('vent_')+getAllCosts('sec_');
   let equip=0;
-  document.querySelectorAll('#equipCards .sel.picked').forEach(el=>{
-    const inp=el.querySelector('.price-edit');
-    const qty=parseInt(el.querySelector('.sel-qty span')?.textContent)||1;
-    equip+=(parseInt(inp?.value)||0)*qty;
+  Object.entries(DB.pickedEquip||{}).forEach(([id,p])=>{
+    const item=DB.suppliers.find(s=>s.id==id);
+    if(item)equip+=item.price*(p.qty||1);
   });
   const docs=getAllCosts('doc_');
   const staff=getAllCosts('st_');
