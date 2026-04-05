@@ -870,6 +870,12 @@
 <div class="st"><div class="st-l">Остальные</div><div class="st-v" id="usersOther">0</div><div class="st-s">подрядчик/поставщик/сотрудник</div></div>
 </div>
 <div id="userCards"></div>
+
+<!-- Кабинеты по ролям -->
+<div style="margin-top:24px">
+<div class="ph"><div><h2 style="font-size:16px">🏷️ Кабинеты по ролям</h2><div class="ph-s">Триал и платные тарифы для каждой роли</div></div></div>
+<div id="roleCabinets"></div>
+</div>
 </div>
 
 <!-- ═══ CABINET TYPES ═══ -->
@@ -965,9 +971,27 @@
 // ═══════════════ DATA STORE ═══════════════
 const DB={
   pickedServices:{},
+  rolePlans:{
+    owner:{icon:'🏠',name:'Владелец / Заказчик',
+      trial:{price:0,days:14,label:'Триал 14 дней',features:['1 проект','Обзор этапов','Базовый бюджет','Экспорт PDF (водяной знак)']},
+      paid:{price:299,period:'мес',label:'PRO',features:['Безлимит проектов','Все 6 этапов','Бюджет + рентабельность','Типы кабинетов / зоны','Экспорт без ограничений','Приоритетная поддержка']}
+    },
+    contractor:{icon:'🔧',name:'Подрядчик',
+      trial:{price:0,days:14,label:'Триал 14 дней',features:['1 профиль компании','До 5 заявок','Базовый каталог услуг']},
+      paid:{price:199,period:'мес',label:'PRO',features:['Безлимит заявок','Рейтинг и отзывы','Уведомления о тендерах','Портфолио проектов','Аналитика конверсий']}
+    },
+    supplier:{icon:'📦',name:'Поставщик',
+      trial:{price:0,days:14,label:'Триал 14 дней',features:['До 10 товаров','Базовый каталог','1 категория']},
+      paid:{price:249,period:'мес',label:'PRO',features:['Безлимит товаров','Все категории','Интеграция со складом','Тендерные уведомления','Аналитика спроса']}
+    },
+    employee:{icon:'🧑',name:'Сотрудник',
+      trial:{price:0,days:7,label:'Триал 7 дней',features:['Базовый профиль','Просмотр расписания']},
+      paid:{price:49,period:'мес',label:'PRO',features:['Полный профиль','Сертификаты и документы','Расписание + уведомления','Личная статистика','Обучение / курсы']}
+    }
+  },
   users:[
-    {id:1,name:'Артём Вейалко',email:'artem@labs67.com',role:'admin',status:'Активен'},
-    {id:2,name:'Демо-пользователь',email:'demo@svita.app',role:'owner',status:'Активен'}
+    {id:1,name:'Артём Вейалко',email:'artem@labs67.com',role:'admin',plan:'admin',status:'Активен'},
+    {id:2,name:'Демо-пользователь',email:'demo@svita.app',role:'owner',plan:'trial',status:'Активен'}
   ],
   cabinetTypes:[
     {id:1,name:'Стоматологический',icon:'🦷',desc:'Стандартный кабинет врача-стоматолога',minArea:12,equipment:'Кресло, установка, светильник'},
@@ -3395,6 +3419,11 @@ function renderUsers(){
   let html='';
   DB.users.forEach(u=>{
     const rc=roleColors[u.role]||'var(--tx3)';
+    const planBadge=u.role==='admin'?'<span style="font-size:10px;padding:2px 8px;border-radius:6px;background:rgba(59,130,246,.1);color:var(--ac2);font-weight:700">FULL</span>'
+      :`<select onchange="changeUserPlan(${u.id},this.value)" style="font-size:10px;padding:2px 6px;border:1px solid var(--bd);border-radius:6px;background:var(--sf);color:var(--tx);cursor:pointer">
+<option value="trial" ${u.plan==='trial'?'selected':''}>Триал</option>
+<option value="paid" ${u.plan==='paid'?'selected':''}>PRO</option>
+</select>`;
     html+=`<div class="c" style="padding:16px;display:flex;align-items:center;gap:12px">
 <div style="width:36px;height:36px;border-radius:10px;background:${rc}15;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">${roleIcons[u.role]||'👤'}</div>
 <div style="flex:1;min-width:0">
@@ -3409,22 +3438,65 @@ function renderUsers(){
 <option value="supplier" ${u.role==='supplier'?'selected':''}>Поставщик</option>
 <option value="employee" ${u.role==='employee'?'selected':''}>Сотрудник</option>
 </select>
+${planBadge}
 <span style="font-size:10px;padding:2px 8px;border-radius:6px;background:${u.status==='Активен'?'rgba(22,163,74,.1)':'rgba(136,136,136,.1)'};color:${u.status==='Активен'?'var(--gn)':'var(--tx3)'};font-weight:600">${u.status}</span>
 <button class="btn sm" onclick="editUser(${u.id})" style="font-size:10px;padding:4px 8px">✏️</button>
 <button class="btn sm" onclick="deleteUser(${u.id})" style="font-size:10px;padding:4px 8px;color:var(--rd)">✕</button>
 </div></div>`;
   });
   c.innerHTML=html;
+  renderRoleCabinets();
   // Stats
   document.getElementById('usersTotal').textContent=DB.users.length;
   document.getElementById('usersAdmins').textContent=DB.users.filter(u=>u.role==='admin').length;
   document.getElementById('usersOwners').textContent=DB.users.filter(u=>u.role==='owner').length;
   document.getElementById('usersOther').textContent=DB.users.filter(u=>!['admin','owner'].includes(u.role)).length;
 }
+function renderRoleCabinets(){
+  const c=document.getElementById('roleCabinets');
+  if(!c)return;
+  let html='';
+  Object.entries(DB.rolePlans).forEach(([role,p])=>{
+    const usersInRole=DB.users.filter(u=>u.role===role);
+    const trialCount=usersInRole.filter(u=>u.plan==='trial').length;
+    const paidCount=usersInRole.filter(u=>u.plan==='paid').length;
+    html+=`<div class="c" style="padding:0;overflow:hidden;margin-bottom:16px">
+<div style="padding:16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--bd)">
+<div style="font-size:24px">${p.icon}</div>
+<div style="flex:1"><div style="font-weight:700;font-size:14px">${p.name}</div>
+<div style="font-size:11px;color:var(--tx2)">${usersInRole.length} ��ользователей · ${trialCount} триа�� · ${paidCount} PRO</div></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+<div style="padding:16px;border-right:1px solid var(--bd)">
+<div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
+<span style="font-size:10px;padding:2px 8px;border-radius:6px;background:var(--ylbg);color:var(--yl);font-weight:700">ТРИАЛ</span>
+<span style="font-size:11px;color:var(--tx2)">${p.trial.label}</span></div>
+<div style="font-size:22px;font-weight:800;color:var(--tx)">Бесплатно</div>
+<div style="font-size:10px;color:var(--tx3);margin-bottom:10px">${p.trial.days} дней</div>
+<div style="display:flex;flex-direction:column;gap:4px">${p.trial.features.map(f=>`<div style="font-size:11px;color:var(--tx2)">✓ ${f}</div>`).join('')}</div>
+</div>
+<div style="padding:16px;background:rgba(59,130,246,.02)">
+<div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
+<span style="font-size:10px;padding:2px 8px;border-radius:6px;background:var(--acbg);color:var(--ac2);font-weight:700">PRO</span>
+<span style="font-size:11px;color:var(--tx2)">${p.paid.label}</span></div>
+<div style="font-size:22px;font-weight:800;color:var(--ac2)">${p.paid.price} PLN<span style="font-size:12px;font-weight:400;color:var(--tx3)">/${p.paid.period}</span></div>
+<div style="font-size:10px;color:var(--tx3);margin-bottom:10px">полный доступ</div>
+<div style="display:flex;flex-direction:column;gap:4px">${p.paid.features.map(f=>`<div style="font-size:11px;color:var(--ac2)">✓ ${f}</div>`).join('')}</div>
+</div>
+</div></div>`;
+  });
+  c.innerHTML=html;
+}
+
 function changeUserRole(id,role){
   const u=DB.users.find(x=>x.id===id);
-  if(u)u.role=role;
+  if(u){u.role=role;if(role==='admin')u.plan='admin';else if(!u.plan||u.plan==='admin')u.plan='trial';}
   renderUsers();buildSidebar();
+}
+function changeUserPlan(id,plan){
+  const u=DB.users.find(x=>x.id===id);
+  if(u)u.plan=plan;
+  renderUsers();
 }
 function editUser(id){
   const item=DB.users.find(e=>e.id===id);
