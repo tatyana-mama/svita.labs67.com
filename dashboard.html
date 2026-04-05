@@ -3392,7 +3392,7 @@ function toggleEquip(el){
   if(event.target.classList.contains('price-edit'))return;
   el.classList.toggle('picked');
   el.querySelector('.sel-check').textContent=el.classList.contains('picked')?'\u2713':'';
-  recalc();
+  recalc();renderCabinetTypes();
 }
 function eqQty(btn,d){
   const sp=btn.parentElement.querySelector('span');
@@ -3514,6 +3514,23 @@ function deleteUser(id){
 }
 
 // ═══════════════ CABINET TYPES ═══════════════
+function getPickedEquipByCat(){
+  // Scan picked items from Оснащение tab
+  const result={};
+  document.querySelectorAll('#equipCards .sel.picked').forEach(el=>{
+    const sid=parseInt(el.dataset.sid);
+    const item=DB.suppliers.find(s=>s.id===sid);
+    if(!item)return;
+    const cat=item.category;
+    const price=parseInt(el.querySelector('.price-edit')?.value)||item.price;
+    const qty=parseInt(el.querySelector('.sel-qty span')?.textContent)||1;
+    if(!result[cat])result[cat]={items:[],totalPrice:0,pickedCount:0};
+    result[cat].items.push({...item,price,qty});
+    result[cat].totalPrice+=price*qty;
+    result[cat].pickedCount++;
+  });
+  return result;
+}
 function getEquipCats(){
   const cats={};
   DB.suppliers.forEach(s=>{
@@ -3528,14 +3545,27 @@ function renderCabinetTypes(){
   if(!c)return;
   const allCats=getEquipCats();
   const allCatNames=Object.keys(allCats).sort();
+  const pickedByCat=getPickedEquipByCat();
 
   let html='';
   DB.cabinetTypes.forEach(ct=>{
     const assigned=ct.equipCats||[];
     const assignedRooms=DB.rooms.filter(r=>r.type===ct.name).length;
-    const totalItems=assigned.reduce((s,cat)=>(allCats[cat]?s+allCats[cat].count:s),0);
-    const totalCost=assigned.reduce((s,cat)=>(allCats[cat]?s+allCats[cat].totalPrice:s),0);
     const available=allCatNames.filter(cat=>!assigned.includes(cat));
+
+    // Calculate cost of 1 cabinet from PICKED equipment in Оснащение
+    let cabCost=0;
+    let pickedTotal=0;
+    let catTotal=0;
+    assigned.forEach(cat=>{
+      catTotal+=(allCats[cat]||{}).count||0;
+      if(pickedByCat[cat]){
+        cabCost+=pickedByCat[cat].totalPrice;
+        pickedTotal+=pickedByCat[cat].pickedCount;
+      }
+    });
+
+    const costColor=cabCost>0?'var(--gn)':'var(--tx3)';
 
     html+=`<div class="c" style="padding:0;overflow:hidden;margin-bottom:16px">
 <div style="padding:16px;display:flex;align-items:center;gap:12px">
@@ -3551,27 +3581,37 @@ function renderCabinetTypes(){
 <button class="btn sm" onclick="deleteCabinetType(${ct.id})" style="font-size:10px;padding:4px 8px;color:var(--rd)">✕</button>
 </div>
 </div>
-<div style="padding:0 16px 12px;border-top:1px solid var(--bd)">
+
+<div style="padding:12px 16px;background:${cabCost>0?'rgba(22,163,74,.04)':'var(--sf2)'};border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
+<div><div style="font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;font-weight:600">Стоимость 1 кабинета</div>
+<div style="font-size:10px;color:var(--tx3);margin-top:2px">${pickedTotal} из ${catTotal} позиций выбрано в Оснащении</div></div>
+<div style="font-size:24px;font-weight:800;color:${costColor}">${cabCost>0?cabCost.toLocaleString('ru')+' PLN':'— не собран'}</div>
+</div>
+
+<div style="padding:0 16px 12px">
 <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0 8px">
-<div style="font-size:12px;font-weight:700">Типы оборудования <span style="color:var(--tx3);font-weight:400">(${assigned.length} типов · ${totalItems} позиций · ${totalCost.toLocaleString('ru')} PLN)</span></div>
+<div style="font-size:12px;font-weight:700">Типы оборудования <span style="color:var(--tx3);font-weight:400">(${assigned.length} типов)</span></div>
 ${available.length?`<div style="display:flex;gap:6px;align-items:center">
 <select id="eqCatSel_${ct.id}" style="font-size:10px;padding:4px 8px;border:1px solid var(--bd);border-radius:8px;background:var(--sf);color:var(--tx);max-width:240px">
 ${available.map(cat=>`<option value="${cat}">${cat} (${allCats[cat].count} шт.)</option>`).join('')}
 </select>
-<button class="btn sm pr" onclick="addCatToCab(${ct.id})" style="font-size:10px;padding:4px 10px">+ Добавить тип</button>
+<button class="btn sm pr" onclick="addCatToCab(${ct.id})" style="font-size:10px;padding:4px 10px">+ Тип</button>
 </div>`:''}
 </div>`;
     if(assigned.length){
       assigned.forEach(cat=>{
-        const info=allCats[cat]||{count:0,totalPrice:0};
+        const info=allCats[cat]||{count:0};
+        const picked=pickedByCat[cat];
+        const pCnt=picked?picked.pickedCount:0;
+        const pCost=picked?picked.totalPrice:0;
         html+=`<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--bd)">
-<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600">${cat}</div><div style="font-size:10px;color:var(--tx3)">${info.count} позиций в каталоге</div></div>
-<div style="font-size:12px;font-weight:700;color:var(--ac2);flex-shrink:0">${info.totalPrice.toLocaleString('ru')} PLN</div>
+<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600">${cat}</div><div style="font-size:10px;color:var(--tx3)">${pCnt} / ${info.count} выбрано в Оснащении</div></div>
+<div style="font-size:12px;font-weight:700;color:${pCost>0?'var(--ac2)':'var(--tx3)'};flex-shrink:0">${pCost>0?pCost.toLocaleString('ru')+' PLN':'—'}</div>
 <button class="btn sm" onclick="removeCatFromCab(${ct.id},'${cat.replace(/'/g,"\\'")}')" style="font-size:10px;padding:2px 6px;color:var(--rd)">✕</button>
 </div>`;
       });
     } else {
-      html+=`<div style="padding:12px 0;text-align:center;font-size:11px;color:var(--tx3)">Нет назначенных типов — выберите из каталога</div>`;
+      html+=`<div style="padding:12px 0;text-align:center;font-size:11px;color:var(--tx3)">Нет назначенных типов — добавьте из каталога</div>`;
     }
     html+=`</div></div>`;
   });
