@@ -305,13 +305,13 @@
 <div><div class="lr-name">Администратор</div><div class="lr-desc">Полный доступ ко всем базам и данным</div></div></div>
 <div class="login-role" data-role="owner" onclick="selectRole(this)">
 <div class="lr-icon" style="background:linear-gradient(135deg,var(--gn),#059669)">&#127970;</div>
-<div><div class="lr-name">Пользователь</div><div class="lr-desc">Конструктор клиники: планировка, бюджет, оснащение</div></div></div>
+<div><div class="lr-name">Пользователь</div><div class="lr-desc">Конструктор клиники: планировка, бюджет</div></div></div>
 <div class="login-role" data-role="contractor" onclick="selectRole(this)">
 <div class="lr-icon" style="background:linear-gradient(135deg,var(--or),var(--yl))">&#128736;</div>
-<div><div class="lr-name">Исполнитель работ</div><div class="lr-desc">Подрядчик: внесение услуг и стоимости работ</div></div></div>
+<div><div class="lr-name">Исполнитель работ</div><div class="lr-desc">Подрядчик: услуги и стоимость работ</div></div></div>
 <div class="login-role" data-role="supplier" onclick="selectRole(this)">
 <div class="lr-icon" style="background:linear-gradient(135deg,#8b5cf6,#d946ef)">&#128230;</div>
-<div><div class="lr-name">Поставщик</div><div class="lr-desc">Каталог оборудования и материалов</div></div></div>
+<div><div class="lr-name">Поставщик</div><div class="lr-desc">Каталог оборудования</div></div></div>
 </div>
 <button class="btn pr" style="width:100%;padding:12px" onclick="enterApp()">Продолжить</button>
 </div>
@@ -2008,7 +2008,11 @@ function fpInit(){
     }
   });
   const saved=localStorage.getItem('svita_floorplan');
-  if(saved){try{const d=JSON.parse(saved);FP.rooms=(d.rooms||[]).map(r=>fpEnsurePoly(r));FP.elements=d.elements||[];FP.scale=d.scale||20;FP.ox=d.ox||40;FP.oy=d.oy||40}catch(e){}}
+  if(saved){try{const d=JSON.parse(saved);FP.rooms=(d.rooms||[]).map(r=>fpEnsurePoly(r));FP.elements=d.elements||[];FP.scale=d.scale||20;FP.ox=d.ox||40;FP.oy=d.oy||40;
+    console.log('[SVITA] Loaded: '+FP.rooms.length+' rooms, '+FP.elements.length+' elements');
+  }catch(e){console.error('[SVITA] Failed to load saved data:',e)}}
+  // Auto-save every 30 seconds
+  setInterval(()=>{if(FP.rooms.length||FP.elements.length)fpSave()},30000);
   fpDraw();fpUpdateList();
 }
 
@@ -2995,10 +2999,89 @@ function fpClear(){
 }
 
 function fpSave(){
-  localStorage.setItem('svita_floorplan',JSON.stringify({rooms:FP.rooms,elements:FP.elements,scale:FP.scale,ox:FP.ox,oy:FP.oy}));
+  const data={rooms:FP.rooms,elements:FP.elements,scale:FP.scale,ox:FP.ox,oy:FP.oy,_ts:Date.now()};
+  const json=JSON.stringify(data);
+  // PROTECTION: never overwrite real data with empty state
+  const hasData=FP.rooms.length>0||FP.elements.length>0;
+  const existing=localStorage.getItem('svita_floorplan');
+  if(!hasData&&existing){
+    try{const old=JSON.parse(existing);if((old.rooms&&old.rooms.length)||(old.elements&&old.elements.length)){
+      console.warn('fpSave blocked: refusing to overwrite '+old.rooms.length+' rooms with empty state');
+      return;
+    }}catch(e){}
+  }
+  // Keep rolling backup (last 3 saves)
+  if(existing){
+    const bk2=localStorage.getItem('svita_floorplan_bk2');
+    const bk1=localStorage.getItem('svita_floorplan_bk1');
+    if(bk1)localStorage.setItem('svita_floorplan_bk2',bk1);
+    localStorage.setItem('svita_floorplan_bk1',existing);
+  }
+  localStorage.setItem('svita_floorplan',json);
+  // Auto-export backup to file every 10 saves
+  FP._saveCount=(FP._saveCount||0)+1;
+  if(FP._saveCount%10===0){try{fpAutoBackup(data)}catch(e){}}
   // Visual feedback
   const btn=document.querySelector('[onclick*="fpSave"]');
   if(btn){btn.textContent='✓ Сохранено';btn.classList.add('gn');setTimeout(()=>{btn.textContent='Сохранить';btn.classList.remove('gn')},1500)}
+}
+
+// Silent auto-backup to IndexedDB (survives localStorage wipes)
+function fpAutoBackup(data){
+  try{
+    const req=indexedDB.open('svita_backups',1);
+    req.onupgradeneeded=e=>{e.target.result.createObjectStore('backups',{keyPath:'id'})};
+    req.onsuccess=e=>{
+      const db=e.target.result;
+      const tx=db.transaction('backups','readwrite');
+      const store=tx.objectStore('backups');
+      store.put({id:'latest',data,ts:Date.now()});
+      store.put({id:'backup_'+new Date().toISOString().slice(0,16),data,ts:Date.now()});
+    };
+  }catch(e){}
+}
+
+// Restore from backup
+function fpRestoreBackup(level){
+  const key=level===2?'svita_floorplan_bk2':level===1?'svita_floorplan_bk1':'svita_floorplan';
+  const raw=localStorage.getItem(key);
+  if(!raw){alert('Бэкап '+(level||0)+' не найден');return}
+  try{
+    const d=JSON.parse(raw);
+    if(!d.rooms||(!d.rooms.length&&!d.elements?.length)){alert('Бэкап пустой');return}
+    fpPushHistory();
+    FP.rooms=(d.rooms||[]).map(r=>fpEnsurePoly(r));
+    FP.elements=d.elements||[];
+    FP.scale=d.scale||20;FP.ox=d.ox||40;FP.oy=d.oy||40;
+    FP.sel.clear();FP.selElem=-1;
+    fpDraw();fpUpdateList();
+    alert('Восстановлено: '+FP.rooms.length+' комнат, '+FP.elements.length+' элементов'+(d._ts?' от '+new Date(d._ts).toLocaleString():''));
+  }catch(e){alert('Ошибка: '+e.message)}
+}
+
+// Try restore from IndexedDB
+function fpRestoreFromIDB(){
+  try{
+    const req=indexedDB.open('svita_backups',1);
+    req.onupgradeneeded=e=>{e.target.result.createObjectStore('backups',{keyPath:'id'})};
+    req.onsuccess=e=>{
+      const db=e.target.result;
+      const tx=db.transaction('backups','readonly');
+      const store=tx.objectStore('backups');
+      const get=store.get('latest');
+      get.onsuccess=()=>{
+        if(!get.result||!get.result.data){alert('Бэкап в IndexedDB не найден');return}
+        const d=get.result.data;
+        fpPushHistory();
+        FP.rooms=(d.rooms||[]).map(r=>fpEnsurePoly(r));
+        FP.elements=d.elements||[];
+        FP.scale=d.scale||20;FP.ox=d.ox||40;FP.oy=d.oy||40;
+        FP.sel.clear();FP.selElem=-1;
+        fpDraw();fpUpdateList();
+        alert('Восстановлено из IndexedDB: '+FP.rooms.length+' комнат от '+new Date(get.result.ts).toLocaleString());
+      };
+    };
+  }catch(e){alert('IndexedDB недоступен: '+e.message)}
 }
 
 // ═══ EXPORT / IMPORT PROJECT FILE ═══

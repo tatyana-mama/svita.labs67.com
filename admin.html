@@ -1,0 +1,372 @@
+<!DOCTYPE html><html lang="ru"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>LADZA.AI — Админка</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=JetBrains+Mono:wght@400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--gold:#BA7517;--gl:#D4A44A;--bk:#0A0A0F;--wh:#fff;--cr:#111118;--bd:#1a1a24;--mu:#6C757D;--fd:'Sora',sans-serif;--fb:'Inter',sans-serif;--fm:'JetBrains Mono',monospace;--red:#e74c3c;--grn:#2ea043}
+body{font-family:var(--fb);background:var(--bk);color:var(--wh);-webkit-font-smoothing:antialiased;display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.side{width:220px;background:var(--cr);border-right:1px solid rgba(255,255,255,0.05);padding:20px 0;display:flex;flex-direction:column;position:fixed;top:0;bottom:0;overflow-y:auto}
+.side-logo{font-family:var(--fd);font-size:18px;font-weight:700;padding:0 20px 16px;border-bottom:1px solid rgba(255,255,255,0.05);margin-bottom:12px;color:var(--gold)}
+.side-logo small{font-family:var(--fm);font-size:9px;color:var(--mu);display:block;letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+.side-section{font-family:var(--fm);font-size:8px;letter-spacing:3px;color:var(--mu);text-transform:uppercase;padding:12px 20px 6px}
+.side-btn{display:flex;align-items:center;gap:10px;width:100%;padding:10px 20px;background:none;border:none;color:rgba(255,255,255,0.5);font-family:var(--fb);font-size:12px;cursor:pointer;transition:all 0.15s;text-align:left}
+.side-btn:hover{background:rgba(186,117,23,0.08);color:var(--wh)}
+.side-btn.active{background:rgba(186,117,23,0.12);color:var(--gold);border-right:2px solid var(--gold)}
+.side-btn .cnt{margin-left:auto;font-family:var(--fm);font-size:10px;background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:2px;color:var(--mu)}
+.side-footer{margin-top:auto;padding:16px 20px;border-top:1px solid rgba(255,255,255,0.05);font-size:10px;color:var(--mu)}
+.side-footer a{color:var(--gold);text-decoration:none}
+
+/* MAIN */
+.main{margin-left:220px;flex:1;padding:24px 32px;max-width:1100px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.topbar h1{font-family:var(--fd);font-size:20px;font-weight:600}
+.topbar-actions{display:flex;gap:8px}
+
+/* BUTTONS */
+.btn{font-family:var(--fm);font-size:10px;letter-spacing:1px;padding:8px 16px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:var(--wh);cursor:pointer;transition:all 0.2s;text-transform:uppercase}
+.btn:hover{border-color:var(--gold);color:var(--gold)}
+.btn-gold{background:var(--gold);color:var(--bk);border-color:var(--gold)}
+.btn-gold:hover{background:var(--gl)}
+.btn-red{border-color:var(--red);color:var(--red)}
+.btn-red:hover{background:var(--red);color:var(--wh)}
+.btn-sm{padding:5px 10px;font-size:9px}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;margin-bottom:24px}
+.tbl th{font-family:var(--fm);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--mu);padding:10px 12px;text-align:left;border-bottom:1px solid rgba(255,255,255,0.06)}
+.tbl td{font-size:12px;padding:12px;border-bottom:1px solid rgba(255,255,255,0.03);color:rgba(255,255,255,0.7);vertical-align:top}
+.tbl tr:hover td{background:rgba(186,117,23,0.03)}
+.cat-badge{font-family:var(--fm);font-size:8px;letter-spacing:1px;padding:2px 6px;background:rgba(186,117,23,0.1);color:var(--gold);text-transform:uppercase;display:inline-block}
+
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;display:none;align-items:center;justify-content:center}
+.modal-bg.on{display:flex}
+.modal{background:var(--cr);border:1px solid rgba(255,255,255,0.08);width:100%;max-width:680px;max-height:90vh;overflow-y:auto;padding:32px}
+.modal h2{font-family:var(--fd);font-size:18px;font-weight:600;margin-bottom:20px}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--mu);font-size:20px;cursor:pointer}
+.field{margin-bottom:16px}
+.field label{display:block;font-family:var(--fm);font-size:9px;letter-spacing:2px;color:var(--mu);text-transform:uppercase;margin-bottom:6px}
+.field input,.field textarea,.field select{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--wh);font-family:var(--fb);font-size:13px;padding:10px 14px;outline:none;transition:border-color 0.2s;resize:vertical}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--gold)}
+.field select{cursor:pointer}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field textarea{min-height:80px}
+.field-hint{font-size:10px;color:var(--mu);margin-top:4px}
+.kw-wrap{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.kw-tag{font-family:var(--fm);font-size:9px;padding:3px 8px;background:rgba(186,117,23,0.1);color:var(--gold);display:flex;align-items:center;gap:4px}
+.kw-tag button{background:none;border:none;color:var(--gold);cursor:pointer;font-size:11px;padding:0 2px}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat{background:var(--cr);border:1px solid rgba(255,255,255,0.05);padding:16px}
+.stat-val{font-family:var(--fd);font-size:28px;font-weight:700;color:var(--gold)}
+.stat-label{font-family:var(--fm);font-size:9px;letter-spacing:2px;color:var(--mu);text-transform:uppercase;margin-top:4px}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--grn);color:var(--wh);font-family:var(--fm);font-size:11px;letter-spacing:1px;padding:10px 20px;z-index:200;transform:translateY(80px);opacity:0;transition:all 0.3s}
+.toast.on{transform:translateY(0);opacity:1}
+
+@media(max-width:768px){
+  .side{display:none}
+  .main{margin-left:0}
+  .stats{grid-template-columns:1fr 1fr}
+}
+</style></head><body>
+
+<div class="side">
+  <div class="side-logo">LADZA<small>admin panel</small></div>
+  <div class="side-section">контент</div>
+  <button class="side-btn active" onclick="showTab('blocks')">Блоки <span class="cnt" id="cntBlocks">0</span></button>
+  <button class="side-btn" onclick="showTab('keywords')">Ключевые слова <span class="cnt" id="cntKw">0</span></button>
+  <div class="side-section">аналитика</div>
+  <button class="side-btn" onclick="showTab('unanswered')">Неотвеченные <span class="cnt" id="cntUn">0</span></button>
+  <div class="side-section">ссылки</div>
+  <button class="side-btn" onclick="window.open('index.html','_blank')">Открыть сайт &#8599;</button>
+  <button class="side-btn" onclick="window.open('https://supabase.com/dashboard/project/ctdleobjnzniqkqomlrq','_blank')">Supabase &#8599;</button>
+  <div class="side-footer"><a href="//labs67.com">labs67.com</a> &middot; v1.0</div>
+</div>
+
+<div class="main">
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="stat-val" id="sBlocks">-</div><div class="stat-label">блоков</div></div>
+    <div class="stat"><div class="stat-val" id="sKw">-</div><div class="stat-label">ключевых слов</div></div>
+    <div class="stat"><div class="stat-val" id="sCat">-</div><div class="stat-label">категорий</div></div>
+    <div class="stat"><div class="stat-val" id="sUn">-</div><div class="stat-label">неотвеченных</div></div>
+  </div>
+
+  <!-- TAB: BLOCKS -->
+  <div id="tab-blocks">
+    <div class="topbar">
+      <h1>Блоки контента</h1>
+      <div class="topbar-actions"><button class="btn btn-gold" onclick="openNew()">+ добавить блок</button></div>
+    </div>
+    <table class="tbl">
+      <thead><tr><th>slug</th><th>категория</th><th>заголовок (ru)</th><th>meta</th><th></th></tr></thead>
+      <tbody id="blocksBody"></tbody>
+    </table>
+  </div>
+
+  <!-- TAB: KEYWORDS -->
+  <div id="tab-keywords" style="display:none">
+    <div class="topbar"><h1>Ключевые слова</h1></div>
+    <table class="tbl">
+      <thead><tr><th>слово</th><th>блок</th><th>вес</th><th></th></tr></thead>
+      <tbody id="kwBody"></tbody>
+    </table>
+  </div>
+
+  <!-- TAB: UNANSWERED -->
+  <div id="tab-unanswered" style="display:none">
+    <div class="topbar"><h1>Неотвеченные вопросы</h1><div class="topbar-actions"><button class="btn" onclick="loadUnanswered()">обновить</button></div></div>
+    <table class="tbl">
+      <thead><tr><th>вопрос</th><th>дата</th><th>session</th><th></th></tr></thead>
+      <tbody id="unBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- MODAL: EDIT/NEW BLOCK -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal" style="position:relative">
+    <button class="modal-close" onclick="closeModal()">&#10005;</button>
+    <h2 id="modalTitle">Новый блок</h2>
+    <input type="hidden" id="mId">
+    <div class="field-row">
+      <div class="field"><label>slug</label><input id="mSlug" placeholder="format-start"></div>
+      <div class="field"><label>категория</label>
+        <select id="mCat"><option>formats</option><option>prices</option><option>conditions</option><option>tech</option><option>packages</option><option>process</option><option>team</option><option>faq</option><option>contacts</option></select>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>заголовок (ru)</label><input id="mTitleRu" placeholder="Единичная клиника"></div>
+      <div class="field"><label>заголовок (en)</label><input id="mTitleEn" placeholder="Single Clinic"></div>
+    </div>
+    <div class="field"><label>заголовок (be)</label><input id="mTitleBe" placeholder="Адзінкавая клініка"></div>
+    <div class="field-row">
+      <div class="field"><label>контент (ru)</label><textarea id="mContRu" placeholder="Описание..."></textarea></div>
+      <div class="field"><label>контент (en)</label><textarea id="mContEn" placeholder="Description..."></textarea></div>
+    </div>
+    <div class="field"><label>контент (be)</label><textarea id="mContBe" placeholder="Апісанне..."></textarea></div>
+    <div class="field"><label>meta (JSON)</label><textarea id="mMeta" rows="6" placeholder='{"badge":"СТАРТ","includes":["пункт 1","пункт 2"]}'></textarea>
+      <div class="field-hint">badge, price_from, price_to, royalty, includes_note, includes, items, specs, roles, points, steps, questions, phone, email, telegram</div>
+    </div>
+    <div class="field"><label>sort order</label><input id="mSort" type="number" value="1"></div>
+    <div class="field"><label>ключевые слова (через запятую)</label><input id="mKw" placeholder="франшиза, формат, старт, клиника"></div>
+    <div style="display:flex;gap:8px;margin-top:20px">
+      <button class="btn btn-gold" onclick="saveBlock()">сохранить</button>
+      <button class="btn" onclick="closeModal()">отмена</button>
+      <button class="btn btn-red" id="mDel" style="margin-left:auto;display:none" onclick="deleteBlock()">удалить</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var SB='https://ctdleobjnzniqkqomlrq.supabase.co';
+  var SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZGxlb2JqbnpuaXFrcW9tbHJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMzE4MTEsImV4cCI6MjA4NzgwNzgxMX0.AMHtY7zGPemKYCxMy2bqRTOEAp8trA_Slor9wmg7C38';
+  var H={'apikey':SK,'Authorization':'Bearer '+SK,'Content-Type':'application/json','Prefer':'return=representation'};
+  var blocksCache=[];var kwCache=[];
+
+  function api(m,t,p,b){
+    var url=SB+'/rest/v1/'+t+(p?'?'+p:'');
+    var opts={method:m,headers:H};
+    if(b) opts.body=JSON.stringify(b);
+    return fetch(url,opts).then(function(r){return r.json()});
+  }
+  function esc(s){if(!s)return'';var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+  function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(function(){t.classList.remove('on')},2500)}
+
+  /* ── TABS ── */
+  window.showTab=function(tab){
+    ['blocks','keywords','unanswered'].forEach(function(t){
+      document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
+    });
+    document.querySelectorAll('.side-btn').forEach(function(b){b.classList.remove('active')});
+    event.target.closest('.side-btn').classList.add('active');
+    if(tab==='keywords') loadKeywords();
+    if(tab==='unanswered') loadUnanswered();
+  };
+
+  /* ── LOAD BLOCKS ── */
+  function loadBlocks(){
+    api('GET','franchise_blocks','select=*&order=category,sort_order').then(function(rows){
+      blocksCache=rows||[];
+      document.getElementById('sBlocks').textContent=blocksCache.length;
+      var cats={};blocksCache.forEach(function(b){cats[b.category]=1});
+      document.getElementById('sCat').textContent=Object.keys(cats).length;
+      document.getElementById('cntBlocks').textContent=blocksCache.length;
+
+      var html='';
+      blocksCache.forEach(function(b){
+        var t=b.title||{};var m=b.meta||{};
+        var metaKeys=Object.keys(m).filter(function(k){return m[k]}).join(', ');
+        html+='<tr><td><code style="font-family:var(--fm);font-size:11px;color:var(--gold)">'+esc(b.slug)+'</code></td>';
+        html+='<td><span class="cat-badge">'+esc(b.category)+'</span></td>';
+        html+='<td>'+esc(t.ru||t.en||'-')+'</td>';
+        html+='<td style="font-size:10px;color:var(--mu)">'+esc(metaKeys||'-')+'</td>';
+        html+='<td><button class="btn btn-sm" onclick="openEdit(\''+b.id+'\')">&#9998;</button></td></tr>';
+      });
+      document.getElementById('blocksBody').innerHTML=html;
+    });
+  }
+
+  /* ── LOAD KEYWORDS ── */
+  function loadKeywords(){
+    api('GET','franchise_keywords','select=*,franchise_blocks(slug)&order=keyword').then(function(rows){
+      kwCache=rows||[];
+      document.getElementById('sKw').textContent=kwCache.length;
+      document.getElementById('cntKw').textContent=kwCache.length;
+      var html='';
+      kwCache.forEach(function(k){
+        var slug=(k.franchise_blocks||{}).slug||'?';
+        html+='<tr><td>'+esc(k.keyword)+'</td><td><code style="font-family:var(--fm);font-size:10px;color:var(--gold)">'+esc(slug)+'</code></td>';
+        html+='<td>'+k.weight+'</td>';
+        html+='<td><button class="btn btn-sm btn-red" onclick="delKw(\''+k.id+'\')">&#10005;</button></td></tr>';
+      });
+      document.getElementById('kwBody').innerHTML=html;
+    });
+  }
+
+  /* ── LOAD UNANSWERED ── */
+  window.loadUnanswered=function(){
+    api('GET','franchise_unanswered','select=*&order=created_at.desc&limit=50').then(function(rows){
+      rows=rows||[];
+      document.getElementById('sUn').textContent=rows.length;
+      document.getElementById('cntUn').textContent=rows.length;
+      var html='';
+      rows.forEach(function(u){
+        var d=new Date(u.created_at);
+        html+='<tr><td style="color:var(--wh)">'+esc(u.question)+'</td>';
+        html+='<td style="font-size:10px;color:var(--mu)">'+d.toLocaleDateString()+' '+d.toLocaleTimeString()+'</td>';
+        html+='<td style="font-family:var(--fm);font-size:10px;color:var(--mu)">'+esc(u.session_id||'-')+'</td>';
+        html+='<td><button class="btn btn-sm btn-gold" onclick="createFromQ(\''+esc(u.question.replace(/'/g,"\\'")+'\')">+ блок</button></td></tr>';
+      });
+      document.getElementById('unBody').innerHTML=html||'<tr><td colspan="4" style="color:var(--mu);text-align:center">Нет неотвеченных вопросов</td></tr>';
+    });
+  };
+
+  /* ── MODAL ── */
+  window.openNew=function(){
+    document.getElementById('modalTitle').textContent='Новый блок';
+    document.getElementById('mId').value='';
+    document.getElementById('mSlug').value='';
+    document.getElementById('mCat').value='formats';
+    document.getElementById('mTitleRu').value='';
+    document.getElementById('mTitleEn').value='';
+    document.getElementById('mTitleBe').value='';
+    document.getElementById('mContRu').value='';
+    document.getElementById('mContEn').value='';
+    document.getElementById('mContBe').value='';
+    document.getElementById('mMeta').value='{}';
+    document.getElementById('mSort').value='1';
+    document.getElementById('mKw').value='';
+    document.getElementById('mDel').style.display='none';
+    document.getElementById('modalBg').classList.add('on');
+  };
+
+  window.openEdit=function(id){
+    var b=blocksCache.find(function(x){return x.id===id});
+    if(!b) return;
+    document.getElementById('modalTitle').textContent='Редактировать блок';
+    document.getElementById('mId').value=b.id;
+    document.getElementById('mSlug').value=b.slug;
+    document.getElementById('mCat').value=b.category;
+    document.getElementById('mTitleRu').value=(b.title||{}).ru||'';
+    document.getElementById('mTitleEn').value=(b.title||{}).en||'';
+    document.getElementById('mTitleBe').value=(b.title||{}).be||'';
+    document.getElementById('mContRu').value=(b.content||{}).ru||'';
+    document.getElementById('mContEn').value=(b.content||{}).en||'';
+    document.getElementById('mContBe').value=(b.content||{}).be||'';
+    document.getElementById('mMeta').value=JSON.stringify(b.meta||{},null,2);
+    document.getElementById('mSort').value=b.sort_order||0;
+    document.getElementById('mKw').value='';
+    document.getElementById('mDel').style.display='inline-block';
+    document.getElementById('modalBg').classList.add('on');
+
+    // Load existing keywords
+    api('GET','franchise_keywords','select=keyword&block_id=eq.'+id).then(function(kws){
+      document.getElementById('mKw').value=(kws||[]).map(function(k){return k.keyword}).join(', ');
+    });
+  };
+
+  window.closeModal=function(){document.getElementById('modalBg').classList.remove('on')};
+
+  window.createFromQ=function(q){
+    openNew();
+    document.getElementById('mKw').value=q.toLowerCase().split(/\s+/).filter(function(w){return w.length>2}).join(', ');
+  };
+
+  /* ── SAVE BLOCK ── */
+  window.saveBlock=function(){
+    var id=document.getElementById('mId').value;
+    var meta;
+    try{meta=JSON.parse(document.getElementById('mMeta').value)}catch(e){toast('JSON ошибка в meta!');return}
+
+    var data={
+      slug:document.getElementById('mSlug').value.trim(),
+      category:document.getElementById('mCat').value,
+      title:{ru:document.getElementById('mTitleRu').value,en:document.getElementById('mTitleEn').value,be:document.getElementById('mTitleBe').value},
+      content:{ru:document.getElementById('mContRu').value,en:document.getElementById('mContEn').value,be:document.getElementById('mContBe').value},
+      meta:meta,
+      sort_order:parseInt(document.getElementById('mSort').value)||0,
+      updated_at:new Date().toISOString()
+    };
+
+    if(!data.slug){toast('Slug обязателен!');return}
+
+    var kwStr=document.getElementById('mKw').value.trim();
+    var kws=kwStr?kwStr.split(',').map(function(k){return k.trim()}).filter(Boolean):[];
+
+    var method=id?'PATCH':'POST';
+    var url=id?'franchise_blocks?id=eq.'+id:'franchise_blocks';
+
+    api(method,url,'',id?data:Object.assign({is_active:true},data)).then(function(res){
+      var blockId=id||(res&&res[0]?res[0].id:null);
+      if(!blockId){toast('Ошибка сохранения');return}
+
+      // Update keywords: delete old, insert new
+      var delUrl='franchise_keywords?block_id=eq.'+blockId;
+      fetch(SB+'/rest/v1/'+delUrl,{method:'DELETE',headers:H}).then(function(){
+        if(kws.length){
+          var kwData=kws.map(function(k){return{block_id:blockId,keyword:k,weight:2}});
+          api('POST','franchise_keywords','',kwData);
+        }
+      });
+
+      toast('Сохранено ✓');
+      closeModal();
+      loadBlocks();
+    });
+  };
+
+  /* ── DELETE BLOCK ── */
+  window.deleteBlock=function(){
+    var id=document.getElementById('mId').value;
+    if(!id||!confirm('Удалить блок?')) return;
+    fetch(SB+'/rest/v1/franchise_keywords?block_id=eq.'+id,{method:'DELETE',headers:H}).then(function(){
+      return fetch(SB+'/rest/v1/franchise_blocks?id=eq.'+id,{method:'DELETE',headers:H});
+    }).then(function(){
+      toast('Удалено');closeModal();loadBlocks();
+    });
+  };
+
+  /* ── DELETE KEYWORD ── */
+  window.delKw=function(id){
+    fetch(SB+'/rest/v1/franchise_keywords?id=eq.'+id,{method:'DELETE',headers:H}).then(function(){
+      toast('Слово удалено');loadKeywords();
+    });
+  };
+
+  /* ── INIT ── */
+  loadBlocks();
+  window.loadUnanswered();
+})();
+</script>
+</body></html>
