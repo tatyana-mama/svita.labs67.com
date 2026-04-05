@@ -1346,7 +1346,7 @@ async function loadSupabaseData(){
       DB.premises.length,'premises,', (DB.conceptItems||[]).length,'concept items');
 
     // Re-render
-    if(document.getElementById('appContainer').style.display!=='none'){renderAll();renderEquip();recalc()}
+    if(document.getElementById('appContainer').style.display!=='none'){buildSidebar();renderAll();renderEquip();recalc()}
   }catch(e){console.warn('Supabase sync failed, using local DB:',e.message)}
 }
 
@@ -1625,6 +1625,7 @@ function buildSidebar(){
     html+='<div class="si" data-nav="db-contractors"><span class="ico">&#128736;</span><span class="sl">Подрядчики</span><span class="sb wip">'+DB.contractors.length+'</span></div>';
     html+='<div class="si" data-nav="db-suppliers"><span class="ico">&#128230;</span><span class="sl">Поставщики</span><span class="sb wip">'+DB.suppliers.length+'</span></div>';
     html+='<div class="si" data-nav="db-employees"><span class="ico">&#129489;</span><span class="sl">Сотрудники</span><span class="sb wip">'+DB.employees.length+'</span></div>';
+    html+='<div class="si" data-nav="s4"><span class="ico">&#129657;</span><span class="sl">Услуги</span><span class="sb wip">'+DB.services.length+'</span></div>';
   }
 
   if(currentRole==='contractor'){
