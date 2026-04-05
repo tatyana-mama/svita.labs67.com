@@ -1,4 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180">
-  <rect width="180" height="180" rx="28" fill="#BA7517"/>
-  <text x="90" y="110" font-family="Sora,sans-serif" font-weight="700" font-size="56" fill="#0A0A0F" text-anchor="middle">SV</text>
+  <rect width="180" height="180" rx="40" fill="#0A0A0F"/>
+  <rect x="6" y="6" width="168" height="168" rx="34" fill="none" stroke="#BA7517" stroke-width="4" opacity="0.3"/>
+  <path d="M90 30 L124 50 L124 95 L90 115 L56 95 L56 50 Z" fill="none" stroke="#BA7517" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M90 50 L107 60 L107 82 L90 92 L73 82 L73 60 Z" fill="#BA7517" opacity="0.25"/>
+  <text x="90" y="155" font-family="Sora,sans-serif" font-weight="700" font-size="28" fill="#D4A44A" text-anchor="middle" letter-spacing="3">SVITA</text>
 </svg>
