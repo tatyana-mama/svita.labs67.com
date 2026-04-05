@@ -44,19 +44,19 @@
 .role-badge{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600}
 
 /* MAIN — 3 columns */
-.main{margin-left:240px;margin-right:300px;min-height:100vh;overflow:hidden;width:calc(100% - 240px - 300px)}
+.main{flex:1;margin-left:240px;margin-right:300px;min-height:100vh;min-width:0;overflow-x:hidden}
 
 /* RIGHT PANEL */
-.rpanel{width:300px;flex-shrink:0;background:var(--sf);border-left:1px solid var(--bd);position:fixed;top:0;right:0;bottom:0;z-index:100;display:flex;flex-direction:column;overflow-y:auto}
+.rpanel{width:300px;flex-shrink:0;background:var(--sf);border-left:1px solid var(--bd);position:fixed;top:0;right:0;bottom:0;z-index:100;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;word-break:break-word}
 .rp-head{padding:14px 16px;border-bottom:1px solid var(--bd);font-size:11px;font-weight:700;color:var(--ac2);text-transform:uppercase;letter-spacing:1px}
 .rp-sec{padding:12px 16px;border-bottom:1px solid var(--bd)}
 .rp-sec-title{font-size:9px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
-.rp-stat{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:11px}
-.rp-stat-label{color:var(--tx2)}.rp-stat-val{font-weight:700}
+.rp-stat{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:11px;gap:8px}
+.rp-stat-label{color:var(--tx2);flex-shrink:0}.rp-stat-val{font-weight:700;text-align:right;white-space:nowrap}
 .rp-stat-val.pos{color:var(--gn)}.rp-stat-val.neg{color:var(--rd)}.rp-stat-val.ac{color:var(--ac2)}.rp-stat-val.yl{color:var(--yl)}
 .rp-mini{background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;margin-bottom:8px}
 .rp-mini-label{font-size:9px;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px}
-.rp-mini-val{font-size:18px;font-weight:800;margin-top:2px}
+.rp-mini-val{font-size:16px;font-weight:800;margin-top:2px}
 .rp-mini-sub{font-size:10px;color:var(--tx2);margin-top:1px}
 .rp-list-item{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:11px;border-bottom:1px solid var(--bd)}
 .rp-list-item:last-child{border-bottom:none}
@@ -74,7 +74,7 @@
 
 /* TABS */
 .tab-bar{display:flex;background:var(--sf);border-bottom:1px solid var(--bd);padding:0 24px;gap:0;overflow-x:auto;position:sticky;top:41px;z-index:49}
-.tab{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;font-size:12px;font-weight:600;color:var(--tx3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;user-select:none;text-align:center}
+.tab{display:flex;align-items:center;justify-content:center;gap:6px;padding:12px 12px;font-size:11px;font-weight:600;color:var(--tx3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;user-select:none;text-align:center}
 .tab:hover{color:var(--tx);background:var(--sf2)}
 .tab.act{color:var(--ac2);border-bottom-color:var(--ac);background:var(--acbg)}
 .tab .tab-num{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;background:var(--bd);color:var(--tx3);flex-shrink:0}
@@ -83,7 +83,7 @@
 .tab .tab-icon{font-size:14px;flex-shrink:0}
 
 /* CONTENT */
-.sec{display:none;padding:20px 24px;animation:fi .2s ease;max-width:100%;box-sizing:border-box;overflow-x:hidden}.sec.vis{display:block}
+.sec{display:none;padding:20px 24px;animation:fi .2s ease}.sec.vis{display:block}
 @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .bk{font-size:11px;color:var(--tx3);cursor:pointer;margin-bottom:14px;display:inline-flex;align-items:center;gap:4px}.bk:hover{color:var(--ac2)}
 .ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:8px}.ph h2{font-size:20px;font-weight:800}.ph-s{font-size:12px;color:var(--tx2);margin-top:3px}
@@ -96,7 +96,7 @@
 .ch h3{font-size:13px;font-weight:700;margin:0}.cb{padding:16px}
 
 /* STATS */
-.sts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.sts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
 .st{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:16px}
 .st-l{font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
 .st-v{font-size:24px;font-weight:800;letter-spacing:-1px;line-height:1}.st-s{font-size:11px;color:var(--tx2);margin-top:4px}
@@ -267,9 +267,9 @@
 .prop-empty-icon{font-size:40px;opacity:.2;margin-bottom:12px}
 
 /* RESPONSIVE */
-@media(max-width:1400px){.rpanel{width:260px}.main{margin-right:260px;width:calc(100% - 240px - 260px)}}
-@media(max-width:1100px){.sts,.g3{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}.rpanel{display:none}.main{margin-right:0;width:calc(100% - 240px)}}
-@media(max-width:768px){.side{display:none}.main{margin-left:0!important;width:100%}.sts{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}.sec{padding:12px}.login-box{width:90%;padding:24px}.tab{padding:10px 8px;font-size:10px;gap:4px}.tab .tab-icon{display:none}}
+@media(max-width:1400px){.rpanel{width:260px}.main{margin-right:260px}}
+@media(max-width:1100px){.sts,.g3{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}.rpanel{display:none}.main{margin-right:0}}
+@media(max-width:768px){.side{display:none}.main{margin-left:0!important}.sts{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}.sec{padding:12px}.login-box{width:90%;padding:24px}.tab{padding:10px 8px;font-size:10px;gap:4px}.tab .tab-icon{display:none}}
 </style>
 </head>
 <body>
@@ -372,12 +372,11 @@
 <!-- ═══ OVERVIEW ═══ -->
 <div class="sec vis" id="sec-overview">
 <div class="sts">
-<div class="st"><div class="st-l">Прогресс</div><div class="st-v" id="ovProgress">0<span style="font-size:14px;color:var(--tx2)">%</span></div><div class="st-s" id="ovStage">Этап 1 из 5</div><div class="st-b"><div class="st-bf" id="ovProgressBar" style="width:0%;background:var(--ac)"></div></div></div>
-<div class="st"><div class="st-l">Инвестиции</div><div class="st-v" style="font-size:18px" id="ovInvest">0</div><div class="st-s">PLN</div><div class="st-b"><div class="st-bf" id="ovInvestBar" style="width:0%;background:var(--yl)"></div></div></div>
+<div class="st"><div class="st-l">Прогресс</div><div class="st-v" id="ovProgress">0<span style="font-size:14px;color:var(--tx2)">%</span></div><div class="st-s" id="ovStage">Этап 1 из 6</div><div class="st-b"><div class="st-bf" id="ovProgressBar" style="width:0%;background:var(--ac)"></div></div></div>
 <div class="st"><div class="st-l">Окупаемость</div><div class="st-v" style="font-size:18px" id="ovROI">--</div><div class="st-s">месяцев</div><div class="st-b"><div class="st-bf" style="width:30%;background:var(--gn)"></div></div></div>
 <div class="st"><div class="st-l">Позиций</div><div class="st-v" id="totalItems">0</div><div class="st-s">выбрано</div><div class="st-b"><div class="st-bf" style="width:0%;background:var(--ac)"></div></div></div>
 </div>
-<div class="g3" id="stagesGrid" style="grid-template-columns:repeat(3,1fr)">
+<div class="g3" id="stagesGrid">
 <div class="stg cur" onclick="nav('s1')"><div style="display:flex;justify-content:space-between"><div class="stg-n">01</div><span class="tag t-wip">В работе</span></div><div class="stg-t">Помещение</div><div class="stg-d">Объект, планировка, характеристики</div><div class="stg-pb"><div class="stg-pf" style="width:0%;background:var(--ac)"></div></div><div class="stg-m"><span>180 м&sup2;</span><strong>0%</strong></div></div>
 <div class="stg" onclick="nav('s2')"><div style="display:flex;justify-content:space-between"><div class="stg-n">02</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Модернизация</div><div class="stg-d">Инженерные работы, коммуникации</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
 <div class="stg" onclick="nav('s3')"><div style="display:flex;justify-content:space-between"><div class="stg-n">03</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Оснащение</div><div class="stg-d">Оборудование, инструменты, расходники</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
@@ -904,14 +903,6 @@
 
 </div><!-- /main -->
 
-<!-- SUMMARY BAR -->
-<div class="sumbar" id="sumbar" style="display:none">
-<div class="sumbar-info">
-<div><div class="sumbar-label">Инвестиции</div><div class="sumbar-val" id="sumGrand">0 PLN</div></div>
-<div><div class="sumbar-label">Прибыль/мес</div><div class="sumbar-val" id="sumProfit">0 PLN</div></div>
-</div>
-<button class="btn gn" onclick="nav('profit')">Рентабельность &rarr;</button>
-</div>
 
 <!-- RIGHT PANEL -->
 <aside class="rpanel" id="rpanel">
@@ -3342,7 +3333,6 @@ function recalc(){
   document.getElementById('s4Total').textContent=t.staff.toLocaleString('ru')+' PLN';
   document.getElementById('s6Total').textContent=t.docs.toLocaleString('ru')+' PLN';
   const el6r=document.getElementById('s6Revenue');if(el6r)el6r.textContent=t.revenue.toLocaleString('ru')+' PLN';
-  document.getElementById('ovInvest').textContent=t.grand.toLocaleString('ru');
   const profit=t.revenue-t.expenses;
   document.getElementById('ovROI').textContent=profit>0&&t.grand>0?Math.ceil(t.grand/profit):'--';
   let picked=0;document.querySelectorAll('#equipCards .sel.picked').forEach(()=>picked++);
@@ -3429,17 +3419,7 @@ function updateStage(el,pct,meta){
   }
 }
 
-function updateSumbar(){
-  const t=calcTotals();
-  const bar=document.getElementById('sumbar');
-  const profit=t.revenue-t.expenses;
-  if(t.grand>0||profit!==0){
-    bar.style.display='flex';
-    document.getElementById('sumGrand').textContent=t.grand.toLocaleString('ru')+' PLN';
-    document.getElementById('sumProfit').textContent=profit.toLocaleString('ru')+' PLN';
-    document.getElementById('sumProfit').style.color=profit>0?'var(--gn)':'var(--rd)';
-  }else bar.style.display='none';
-}
+function updateSumbar(){}
 
 function updateBudget(){
   const t=calcTotals();
