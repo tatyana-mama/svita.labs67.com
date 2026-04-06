@@ -2416,6 +2416,27 @@ function enterApp(){
   achUnlocked=new Set(JSON.parse(uGet('svita_ach')||'[]'));
   try{itemImages=JSON.parse(uGet('svita_images')||'{}')}catch(e){itemImages={}}
   fpInit();
+  // Admin: restore floorplan from last Supabase concept if local is empty
+  if(currentRole==='admin'&&sb&&FP&&FP.rooms.length===0){
+    sb.from('concepts').select('data').eq('user_id',currentUser.id).order('updated_at',{ascending:false}).limit(1).single().then(({data:c})=>{
+      if(c&&c.data&&c.data.floorPlan&&c.data.floorPlan.rooms&&c.data.floorPlan.rooms.length){
+        const fp=c.data.floorPlan;
+        FP.rooms=(fp.rooms||[]).map(r=>fpEnsurePoly?fpEnsurePoly(r):r);
+        FP.elements=fp.elements||[];FP.scale=fp.scale||20;
+        fpDraw();fpUpdateList();fpSave();
+        console.log('[SVITA] Restored floorplan from Supabase:',FP.rooms.length,'rooms');
+        // Also restore picked data from concept if available
+        const d=c.data;
+        if(d.pickedEquip&&Object.keys(d.pickedEquip).length){DB.pickedEquip=d.pickedEquip;savePicked()}
+        if(d.pickedRenovations&&Object.keys(d.pickedRenovations).length){DB.pickedRenovations=d.pickedRenovations;savePicked()}
+        if(d.pickedStaff&&Object.keys(d.pickedStaff).length){DB.pickedStaff=d.pickedStaff;savePicked()}
+        if(d.pickedServices&&Object.keys(d.pickedServices).length){DB.pickedServices=d.pickedServices;savePicked()}
+        if(d.pickedRooms&&Object.keys(d.pickedRooms).length){DB.pickedRooms=d.pickedRooms;savePicked()}
+        if(d.property){activeProperty=d.property;uSet('svita_property',JSON.stringify(activeProperty))}
+        buildSidebar();renderAll();recalc();
+      }
+    }).catch(()=>{});
+  }
   buildSidebar();
   renderAll();
   recalc();
