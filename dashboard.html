@@ -922,16 +922,16 @@ Apple</button>
 <div class="c"><div class="ch"><h3>&#127973; Бизнес-модель</h3><button class="btn sm gn" onclick="saveBusinessModel()">Сохранить</button></div>
 <div class="cb">
 <div class="g2">
-<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Тип учреждения</div><input class="price-edit" id="cType" value="Стоматологическая клиника" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
-<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Бренд</div><input class="price-edit" id="cBrand" value="Свитлица" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
-<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Город</div><input class="price-edit" id="cCity" value="Быдгощ, Польша" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
-<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Целевое открытие</div><input class="price-edit" id="cDate" value="Сентябрь 2026" style="font-size:13px;font-weight:700;margin-top:4px;width:100%;color:var(--ac2)"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Тип учреждения</div><input class="price-edit" id="cType" placeholder="Стоматологическая клиника" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Бренд</div><input class="price-edit" id="cBrand" placeholder="Название вашего бренда" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Город</div><input class="price-edit" id="cCity" placeholder="Город, Страна" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Целевое открытие</div><input class="price-edit" id="cDate" placeholder="Месяц 2026" style="font-size:13px;font-weight:700;margin-top:4px;width:100%;color:var(--ac2)"></div>
 </div>
 <div class="g2" style="margin-top:12px">
-<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Формат</div><input class="price-edit" id="cFormat" value="Премиум-сегмент" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
-<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Целевая аудитория</div><input class="price-edit" id="cAudience" value="Средний+ класс, 25-55 лет" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
-<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">УТП</div><input class="price-edit" id="cUsp" value="AI-клиника нового поколения" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
-<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Технология</div><input class="price-edit" id="cTech" value="ŠČYRA.AI + Jetson Edge" style="font-size:13px;font-weight:700;margin-top:4px;width:100%;color:var(--gn)"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Формат</div><input class="price-edit" id="cFormat" placeholder="Премиум / Эконом / Средний" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Целевая аудитория</div><input class="price-edit" id="cAudience" placeholder="Кто ваши клиенты?" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">УТП</div><input class="price-edit" id="cUsp" placeholder="Чем вы отличаетесь?" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Технология</div><input class="price-edit" id="cTech" placeholder="Какие технологии используете?" style="font-size:13px;font-weight:700;margin-top:4px;width:100%;color:var(--gn)"></div>
 </div>
 </div></div>
 
@@ -948,51 +948,18 @@ Apple</button>
 </div>
 </div></div>
 
-<!-- Документация / Sanepid -->
-<div class="ph" style="margin-top:24px"><div><h2 style="font-size:16px">Документация и лицензии</h2><div class="ph-s">Sanepid, NFZ, RODO</div></div><span class="tag t-w" id="s6Tag">0 / 18</span></div>
+</div>
+
+<!-- ═══ S7: ДОКУМЕНТАЦИЯ ═══ -->
+<div class="sec" id="sec-docs">
+<div class="ph"><div><h2>07 &middot; Документация</h2><div class="ph-s">Юридическое оформление, лицензии, Sanepid, RODO</div></div><button class="btn sm pr" onclick="addDocItem()">+ Добавить</button></div>
 <div class="sts">
-<div class="st"><div class="st-l">Готово</div><div class="st-v" id="s6Done">0</div><div class="st-s">из 18 позиций</div><div class="st-b"><div class="st-bf" id="s6Bar" style="width:0%;background:var(--gn)"></div></div></div>
-<div class="st"><div class="st-l">Стоимость</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="s6CostStat">0</div><div class="st-s">PLN</div></div>
-<div class="st"><div class="st-l">Критичные</div><div class="st-v" style="color:var(--rd)" id="s6Critical">12</div><div class="st-s">обязательных</div></div>
-<div class="st"><div class="st-l">Срок оформления</div><div class="st-v" style="font-size:16px">3-6</div><div class="st-s">месяцев</div></div>
+<div class="st"><div class="st-l">Позиций</div><div class="st-v" id="docCount">0</div><div class="st-s">документов</div></div>
+<div class="st"><div class="st-l">Готово</div><div class="st-v" id="docDone">0</div><div class="st-s">выполнено</div><div class="st-b"><div class="st-bf" id="docBar" style="width:0%;background:var(--gn)"></div></div></div>
+<div class="st"><div class="st-l">Стоимость</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="docCostStat">0</div><div class="st-s">PLN</div></div>
 </div>
-
-<div class="c"><div class="ch"><h3>&#128203; Юридическое оформление</h3><span style="font-size:10px;color:var(--rd);font-weight:600">ОБЯЗАТЕЛЬНО</span></div><div class="cb">
-<div class="ci cost-row"><div class="cx ok" onclick="toggleCheck(this)">&#10003;</div><div class="ct dn">Регистрация юр. лица (sp. z o.o. / s.c.)</div><div class="cost-val"><input class="price-edit" data-cost="doc_reg" value="1500" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Регистрация в Реестре субъектов медицинской деятельности (RPWDL)<div class="ct-sub">Воеводский уряд — обязательна для медицинских учреждений</div></div><div class="cost-val"><input class="price-edit" data-cost="doc_rpwdl" value="500" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">NIP, REGON, KRS / CEIDG</div><div class="cost-val"><input class="price-edit" data-cost="doc_nip" value="300" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Расчётный счёт + терминал оплаты</div><div class="cost-val"><input class="price-edit" data-cost="doc_bank" value="200" onchange="recalc()"> PLN</div></div>
-</div></div>
-
-<div class="c"><div class="ch"><h3>&#127973; Sanepid / PSSE</h3><span style="font-size:10px;color:var(--rd);font-weight:600">ОБЯЗАТЕЛЬНО</span></div><div class="cb">
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Санитарно-гигиеническая экспертиза помещения<div class="ct-sub">PSSE (Powiatowa Stacja Sanitarno-Epidemiologiczna)</div></div><div class="cost-val"><input class="price-edit" data-cost="doc_sanepid" value="3000" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Проект технологический (rzut z rozkładem pomieszczeń)<div class="ct-sub">Архитектурный проект с указанием зон, потоков, вентиляции</div></div><div class="cost-val"><input class="price-edit" data-cost="doc_techproj" value="5000" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">ППК — Программа предпосылочных контролей<div class="ct-sub">Процедуры мытья, дезинфекции, стерилизации, утилизации</div></div><div class="cost-val"><input class="price-edit" data-cost="doc_ppk" value="3500" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Договоры: стирка, дезинсекция, утилизация отходов<div class="ct-sub">Медицинские отходы — обязательный договор с лицензированной компанией</div></div><div class="cost-val"><input class="price-edit" data-cost="doc_contracts" value="2000" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Протоколы качества воды + воздуха<div class="ct-sub">Лабораторные анализы от аккредитованной лаборатории</div></div><div class="cost-val"><input class="price-edit" data-cost="doc_waterair" value="1500" onchange="recalc()"> PLN</div></div>
-</div></div>
-
-<div class="c"><div class="ch"><h3>&#129657; Медицинские документы</h3><span style="font-size:10px;color:var(--rd);font-weight:600">ОБЯЗАТЕЛЬНО</span></div><div class="cb">
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Медсправки персонала (badania sanitarno-epidemiologiczne)<div class="ct-sub">Книжка zdrowia для каждого сотрудника</div></div><div class="cost-val"><input class="price-edit" data-cost="doc_med" value="2000" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Право на практику — сертификаты врачей (PWZ)<div class="ct-sub">Проверка в Okręgowa Izba Lekarska</div></div><div class="cost-val"><input class="price-edit" data-cost="doc_pwz" value="0" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Штатное расписание + должностные инструкции</div><div class="cost-val"><input class="price-edit" data-cost="doc_staff" value="1500" onchange="recalc()"> PLN</div></div>
-</div></div>
-
-<div class="c"><div class="ch"><h3>&#128274; Страхование и безопасность</h3></div><div class="cb">
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">OC — страхование гражданской ответственности<div class="ct-sub">Обязательное для медицинских учреждений</div></div><div class="cost-val"><input class="price-edit" data-cost="doc_insurance" value="4000" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">RODO — регистрация обработки персональных данных<div class="ct-sub">IOD (инспектор), реестр процессов, политика конфиденциальности</div></div><div class="cost-val"><input class="price-edit" data-cost="doc_rodo" value="2500" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Пожарная безопасность — инструкция + протокол<div class="ct-sub">Przegląd gaśnic, oznakowanie dróg ewakuacyjnych</div></div><div class="cost-val"><input class="price-edit" data-cost="doc_fire" value="1500" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">BHP — обучение охране труда для персонала</div><div class="cost-val"><input class="price-edit" data-cost="doc_bhp" value="1000" onchange="recalc()"> PLN</div></div>
-</div></div>
-
-<div class="c"><div class="ch"><h3>&#128179; Прочее</h3></div><div class="cb">
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Договор аренды (нотариальное заверение)</div><div class="cost-val"><input class="price-edit" data-cost="doc_lease" value="1000" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Вывеска + информационная табличка (юр. требования)</div><div class="cost-val"><input class="price-edit" data-cost="doc_sign" value="800" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Прочие разрешения и расходы на оформление</div><div class="cost-val"><input class="price-edit" data-cost="doc_other" value="2000" onchange="recalc()"> PLN</div></div>
-</div></div>
-
-<div style="text-align:right;padding:12px 0;border-top:1px solid var(--bd);margin-top:8px"><span style="font-size:12px;color:var(--tx3)">Итого документы: </span><span style="font-size:18px;font-weight:800;color:var(--ac2)" id="s6Total">0 PLN</span></div>
-</div>
+<div id="docCards"></div>
+<div style="text-align:right;padding:12px 0;border-top:1px solid var(--bd);margin-top:8px"><span style="font-size:12px;color:var(--tx3)">Итого: </span><span style="font-size:18px;font-weight:800;color:var(--ac2)" id="s6Total">0 PLN</span></div>
 
 <!-- ═══ ЛИЧНЫЙ КАБИНЕТ ═══ -->
 <div class="sec" id="sec-account">
@@ -1251,6 +1218,7 @@ const DB={
   pickedEquip:{},
   pickedStaff:{},
   pickedRenovations:{},
+  docItems:[],
   renovations:[
     // ⚡ Электрика
     {id:'e1',name:'Расширение мощности',cat:'Электрика',price:8000,unit:'кВт',baseVal:50},
@@ -2034,11 +2002,13 @@ function saveBusinessModel(){
   const btn=document.querySelector('.ch .gn');
   if(btn){const old=btn.textContent;btn.textContent='✓ Сохранено';setTimeout(()=>btn.textContent=old,1500)}
 }
+const BM_DEFAULTS={cType:'Стоматологическая клиника',cBrand:'Свитлица',cCity:'Быдгощ, Польша',cDate:'Сентябрь 2026',cFormat:'Премиум-сегмент',cAudience:'Средний+ класс, 25-55 лет',cUsp:'AI-клиника нового поколения',cTech:'ŠČYRA.AI + Jetson Edge'};
 function loadBusinessModel(){
   try{
     const raw=uGet('svita_bm');
     if(!raw){
-      if(currentRole!=='admin')BM_FIELDS.forEach(k=>{const el=document.getElementById(k);if(el)el.value=''});
+      const vals=currentRole==='admin'?BM_DEFAULTS:{};
+      BM_FIELDS.forEach(k=>{const el=document.getElementById(k);if(el)el.value=vals[k]||''});
       return;
     }
     const bm=JSON.parse(raw);
@@ -2435,7 +2405,7 @@ function enterApp(){
   const savedProp=uGet('svita_property');
   if(savedProp){try{activeProperty=JSON.parse(savedProp)}catch(e){activeProperty=null}}
   else{activeProperty=currentRole==='admin'?{...DEFAULT_PROPERTY}:null}
-  loadPicked();loadBusinessModel();
+  loadPicked();loadBusinessModel();loadDocItems();
   achUnlocked=new Set(JSON.parse(uGet('svita_ach')||'[]'));
   try{itemImages=JSON.parse(uGet('svita_images')||'{}')}catch(e){itemImages={}}
   fpInit();
@@ -2443,6 +2413,8 @@ function enterApp(){
   renderAll();
   recalc();
   loadSupabaseData();
+  // Onboarding for first-time users (not admin)
+  if(currentRole!=='admin'&&!uGet('svita_onboarded')){setTimeout(startOnboarding,500)}
 }
 
 async function logout(){
@@ -2566,6 +2538,7 @@ function buildSidebar(){
     html+='<div class="si" data-nav="profit"><span class="ico">&#128200;</span><span class="sl">Рентабельность</span></div>';
     html+='<div class="si" data-nav="zones"><span class="ico">&#127968;</span><span class="sl">Зоны</span></div>';
     html+='<div class="si" data-nav="cabinet-types"><span class="ico">🏥</span><span class="sl">Стоимость кабинетов</span><span class="sb wip">'+getPickedRoomsList().length+'</span></div>';
+    html+='<div class="si" data-nav="docs"><span class="ico">&#128203;</span><span class="sl">Документация</span><span class="sb wip">'+(DB.docItems||[]).length+'</span></div>';
   }
 
   if(currentRole==='admin'||currentRole==='owner'){
@@ -2606,7 +2579,7 @@ function buildSidebar(){
 }
 
 // ═══════════════ NAVIGATION ═══════════════
-const secNames={overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:'Прайс-лист',s6:'Концепция',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны','db-premises':'БД Помещений','db-renovations':'Каталог модернизации','db-services':'Каталог процедур','db-contractors':'БД Подрядчиков','db-suppliers':'Каталог оборудования','db-employees':'БД Сотрудников','db-vendor-companies':'Поставщики',users:'Пользователи','cabinet-types':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения'};
+const secNames={overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:'Прайс-лист',s6:'Концепция',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны','db-premises':'БД Помещений','db-renovations':'Каталог модернизации','db-services':'Каталог процедур','db-contractors':'БД Подрядчиков','db-suppliers':'Каталог оборудования','db-employees':'БД Сотрудников','db-vendor-companies':'Поставщики',users:'Пользователи','cabinet-types':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения',docs:'Документация'};
 const stageOrder=['s1','s2','s3','s4','s5','s6'];
 let cur='overview';
 
@@ -2708,6 +2681,10 @@ async function loadConcepts(){
 
 function renderConceptsList(){
   const c=document.getElementById('conceptsList');if(!c)return;
+  if(userSubscription.plan==='trial'){
+    c.innerHTML='<div style="text-align:center;padding:24px"><div style="font-size:32px;margin-bottom:8px">&#128274;</div><div style="font-size:12px;color:var(--tx3);margin-bottom:12px">Сохранение концепций доступно с PRO</div><button class="btn pr" onclick="showUpgradeModal()">Улучшить план</button></div>';
+    return;
+  }
   if(!userConcepts.length){
     c.innerHTML='<div style="text-align:center;padding:24px"><div style="font-size:32px;margin-bottom:8px">&#128209;</div><div style="font-size:12px;color:var(--tx3);margin-bottom:12px">У вас пока нет концепций</div><button class="btn pr" onclick="createConcept()">Создать первую</button></div>';
     return;
@@ -2735,6 +2712,7 @@ function renderConceptsList(){
 
 async function createConcept(){
   if(!sb||!currentUser)return;
+  if(userSubscription.plan==='trial'){showUpgradeModal();return}
   // Gatekeeping: check plan limit
   const limit=userSubscription.concepts_limit||1;
   if(userConcepts.length>=limit){
@@ -2757,6 +2735,7 @@ async function createConcept(){
 }
 
 async function loadConceptById(id){
+  if(userSubscription.plan==='trial'){showUpgradeModal();return}
   if(!sb)return;
   const{data,error}=await sb.from('concepts').select('*').eq('id',id).single();
   if(error||!data){alert('Ошибка загрузки');return}
@@ -2777,6 +2756,7 @@ async function loadConceptById(id){
 async function saveCurrentConcept(){
   const id=window._currentConceptId;
   if(!id||!sb||!currentUser)return;
+  if(userSubscription.plan==='trial')return;
   const conceptData={
     pickedRooms:DB.pickedRooms||{},pickedRenovations:DB.pickedRenovations||{},
     pickedServices:DB.pickedServices||{},pickedEquip:DB.pickedEquip||{},
@@ -2949,7 +2929,7 @@ function toggleCheck(el){
 
 // ═══════════════ RENDER DB CARDS ═══════════════
 function renderAll(){
-  renderProperty();renderPremises();renderContractors();renderEmployees();renderVendors();renderEquip();renderSelectedEquip();renderRenovationsCatalog();renderSelectedRenovations();renderStaff();renderServices();renderSelectedServices();renderUsers();renderCabinetTypes();renderPickedRooms();renderPickedContractors();renderZones();loadPropertyParams();updateRightPanel();renderOwnerProposals();
+  renderProperty();renderPremises();renderContractors();renderEmployees();renderVendors();renderEquip();renderSelectedEquip();renderRenovationsCatalog();renderSelectedRenovations();renderStaff();renderServices();renderSelectedServices();renderUsers();renderCabinetTypes();renderPickedRooms();renderPickedContractors();renderZones();renderDocs();loadPropertyParams();updateRightPanel();renderOwnerProposals();
 }
 
 function renderOwnerProposals(){
@@ -3414,6 +3394,87 @@ function renderSelectedRenovations(){
 }
 
 // Render picked items inside tabs
+// ═══ ДОКУМЕНТАЦИЯ (sec-docs) ═══
+const DOC_CATS=['Юридическое оформление','Sanepid / PSSE','Медицинские документы','Страхование и безопасность','Прочее'];
+const ADMIN_DOC_ITEMS=[
+  {cat:'Юридическое оформление',name:'Регистрация юр. лица (sp. z o.o. / s.c.)',price:1500,required:true},
+  {cat:'Юридическое оформление',name:'Регистрация в RPWDL',desc:'Воеводский уряд — обязательна для медицинских учреждений',price:500,required:true},
+  {cat:'Юридическое оформление',name:'NIP, REGON, KRS / CEIDG',price:300,required:true},
+  {cat:'Юридическое оформление',name:'Расчётный счёт + терминал оплаты',price:200},
+  {cat:'Sanepid / PSSE',name:'Санитарно-гигиеническая экспертиза',desc:'PSSE (Powiatowa Stacja Sanitarno-Epidemiologiczna)',price:3000,required:true},
+  {cat:'Sanepid / PSSE',name:'Проект технологический',desc:'Архитектурный проект с указанием зон, потоков, вентиляции',price:5000,required:true},
+  {cat:'Sanepid / PSSE',name:'ППК — Программа предпосылочных контролей',desc:'Процедуры мытья, дезинфекции, стерилизации',price:3500,required:true},
+  {cat:'Sanepid / PSSE',name:'Договоры: стирка, дезинсекция, утилизация отходов',price:2000,required:true},
+  {cat:'Sanepid / PSSE',name:'Протоколы качества воды + воздуха',price:1500,required:true},
+  {cat:'Медицинские документы',name:'Медсправки персонала',desc:'Книжка zdrowia для каждого сотрудника',price:2000,required:true},
+  {cat:'Медицинские документы',name:'Сертификаты врачей (PWZ)',desc:'Проверка в Okręgowa Izba Lekarska',price:0,required:true},
+  {cat:'Медицинские документы',name:'Штатное расписание + должностные инструкции',price:1500},
+  {cat:'Страхование и безопасность',name:'OC — страхование ответственности',desc:'Обязательное для медицинских учреждений',price:4000,required:true},
+  {cat:'Страхование и безопасность',name:'RODO — обработка персональных данных',desc:'IOD, реестр процессов, политика конфиденциальности',price:2500},
+  {cat:'Страхование и безопасность',name:'Пожарная безопасность',desc:'Przegląd gaśnic, oznakowanie dróg ewakuacyjnych',price:1500},
+  {cat:'Страхование и безопасность',name:'BHP — охрана труда',price:1000},
+  {cat:'Прочее',name:'Договор аренды (нотариальное заверение)',price:1000},
+  {cat:'Прочее',name:'Вывеска + информационная табличка',price:800},
+];
+function saveDocItems(){uSet('svita_docs',JSON.stringify(DB.docItems))}
+function loadDocItems(){
+  try{const raw=uGet('svita_docs');
+    if(raw){DB.docItems=JSON.parse(raw);return}
+    if(currentRole==='admin')DB.docItems=ADMIN_DOC_ITEMS.map((d,i)=>({id:'doc_'+i,...d,done:false}));
+    else DB.docItems=[];
+  }catch(e){DB.docItems=[]}
+}
+function addDocItem(){
+  const name=prompt('Название документа:');if(!name)return;
+  const cat=prompt('Категория (или пусто):','Прочее')||'Прочее';
+  const price=parseFloat(prompt('Стоимость (PLN):','0'))||0;
+  DB.docItems.push({id:'doc_'+Date.now(),cat,name,desc:'',price,done:false,required:false});
+  saveDocItems();renderDocs();recalc();
+}
+function toggleDocDone(id){
+  const d=DB.docItems.find(x=>x.id===id);if(!d)return;
+  d.done=!d.done;saveDocItems();renderDocs();recalc();
+}
+function setDocPrice(id,val){
+  const d=DB.docItems.find(x=>x.id===id);if(!d)return;
+  d.price=Math.max(0,parseFloat(val)||0);saveDocItems();recalc();
+}
+function removeDocItem(id){
+  DB.docItems=DB.docItems.filter(x=>x.id!==id);saveDocItems();renderDocs();recalc();
+}
+function renderDocs(){
+  const c=document.getElementById('docCards');if(!c)return;
+  const items=DB.docItems||[];
+  if(!items.length){c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Добавьте документы и лицензии для вашего проекта</div>';
+    const el=id=>document.getElementById(id);
+    if(el('docCount'))el('docCount').textContent='0';if(el('docDone'))el('docDone').textContent='0';if(el('docCostStat'))el('docCostStat').textContent='0';if(el('s6Total'))el('s6Total').textContent='0 PLN';if(el('docBar'))el('docBar').style.width='0%';return}
+  const groups={};let total=0,done=0;
+  items.forEach(d=>{if(!groups[d.cat])groups[d.cat]=[];groups[d.cat].push(d);total+=d.price;if(d.done)done++});
+  let html='';
+  Object.keys(groups).forEach(cat=>{
+    const g=groups[cat];const catCost=g.reduce((s,d)=>s+d.price,0);
+    const req=g.some(d=>d.required);
+    html+=`<div class="c"><div class="ch"><h3 style="font-size:13px">${esc(cat)}</h3>${req?'<span style="font-size:9px;color:var(--rd);font-weight:600">ОБЯЗАТЕЛЬНО</span>':''}<span style="font-size:10px;color:var(--gn);font-weight:600;margin-left:auto">${catCost.toLocaleString('ru')} PLN</span></div><div class="cb">`;
+    g.forEach(d=>{
+      html+=`<div class="ci cost-row" style="padding:8px 12px;${d.done?'opacity:.5':''}">
+<input type="checkbox" ${d.done?'checked':''} onchange="toggleDocDone('${d.id}')" style="flex-shrink:0">
+<div class="ct" style="flex:1;min-width:0;font-size:11px;${d.done?'text-decoration:line-through':''}">${esc(d.name)}${d.desc?'<div class="ct-sub">'+esc(d.desc)+'</div>':''}</div>
+<div style="display:flex;align-items:center;gap:2px;flex-shrink:0"><input type="number" value="${d.price}" onchange="setDocPrice('${d.id}',this.value)" style="width:60px;font-size:11px;font-weight:700;color:var(--ac2);text-align:right;border:1px solid var(--bd);border-radius:4px;padding:2px 4px;background:var(--sf)"><span style="font-size:9px;color:var(--tx3)">PLN</span></div>
+<button onclick="removeDocItem('${d.id}')" style="background:none;border:none;color:var(--rd);cursor:pointer;font-size:12px;padding:2px;flex-shrink:0">&#10005;</button>
+</div>`;
+    });
+    html+='</div></div>';
+  });
+  c.innerHTML=html;
+  const el=id=>document.getElementById(id);
+  if(el('docCount'))el('docCount').textContent=items.length;
+  if(el('docDone'))el('docDone').textContent=done;
+  if(el('docCostStat'))el('docCostStat').textContent=total.toLocaleString('ru');
+  if(el('s6Total'))el('s6Total').textContent=total.toLocaleString('ru')+' PLN';
+  const pct=items.length?Math.round(done/items.length*100):0;
+  if(el('docBar'))el('docBar').style.width=pct+'%';
+}
+
 function renderPickedRooms(){
   const c=document.getElementById('pickedRoomsCards');
   if(!c)return;
@@ -5631,7 +5692,7 @@ function calcTotals(){
     const item=DB.suppliers.find(s=>s.id==id);
     if(item)equip+=(p.customPrice!=null?p.customPrice:item.price)*(p.qty||1);
   });
-  const docs=getAllCosts('doc_');
+  const docs=(DB.docItems||[]).reduce((s,d)=>s+d.price,0);
   const staff=getAllCosts('st_');
   const avgCheck=getVal('avgCheck');
   const ppc=getVal('patientsPerChair');
@@ -6081,6 +6142,21 @@ updateRightPanel();
 </div>
 </div>
 
+<!-- Onboarding Guide -->
+<div id="onboardingOverlay" style="display:none;position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);align-items:center;justify-content:center">
+<div id="onboardingCard" style="background:#fff;border-radius:16px;max-width:440px;width:90%;padding:32px;box-shadow:0 24px 48px rgba(0,0,0,.2);font-family:var(--f);position:relative;animation:obSlide .3s ease">
+<div id="obStep"></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px">
+<div id="obDots" style="display:flex;gap:6px"></div>
+<div style="display:flex;gap:8px">
+<button id="obBack" onclick="obNav(-1)" class="btn sm" style="display:none">Назад</button>
+<button id="obNext" onclick="obNav(1)" class="btn sm pr">Далее</button>
+</div>
+</div>
+</div>
+</div>
+<style>@keyframes obSlide{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}</style>
+
 <!-- Cookie Consent -->
 <div id="cookieConsent" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,.08);padding:14px 24px;font-family:var(--f)">
 <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
@@ -6095,6 +6171,51 @@ updateRightPanel();
 if(!localStorage.getItem('svita_cookies')){document.getElementById('cookieConsent').style.display='block'}
 function cookieAccept(){localStorage.setItem('svita_cookies','accepted');document.getElementById('cookieConsent').style.display='none'}
 function cookieDecline(){localStorage.setItem('svita_cookies','declined');document.getElementById('cookieConsent').style.display='none'}
+
+// ═══════════════ ONBOARDING WIZARD ═══════════════
+const OB_STEPS=[
+  {icon:'&#128075;',title:'Добро пожаловать в SVITA!',text:'Конструктор стоматологического бизнеса. Вы пройдёте 6 этапов — от идеи до полной бизнес-модели с расчётом рентабельности. Давайте начнём!',action:null},
+  {icon:'&#128100;',title:'1. Личный кабинет',text:'Заполните профиль: имя, контакты, роль. Это поможет персонализировать ваш проект и сохранить данные.',action:'account'},
+  {icon:'&#127973;',title:'2. Концепция и бизнес-модель',text:'Перейдите на Таб 6 «Концепция». Заполните тип учреждения, бренд, город, формат, аудиторию и УТП. Нажмите «Сохранить».',action:'s6'},
+  {icon:'&#127968;',title:'3. Найдите помещение',text:'Откройте каталог «Помещения» в боковой панели. Выберите подходящее помещение из базы или добавьте своё вручную.',action:'db-premises'},
+  {icon:'&#128208;',title:'4. Спланируйте пространство',text:'В Табе 1 «Помещение» нажмите «К планировке» — откроется конструктор. Нарисуйте комнаты: кабинеты, стерилизаторную, ресепшен, зал ожидания.',action:'s1'},
+  {icon:'&#9889;',title:'5. Модернизация (Таб 2)',text:'Выберите работы по ремонту: электрика, вентиляция, отделка. Для каждой работы добавьте конкретные действия с ценами.',action:'s2'},
+  {icon:'&#128230;',title:'6. Оснащение (Таб 3)',text:'Добавьте оборудование из каталога. Назначьте его по кабинетам через выпадающий список. Укажите количество и цены.',action:'s3'},
+  {icon:'&#129489;',title:'7. Персонал (Таб 4)',text:'Выберите сотрудников из базы: врачи, ассистенты, администраторы. Укажите ставки. ФОТ рассчитается автоматически.',action:'s4'},
+  {icon:'&#129657;',title:'8. Прайс-лист (Таб 5)',text:'Добавьте стоматологические услуги из каталога процедур. Это формирует средний чек и прогноз выручки.',action:'s5'},
+  {icon:'&#128200;',title:'9. Аналитика',text:'Теперь откройте «Бюджет» и «Рентабельность» в боковой панели. Здесь — итоговые цифры: стартовые вложения, ФОТ, выручка, окупаемость.',action:'budget'},
+  {icon:'&#127942;',title:'Готово!',text:'Вы знаете как работает SVITA. Заполняйте этапы по порядку — прогресс виден в обзоре. Удачи с вашим проектом!',action:null}
+];
+let obCur=0;
+function obRender(){
+  const s=OB_STEPS[obCur];
+  const el=document.getElementById('obStep');
+  el.innerHTML=`<div style="font-size:36px;margin-bottom:12px">${s.icon}</div><div style="font-size:18px;font-weight:700;color:var(--tx);margin-bottom:8px">${s.title}</div><div style="font-size:13px;color:var(--tx2);line-height:1.6">${s.text}</div>`;
+  document.getElementById('obBack').style.display=obCur>0?'inline-flex':'none';
+  const btn=document.getElementById('obNext');
+  btn.textContent=obCur===OB_STEPS.length-1?'Начать работу':'Далее';
+  // Dots
+  const dots=document.getElementById('obDots');
+  dots.innerHTML=OB_STEPS.map((_,i)=>`<div style="width:${i===obCur?'16px':'6px'};height:6px;border-radius:3px;background:${i===obCur?'var(--ac)':'var(--bd)'};transition:all .2s"></div>`).join('');
+}
+function obNav(d){
+  obCur+=d;
+  if(obCur>=OB_STEPS.length){
+    document.getElementById('onboardingOverlay').style.display='none';
+    uSet('svita_onboarded','1');
+    return;
+  }
+  if(obCur<0)obCur=0;
+  obRender();
+  // Navigate to relevant section
+  const action=OB_STEPS[obCur].action;
+  if(action)nav(action);
+}
+function startOnboarding(){
+  obCur=0;
+  obRender();
+  document.getElementById('onboardingOverlay').style.display='flex';
+}
 </script>
 
 </body>
