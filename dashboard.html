@@ -2999,7 +2999,8 @@ async function respondProposal(id,status){
 }
 
 function renderPremises(){
-  const c=document.getElementById('premiseCards');if(!c)return;
+  const c=document.getElementById('premiseCards');if(!c){console.error('[renderPremises] premiseCards NOT FOUND');return}
+  console.log('[renderPremises] DB.premises='+DB.premises.length);
   if(!DB.premises.length){c.innerHTML='<div style="padding:32px;text-align:center;color:var(--tx3);font-size:13px">Нет объектов. Добавьте помещение вручную или загрузите из каталога.</div>';return}
   c.innerHTML=DB.premises.map(p=>{
     const sp=p.specs||{};
