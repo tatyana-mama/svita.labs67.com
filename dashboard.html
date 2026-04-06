@@ -997,13 +997,14 @@ Apple</button>
 <!-- ═══ ZONES ═══ -->
 <div class="sec" id="sec-zones">
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
-<div class="ph"><div><h2>Зоны помещения</h2></div></div>
-<div class="c"><div class="cb"><div class="g2">
-<div class="st" style="border-left:3px solid var(--gn)"><div class="st-l">Медицинская</div><div class="st-v" style="font-size:18px">110 м&sup2;</div></div>
-<div class="st" style="border-left:3px solid var(--ac)"><div class="st-l">Общественная</div><div class="st-v" style="font-size:18px">35 м&sup2;</div></div>
-<div class="st" style="border-left:3px solid var(--yl)"><div class="st-l">Техническая</div><div class="st-v" style="font-size:18px">20 м&sup2;</div></div>
-<div class="st" style="border-left:3px solid #8b5cf6"><div class="st-l">Служебная</div><div class="st-v" style="font-size:18px">15 м&sup2;</div></div>
-</div></div></div>
+<div class="ph"><div><h2>Зоны и зональности</h2><div class="ph-s">Зоны помещения и микрозоны внутри каждого типа кабинета</div></div></div>
+
+<!-- ZONES summary -->
+<div class="c" style="margin-bottom:16px"><div class="ch"><h3>Зоны помещения</h3></div>
+<div class="cb"><div id="zoneSummary" class="g2"></div></div></div>
+
+<!-- ZONALITIES per room type -->
+<div id="zonalityCards"></div>
 </div>
 
 </div><!-- /main -->
@@ -1039,6 +1040,30 @@ const DB={
   pickedContractors:{},
   pickedEquip:{},
   pickedStaff:{},
+  zones:[
+    {id:'medical',name:'Медицинская',color:'var(--gn)',icon:'🏥'},
+    {id:'public',name:'Общественная',color:'var(--ac)',icon:'🏛️'},
+    {id:'technical',name:'Техническая',color:'var(--yl)',icon:'⚙️'},
+    {id:'service',name:'Служебная',color:'#8b5cf6',icon:'🔒'}
+  ],
+  zonalities:{
+    'Стоматологический':[
+      {id:'work',name:'Рабочая зона',desc:'Установка + кресло пациента',icon:'🦷'},
+      {id:'doctor-desk',name:'Зона врачебного стола',desc:'Документация, компьютер, снимки',icon:'🖥️'},
+      {id:'sink',name:'Зона мойки',desc:'Раковина для мытья рук',icon:'🚿'},
+      {id:'entrance',name:'Входная зона',desc:'Дверь, порог, коврик',icon:'🚪'},
+      {id:'cabinets',name:'Зона вертикальных шкафов',desc:'Хранение материалов и инструментов',icon:'🗄️'},
+      {id:'assistant-storage',name:'Зона хранения ассистента',desc:'Лотки, боксы, расходники ассистента',icon:'📦'},
+      {id:'robot-vacuum',name:'Зона робота-пылесоса',desc:'Док-станция и зона движения',icon:'🤖'},
+      {id:'xray',name:'Зона рентгена',desc:'Прицельный рентген-аппарат',icon:'📡'},
+      {id:'patient-monitor',name:'Зона монитора пациента',desc:'Мониторинг состояния пациента',icon:'💓'},
+      {id:'shadowless-lamp',name:'Зона бестеневой лампы',desc:'Операционный светильник',icon:'💡'},
+      {id:'whitening-lamp',name:'Зона лампы отбеливания',desc:'Профессиональное отбеливание',icon:'✨'},
+      {id:'cam-local',name:'Зона локальных камер',desc:'Внутриротовая / микроскоп камера',icon:'📹'},
+      {id:'cam-cctv',name:'Зона камер видеонаблюдения',desc:'Общая камера безопасности',icon:'📷'},
+      {id:'cleaning-storage',name:'Зона хранения уборочного инвентаря',desc:'Швабры, дез. средства, контейнеры',icon:'🧹'}
+    ]
+  },
   rolePlans:{
     owner:{icon:'🏠',name:'Владелец / Заказчик',
       trial:{price:0,days:14,label:'Триал 14 дней',features:['1 проект','Обзор этапов','Базовый бюджет','Экспорт PDF (водяной знак)']},
@@ -1893,7 +1918,7 @@ function toggleCheck(el){
 
 // ═══════════════ RENDER DB CARDS ═══════════════
 function renderAll(){
-  renderProperty();renderRooms();renderContractors();renderEmployees();renderEquip();renderSelectedEquip();renderStaff();renderServices();renderSelectedServices();renderUsers();renderCabinetTypes();renderPickedRooms();renderPickedContractors();loadPropertyParams();updateRightPanel();
+  renderProperty();renderRooms();renderContractors();renderEmployees();renderEquip();renderSelectedEquip();renderStaff();renderServices();renderSelectedServices();renderUsers();renderCabinetTypes();renderPickedRooms();renderPickedContractors();renderZones();loadPropertyParams();updateRightPanel();
 }
 
 function renderRooms(){
@@ -3731,6 +3756,88 @@ function editUser(id){
 function deleteUser(id){
   DB.users=DB.users.filter(e=>e.id!=id);
   renderUsers();buildSidebar();
+}
+
+// ═══════════════ ZONES & ZONALITIES ═══════════════
+function renderZones(){
+  // 1. Zone summary — group picked rooms by zone type
+  const zs=document.getElementById('zoneSummary');
+  if(!zs)return;
+  const rooms=getPickedRoomsList();
+  const zoneMap={};
+  // Map room types to zones
+  const typeToZone={'Стоматологический':'medical','Хирургический':'medical','Ортодонтический':'medical','Рентген':'medical',
+    'Общественная':'public','Ресепшен':'public',
+    'Техническая':'technical','Стерилизаторная':'technical','Серверная':'technical',
+    'Служебная':'service'};
+  DB.zones.forEach(z=>{zoneMap[z.id]={...z,rooms:[],area:0}});
+
+  rooms.forEach(rm=>{
+    const zid=typeToZone[rm.type]||'service';
+    if(zoneMap[zid]){zoneMap[zid].rooms.push(rm);zoneMap[zid].area+=rm.area||0}
+  });
+
+  let zsHtml='';
+  DB.zones.forEach(z=>{
+    const d=zoneMap[z.id];
+    zsHtml+=`<div class="st" style="border-left:3px solid ${z.color}"><div class="st-l">${z.icon} ${z.name}</div><div class="st-v" style="font-size:18px">${d.area.toFixed(0)} м²</div><div style="font-size:10px;color:var(--tx3)">${d.rooms.length} помещений</div></div>`;
+  });
+  zs.innerHTML=zsHtml;
+
+  // 2. Zonalities per room type
+  const zc=document.getElementById('zonalityCards');
+  if(!zc)return;
+
+  // Collect unique room types from picked rooms
+  const roomTypes={};
+  rooms.forEach(rm=>{
+    if(!roomTypes[rm.type])roomTypes[rm.type]=[];
+    roomTypes[rm.type].push(rm);
+  });
+
+  let html='';
+  Object.keys(roomTypes).forEach(type=>{
+    const rms=roomTypes[type];
+    const zonalities=DB.zonalities[type]||[];
+    if(!zonalities.length)return;
+
+    html+=`<div class="c" style="padding:0;overflow:hidden;margin-bottom:12px">
+<div style="padding:14px 16px;display:flex;align-items:center;justify-content:space-between">
+<div>
+<div style="font-weight:700;font-size:14px">${type}</div>
+<div style="font-size:11px;color:var(--tx2);margin-top:2px">${rms.length} помещений · ${zonalities.length} зональностей</div>
+</div>
+<div style="font-size:10px;color:var(--tx3)">Применяется к: ${rms.map(r=>r.name).join(', ')}</div>
+</div>
+<div style="border-top:1px solid var(--bd);display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--bd)">`;
+
+    zonalities.forEach(zn=>{
+      html+=`<div style="padding:12px 14px;background:var(--sf)">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+<span style="font-size:16px">${zn.icon}</span>
+<span style="font-size:12px;font-weight:600">${zn.name}</span>
+</div>
+<div style="font-size:10px;color:var(--tx3);line-height:1.4">${zn.desc}</div>
+</div>`;
+    });
+
+    html+='</div></div>';
+  });
+
+  // Room types without zonalities
+  const noZonTypes=Object.keys(roomTypes).filter(t=>!DB.zonalities[t]);
+  if(noZonTypes.length){
+    html+=`<div class="c" style="padding:16px;text-align:center">
+<div style="font-size:11px;color:var(--tx3)">Зональности ещё не определены для: <strong>${noZonTypes.join(', ')}</strong></div>
+<div style="font-size:10px;color:var(--tx3);margin-top:4px">Будет добавлено позже</div>
+</div>`;
+  }
+
+  if(!html&&!rooms.length){
+    html='<div style="padding:24px;text-align:center;font-size:12px;color:var(--tx3)">Добавьте помещения, чтобы увидеть зональности</div>';
+  }
+
+  zc.innerHTML=html;
 }
 
 // ═══════════════ CABINET COSTS (per room) ═══════════════
