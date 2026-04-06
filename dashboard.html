@@ -2562,7 +2562,7 @@ function buildSidebar(){
     html+='<div class="si" data-nav="cabinet-types"><span class="ico">🏥</span><span class="sl">Стоимость кабинетов</span><span class="sb wip">'+getPickedRoomsList().length+'</span></div>';
   }
 
-  if(currentRole==='admin'){
+  if(currentRole==='admin'||currentRole==='owner'){
     html+='<div class="side-sec">Базы данных</div>';
     html+='<div class="si" data-nav="db-premises"><span class="ico">&#127970;</span><span class="sl">Помещения</span><span class="sb wip">'+DB.premises.length+'</span></div>';
     html+='<div class="si" data-nav="db-renovations"><span class="ico">&#128736;</span><span class="sl">Модернизация</span><span class="sb wip">'+DB.renovations.length+'</span></div>';
@@ -2572,6 +2572,8 @@ function buildSidebar(){
     html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
     html+='<div class="si" data-nav="db-contractors"><span class="ico">&#128736;</span><span class="sl">Подрядчики</span><span class="sb wip">'+DB.contractors.length+'</span></div>';
     html+='<div class="si" data-nav="db-vendor-companies"><span class="ico">&#127970;</span><span class="sl">Поставщики</span><span class="sb wip">'+(DB.vendorCompanies||[]).length+'</span></div>';
+  }
+  if(currentRole==='admin'){
     html+='<div class="side-sec">Администрирование</div>';
     html+='<div class="si" data-nav="users"><span class="ico">&#128101;</span><span class="sl">Пользователи</span><span class="sb wip">'+DB.users.length+'</span></div>';
   }
