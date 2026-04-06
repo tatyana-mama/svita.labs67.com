@@ -5698,7 +5698,7 @@ function updateTabCosts(t){
   const svcRevEl=document.getElementById('svcRevenue');
   const svcPickedCount=Object.keys(svcPicked).length;
   if(svcCountEl)svcCountEl.textContent=svcPickedCount;
-  if(svcCatsEl){const cats=new Set();Object.keys(svcPicked).forEach(id=>{const s=DB.services.find(x=>x.id==id);if(s)cats.add(s.category_id)});svcCatsEl.textContent=cats.size}
+  if(svcCatsEl){const cats=new Set();Object.keys(svcPicked).forEach(id=>{const s=DB.services.find(x=>x.id==id);if(s)cats.add(s.category||s.category_id||'Другое')});svcCatsEl.textContent=cats.size}
   if(svcAvgEl)svcAvgEl.textContent=svcPickedCount>0?Math.round(svcTotal/svcPickedCount).toLocaleString('ru'):'0';
   if(svcRevEl){const chairs=parseInt(document.getElementById('chairsCount')?.value||7);const ppd=parseInt(document.getElementById('patientsPerChair')?.value||6);const wd=parseInt(document.getElementById('workDays')?.value||22);const avgP=svcPickedCount>0?svcTotal/svcPickedCount:0;svcRevEl.textContent=Math.round(avgP*chairs*ppd*wd).toLocaleString('ru')}
   const s5t=document.getElementById('s5Total');
