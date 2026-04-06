@@ -1736,6 +1736,11 @@ const sb=(typeof supabase!=='undefined')?supabase.createClient(SB_URL,SB_KEY):nu
 const ADMIN_EMAILS=['scyraai@proton.me','artem@labs67.com'];
 // Helper: escape HTML for safe attribute/content injection
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+// Per-user localStorage helpers
+function uKey(k){const uid=currentUser&&currentUser.id?currentUser.id:'anon';return k+'_'+uid}
+function uSet(k,v){localStorage.setItem(uKey(k),v)}
+function uGet(k){return localStorage.getItem(uKey(k))}
+function uRemove(k){localStorage.removeItem(uKey(k))}
 // Helper: extract ru name from multilingual JSON or string
 function i18n(v){
   if(!v)return'—';
@@ -1920,7 +1925,7 @@ let activeProperty={
   type:'Коммерческое',purpose:'Стоматология',
   price_m2:67,source:'OLX'
 };
-try{const _sp=localStorage.getItem('svita_property');if(_sp&&_sp!=='null'){activeProperty=JSON.parse(_sp)}else{activeProperty=null}}catch(e){activeProperty=null}
+// Property loaded per-user in enterApp()
 
 function renderProperty(){
   const wrap=document.getElementById('propertyCardWrap');
@@ -1964,7 +1969,7 @@ function fpPropEdit(key,val){
   if(!activeProperty)return;
   const numFields=['area','floor','floors_total','length','width','height','price_m2'];
   activeProperty[key]=numFields.includes(key)?parseFloat(val)||0:val;
-  localStorage.setItem('svita_property',JSON.stringify(activeProperty));
+  uSet('svita_property',JSON.stringify(activeProperty));
   // Re-render dependent stats without full re-render (avoid losing focus)
   const usable=Math.round(activeProperty.area*0.85);
   const cabinets=Math.floor(usable/14);
@@ -1981,7 +1986,7 @@ function fpPropEdit(key,val){
 function clearProperty(){
   if(!confirm('Удалить помещение? Все привязанные данные (планировка, комнаты, оборудование по комнатам, работы по модернизации) будут сброшены.'))return;
   activeProperty=null;
-  localStorage.removeItem('svita_property');
+  uRemove('svita_property');
   // Каскадное обнуление — источник правды = помещение
   // 1. Планировка
   if(FP){FP.rooms=[];FP.elements=[];fpSave();fpDraw();fpUpdateList()}
@@ -1992,21 +1997,21 @@ function clearProperty(){
   // 4. Работы по модернизации (привязаны к помещению)
   DB.pickedRenovations={};
   // 5. Параметры помещения (chips)
-  localStorage.removeItem('svita_prop_params');
+  uRemove('svita_prop_params');
   // Re-render всё
   renderProperty();buildSidebar();renderAll();recalc();
 }
 function restoreProperty(p){
   const wasOther=activeProperty&&activeProperty.id!==p.id;
   activeProperty=p;
-  localStorage.setItem('svita_property',JSON.stringify(p));
+  uSet('svita_property',JSON.stringify(p));
   if(wasOther){
     // Новое помещение — сброс привязок старого
     if(FP){FP.rooms=[];FP.elements=[];fpSave();fpDraw();fpUpdateList()}
     DB.pickedRooms={};
     DB.pickedRenovations={};
     Object.values(DB.pickedEquip||{}).forEach(pe=>{delete pe.room});
-    localStorage.removeItem('svita_prop_params');
+    uRemove('svita_prop_params');
     buildSidebar();renderAll();
   }
   renderProperty();recalc();
@@ -2016,11 +2021,11 @@ const PICKED_KEYS=['pickedEquip','pickedRenovations','pickedStaff','pickedServic
 function savePicked(){
   const obj={};
   PICKED_KEYS.forEach(k=>{obj[k]=DB[k]||{}});
-  localStorage.setItem('svita_picked',JSON.stringify(obj));
+  uSet('svita_picked',JSON.stringify(obj));
 }
 function loadPicked(){
   try{
-    const raw=localStorage.getItem('svita_picked');if(!raw)return;
+    const raw=uGet('svita_picked');if(!raw)return;
     const obj=JSON.parse(raw);
     PICKED_KEYS.forEach(k=>{if(obj[k])DB[k]=obj[k]});
   }catch(e){}
@@ -2030,13 +2035,13 @@ const BM_FIELDS=['cType','cBrand','cCity','cDate','cFormat','cAudience','cUsp','
 function saveBusinessModel(){
   const bm={};
   BM_FIELDS.forEach(k=>{const el=document.getElementById(k);if(el)bm[k]=el.value});
-  localStorage.setItem('svita_bm',JSON.stringify(bm));
+  uSet('svita_bm',JSON.stringify(bm));
   const btn=document.querySelector('.ch .gn');
   if(btn){const old=btn.textContent;btn.textContent='✓ Сохранено';setTimeout(()=>btn.textContent=old,1500)}
 }
 function loadBusinessModel(){
   try{
-    const raw=localStorage.getItem('svita_bm');
+    const raw=uGet('svita_bm');
     if(!raw)return;
     const bm=JSON.parse(raw);
     BM_FIELDS.forEach(k=>{const el=document.getElementById(k);if(el&&bm[k])el.value=bm[k]});
@@ -2045,7 +2050,7 @@ function loadBusinessModel(){
 
 function saveProperty(){
   if(!activeProperty)return;
-  localStorage.setItem('svita_property',JSON.stringify(activeProperty));
+  uSet('svita_property',JSON.stringify(activeProperty));
   const b=document.querySelector('#propertyCardWrap .ch h3');
   if(b){const old=b.textContent;b.textContent='✓ Сохранено!';setTimeout(()=>b.textContent=old,1500)}
 }
@@ -2142,12 +2147,12 @@ function savePropertyParams(){
   params.ceilMin=document.getElementById('propCeilMin')?.value;
   params.ceilMax=document.getElementById('propCeilMax')?.value;
   params.notes=document.getElementById('propNotes')?.value;
-  localStorage.setItem('svita_prop_params',JSON.stringify(params));
+  uSet('svita_prop_params',JSON.stringify(params));
 }
 
 function loadPropertyParams(){
   try{
-    const raw=localStorage.getItem('svita_prop_params');
+    const raw=uGet('svita_prop_params');
     if(!raw)return;
     const p=JSON.parse(raw);
     Object.keys(p).forEach(k=>{
@@ -2429,9 +2434,11 @@ function enterApp(){
     }
   }
   // Restore property card state
-  const savedProp=localStorage.getItem('svita_property');
+  const savedProp=uGet('svita_property');
   if(savedProp){try{activeProperty=JSON.parse(savedProp)}catch(e){}}
   loadPicked();loadBusinessModel();
+  achUnlocked=new Set(JSON.parse(uGet('svita_ach')||'[]'));
+  try{itemImages=JSON.parse(uGet('svita_images')||'{}')}catch(e){itemImages={}}
   fpInit();
   buildSidebar();
   renderAll();
@@ -3036,17 +3043,17 @@ ${p.source?`<a href="${esc(p.source)}" target="_blank" rel="noopener" class="btn
 }
 
 function selectPremiseAsProperty(id){
-  const p=DB.premises.find(x=>x.id===id);if(!p)return;
+  const p=DB.premises.find(x=>x.id==id);if(!p)return;
   const sp=p.specs||{};
   const area=sp.area||0;
   const side=Math.round(Math.sqrt(area)*10)/10;
   activeProperty={id:p.id,name:sp.address||p.name,city:sp.city+(sp.district?', '+sp.district:''),area:area,floor:sp.floor||0,floors_total:sp.floors||1,length:side,width:area?Math.round(area/side*10)/10:0,height:sp.height||2.9,type:sp.type||'Коммерческое',purpose:sp.purpose||'usługowy',price_m2:sp.price_m2||(area?Math.round(p.price/area):0),source:p.source||''};
-  localStorage.setItem('svita_property',JSON.stringify(activeProperty));
+  uSet('svita_property',JSON.stringify(activeProperty));
   renderProperty();buildSidebar();recalc();nav('s1');
 }
 
 function editPremise(id){
-  const p=DB.premises.find(x=>x.id===id);if(!p)return;
+  const p=DB.premises.find(x=>x.id==id);if(!p)return;
   openModal('premise');
   editingId=id;
   const sp=p.specs||{};
@@ -3181,7 +3188,7 @@ function renderSuppliers(){
 }
 
 function editEmployee(id){
-  const r=DB.employees.find(x=>x.id===id);if(!r)return;
+  const r=DB.employees.find(x=>x.id==id);if(!r)return;
   modalMode='employee';editingId=r.id;
   document.getElementById('modalTitle').textContent='Редактировать сотрудника';
   const fields=MODAL_FIELDS.employee;
@@ -3332,7 +3339,7 @@ function setRenActionPrice(renId,ai,val){
 function getRenItemCost(id){
   const p=DB.pickedRenovations[id];if(!p)return 0;
   if(p.actions&&p.actions.length)return p.actions.reduce((s,a)=>s+a.price,0);
-  const r=DB.renovations.find(x=>x.id===id);
+  const r=DB.renovations.find(x=>x.id==id);
   return(p.customPrice!=null?p.customPrice:(r?r.price:0))*(p.qty||1);
 }
 function toggleRenExpand(renId){
@@ -3353,7 +3360,7 @@ function renderSelectedRenovations(){
   const groups={};
   let totalCost=0,doneCount=0;
   pickedIds.forEach(id=>{
-    const r=DB.renovations.find(x=>x.id===id);if(!r)return;
+    const r=DB.renovations.find(x=>x.id==id);if(!r)return;
     const cat=r.cat||'Другое';
     if(!groups[cat])groups[cat]=[];
     const p=picked[id];
@@ -3415,7 +3422,7 @@ function renderPickedRooms(){
   if(!ids.length){c.innerHTML='<div style="padding:12px;text-align:center;font-size:11px;color:var(--tx3)">Добавьте комнаты из БД Помещений</div>';return}
   let html='';
   ids.forEach(id=>{
-    const r=DB.rooms.find(x=>x.id===id);
+    const r=DB.rooms.find(x=>x.id==id);
     if(!r)return;
     html+=`<div class="ci cost-row"><div class="ct" style="flex:1">${r.name}<div class="ct-sub">${r.type} · ${r.area} м²</div></div><button class="btn sm" style="color:var(--rd)" onclick="togglePick('pickedRooms','${r.id}','rooms')">✕</button></div>`;
   });
@@ -3428,7 +3435,7 @@ function renderPickedContractors(){
   if(!ids.length){c.innerHTML='<div style="padding:12px;text-align:center;font-size:11px;color:var(--tx3)">Назначьте подрядчиков из БД</div>';return}
   let html='';
   ids.forEach(id=>{
-    const r=DB.contractors.find(x=>x.id===id);
+    const r=DB.contractors.find(x=>x.id==id);
     if(!r)return;
     html+=`<div class="ci cost-row"><div class="ct" style="flex:1">${r.name}<div class="ct-sub">${r.spec} · ${r.city} · ${r.price}</div></div><button class="btn sm" style="color:var(--rd)" onclick="togglePick('pickedContractors','${r.id}','contractors')">✕</button></div>`;
   });
@@ -3554,7 +3561,7 @@ function renderSelectedEquip(){
       html+='<div class="cb">';
       g.picked.forEach(r=>{
         const roomId=picked[r.id].room||'';
-        const roomOpts=getPickedRoomsList().map(rm=>`<option value="${rm.id}" ${String(rm.id)===String(roomId)?'selected':''}>${rm.name}</option>`).join('');
+        const roomOpts=getPickedRoomsList().map(rm=>`<option value="${rm.id}" ${rm.id==roomId?'selected':''}>${rm.name}</option>`).join('');
         const isCustom=picked[r.id].customPrice!=null;
         html+=`<div class="ci cost-row" style="flex-wrap:nowrap"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.supplier}</div></div><select onchange="assignEquipRoom('${r.id}',this.value)" style="font-size:10px;padding:3px 6px;border:1px solid var(--bd);border-radius:6px;background:var(--sf);color:var(--tx);max-width:130px;flex-shrink:0"><option value="">— комната</option>${roomOpts}</select><div class="sel-qty" style="margin:0 4px"><button onclick="eqSelQty('${r.id}',-1)">−</button><span id="eq_${r.id}">${r.qty}</span><button onclick="eqSelQty('${r.id}',1)">+</button></div><div style="display:flex;align-items:center;gap:2px;min-width:100px;justify-content:flex-end"><input type="number" value="${r.unitPrice}" onchange="setCustomPrice('equip','${r.id}',this.value)" style="width:60px;font-size:11px;font-weight:700;color:${isCustom?'var(--or)':'var(--ac2)'};text-align:right;border:1px solid var(--bd);border-radius:4px;padding:2px 4px;background:var(--sf)"><span style="font-size:10px;color:var(--tx3)">PLN</span></div><button class="btn sm" style="color:var(--rd);flex-shrink:0" onclick="togglePickEquip('${r.id}')">✕</button></div>`;
       });
@@ -3565,7 +3572,7 @@ function renderSelectedEquip(){
   c.innerHTML=html;
 
   // Update stats
-  const prices=pickedIds.map(id=>{const s=DB.suppliers.find(x=>x.id===id);const p=picked[id];return p&&p.customPrice!=null?p.customPrice:s?s.price:0});
+  const prices=pickedIds.map(id=>{const s=DB.suppliers.find(x=>x.id==id);const p=picked[id];return p&&p.customPrice!=null?p.customPrice:s?s.price:0});
   document.getElementById('eqCount').textContent=pickedIds.length;
   document.getElementById('eqTotal').textContent=totalCost.toLocaleString('ru');
   document.getElementById('eqCats').textContent=catKeys.filter(cat=>allCats[cat].picked.length>0).length;
@@ -3581,7 +3588,7 @@ function eqSelQty(id,d){
 }
 function getPickedRoomsList(){
   // Из каталога БД
-  const fromDB=Object.keys(DB.pickedRooms).map(id=>DB.rooms.find(r=>r.id===id)).filter(Boolean);
+  const fromDB=Object.keys(DB.pickedRooms).map(id=>DB.rooms.find(r=>r.id==id)).filter(Boolean);
   // Из конструктора планировки
   const fromFP=(FP&&FP.rooms||[]).map((r,i)=>{
     const bb=fpPolyBBox(r.pts);
@@ -3821,7 +3828,7 @@ function fpInit(){
       }
     }
   });
-  const saved=localStorage.getItem('svita_floorplan');
+  const saved=uGet('svita_floorplan');
   if(saved){try{const d=JSON.parse(saved);FP.rooms=(d.rooms||[]).map(r=>fpEnsurePoly(r));FP.elements=d.elements||[];FP.scale=d.scale||20;FP.ox=d.ox||40;FP.oy=d.oy||40;
     console.log('[SVITA] Loaded: '+FP.rooms.length+' rooms, '+FP.elements.length+' elements');
   }catch(e){console.error('[SVITA] Failed to load saved data:',e)}}
@@ -4818,7 +4825,7 @@ function fpSave(){
   const json=JSON.stringify(data);
   // PROTECTION: never overwrite real data with empty state
   const hasData=FP.rooms.length>0||FP.elements.length>0;
-  const existing=localStorage.getItem('svita_floorplan');
+  const existing=uGet('svita_floorplan');
   if(!hasData&&existing){
     try{const old=JSON.parse(existing);if((old.rooms&&old.rooms.length)||(old.elements&&old.elements.length)){
       console.warn('fpSave blocked: refusing to overwrite '+old.rooms.length+' rooms with empty state');
@@ -4827,12 +4834,12 @@ function fpSave(){
   }
   // Keep rolling backup (last 3 saves)
   if(existing){
-    const bk2=localStorage.getItem('svita_floorplan_bk2');
-    const bk1=localStorage.getItem('svita_floorplan_bk1');
-    if(bk1)localStorage.setItem('svita_floorplan_bk2',bk1);
-    localStorage.setItem('svita_floorplan_bk1',existing);
+    const bk2=uGet('svita_floorplan_bk2');
+    const bk1=uGet('svita_floorplan_bk1');
+    if(bk1)uSet('svita_floorplan_bk2',bk1);
+    uSet('svita_floorplan_bk1',existing);
   }
-  localStorage.setItem('svita_floorplan',json);
+  uSet('svita_floorplan',json);
   // Auto-export backup to file every 10 saves
   FP._saveCount=(FP._saveCount||0)+1;
   if(FP._saveCount%10===0){try{fpAutoBackup(data)}catch(e){}}
@@ -5001,7 +5008,7 @@ function renderStaff(){
   const picked=DB.pickedStaff||{};
   const pickedIds=Object.keys(picked);
   // Show only picked staff in tab 4
-  const items=pickedIds.map(id=>DB.employees.find(e=>e.id===id)).filter(Boolean);
+  const items=pickedIds.map(id=>DB.employees.find(e=>e.id==id)).filter(Boolean);
   // Stats
   let totalFot=0;
   items.forEach(r=>{totalFot+=(r.salary||0)});
@@ -5037,7 +5044,7 @@ function renderStaff(){
 }
 
 function editStaff(id){
-  const item=DB.employees.find(e=>e.id===id);
+  const item=DB.employees.find(e=>e.id==id);
   if(!item)return;
   editingId=id;
   modalMode='staff';
@@ -5048,7 +5055,7 @@ function editStaff(id){
 }
 
 function deleteStaff(id){
-  DB.employees=DB.employees.filter(e=>e.id!==id);
+  DB.employees=DB.employees.filter(e=>e.id!=id);
   renderStaff();buildSidebar();recalc();
 }
 
@@ -5161,7 +5168,7 @@ function eqQty(btn,d){
   recalc();
 }
 function updEquipPrice(inp,sid){
-  const item=DB.suppliers.find(s=>s.id===sid);
+  const item=DB.suppliers.find(s=>s.id==sid);
   if(item)item.price=parseInt(inp.value)||0;
   recalc();
 }
@@ -5283,17 +5290,17 @@ function renderRoleCabinets(){
 }
 
 function changeUserRole(id,role){
-  const u=DB.users.find(x=>x.id===id);
+  const u=DB.users.find(x=>x.id==id);
   if(u){u.role=role;if(role==='admin')u.plan='admin';else if(!u.plan||u.plan==='admin')u.plan='trial';}
   renderUsers();buildSidebar();
 }
 function changeUserPlan(id,plan){
-  const u=DB.users.find(x=>x.id===id);
+  const u=DB.users.find(x=>x.id==id);
   if(u)u.plan=plan;
   renderUsers();
 }
 function editUser(id){
-  const item=DB.users.find(e=>e.id===id);
+  const item=DB.users.find(e=>e.id==id);
   if(!item)return;
   editingId=id;
   modalMode='user';
@@ -5303,7 +5310,7 @@ function editUser(id){
   document.getElementById('modalBg').classList.add('vis');
 }
 function deleteUser(id){
-  DB.users=DB.users.filter(e=>e.id!==id);
+  DB.users=DB.users.filter(e=>e.id!=id);
   renderUsers();buildSidebar();
 }
 
@@ -5402,7 +5409,7 @@ function renderCabinetTypes(){
   let totalAssigned=0,grandTotal=0;
 
   Object.entries(picked).forEach(([id,p])=>{
-    const item=DB.suppliers.find(s=>s.id===id);
+    const item=DB.suppliers.find(s=>s.id==id);
     if(!item)return;
     const qty=p.qty||1;
     const cost=item.price*qty;
@@ -5583,7 +5590,7 @@ function saveModal(){
   // Edit existing item
   if(editingId&&table){
     const arr=DB[table];
-    const idx=arr.findIndex(x=>x.id===editingId);
+    const idx=arr.findIndex(x=>x.id==editingId);
     if(idx!==-1){
       Object.assign(arr[idx],obj);
       editingId=null;
@@ -5622,7 +5629,7 @@ function calcTotals(){
   const eng=getAllCosts('elec_')+getAllCosts('water_')+getAllCosts('vent_')+getAllCosts('sec_');
   let equip=0;
   Object.entries(DB.pickedEquip||{}).forEach(([id,p])=>{
-    const item=DB.suppliers.find(s=>s.id===id);
+    const item=DB.suppliers.find(s=>s.id==id);
     if(item)equip+=(p.customPrice!=null?p.customPrice:item.price)*(p.qty||1);
   });
   const docs=getAllCosts('doc_');
@@ -5681,7 +5688,7 @@ function updateTabCosts(t){
   // Tab 4: Персонал — ФОТ/мес
   let fot=0;
   Object.entries(DB.pickedStaff||{}).forEach(([id,p])=>{
-    const e=DB.employees.find(x=>x.id===id);
+    const e=DB.employees.find(x=>x.id==id);
     if(e)fot+=(e.salary||0)*(p.qty||1);
   });
   const tc4=document.getElementById('tabCost4');
@@ -5690,7 +5697,7 @@ function updateTabCosts(t){
   let svcTotal=0;
   const svcPicked=DB.pickedServices||{};
   Object.entries(svcPicked).forEach(([id,p])=>{
-    const s=DB.services.find(x=>x.id===id);
+    const s=DB.services.find(x=>x.id==id);
     if(s)svcTotal+=(p.customPrice!=null?p.customPrice:s.price)*(p.qty||1);
   });
   const tc5=document.getElementById('tabCost5');
@@ -5702,7 +5709,7 @@ function updateTabCosts(t){
   const svcRevEl=document.getElementById('svcRevenue');
   const svcPickedCount=Object.keys(svcPicked).length;
   if(svcCountEl)svcCountEl.textContent=svcPickedCount;
-  if(svcCatsEl){const cats=new Set();Object.keys(svcPicked).forEach(id=>{const s=DB.services.find(x=>x.id===id);if(s)cats.add(s.category||s.category_id||'Другое')});svcCatsEl.textContent=cats.size}
+  if(svcCatsEl){const cats=new Set();Object.keys(svcPicked).forEach(id=>{const s=DB.services.find(x=>x.id==id);if(s)cats.add(s.category||s.category_id||'Другое')});svcCatsEl.textContent=cats.size}
   if(svcAvgEl)svcAvgEl.textContent=svcPickedCount>0?Math.round(svcTotal/svcPickedCount).toLocaleString('ru'):'0';
   if(svcRevEl){const chairs=parseInt(document.getElementById('chairsCount')?.value||7);const ppd=parseInt(document.getElementById('patientsPerChair')?.value||6);const wd=parseInt(document.getElementById('workDays')?.value||22);const avgP=svcPickedCount>0?svcTotal/svcPickedCount:0;svcRevEl.textContent=Math.round(avgP*chairs*ppd*wd).toLocaleString('ru')}
   const s5t=document.getElementById('s5Total');
@@ -5736,6 +5743,7 @@ function updateOverviewStats(){
   // Stage progress based on real data
   const stages=document.querySelectorAll('#stagesGrid .stg');
   if(!stages.length)return;
+  const t=calcTotals();
 
   // S1: Помещение — has property + rooms
   const s1prog=activeProperty?50:0;
@@ -5819,7 +5827,7 @@ const ACHIEVEMENTS=[
   {id:'all5',icon:'&#11088;',name:'Все этапы',desc:'Все 5 табов зелёные',check:()=>document.querySelectorAll('#tabBar .tab.ok').length>=5},
   {id:'roi',icon:'&#127942;',name:'Быстрый старт',desc:'Окупаемость < 24 мес',check:()=>{const t=calcTotals();const p=t.revenue-t.expenses;return p>0&&t.grand>0&&Math.ceil(t.grand/p)<24}}
 ];
-const achUnlocked=new Set(JSON.parse(localStorage.getItem('svita_ach')||'[]'));
+let achUnlocked=new Set();
 
 function updateAchievements(){
   const grid=document.getElementById('achGrid');
@@ -5835,7 +5843,7 @@ function updateAchievements(){
   });
   grid.innerHTML=html;
   document.getElementById('achCount').textContent=count+' / '+ACHIEVEMENTS.length;
-  localStorage.setItem('svita_ach',JSON.stringify([...achUnlocked]));
+  uSet('svita_ach',JSON.stringify([...achUnlocked]));
   if(newUnlock)showAchToast(count);
 }
 function showAchToast(count){
@@ -5994,7 +6002,7 @@ function updateRightPanel(){
     const picked=DB.pickedServices||{};
     const pIds=Object.keys(picked);
     let total=0;
-    pIds.forEach(id=>{const s=DB.services.find(x=>x.id===id);if(s)total+=(picked[id].customPrice!=null?picked[id].customPrice:s.price)*(picked[id].qty||1)});
+    pIds.forEach(id=>{const s=DB.services.find(x=>x.id==id);if(s)total+=(picked[id].customPrice!=null?picked[id].customPrice:s.price)*(picked[id].qty||1)});
     const avgP=pIds.length?Math.round(total/pIds.length):0;
     html+=`<div class="rp-sec"><div class="rp-sec-title">Ценообразование</div>
     <div class="rp-stat"><span class="rp-stat-label">Процедур</span><span class="rp-stat-val">${pIds.length}</span></div>
@@ -6011,7 +6019,7 @@ function updateRightPanel(){
 }
 
 // ═══════════════ PHOTO UPLOAD ═══════════════
-const itemImages=JSON.parse(localStorage.getItem('svita_images')||'{}');
+let itemImages={};
 
 function uploadPhoto(table,id){
   const inp=document.createElement('input');
@@ -6022,7 +6030,7 @@ function uploadPhoto(table,id){
     reader.onload=function(e){
       const key=table+'_'+id;
       itemImages[key]=e.target.result;
-      localStorage.setItem('svita_images',JSON.stringify(itemImages));
+      uSet('svita_images',JSON.stringify(itemImages));
       renderAll();
     };
     reader.readAsDataURL(file);
@@ -6054,7 +6062,7 @@ function lbDelete(){
   const lb=document.getElementById('lightbox');
   const key=lb.dataset.table+'_'+lb.dataset.id;
   delete itemImages[key];
-  localStorage.setItem('svita_images',JSON.stringify(itemImages));
+  uSet('svita_images',JSON.stringify(itemImages));
   closeLightbox();
   renderAll();
 }
