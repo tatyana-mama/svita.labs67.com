@@ -922,16 +922,16 @@ Apple</button>
 <div class="c"><div class="ch"><h3>&#127973; Бизнес-модель</h3><button class="btn sm gn" onclick="saveBusinessModel()">Сохранить</button></div>
 <div class="cb">
 <div class="g2">
-<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Тип учреждения</div><input class="price-edit" id="cType" placeholder="Стоматологическая клиника" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
-<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Бренд</div><input class="price-edit" id="cBrand" placeholder="Название вашего бренда" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
-<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Город</div><input class="price-edit" id="cCity" placeholder="Город, Страна" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
-<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Целевое открытие</div><input class="price-edit" id="cDate" placeholder="Месяц 2026" style="font-size:13px;font-weight:700;margin-top:4px;width:100%;color:var(--ac2)"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">BUSINESS TYPE</div><input class="price-edit" id="cType" placeholder="e.g. Dental clinic, Veterinary, Beauty salon..." style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">BRAND NAME</div><input class="price-edit" id="cBrand" placeholder="Your brand or clinic name" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">CITY</div><input class="price-edit" id="cCity" placeholder="e.g. Warsaw, Poland" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">TARGET OPENING</div><input class="price-edit" id="cDate" placeholder="e.g. September 2026" style="font-size:13px;font-weight:700;margin-top:4px;width:100%;color:var(--ac2)"></div>
 </div>
 <div class="g2" style="margin-top:12px">
-<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Формат</div><input class="price-edit" id="cFormat" placeholder="Премиум / Эконом / Средний" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
-<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Целевая аудитория</div><input class="price-edit" id="cAudience" placeholder="Кто ваши клиенты?" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
-<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">УТП</div><input class="price-edit" id="cUsp" placeholder="Чем вы отличаетесь?" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
-<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Технология</div><input class="price-edit" id="cTech" placeholder="Какие технологии используете?" style="font-size:13px;font-weight:700;margin-top:4px;width:100%;color:var(--gn)"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">FORMAT</div><input class="price-edit" id="cFormat" placeholder="e.g. Premium, Economy, Mid-range" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">TARGET AUDIENCE</div><input class="price-edit" id="cAudience" placeholder="e.g. Age 25-55, middle+ class, families" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">USP</div><input class="price-edit" id="cUsp" placeholder="What makes you different? e.g. AI-powered, painless" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
+<div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">TECHNOLOGY</div><input class="price-edit" id="cTech" placeholder="e.g. CBCT 3D, CAD/CAM, Digital workflow" style="font-size:13px;font-weight:700;margin-top:4px;width:100%;color:var(--gn)"></div>
 </div>
 </div></div>
 
@@ -1987,6 +1987,8 @@ function savePicked(){
   uSet('svita_picked',JSON.stringify(obj));
 }
 function loadPicked(){
+  // Always reset first to prevent data bleed between accounts
+  PICKED_KEYS.forEach(k=>{DB[k]={}});
   try{
     const raw=uGet('svita_picked');if(!raw)return;
     const obj=JSON.parse(raw);
@@ -2419,7 +2421,14 @@ function enterApp(){
 
 async function logout(){
   logAction('logout','auth');
-  currentUser=null;
+  currentUser=null;currentRole=null;
+  // Clear in-memory data to prevent bleed between accounts
+  PICKED_KEYS.forEach(k=>{DB[k]={}});
+  DB.docItems=[];
+  activeProperty=null;
+  if(FP){FP.rooms=[];FP.elements=[];if(typeof fpDraw==='function')fpDraw()}
+  achUnlocked=new Set();itemImages={};
+  window._currentConceptId=null;window._currentConceptName=null;
   localStorage.removeItem('svita_role');
   if(sb)await sb.auth.signOut();
   document.getElementById('loginScreen').classList.remove('hidden');
@@ -3395,33 +3404,118 @@ function renderSelectedRenovations(){
 
 // Render picked items inside tabs
 // ═══ ДОКУМЕНТАЦИЯ (sec-docs) ═══
-const DOC_CATS=['Юридическое оформление','Sanepid / PSSE','Медицинские документы','Страхование и безопасность','Прочее'];
+const DOC_CATS=['Регистрация компании','Медицинская регистрация (RPWDL)','Sanepid / PSSE','Пожарная безопасность','Помещение и строительство','RODO / Защита данных','Отходы и экология (BDO)','Страхование','NFZ / Частная практика','Персонал и лицензии','Оборудование и сертификация','Радиационная безопасность (RTG)','Фармацевтика и препараты','Доступность (Dostępność)','Прочее'];
 const ADMIN_DOC_ITEMS=[
-  {cat:'Юридическое оформление',name:'Регистрация юр. лица (sp. z o.o. / s.c.)',price:1500,required:true},
-  {cat:'Юридическое оформление',name:'Регистрация в RPWDL',desc:'Воеводский уряд — обязательна для медицинских учреждений',price:500,required:true},
-  {cat:'Юридическое оформление',name:'NIP, REGON, KRS / CEIDG',price:300,required:true},
-  {cat:'Юридическое оформление',name:'Расчётный счёт + терминал оплаты',price:200},
-  {cat:'Sanepid / PSSE',name:'Санитарно-гигиеническая экспертиза',desc:'PSSE (Powiatowa Stacja Sanitarno-Epidemiologiczna)',price:3000,required:true},
-  {cat:'Sanepid / PSSE',name:'Проект технологический',desc:'Архитектурный проект с указанием зон, потоков, вентиляции',price:5000,required:true},
-  {cat:'Sanepid / PSSE',name:'ППК — Программа предпосылочных контролей',desc:'Процедуры мытья, дезинфекции, стерилизации',price:3500,required:true},
-  {cat:'Sanepid / PSSE',name:'Договоры: стирка, дезинсекция, утилизация отходов',price:2000,required:true},
-  {cat:'Sanepid / PSSE',name:'Протоколы качества воды + воздуха',price:1500,required:true},
-  {cat:'Медицинские документы',name:'Медсправки персонала',desc:'Книжка zdrowia для каждого сотрудника',price:2000,required:true},
-  {cat:'Медицинские документы',name:'Сертификаты врачей (PWZ)',desc:'Проверка в Okręgowa Izba Lekarska',price:0,required:true},
-  {cat:'Медицинские документы',name:'Штатное расписание + должностные инструкции',price:1500},
-  {cat:'Страхование и безопасность',name:'OC — страхование ответственности',desc:'Обязательное для медицинских учреждений',price:4000,required:true},
-  {cat:'Страхование и безопасность',name:'RODO — обработка персональных данных',desc:'IOD, реестр процессов, политика конфиденциальности',price:2500},
-  {cat:'Страхование и безопасность',name:'Пожарная безопасность',desc:'Przegląd gaśnic, oznakowanie dróg ewakuacyjnych',price:1500},
-  {cat:'Страхование и безопасность',name:'BHP — охрана труда',price:1000},
-  {cat:'Прочее',name:'Договор аренды (нотариальное заверение)',price:1000},
-  {cat:'Прочее',name:'Вывеска + информационная табличка',price:800},
+{cat:'Регистрация компании',name:'Rejestracja sp. z o.o. w KRS',desc:'Krajowy Rejestr Sądowy — судебный реестр. Акт нотариуса, устав, подача',price:1500,required:true},
+{cat:'Регистрация компании',name:'Wpis do CEIDG (для ИП)',desc:'Centralna Ewidencja — альтернатива KRS, бесплатно онлайн',price:0,required:false},
+{cat:'Регистрация компании',name:'NIP — налоговый номер',desc:'Выдаётся Urząd Skarbowy автоматически при регистрации',price:0,required:true},
+{cat:'Регистрация компании',name:'REGON — статистический номер',desc:'Выдаётся GUS автоматически',price:0,required:true},
+{cat:'Регистрация компании',name:'VAT-R — регистрация НДС',desc:'Подача в Urząd Skarbowy. Стоматология может быть zwolniona с VAT',price:170,required:true},
+{cat:'Регистрация компании',name:'Konto firmowe — расчётный счёт',desc:'Банковский счёт + терминал. Обязательно для sp. z o.o.',price:200,required:true},
+{cat:'Регистрация компании',name:'Pieczątka firmowa — печать',desc:'Круглая печать с NIP, REGON, названием и адресом',price:120,required:true},
+{cat:'Регистрация компании',name:'Usługi księgowe (rok) — бухгалтерия',desc:'Biuro rachunkowe — обязательное ведение бухгалтерии',price:12000,required:true},
+{cat:'Медицинская регистрация (RPWDL)',name:'Wpis do RPWDL',desc:'Rejestr Podmiotów Wykonujących Działalność Leczniczą. Через Wojewoda',price:500,required:true},
+{cat:'Медицинская регистрация (RPWDL)',name:'Regulamin organizacyjny',desc:'Структура клиники, виды услуг, права пациентов',price:2000,required:true},
+{cat:'Медицинская регистрация (RPWDL)',name:'Kierownik medyczny',desc:'Врач с мин. 5 лет стажа. Подаётся в RPWDL',price:0,required:true},
+{cat:'Медицинская регистрация (RPWDL)',name:'Oświadczenie o spełnieniu warunków',desc:'Декларация соответствия помещения и оборудования',price:0,required:true},
+{cat:'Медицинская регистрация (RPWDL)',name:'Консультация prawna RPWDL',desc:'Юрист по медицинскому праву — подготовка документов',price:3000,required:false},
+{cat:'Sanepid / PSSE',name:'Projekt technologiczny gabinetu',desc:'Архитектурный план: зоны, потоки, вентиляция, водоснабжение',price:6000,required:true},
+{cat:'Sanepid / PSSE',name:'Opinia sanitarna PSSE',desc:'Инспекция помещения перед открытием. Без этого нельзя RPWDL',price:0,required:true},
+{cat:'Sanepid / PSSE',name:'Badania wody — анализ воды',desc:'Бактериология, химия. Accredited lab. Раз в год',price:800,required:true},
+{cat:'Sanepid / PSSE',name:'Badania powietrza',desc:'Чистота воздуха в кабинетах. Обязательно при кондиционировании',price:700,required:true},
+{cat:'Sanepid / PSSE',name:'Program PPC (гигиена)',desc:'Процедуры мытья, дезинфекции, стерилизации по зонам',price:3500,required:true},
+{cat:'Sanepid / PSSE',name:'Umowa na pranie odzieży med.',desc:'Профессиональная прачечная с сертификатом',price:500,required:true},
+{cat:'Sanepid / PSSE',name:'Umowa DDD (дезинсекция)',desc:'Периодическая обработка от насекомых и грызунов',price:1200,required:true},
+{cat:'Sanepid / PSSE',name:'Książka kontroli sanitarnej',desc:'Журнал для фиксации проверок Sanepid',price:50,required:true},
+{cat:'Sanepid / PSSE',name:'Przegląd wentylacji',desc:'Ежегодный протокол эффективности вентиляции',price:1500,required:true},
+{cat:'Пожарная безопасность',name:'IBP — инструкция пожарной безопасности',desc:'Обязательна для помещений >1000m³ или >50 человек',price:2500,required:true},
+{cat:'Пожарная безопасность',name:'Przegląd gaśnic — проверка огнетушителей',desc:'Ежегодный осмотр. Мин. 1 gaśnica на 100m²',price:500,required:true},
+{cat:'Пожарная безопасность',name:'Oznakowanie ewakuacyjne',desc:'Фотолюминесцентные знаки, план эвакуации, аварийное освещение',price:1500,required:true},
+{cat:'Пожарная безопасность',name:'Szkolenie PPOŻ',desc:'Обучение персонала пожарной безопасности. Раз в год',price:800,required:true},
+{cat:'Пожарная безопасность',name:'Odbiór PSP (Straż Pożarna)',desc:'Инспекция при смене назначения помещения',price:0,required:false},
+{cat:'Помещение и строительство',name:'Umowa najmu (нотариальная)',desc:'Нотариальное заверение для RPWDL. Мин. 5-10 лет',price:1500,required:true},
+{cat:'Помещение и строительство',name:'Zmiana sposobu użytkowania',desc:'Если помещение не было медицинским — Nadzór Budowlany',price:2000,required:false},
+{cat:'Помещение и строительство',name:'Pozwolenie na budowę',desc:'При перепланировке / изменении несущих конструкций',price:500,required:false},
+{cat:'Помещение и строительство',name:'Projekt budowlany adaptacji',desc:'Проект перепланировки: электрика, вода, вентиляция',price:15000,required:true},
+{cat:'Помещение и строительство',name:'Odbiór techniczny',desc:'Протокол от kierownika budowy после ремонта',price:2000,required:true},
+{cat:'Помещение и строительство',name:'Przegląd instalacji elektrycznej',desc:'Заземление, изоляция, УЗО. Протокол от elektryka SEP',price:1500,required:true},
+{cat:'Помещение и строительство',name:'Protokół kominiarski',desc:'Проверка вентиляции, дымоходов. Ежегодный',price:500,required:true},
+{cat:'Помещение и строительство',name:'Świadectwo energetyczne',desc:'Энергетический сертификат. С 2023 обязателен при аренде',price:800,required:false},
+{cat:'RODO / Защита данных',name:'Polityka ochrony danych',desc:'Реестр процессов, DPIA для медданных, политика конфиденциальности',price:3000,required:true},
+{cat:'RODO / Защита данных',name:'IOD — инспектор защиты данных',desc:'Обязателен для медучреждений (art. 9 RODO)',price:4000,required:true},
+{cat:'RODO / Защита данных',name:'Rejestr czynności przetwarzania',desc:'Art. 30 RODO. Список всех процессов обработки данных',price:0,required:true},
+{cat:'RODO / Защита данных',name:'Umowy powierzenia danych',desc:'С лабораториями, IT, бухгалтерией, облачными сервисами',price:1500,required:true},
+{cat:'RODO / Защита данных',name:'Szkolenie RODO',desc:'Ежегодное обучение персонала с протоколом',price:1000,required:true},
+{cat:'RODO / Защита данных',name:'IT-система согласно RODO',desc:'Шифрование, контроль доступа, бэкапы, логирование',price:5000,required:true},
+{cat:'RODO / Защита данных',name:'Zgłoszenie do UODO',desc:'При назначении IOD — уведомление в Urząd Ochrony Danych',price:0,required:true},
+{cat:'Отходы и экология (BDO)',name:'Wpis do BDO',desc:'Baza Danych o Odpadach. Обязателен для медотходов',price:0,required:true},
+{cat:'Отходы и экология (BDO)',name:'Umowa na odbiór odpadów med.',desc:'Odpady zakaźne (18 01 03*), amalgam, RTG-отходы',price:6000,required:true},
+{cat:'Отходы и экология (BDO)',name:'Pojemniki na odpady',desc:'Красные (zakaźne), жёлтые (ostre), чёрные (inne)',price:2000,required:true},
+{cat:'Отходы и экология (BDO)',name:'Ewidencja odpadów (rok)',desc:'Karty przekazania, sprawozdanie roczne до 15 марта',price:500,required:true},
+{cat:'Отходы и экология (BDO)',name:'Separator amalgamatu',desc:'Обязателен с 2019 (EU 2017/852). ISO 11143, >95%',price:4000,required:true},
+{cat:'Страхование',name:'OC podmiotu leczniczego',desc:'Обязательное: мин. 75 000 EUR/событие, 350 000 EUR/год',price:5000,required:true},
+{cat:'Страхование',name:'OC lekarza dentysty',desc:'Индивидуальный полис для каждого врача. Мин. 75 000 EUR',price:2500,required:true},
+{cat:'Страхование',name:'Ubezpieczenie mienia',desc:'Оборудование, ремонт, запасы. Рекомендуется all-risk',price:3000,required:false},
+{cat:'Страхование',name:'Ubezpieczenie od utraty dochodu',desc:'Покрытие простоя: пожар, затопление, эпидемия',price:2000,required:false},
+{cat:'Страхование',name:'OC pracodawcy',desc:'Несчастные случаи на производстве',price:1500,required:false},
+{cat:'Страхование',name:'Ubezpieczenie cyber',desc:'Утечки медданных, ransomware, штрафы RODO',price:2000,required:false},
+{cat:'NFZ / Частная практика',name:'Cennik usług (обязательный)',desc:'Прейскурант вывешен в приёмной — Ustawa o dział. lecz.',price:500,required:true},
+{cat:'NFZ / Частная практика',name:'Kontrakt z NFZ',desc:'Конкурсная процедура. Для частной клиники необязателен',price:3000,required:false},
+{cat:'NFZ / Частная практика',name:'eWUŚ — система расчётов NFZ',desc:'Только при контракте с NFZ',price:2000,required:false},
+{cat:'NFZ / Частная практика',name:'EDM — электронная мед. документация',desc:'Обязательна с 2021. P1, e-recepta, e-skierowanie',price:5000,required:true},
+{cat:'NFZ / Частная практика',name:'Dostęp do P1/P2',desc:'Platforma e-zdrowie. Certyfikat ZUS, profil zaufany',price:0,required:true},
+{cat:'NFZ / Частная практика',name:'Kasa fiskalna online',desc:'Обязательна для стоматологии с 01.07.2021',price:3500,required:true},
+{cat:'NFZ / Частная практика',name:'Tablica informacyjna',desc:'Название, адрес, NIP, часы работы, телефон, kierownik',price:500,required:true},
+{cat:'Персонал и лицензии',name:'PWZ lekarza dentysty',desc:'Prawo Wykonywania Zawodu. Okręgowa Izba Lekarska',price:0,required:true},
+{cat:'Персонал и лицензии',name:'Wpis do OIL',desc:'Składka członkowska ~120 PLN/мес на врача',price:1440,required:true},
+{cat:'Персонал и лицензии',name:'Badania lekarskie pracowników',desc:'Badania wstępne i okresowe. Medycyna pracy',price:2500,required:true},
+{cat:'Персонал и лицензии',name:'Książeczka zdrowia',desc:'Санитарная книжка для контактирующих с пациентами',price:1500,required:true},
+{cat:'Персонал и лицензии',name:'Szkolenie BHP wstępne',desc:'До начала работы. Instruktaż ogólny + stanowiskowy',price:800,required:true},
+{cat:'Персонал и лицензии',name:'Szkolenie BHP okresowe',desc:'Раз в 5 лет для мед., раз в 3 года для остальных',price:600,required:true},
+{cat:'Персонал и лицензии',name:'Szkolenie z pierwszej pomocy',desc:'Certyfikat AED/BLS для мед. персонала',price:1200,required:true},
+{cat:'Персонал и лицензии',name:'Umowy o pracę / B2B',desc:'Трудовые договоры, regulamin pracy i wynagradzania',price:2000,required:true},
+{cat:'Персонал и лицензии',name:'Nostryfikacja dyplomu',desc:'Для врачей с дипломом не из ЕС. Через KRLWP',price:3500,required:false},
+{cat:'Оборудование и сертификация',name:'Paszporty techniczne urządzeń',desc:'Паспорт + инструкция на польском для каждого устройства',price:0,required:true},
+{cat:'Оборудование и сертификация',name:'Przegląd autoklawu (rok)',desc:'Walidacja стерилизации. Bowie-Dick, тесты биологические',price:2500,required:true},
+{cat:'Оборудование и сертификация',name:'Legalizacja i kalibracja',desc:'Автоклав, unit, kompresor, lampa polimeryzacyjna',price:3000,required:true},
+{cat:'Оборудование и сертификация',name:'Deklaracja zgodności CE',desc:'Маркировка CE обязательна. Проверить при покупке',price:0,required:true},
+{cat:'Оборудование и сертификация',name:'Serwis unit stomatologiczny (rok)',desc:'Ежегодное обслуживание + калибровка dental unit',price:4000,required:true},
+{cat:'Оборудование и сертификация',name:'Serwis kompresor (rok)',desc:'Bezolejowy kompresor. Przegląd co 6 мес + фильтры',price:1500,required:true},
+{cat:'Оборудование и сертификация',name:'Książka przeglądów urządzeń',desc:'Журнал проверок для каждого устройства',price:200,required:true},
+{cat:'Радиационная безопасность (RTG)',name:'Zezwolenie PAA на RTG',desc:'Państwowa Agencja Atomistyki. Zgłoszenie/zezwolenie',price:500,required:true},
+{cat:'Радиационная безопасность (RTG)',name:'Projekt osłon radiologicznych',desc:'Расчёты стен, пола, потолка. Fizyk medyczny',price:3000,required:true},
+{cat:'Радиационная безопасность (RTG)',name:'IOR — инспектор радиационной защиты',desc:'Обязательное назначение. Может быть внешний',price:3000,required:true},
+{cat:'Радиационная безопасность (RTG)',name:'Testy akceptacyjne RTG',desc:'Приёмочные испытания нового аппарата. Fizyk medyczny',price:2000,required:true},
+{cat:'Радиационная безопасность (RTG)',name:'Testy specjalistyczne RTG (rok)',desc:'Ежегодные для утrzymания zezwolenia',price:1500,required:true},
+{cat:'Радиационная безопасность (RTG)',name:'Dawkomierze osobiste',desc:'Персональные дозиметры TLD. Odczyt co 1-3 мес',price:1200,required:true},
+{cat:'Радиационная безопасность (RTG)',name:'Szkolenie ochrona radiologiczna',desc:'Для работающих с RTG. Odnowienie co 5 lat',price:1500,required:true},
+{cat:'Радиационная безопасность (RTG)',name:'Tabele dawek i ostrzeżenia',desc:'Знаки promieniowania, инструкции на стенах RTG',price:300,required:true},
+{cat:'Радиационная безопасность (RTG)',name:'CBCT/Pantomogram — 3D разрешение',desc:'Допзезwolenie PAA для CBCT. Строже osłony',price:5000,required:false},
+{cat:'Фармацевтика и препараты',name:'Apteczka gabinetu',desc:'Adrenalina, atropina, hydrocortison, glukoza, AED',price:3000,required:true},
+{cat:'Фармацевтика и препараты',name:'Ewidencja leków i znieczulających',desc:'Lidocaina, articaina, mepivacaina — учёт, сроки',price:500,required:true},
+{cat:'Фармацевтика и препараты',name:'Umowa z hurtownią farmaceutyczną',desc:'Закупки только из лицензированной hurtowni',price:0,required:true},
+{cat:'Фармацевтика и препараты',name:'Lodówka na leki (с регистратором)',desc:'Фармацевтический холодильник 2-8°C. Ежедневная запись',price:2500,required:true},
+{cat:'Фармацевтика и препараты',name:'Zgoda na sedację',desc:'N2O или sedacja dożylna. Доптребования + обучение',price:5000,required:false},
+{cat:'Доступность (Dostępność)',name:'Dostępność architektoniczna',desc:'Podjazd/winda, drzwi >90cm, WC для niepełnosprawnych',price:8000,required:true},
+{cat:'Доступность (Dostępność)',name:'Dostępność cyfrowa',desc:'Сайт WCAG 2.1 AA. Рекомендуется для частных',price:3000,required:false},
+{cat:'Доступность (Dostępność)',name:'Dostępność informacyjna',desc:'Пиктограммы, крупный шрифт, SMS/email для глухих',price:1500,required:false},
+{cat:'Доступность (Dostępność)',name:'Koordynator ds. dostępności',desc:'Обязательно для публичных. Рекомендуется при NFZ',price:0,required:false},
+{cat:'Доступность (Dostępność)',name:'Pętla indukcyjna',desc:'Для слабослышащих в ресепшн',price:2500,required:false},
+{cat:'Прочее',name:'Szyld + tablica informacyjna',desc:'Вывеска + данные. Согласование с zarządca budynku',price:3000,required:true},
+{cat:'Прочее',name:'Monitoring wizyjny (RODO)',desc:'В пoczekalni, корридорах (не в кабинетах!)',price:5000,required:false},
+{cat:'Прочее',name:'System alarmowy',desc:'SSWiN + firma ochroniarska',price:3000,required:false},
+{cat:'Прочее',name:'Domena + strona WWW',desc:'ZnanyLekarz, Google Business, regulamin, RODO, cennik',price:5000,required:true},
+{cat:'Прочее',name:'Telefon i internet (rok)',desc:'Мин. 100 Mbps + backup LTE для EDM, e-recepta, P1',price:3600,required:true},
+{cat:'Прочее',name:'Oprogramowanie medyczne (rok)',desc:'EDM, grafik, e-recepty. Mediporta/Dental4Windows/KS-Medis',price:8000,required:true},
+{cat:'Прочее',name:'Muzyka w poczekalni (ZAiKS)',desc:'Abonament за музыку в публичном помещении',price:600,required:false},
+{cat:'Прочее',name:'Skrzynka na skargi',desc:'Ящик для жалоб — Ustawa o prawach pacjenta',price:100,required:true},
 ];
 function saveDocItems(){uSet('svita_docs',JSON.stringify(DB.docItems))}
 function loadDocItems(){
+  DB.docItems=[];
   try{const raw=uGet('svita_docs');
     if(raw){DB.docItems=JSON.parse(raw);return}
     if(currentRole==='admin')DB.docItems=ADMIN_DOC_ITEMS.map((d,i)=>({id:'doc_'+i,...d,done:false}));
-    else DB.docItems=[];
   }catch(e){DB.docItems=[]}
 }
 function addDocItem(){
@@ -3430,6 +3524,29 @@ function addDocItem(){
   const price=parseFloat(prompt('Стоимость (PLN):','0'))||0;
   DB.docItems.push({id:'doc_'+Date.now(),cat,name,desc:'',price,done:false,required:false});
   saveDocItems();renderDocs();recalc();
+}
+function editDocItem(id){
+  const d=DB.docItems.find(x=>x.id===id);if(!d)return;
+  openModal('Редактировать документ',`
+<div style="display:flex;flex-direction:column;gap:12px">
+<div><label style="font-size:10px;color:var(--tx3);text-transform:uppercase">Название</label><input id="edDocName" class="price-edit" value="${esc(d.name)}" style="width:100%;font-size:13px;margin-top:4px"></div>
+<div><label style="font-size:10px;color:var(--tx3);text-transform:uppercase">Категория</label><input id="edDocCat" class="price-edit" value="${esc(d.cat)}" style="width:100%;font-size:13px;margin-top:4px"></div>
+<div><label style="font-size:10px;color:var(--tx3);text-transform:uppercase">Описание</label><textarea id="edDocDesc" class="price-edit" style="width:100%;font-size:12px;margin-top:4px;min-height:60px;resize:vertical">${esc(d.desc||'')}</textarea></div>
+<div style="display:flex;gap:12px">
+<div style="flex:1"><label style="font-size:10px;color:var(--tx3);text-transform:uppercase">Стоимость (PLN)</label><input id="edDocPrice" type="number" class="price-edit" value="${d.price}" style="width:100%;font-size:13px;margin-top:4px"></div>
+<div style="flex:1"><label style="font-size:10px;color:var(--tx3);text-transform:uppercase">Обязательный</label><select id="edDocReq" class="price-edit" style="width:100%;font-size:13px;margin-top:4px"><option value="1" ${d.required?'selected':''}>Да</option><option value="0" ${!d.required?'selected':''}>Нет</option></select></div>
+</div>
+<button class="btn pr" onclick="saveDocEdit('${d.id}')" style="margin-top:8px">Сохранить</button>
+</div>`);
+}
+function saveDocEdit(id){
+  const d=DB.docItems.find(x=>x.id===id);if(!d)return;
+  d.name=document.getElementById('edDocName').value||d.name;
+  d.cat=document.getElementById('edDocCat').value||d.cat;
+  d.desc=document.getElementById('edDocDesc').value||'';
+  d.price=Math.max(0,parseFloat(document.getElementById('edDocPrice').value)||0);
+  d.required=document.getElementById('edDocReq').value==='1';
+  saveDocItems();renderDocs();recalc();closeModal();
 }
 function toggleDocDone(id){
   const d=DB.docItems.find(x=>x.id===id);if(!d)return;
@@ -3458,8 +3575,9 @@ function renderDocs(){
     g.forEach(d=>{
       html+=`<div class="ci cost-row" style="padding:8px 12px;${d.done?'opacity:.5':''}">
 <input type="checkbox" ${d.done?'checked':''} onchange="toggleDocDone('${d.id}')" style="flex-shrink:0">
-<div class="ct" style="flex:1;min-width:0;font-size:11px;${d.done?'text-decoration:line-through':''}">${esc(d.name)}${d.desc?'<div class="ct-sub">'+esc(d.desc)+'</div>':''}</div>
+<div class="ct" style="flex:1;min-width:0;font-size:11px;cursor:pointer;${d.done?'text-decoration:line-through':''}" onclick="editDocItem('${d.id}')">${esc(d.name)}${d.required?'<span style="color:var(--rd);font-size:9px"> *</span>':''}${d.desc?'<div class="ct-sub">'+esc(d.desc)+'</div>':''}</div>
 <div style="display:flex;align-items:center;gap:2px;flex-shrink:0"><input type="number" value="${d.price}" onchange="setDocPrice('${d.id}',this.value)" style="width:60px;font-size:11px;font-weight:700;color:var(--ac2);text-align:right;border:1px solid var(--bd);border-radius:4px;padding:2px 4px;background:var(--sf)"><span style="font-size:9px;color:var(--tx3)">PLN</span></div>
+<button onclick="editDocItem('${d.id}')" style="background:none;border:none;color:var(--ac);cursor:pointer;font-size:11px;padding:2px;flex-shrink:0">&#9998;</button>
 <button onclick="removeDocItem('${d.id}')" style="background:none;border:none;color:var(--rd);cursor:pointer;font-size:12px;padding:2px;flex-shrink:0">&#10005;</button>
 </div>`;
     });
@@ -6143,19 +6261,25 @@ updateRightPanel();
 </div>
 
 <!-- Onboarding Guide -->
-<div id="onboardingOverlay" style="display:none;position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);align-items:center;justify-content:center">
-<div id="onboardingCard" style="background:#fff;border-radius:16px;max-width:440px;width:90%;padding:32px;box-shadow:0 24px 48px rgba(0,0,0,.2);font-family:var(--f);position:relative;animation:obSlide .3s ease">
-<div id="obStep"></div>
-<div style="display:flex;justify-content:space-between;align-items:center;margin-top:24px">
-<div id="obDots" style="display:flex;gap:6px"></div>
-<div style="display:flex;gap:8px">
-<button id="obBack" onclick="obNav(-1)" class="btn sm" style="display:none">Назад</button>
-<button id="obNext" onclick="obNav(1)" class="btn sm pr">Далее</button>
+<!-- Guided Tour Tooltip -->
+<div id="tourTooltip" style="display:none;position:fixed;z-index:8000;background:#fff;border-radius:12px;padding:20px;box-shadow:0 8px 32px rgba(0,0,0,.18);font-family:var(--f);max-width:340px;width:90%;animation:obSlide .3s ease;border-left:4px solid var(--ac)">
+<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+<div id="tourStep" style="font-size:9px;font-weight:700;color:var(--ac);text-transform:uppercase;letter-spacing:1px"></div>
+<button onclick="endTour()" style="background:none;border:none;color:var(--tx3);cursor:pointer;font-size:14px;padding:0;line-height:1">&times;</button>
+</div>
+<div id="tourTitle" style="font-size:15px;font-weight:700;color:var(--tx);margin-bottom:6px"></div>
+<div id="tourText" style="font-size:12px;color:var(--tx2);line-height:1.6;margin-bottom:16px"></div>
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div id="tourDots" style="display:flex;gap:4px"></div>
+<div style="display:flex;gap:6px">
+<button id="tourBack" onclick="tourNav(-1)" class="btn sm" style="display:none;font-size:11px">Назад</button>
+<button id="tourNext" onclick="tourNav(1)" class="btn sm pr" style="font-size:11px">Далее</button>
 </div>
 </div>
 </div>
-</div>
-<style>@keyframes obSlide{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}</style>
+<!-- Tour highlight ring -->
+<div id="tourHighlight" style="display:none;position:fixed;z-index:7999;border:2px solid var(--ac);border-radius:8px;box-shadow:0 0 0 4000px rgba(0,0,0,.08);pointer-events:none;transition:all .3s ease"></div>
+<style>@keyframes obSlide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}</style>
 
 <!-- Cookie Consent -->
 <div id="cookieConsent" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,.08);padding:14px 24px;font-family:var(--f)">
@@ -6172,49 +6296,66 @@ if(!localStorage.getItem('svita_cookies')){document.getElementById('cookieConsen
 function cookieAccept(){localStorage.setItem('svita_cookies','accepted');document.getElementById('cookieConsent').style.display='none'}
 function cookieDecline(){localStorage.setItem('svita_cookies','declined');document.getElementById('cookieConsent').style.display='none'}
 
-// ═══════════════ ONBOARDING WIZARD ═══════════════
-const OB_STEPS=[
-  {icon:'&#128075;',title:'Добро пожаловать в SVITA!',text:'Конструктор стоматологического бизнеса. Вы пройдёте 6 этапов — от идеи до полной бизнес-модели с расчётом рентабельности. Давайте начнём!',action:null},
-  {icon:'&#128100;',title:'1. Личный кабинет',text:'Заполните профиль: имя, контакты, роль. Это поможет персонализировать ваш проект и сохранить данные.',action:'account'},
-  {icon:'&#127973;',title:'2. Концепция и бизнес-модель',text:'Перейдите на Таб 6 «Концепция». Заполните тип учреждения, бренд, город, формат, аудиторию и УТП. Нажмите «Сохранить».',action:'s6'},
-  {icon:'&#127968;',title:'3. Найдите помещение',text:'Откройте каталог «Помещения» в боковой панели. Выберите подходящее помещение из базы или добавьте своё вручную.',action:'db-premises'},
-  {icon:'&#128208;',title:'4. Спланируйте пространство',text:'В Табе 1 «Помещение» нажмите «К планировке» — откроется конструктор. Нарисуйте комнаты: кабинеты, стерилизаторную, ресепшен, зал ожидания.',action:'s1'},
-  {icon:'&#9889;',title:'5. Модернизация (Таб 2)',text:'Выберите работы по ремонту: электрика, вентиляция, отделка. Для каждой работы добавьте конкретные действия с ценами.',action:'s2'},
-  {icon:'&#128230;',title:'6. Оснащение (Таб 3)',text:'Добавьте оборудование из каталога. Назначьте его по кабинетам через выпадающий список. Укажите количество и цены.',action:'s3'},
-  {icon:'&#129489;',title:'7. Персонал (Таб 4)',text:'Выберите сотрудников из базы: врачи, ассистенты, администраторы. Укажите ставки. ФОТ рассчитается автоматически.',action:'s4'},
-  {icon:'&#129657;',title:'8. Прайс-лист (Таб 5)',text:'Добавьте стоматологические услуги из каталога процедур. Это формирует средний чек и прогноз выручки.',action:'s5'},
-  {icon:'&#128200;',title:'9. Аналитика',text:'Теперь откройте «Бюджет» и «Рентабельность» в боковой панели. Здесь — итоговые цифры: стартовые вложения, ФОТ, выручка, окупаемость.',action:'budget'},
-  {icon:'&#127942;',title:'Готово!',text:'Вы знаете как работает SVITA. Заполняйте этапы по порядку — прогресс виден в обзоре. Удачи с вашим проектом!',action:null}
+// ═══════════════ GUIDED TOUR ═══════════════
+const TOUR_STEPS=[
+  {target:'.sidebar',pos:'right',title:'Sidebar — навигация',text:'Здесь вся навигация: этапы концепции, каталоги, аналитика. Вкладки — это этапы запуска вашего заведения.'},
+  {target:'[data-nav="account"]',pos:'right',title:'Личный кабинет',text:'Начните здесь — заполните профиль: имя, контакты, роль. Данные сохранятся автоматически.'},
+  {target:'[data-nav="s6"]',pos:'right',title:'Концепция',text:'Заполните бизнес-модель: тип учреждения, бренд, город, формат, аудиторию. Это основа вашего проекта.'},
+  {target:'.sidebar-group:last-of-type',pos:'right',title:'Каталог — базы данных',text:'Здесь каталоги: помещения, оборудование, подрядчики, сотрудники, процедуры. Выбирайте позиции — они добавятся в вашу концепцию.'},
+  {target:'[data-nav="s1"]',pos:'right',title:'Таб 1 · Помещение',text:'Найдите помещение из каталога или добавьте своё. Нарисуйте план: кабинеты, стерилизаторную, ресепшен.'},
+  {target:'[data-nav="s2"]',pos:'right',title:'Таб 2 · Модернизация',text:'Ремонт и подготовка помещения. Электрика, вентиляция, отделка. Добавляйте конкретные действия с ценами.'},
+  {target:'[data-nav="s3"]',pos:'right',title:'Таб 3 · Оснащение',text:'Оборудование из каталога. Назначайте по кабинетам, указывайте количество.'},
+  {target:'[data-nav="s4"]',pos:'right',title:'Таб 4 · Персонал',text:'Врачи, ассистенты, администраторы. Укажите ставки — ФОТ рассчитается автоматически.'},
+  {target:'[data-nav="s5"]',pos:'right',title:'Таб 5 · Прайс-лист',text:'Стоматологические услуги. Формирует средний чек и прогноз выручки.'},
+  {target:'[data-nav="budget"]',pos:'right',title:'Бюджет и рентабельность',text:'Итоговые цифры: стартовые вложения, ФОТ, выручка, окупаемость. Всё считается автоматически.'},
+  {target:'.sidebar',pos:'right',title:'Готово!',text:'Заполняйте этапы по порядку — прогресс виден в обзоре. Удачи с проектом!'}
 ];
-let obCur=0;
-function obRender(){
-  const s=OB_STEPS[obCur];
-  const el=document.getElementById('obStep');
-  el.innerHTML=`<div style="font-size:36px;margin-bottom:12px">${s.icon}</div><div style="font-size:18px;font-weight:700;color:var(--tx);margin-bottom:8px">${s.title}</div><div style="font-size:13px;color:var(--tx2);line-height:1.6">${s.text}</div>`;
-  document.getElementById('obBack').style.display=obCur>0?'inline-flex':'none';
-  const btn=document.getElementById('obNext');
-  btn.textContent=obCur===OB_STEPS.length-1?'Начать работу':'Далее';
-  // Dots
-  const dots=document.getElementById('obDots');
-  dots.innerHTML=OB_STEPS.map((_,i)=>`<div style="width:${i===obCur?'16px':'6px'};height:6px;border-radius:3px;background:${i===obCur?'var(--ac)':'var(--bd)'};transition:all .2s"></div>`).join('');
-}
-function obNav(d){
-  obCur+=d;
-  if(obCur>=OB_STEPS.length){
-    document.getElementById('onboardingOverlay').style.display='none';
-    uSet('svita_onboarded','1');
-    return;
+let tourCur=0;
+function tourRender(){
+  const s=TOUR_STEPS[tourCur];
+  const tt=document.getElementById('tourTooltip');
+  const hl=document.getElementById('tourHighlight');
+  document.getElementById('tourStep').textContent=`Шаг ${tourCur+1} из ${TOUR_STEPS.length}`;
+  document.getElementById('tourTitle').textContent=s.title;
+  document.getElementById('tourText').textContent=s.text;
+  document.getElementById('tourBack').style.display=tourCur>0?'inline-flex':'none';
+  document.getElementById('tourNext').textContent=tourCur===TOUR_STEPS.length-1?'Начать работу':'Далее';
+  document.getElementById('tourDots').innerHTML=TOUR_STEPS.map((_,i)=>`<div style="width:${i===tourCur?'12px':'5px'};height:5px;border-radius:3px;background:${i===tourCur?'var(--ac)':'var(--bd)'};transition:all .2s"></div>`).join('');
+  // Position tooltip near target element
+  const el=document.querySelector(s.target);
+  if(el){
+    const r=el.getBoundingClientRect();
+    hl.style.display='block';
+    hl.style.top=(r.top-4)+'px';hl.style.left=(r.left-4)+'px';
+    hl.style.width=(r.width+8)+'px';hl.style.height=(r.height+8)+'px';
+    tt.style.display='block';
+    // Position tooltip to the right of the element
+    let top=Math.max(8,r.top);
+    let left=r.right+16;
+    if(left+350>window.innerWidth){left=Math.max(8,r.left-360)}
+    if(top+200>window.innerHeight){top=Math.max(8,window.innerHeight-220)}
+    tt.style.top=top+'px';tt.style.left=left+'px';
+    el.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }else{
+    hl.style.display='none';
+    tt.style.display='block';
+    tt.style.top='50%';tt.style.left='50%';tt.style.transform='translate(-50%,-50%)';
   }
-  if(obCur<0)obCur=0;
-  obRender();
-  // Navigate to relevant section
-  const action=OB_STEPS[obCur].action;
-  if(action)nav(action);
+}
+function tourNav(d){
+  tourCur+=d;
+  if(tourCur>=TOUR_STEPS.length){endTour();return}
+  if(tourCur<0)tourCur=0;
+  tourRender();
+}
+function endTour(){
+  document.getElementById('tourTooltip').style.display='none';
+  document.getElementById('tourHighlight').style.display='none';
+  uSet('svita_onboarded','1');
 }
 function startOnboarding(){
-  obCur=0;
-  obRender();
-  document.getElementById('onboardingOverlay').style.display='flex';
+  tourCur=0;
+  tourRender();
 }
 </script>
 
