@@ -2017,15 +2017,13 @@ function savePicked(){
   const obj={};
   PICKED_KEYS.forEach(k=>{obj[k]=DB[k]||{}});
   localStorage.setItem('svita_picked',JSON.stringify(obj));
-  console.log('[SVITA] savePicked:',Object.keys(obj.pickedEquip||{}).length,'equip,',Object.keys(obj.pickedRenovations||{}).length,'reno,',Object.keys(obj.pickedStaff||{}).length,'staff,',Object.keys(obj.pickedServices||{}).length,'svc');
 }
 function loadPicked(){
   try{
-    const raw=localStorage.getItem('svita_picked');if(!raw){console.log('[SVITA] loadPicked: no saved data');return}
+    const raw=localStorage.getItem('svita_picked');if(!raw)return;
     const obj=JSON.parse(raw);
     PICKED_KEYS.forEach(k=>{if(obj[k])DB[k]=obj[k]});
-    console.log('[SVITA] loadPicked:',Object.keys(DB.pickedEquip||{}).length,'equip,',Object.keys(DB.pickedRenovations||{}).length,'reno, rooms assigned:',Object.values(DB.pickedEquip||{}).filter(p=>p.room).length);
-  }catch(e){console.error('[SVITA] loadPicked error:',e)}
+  }catch(e){}
 }
 
 const BM_FIELDS=['cType','cBrand','cCity','cDate','cFormat','cAudience','cUsp','cTech'];
@@ -5294,7 +5292,6 @@ function renderCabinetTypes(){
   if(!c)return;
   const rooms=getPickedRoomsList();
   const picked=DB.pickedEquip||{};
-  console.log('[SVITA] renderCabinetTypes: rooms='+rooms.length+', pickedEquip='+Object.keys(picked).length+', suppliers='+DB.suppliers.length+', withRoom='+Object.values(picked).filter(p=>p.room).length);
 
   // Group equipment by assigned room
   const byRoom={};  // roomId -> [{item, qty, cost}]
