@@ -79,13 +79,13 @@ body{font-family:var(--fb);background:var(--bk);color:var(--wh);-webkit-font-smo
 
 <div class="side">
   <div class="side-logo">SVITA<small>admin panel</small></div>
-  <div class="side-section">контент</div>
-  <button class="side-btn active" onclick="showTab('blocks')">Блоки <span class="cnt" id="cntBlocks">0</span></button>
-  <button class="side-btn" onclick="showTab('keywords')">Ключевые слова <span class="cnt" id="cntKw">0</span></button>
   <div class="side-section">пользователи</div>
-  <button class="side-btn" onclick="showTab('users')">Пользователи <span class="cnt" id="cntUsers">0</span></button>
+  <button class="side-btn active" onclick="showTab('users')">Пользователи <span class="cnt" id="cntUsers">0</span></button>
   <button class="side-btn" onclick="showTab('sessions')">Сессии <span class="cnt" id="cntSessions">0</span></button>
   <button class="side-btn" onclick="showTab('visitors')">Посетители <span class="cnt" id="cntVisitors">0</span></button>
+  <div class="side-section">контент</div>
+  <button class="side-btn" onclick="showTab('blocks')">Блоки <span class="cnt" id="cntBlocks">0</span></button>
+  <button class="side-btn" onclick="showTab('keywords')">Ключевые слова <span class="cnt" id="cntKw">0</span></button>
   <div class="side-section">аналитика</div>
   <button class="side-btn" onclick="showTab('unanswered')">Неотвеченные <span class="cnt" id="cntUn">0</span></button>
   <div class="side-section">ссылки</div>
@@ -98,14 +98,14 @@ body{font-family:var(--fb);background:var(--bk);color:var(--wh);-webkit-font-smo
 <div class="main">
   <!-- STATS -->
   <div class="stats" id="mainStats">
-    <div class="stat"><div class="stat-val" id="sBlocks">-</div><div class="stat-label">блоков</div></div>
     <div class="stat"><div class="stat-val" id="sUsers">-</div><div class="stat-label">пользователей</div></div>
-    <div class="stat"><div class="stat-val" id="sCat">-</div><div class="stat-label">категорий</div></div>
-    <div class="stat"><div class="stat-val" id="sUn">-</div><div class="stat-label">неотвеченных</div></div>
+    <div class="stat"><div class="stat-val" id="sSessions">-</div><div class="stat-label">сессий</div></div>
+    <div class="stat"><div class="stat-val" id="sVisitors">-</div><div class="stat-label">посещений</div></div>
+    <div class="stat"><div class="stat-val" id="sBlocks">-</div><div class="stat-label">блоков контента</div></div>
   </div>
 
   <!-- TAB: BLOCKS -->
-  <div id="tab-blocks">
+  <div id="tab-blocks" style="display:none">
     <div class="topbar">
       <h1>Блоки контента</h1>
       <div class="topbar-actions"><button class="btn btn-gold" onclick="openNew()">+ добавить блок</button></div>
@@ -135,7 +135,7 @@ body{font-family:var(--fb);background:var(--bk);color:var(--wh);-webkit-font-smo
   </div>
 
   <!-- TAB: USERS -->
-  <div id="tab-users" style="display:none">
+  <div id="tab-users">
     <div class="topbar"><h1>Пользователи</h1><div class="topbar-actions">
       <input id="userSearch" placeholder="Поиск по email..." style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--wh);padding:8px 14px;font-family:var(--fb);font-size:12px;width:240px;outline:none" oninput="filterUsers(this.value)">
       <button class="btn" onclick="loadUsers()">обновить</button>
@@ -259,8 +259,6 @@ body{font-family:var(--fb);background:var(--bk);color:var(--wh);-webkit-font-smo
     api('GET','concept_blocks','select=*&order=category,sort_order').then(function(rows){
       blocksCache=rows||[];
       document.getElementById('sBlocks').textContent=blocksCache.length;
-      var cats={};blocksCache.forEach(function(b){cats[b.category]=1});
-      document.getElementById('sCat').textContent=Object.keys(cats).length;
       document.getElementById('cntBlocks').textContent=blocksCache.length;
 
       var html='';
@@ -281,7 +279,6 @@ body{font-family:var(--fb);background:var(--bk);color:var(--wh);-webkit-font-smo
   function loadKeywords(){
     api('GET','concept_keywords','select=*,concept_blocks(slug)&order=keyword').then(function(rows){
       kwCache=rows||[];
-      document.getElementById('sKw').textContent=kwCache.length;
       document.getElementById('cntKw').textContent=kwCache.length;
       var html='';
       kwCache.forEach(function(k){
@@ -298,7 +295,6 @@ body{font-family:var(--fb);background:var(--bk);color:var(--wh);-webkit-font-smo
   window.loadUnanswered=function(){
     api('GET','concept_unanswered','select=*&order=created_at.desc&limit=50').then(function(rows){
       rows=rows||[];
-      document.getElementById('sUn').textContent=rows.length;
       document.getElementById('cntUn').textContent=rows.length;
       var html='';
       rows.forEach(function(u){
@@ -565,7 +561,25 @@ body{font-family:var(--fb);background:var(--bk);color:var(--wh);-webkit-font-smo
 
   /* ── INIT ── */
   loadBlocks();
+  window.loadUsers();
   window.loadUnanswered();
+
+  // Load stats from all tables on init
+  api('GET','profiles','select=id&limit=1000').then(function(r){
+    var n=(r||[]).length;
+    document.getElementById('sUsers').textContent=n;
+    document.getElementById('cntUsers').textContent=n;
+  }).catch(function(){document.getElementById('sUsers').textContent='0'});
+  api('GET','user_sessions','select=id&limit=1000').then(function(r){
+    var n=(r||[]).length;
+    document.getElementById('sSessions').textContent=n;
+    document.getElementById('cntSessions').textContent=n;
+  }).catch(function(){document.getElementById('sSessions').textContent='0'});
+  api('GET','page_views','select=id&limit=1000').then(function(r){
+    var n=(r||[]).length;
+    document.getElementById('sVisitors').textContent=n;
+    document.getElementById('cntVisitors').textContent=n;
+  }).catch(function(){document.getElementById('sVisitors').textContent='0'});
 })();
 </script>
 </body></html>
