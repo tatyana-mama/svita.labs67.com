@@ -1632,7 +1632,29 @@ async function loginCheck(){
   if(!sb){document.getElementById('loginError').textContent='Supabase не загружен';return}
   document.getElementById('loginError').textContent='Входим...';
   const{data,error}=await sb.auth.signInWithPassword({email,password:pass});
-  if(error){document.getElementById('loginError').textContent=error.message==='Invalid login credentials'?'Неверный email или пароль':error.message;return}
+  if(error){
+    // Try auto-signup if admin email with these credentials (migration from localStorage)
+    if(ADMIN_EMAILS.includes(email)){
+      const{data:sd,error:se}=await sb.auth.signUp({email,password:pass,options:{data:{name:'Артём Веелко',role:'admin',profile_complete:true},emailRedirectTo:location.origin+location.pathname}});
+      if(!se&&sd.user){
+        // If email not confirmed, try sign in again (Supabase may auto-confirm for some configs)
+        const{data:d2,error:e2}=await sb.auth.signInWithPassword({email,password:pass});
+        if(!e2&&d2.user){
+          const u=d2.user;
+          currentUser={email:u.email,name:u.user_metadata?.name||'Admin',isAdmin:true,emailConfirmed:!!u.email_confirmed_at,id:u.id};
+          proceedToRoleSelect();
+          return;
+        }
+        // If needs confirmation
+        if(sd.user&&!sd.user.email_confirmed_at){
+          document.getElementById('loginError').textContent='Аккаунт создан — проверьте почту '+email+' для подтверждения';
+          return;
+        }
+      }
+    }
+    document.getElementById('loginError').textContent=error.message==='Invalid login credentials'?'Неверный email или пароль':error.message;
+    return;
+  }
   const user=data.user;
   const isAdmin=ADMIN_EMAILS.includes(user.email);
   currentUser={email:user.email,name:user.user_metadata?.name||user.email.split('@')[0],isAdmin,emailConfirmed:!!user.email_confirmed_at,id:user.id};
