@@ -33,7 +33,7 @@
 .side-tag{font-size:9px;color:var(--tx3);letter-spacing:2px;text-transform:uppercase;margin-top:4px;font-weight:500}
 .side-nav{flex:1;overflow-y:auto;padding:16px 12px}
 .side-sec{font-size:9px;font-weight:600;color:var(--tx3);letter-spacing:1.5px;text-transform:uppercase;padding:16px 12px 6px}
-.si{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--tx2);border:none;transition:all .15s;user-select:none}
+.si{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--tx2);border:none;transition:all .15s;user-select:none}.si.locked{opacity:.5}
 .si:hover{background:var(--sf2);color:var(--tx)}.si.act{background:var(--acbg);color:var(--ac2);font-weight:600}
 .si .ico{font-size:15px;width:20px;text-align:center;flex-shrink:0}
 .sn{width:24px;height:24px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;border:1.5px solid var(--bd2);color:var(--tx3);flex-shrink:0}
@@ -2570,7 +2570,8 @@ function buildSidebar(){
     html+='<div class="si" data-nav="db-suppliers"><span class="ico">&#128230;</span><span class="sl">Оборудование</span><span class="sb wip">'+DB.suppliers.length+'</span></div>';
     html+='<div class="si" data-nav="db-employees"><span class="ico">&#129489;</span><span class="sl">Сотрудники</span><span class="sb wip">'+DB.employees.length+'</span></div>';
     html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
-    html+='<div class="si" data-nav="db-contractors"><span class="ico">&#128736;</span><span class="sl">Подрядчики</span><span class="sb wip">'+DB.contractors.length+'</span></div>';
+    const canContractors=currentRole==='admin'||userSubscription.contractors_access;
+    html+='<div class="si'+(canContractors?'':' locked')+'" data-nav="'+(canContractors?'db-contractors':'upgrade-gate')+'"><span class="ico">&#128736;</span><span class="sl">Подрядчики</span>'+(canContractors?'<span class="sb wip">'+DB.contractors.length+'</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; Unlimited</span>')+'</div>';
     html+='<div class="si" data-nav="db-vendor-companies"><span class="ico">&#127970;</span><span class="sl">Поставщики</span><span class="sb wip">'+(DB.vendorCompanies||[]).length+'</span></div>';
   }
   if(currentRole==='admin'){
@@ -2604,6 +2605,7 @@ const stageOrder=['s1','s2','s3','s4','s5','s6'];
 let cur='overview';
 
 function nav(id){
+  if(id==='upgrade-gate'){showUpgradeModal();return}
   cur=id;
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('vis'));
   const el=document.getElementById('sec-'+id);
