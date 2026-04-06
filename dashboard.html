@@ -407,10 +407,6 @@ Apple</button>
 <!-- REGISTER FORM -->
 <div id="loginRegister" style="display:none">
 <div class="modal-field" style="text-align:left;margin-bottom:12px">
-<label>Имя</label>
-<input id="regName" type="text" placeholder="Иван Петров" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
-</div>
-<div class="modal-field" style="text-align:left;margin-bottom:12px">
 <label>Email</label>
 <input id="regEmail" type="email" placeholder="email@example.com" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
 </div>
@@ -2147,10 +2143,10 @@ async function loginCheck(){
 }
 
 async function registerUser(){
-  const name=document.getElementById('regName').value.trim();
   const email=document.getElementById('regEmail').value.trim().toLowerCase();
   const pass=document.getElementById('regPass').value;
-  if(!name||!email||!pass){document.getElementById('regError').textContent='Заполните все поля';return}
+  const name=email.split('@')[0];
+  if(!email||!pass){document.getElementById('regError').textContent='Заполните все поля';return}
   if(pass.length<6){document.getElementById('regError').textContent='Пароль минимум 6 символов';return}
   if(!sb){document.getElementById('regError').textContent='Supabase не загружен';return}
   if(!rateLimit('register',3,600000)){document.getElementById('regError').textContent='Слишком много попыток. Подождите 10 минут.';return}
@@ -2314,6 +2310,8 @@ async function completeOnboarding(){
       last_login:new Date().toISOString()
     },{onConflict:'email'});
     await sb.auth.updateUser({data:{name,role:currentRole,profile_complete:true}});
+    // Create subscription if not exists
+    await sb.from('subscriptions').upsert({user_id:currentUser.id},{onConflict:'user_id'});
   }
   localStorage.setItem('svita_role',currentRole);
   enterApp();
