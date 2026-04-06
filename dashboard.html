@@ -3313,8 +3313,11 @@ function getRenItemCost(id){
 }
 function toggleRenExpand(renId){
   const el=document.getElementById('renActions_'+renId);
+  const arrow=document.getElementById('renArrow_'+renId);
   if(!el)return;
-  el.style.display=el.style.display==='none'?'block':'none';
+  const open=el.style.display==='none';
+  el.style.display=open?'block':'none';
+  if(arrow)arrow.style.transform=open?'rotate(90deg)':'rotate(0deg)';
 }
 
 function renderSelectedRenovations(){
@@ -3351,6 +3354,7 @@ function renderSelectedRenovations(){
       // Header row — clickable to expand
       html+=`<div style="border-bottom:1px solid var(--bd)">`;
       html+=`<div style="display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer" onclick="toggleRenExpand('${r.id}')">`;
+      html+=`<span id="renArrow_${r.id}" style="font-size:10px;color:var(--tx3);transition:transform .2s;transform:rotate(0deg);flex-shrink:0">&#9654;</span>`;
       html+=`<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600;${r.allDone?'text-decoration:line-through;opacity:.5':''}">${esc(r.name)}</div>`;
       if(actCnt){
         html+=`<div style="display:flex;align-items:center;gap:6px;margin-top:4px"><div style="flex:1;max-width:120px;height:3px;background:var(--bd);border-radius:2px;overflow:hidden"><div style="width:${pct}%;height:100%;background:var(--gn);border-radius:2px"></div></div><span style="font-size:9px;color:var(--tx3)">${actDone}/${actCnt}</span></div>`;
