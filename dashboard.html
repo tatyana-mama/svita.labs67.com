@@ -932,7 +932,7 @@ Apple</button>
 
 <!-- ═══ S5: ПРАЙС-ЛИСТ ═══ -->
 <div class="sec" id="sec-s5">
-<div class="ph"><div><h2>05 &middot; Перечень услуг</h2><div class="ph-s">Стоматологические услуги для клиентов, ценообразование</div></div><button class="btn sm pr" onclick="nav('db-services')">Каталог услуг →</button></div>
+<div class="ph"><div><h2>05 &middot; Перечень услуг</h2><div class="ph-s">Стоматологические услуги для клиентов, ценообразование</div></div><button class="btn sm pr" onclick="nav('db-renovations')">Каталог услуг →</button></div>
 <div class="sts" id="svcStats" style="grid-template-columns:repeat(4,1fr)">
 <div class="st"><div class="st-l">Позиций</div><div class="st-v" id="svcCount">0</div><div class="st-s">выбрано</div></div>
 <div class="st"><div class="st-l">Категорий</div><div class="st-v" id="svcCats">0</div><div class="st-s">направлений</div></div>
@@ -1710,14 +1710,23 @@ const DB={
     {id:343,name:'IP-телефоны x7 (кабинеты)',category:'Техническая комната',price:3500,supplier:'Yealink',warranty:'24 мес'}
   ],
   employees:[
-    {id:1,name:'Позиция: Главный врач',spec:'Управление, лицензия NFZ',salary:15000,status:'Вакансия'},
-    {id:2,name:'Позиция: Стоматолог-терапевт x4',spec:'Полная ставка',salary:48000,status:'Вакансия'},
-    {id:3,name:'Позиция: Хирург-имплантолог x2',spec:'Полная ставка',salary:28000,status:'Вакансия'},
-    {id:4,name:'Позиция: Гигиенист x2',spec:'Профилактика',salary:14000,status:'Вакансия'},
-    {id:5,name:'Позиция: Ассистент x4',spec:'Полная ставка',salary:20000,status:'Вакансия'},
-    {id:6,name:'Позиция: Администратор x2',spec:'Ресепшен, запись',salary:10000,status:'Вакансия'},
-    {id:7,name:'Позиция: Стерилизаторщица',spec:'Полная ставка',salary:5000,status:'Вакансия'},
-    {id:8,name:'Позиция: IT / аутсорс',spec:'Частичная ставка',salary:3000,status:'Вакансия'}
+    {id:1,name:'Главный врач',spec:'Управление, лицензия NFZ',salary:15000,status:'Вакансия'},
+    {id:2,name:'Стоматолог-терапевт',spec:'Полная ставка',salary:12000,status:'Вакансия'},
+    {id:3,name:'Стоматолог-терапевт',spec:'Полная ставка',salary:12000,status:'Вакансия'},
+    {id:4,name:'Стоматолог-терапевт',spec:'Полная ставка',salary:12000,status:'Вакансия'},
+    {id:5,name:'Стоматолог-терапевт',spec:'Полная ставка',salary:12000,status:'Вакансия'},
+    {id:6,name:'Хирург-имплантолог',spec:'Полная ставка',salary:14000,status:'Вакансия'},
+    {id:7,name:'Хирург-имплантолог',spec:'Полная ставка',salary:14000,status:'Вакансия'},
+    {id:8,name:'Гигиенист',spec:'Профилактика',salary:7000,status:'Вакансия'},
+    {id:9,name:'Гигиенист',spec:'Профилактика',salary:7000,status:'Вакансия'},
+    {id:10,name:'Ассистент',spec:'Полная ставка',salary:5000,status:'Вакансия'},
+    {id:11,name:'Ассистент',spec:'Полная ставка',salary:5000,status:'Вакансия'},
+    {id:12,name:'Ассистент',spec:'Полная ставка',salary:5000,status:'Вакансия'},
+    {id:13,name:'Ассистент',spec:'Полная ставка',salary:5000,status:'Вакансия'},
+    {id:14,name:'Администратор',spec:'Ресепшен, запись',salary:5000,status:'Вакансия'},
+    {id:15,name:'Администратор',spec:'Ресепшен, запись',salary:5000,status:'Вакансия'},
+    {id:16,name:'Стерилизаторщица',spec:'Полная ставка',salary:5000,status:'Вакансия'},
+    {id:17,name:'IT / аутсорс',spec:'Частичная ставка',salary:3000,status:'Вакансия'}
   ],
   services:[
     {id:1,name:'Консультация + план лечения',time:'30 мин',price:150},
@@ -5501,12 +5510,14 @@ function renderSelectedServices(){
       ?`<span style="font-size:10px;color:var(--gn);font-weight:600">${cnt} / ${g.total} выбрано · ${catTotal.toLocaleString('ru')} PLN</span>`
       :`<span style="font-size:10px;color:var(--tx3)">0 / ${g.total} — не выбрано</span>`;
 
-    html+=`<div class="c" style="${cnt?'':'opacity:0.7'}"><div class="ch"><h3>${g.icon} ${cat}</h3><div style="display:flex;align-items:center;gap:8px">${statusTag}<button class="btn sm pr" onclick="nav('db-services')" style="font-size:9px">+ Добавить</button></div></div>`;
+    html+=`<div class="c" style="${cnt?'':'opacity:0.7'}"><div class="ch"><h3>${g.icon} ${cat}</h3><div style="display:flex;align-items:center;gap:8px">${statusTag}<button class="btn sm pr" onclick="nav('db-renovations')" style="font-size:9px">+ Добавить</button></div></div>`;
 
     if(cnt){
       html+='<div class="cb">';
       g.picked.forEach(r=>{
-        html+=`<div class="ci cost-row" style="flex-wrap:nowrap"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.desc||''}</div></div><div class="sel-qty" style="margin:0 4px"><button onclick="svcSelQty('${r.id}',-1)">−</button><span id="sq_${r.id}">${r.qty}</span><button onclick="svcSelQty('${r.id}',1)">+</button></div><span style="font-size:10px;color:var(--tx3);min-width:30px;text-align:center">${r.unit}</span><div style="display:flex;align-items:center;gap:2px;min-width:90px;justify-content:flex-end"><input type="number" value="${r.unitPrice}" onchange="setCustomPrice('svc','${r.id}',this.value)" style="width:55px;font-size:11px;font-weight:700;color:${r.isCustom?'var(--or)':'var(--ac2)'};text-align:right;border:1px solid var(--bd);border-radius:4px;padding:2px 4px;background:var(--sf)"><span style="font-size:9px;color:var(--tx3)">PLN</span></div><button class="btn sm" style="color:var(--rd);flex-shrink:0" onclick="removeSvcPick('${r.id}')">✕</button></div>`;
+        const svcRoomId=picked[r.id].room||'';
+        const svcRoomOpts=getPickedRoomsList().map(rm=>`<option value="${rm.id}" ${rm.id==svcRoomId?'selected':''}>${rm.name}</option>`).join('');
+        html+=`<div class="ci cost-row" style="flex-wrap:nowrap"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.desc||''}</div></div><select onchange="assignSvcRoom('${r.id}',this.value)" style="font-size:10px;padding:3px 6px;border:1px solid var(--bd);border-radius:6px;background:var(--sf);color:var(--tx);max-width:130px;flex-shrink:0"><option value="">— кабинет</option>${svcRoomOpts}</select><div class="sel-qty" style="margin:0 4px"><button onclick="svcSelQty('${r.id}',-1)">−</button><span id="sq_${r.id}">${r.qty}</span><button onclick="svcSelQty('${r.id}',1)">+</button></div><span style="font-size:10px;color:var(--tx3);min-width:30px;text-align:center">${r.unit}</span><div style="display:flex;align-items:center;gap:2px;min-width:90px;justify-content:flex-end"><input type="number" value="${r.unitPrice}" onchange="setCustomPrice('svc','${r.id}',this.value)" style="width:55px;font-size:11px;font-weight:700;color:${r.isCustom?'var(--or)':'var(--ac2)'};text-align:right;border:1px solid var(--bd);border-radius:4px;padding:2px 4px;background:var(--sf)"><span style="font-size:9px;color:var(--tx3)">PLN</span></div><button class="btn sm" style="color:var(--rd);flex-shrink:0" onclick="removeSvcPick('${r.id}')">✕</button></div>`;
       });
       html+='</div>';
     }
@@ -5526,6 +5537,11 @@ function toggleSvcPick(id){
 function removeSvcPick(id){
   if(DB.pickedServices)delete DB.pickedServices[id];
   savePicked();renderServices();renderSelectedServices();recalc();
+}
+function assignSvcRoom(id,roomId){
+  if(!DB.pickedServices||!DB.pickedServices[id])return;
+  DB.pickedServices[id].room=roomId;
+  savePicked();
 }
 function svcSelQty(id,d){
   if(!DB.pickedServices||!DB.pickedServices[id])return;
