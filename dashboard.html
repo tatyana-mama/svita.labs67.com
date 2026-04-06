@@ -2432,11 +2432,10 @@ function enterApp(){
   const savedProp=localStorage.getItem('svita_property');
   if(savedProp){try{activeProperty=JSON.parse(savedProp)}catch(e){}}
   loadPicked();loadBusinessModel();
+  fpInit();
   buildSidebar();
   renderAll();
-  loadBusinessModel();
   recalc();
-  fpInit();
   loadSupabaseData();
 }
 
