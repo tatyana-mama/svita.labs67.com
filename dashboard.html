@@ -919,7 +919,7 @@ Apple</button>
 <div class="ph"><div><h2>06 &middot; Концепция</h2><div class="ph-s">Бизнес-модель, рентабельность, документация</div></div><span class="tag t-wip">В работе</span></div>
 
 <!-- Бизнес-модель -->
-<div class="c"><div class="ch"><h3>&#127973; Бизнес-модель</h3><span style="font-size:10px;color:var(--ac2);font-weight:600">РЕДАКТИРУЕМАЯ</span></div>
+<div class="c"><div class="ch"><h3>&#127973; Бизнес-модель</h3><button class="btn sm gn" onclick="saveBusinessModel()">Сохранить</button></div>
 <div class="cb">
 <div class="g2">
 <div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">Тип учреждения</div><input class="price-edit" id="cType" value="Стоматологическая клиника" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
@@ -2011,6 +2011,23 @@ function restoreProperty(p){
   }
   renderProperty();recalc();
 }
+const BM_FIELDS=['cType','cBrand','cCity','cDate','cFormat','cAudience','cUsp','cTech'];
+function saveBusinessModel(){
+  const bm={};
+  BM_FIELDS.forEach(k=>{const el=document.getElementById(k);if(el)bm[k]=el.value});
+  localStorage.setItem('svita_bm',JSON.stringify(bm));
+  const btn=document.querySelector('.ch .gn');
+  if(btn){const old=btn.textContent;btn.textContent='✓ Сохранено';setTimeout(()=>btn.textContent=old,1500)}
+}
+function loadBusinessModel(){
+  try{
+    const raw=localStorage.getItem('svita_bm');
+    if(!raw)return;
+    const bm=JSON.parse(raw);
+    BM_FIELDS.forEach(k=>{const el=document.getElementById(k);if(el&&bm[k])el.value=bm[k]});
+  }catch(e){}
+}
+
 function saveProperty(){
   if(!activeProperty)return;
   localStorage.setItem('svita_property',JSON.stringify(activeProperty));
@@ -2401,6 +2418,7 @@ function enterApp(){
   if(savedProp){try{activeProperty=JSON.parse(savedProp)}catch(e){}}
   buildSidebar();
   renderAll();
+  loadBusinessModel();
   recalc();
   fpInit();
   loadSupabaseData();
