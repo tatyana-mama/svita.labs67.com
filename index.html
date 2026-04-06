@@ -284,8 +284,8 @@ footer{padding:40px 48px;border-top:1px solid rgba(255,255,255,0.04);display:fle
     <a href="#surf" data-t="nav_showcase">Агляд</a>
     <a href="#how" data-t="nav_how">Працэс</a>
     <a href="#pricing" data-t="nav_pricing">Кошт</a>
-    <a href="#" onclick="openAuth('login');return false" style="font-family:var(--fm);font-size:10px;letter-spacing:1px;color:var(--dim);transition:color .2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color=''">Log In</a>
-    <a href="#" onclick="openAuth('register');return false" class="nav-cta">Sign Up</a>
+    <a href="#" onclick="openAuth('login');return false" style="font-family:var(--fm);font-size:10px;letter-spacing:1px;color:var(--dim);transition:color .2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color=''" data-t="auth_login">Log In</a>
+    <a href="#" onclick="openAuth('register');return false" class="nav-cta" data-t="auth_signup">Sign Up</a>
     <a href="https://labs67.com" class="nav-back" style="font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.4);text-decoration:none;margin-left:12px;white-space:nowrap;">← LABS67</a>
     <div class="lang-switcher" style="margin-left:8px;"></div>
   </div>
@@ -504,15 +504,16 @@ footer{padding:40px 48px;border-top:1px solid rgba(255,255,255,0.04);display:fle
   <div class="feat-desc sr sr-d1" data-t="price_desc">Выберыце план, які адпавядае вашым мэтам.</div>
   <div class="pricing sr sr-d2">
     <div class="price-card">
-      <div class="price-name" data-t="price_p1_name">Starter</div>
-      <div class="price-desc" data-t="price_p1_desc">Для першай канцэпцыі</div>
+      <div class="price-name" data-t="price_p1_name">Free</div>
+      <div class="price-desc" data-t="price_p1_desc">Для знаёмства з платформай</div>
       <div class="price-val">$0</div>
       <div class="price-period" data-t="price_p1_period">назаўжды бясплатна</div>
       <ul class="price-list">
         <li data-t="price_p1_l1">1 канцэпцыя</li>
         <li data-t="price_p1_l2">Базавы канструктар</li>
-        <li data-t="price_p1_l3">Экспарт у PDF</li>
+        <li data-t="price_p1_l3">Экспарт у PDF (з вадзяным знакам)</li>
         <li data-t="price_p1_l4">Суполка SVITA</li>
+        <li data-t="price_p1_l5">Без AI-асістэнта</li>
       </ul>
       <a href="dashboard.html" class="price-btn price-btn-line" data-t="price_p1_btn">Пачаць</a>
     </div>
@@ -520,11 +521,11 @@ footer{padding:40px 48px;border-top:1px solid rgba(255,255,255,0.04);display:fle
       <div class="price-badge" data-t="price_p2_badge">папулярны</div>
       <div class="price-name" data-t="price_p2_name">Pro</div>
       <div class="price-desc" data-t="price_p2_desc">Для сур'ёзных стваральнікаў</div>
-      <div class="price-val">$49</div>
+      <div class="price-val">$59</div>
       <div class="price-period" data-t="price_p2_period">у месяц</div>
       <ul class="price-list">
-        <li data-t="price_p2_l1">Неабмежаваныя канцэпцыі</li>
-        <li data-t="price_p2_l2">AI-асістэнт</li>
+        <li data-t="price_p2_l1">5 канцэпцый</li>
+        <li data-t="price_p2_l2">AI-асістэнт (100 запытаў / мес.)</li>
         <li data-t="price_p2_l3">Маркетплейс публікацыя</li>
         <li data-t="price_p2_l4">Брэнд-бук генератар</li>
         <li data-t="price_p2_l5">Бізнес-план калькулятар</li>
@@ -532,18 +533,19 @@ footer{padding:40px 48px;border-top:1px solid rgba(255,255,255,0.04);display:fle
       <a href="dashboard.html" class="price-btn price-btn-fill" data-t="price_p2_btn">Выбраць Pro</a>
     </div>
     <div class="price-card">
-      <div class="price-name" data-t="price_p3_name">Enterprise</div>
-      <div class="price-desc" data-t="price_p3_desc">Для сетак і інвестараў</div>
-      <div class="price-val">Custom</div>
-      <div class="price-period" data-t="price_p3_period">індывідуальна</div>
+      <div class="price-name" data-t="price_p3_name">Unlimited</div>
+      <div class="price-desc" data-t="price_p3_desc">Поўны доступ без абмежаванняў</div>
+      <div class="price-val">$249</div>
+      <div class="price-period" data-t="price_p3_period">у месяц</div>
       <ul class="price-list">
-        <li data-t="price_p3_l1">Усё з Pro</li>
-        <li data-t="price_p3_l2">White-label рашэнне</li>
+        <li data-t="price_p3_l1">Безлімітныя канцэпцыі</li>
+        <li data-t="price_p3_l2">AI-асістэнт без абмежаванняў</li>
         <li data-t="price_p3_l3">API доступ</li>
-        <li data-t="price_p3_l4">Персанальны менеджар</li>
-        <li data-t="price_p3_l5">Прыярытэтная падтрымка</li>
+        <li data-t="price_p3_l4">White-label рашэнне</li>
+        <li data-t="price_p3_l5">Персанальны менеджар</li>
+        <li data-t="price_p3_l6">Прыярытэтная падтрымка</li>
       </ul>
-      <a href="dashboard.html" class="price-btn price-btn-line" data-t="price_p3_btn">Звязацца</a>
+      <a href="dashboard.html" class="price-btn price-btn-line" data-t="price_p3_btn">Выбраць Unlimited</a>
     </div>
   </div>
 </section>
@@ -913,22 +915,22 @@ function updateNavForUser(meta){
 <div class="auth-overlay" id="loginModal">
 <div class="auth-box">
 <button class="auth-close" onclick="closeAuth()">&times;</button>
-<div class="auth-title">Увайсці</div>
-<div class="auth-sub">Увядзіце вашы даныя для ўваходу ў SVITA</div>
+<div class="auth-title" data-t="li_title">Увайсці</div>
+<div class="auth-sub" data-t="li_sub">Увядзіце вашы даныя для ўваходу ў SVITA</div>
 
-<div class="af"><label>Email</label><input id="liEmail" type="email" placeholder="email@example.com"></div>
-<div class="af"><label>Пароль</label><input id="liPass" type="password" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" onkeydown="if(event.key==='Enter')doLogin()"></div>
+<div class="af"><label data-t="li_email">Email</label><input id="liEmail" type="email" placeholder="email@example.com"></div>
+<div class="af"><label data-t="li_pass">Пароль</label><input id="liPass" type="password" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" onkeydown="if(event.key==='Enter')doLogin()"></div>
 <div class="auth-error" id="liErr"></div>
-<button class="auth-btn" onclick="doLogin()">Увайсці</button>
+<button class="auth-btn" onclick="doLogin()" data-t="li_btn">Увайсці</button>
 
-<div class="auth-divider"><span>або</span></div>
+<div class="auth-divider"><span data-t="li_or">або</span></div>
 <div class="oauth-row">
 <button class="oauth-btn" onclick="doOAuth('google')"><svg width="14" height="14" viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#34A853" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59A14.5 14.5 0 019.5 24c0-1.59.28-3.14.76-4.59l-7.98-6.19A23.99 23.99 0 000 24c0 3.77.87 7.34 2.56 10.78l7.97-6.19z"/><path fill="#EA4335" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> Google</button>
 <button class="oauth-btn" onclick="doOAuth('github')"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg> GitHub</button>
 <button class="oauth-btn" onclick="doOAuth('apple')"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg> Apple</button>
 </div>
 
-<div class="auth-switch">Няма акаўнта? <a onclick="openAuth('register')">Зарэгістравацца</a></div>
+<div class="auth-switch"><span data-t="li_no_acc">Няма акаўнта?</span> <a onclick="openAuth('register')" data-t="li_register_link">Зарэгістравацца</a></div>
 </div>
 </div>
 
@@ -936,86 +938,86 @@ function updateNavForUser(meta){
 <div class="auth-overlay" id="regModal">
 <div class="auth-box">
 <button class="auth-close" onclick="closeAuth()">&times;</button>
-<div class="auth-title">Рэгістрацыя</div>
-<div class="auth-sub">Стварыце акаўнт для работы з SVITA</div>
+<div class="auth-title" data-t="rg_title">Рэгістрацыя</div>
+<div class="auth-sub" data-t="rg_sub">Стварыце акаўнт для работы з SVITA</div>
 
 <!-- ACCOUNT TYPE TABS -->
 <div class="auth-tabs">
-<button class="auth-tab active" onclick="setAccType('person',this)">Фізічная асоба</button>
-<button class="auth-tab" onclick="setAccType('company',this)">Кампанія / ІП</button>
+<button class="auth-tab active" onclick="setAccType('person',this)" data-t="rg_tab_person">Фізічная асоба</button>
+<button class="auth-tab" onclick="setAccType('company',this)" data-t="rg_tab_company">Кампанія / ІП</button>
 </div>
 
 <!-- ROLE SELECT -->
-<label style="display:block;font-family:var(--fm);font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:8px">Ваша роля</label>
+<label style="display:block;font-family:var(--fm);font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:8px" data-t="rg_role_label">Ваша роля</label>
 <div class="role-cards" id="regRoles">
-<div class="role-card sel" onclick="pickRole(this,'owner')"><div class="rc-icon">&#127970;</div><div class="rc-name">Уладальнік</div><div class="rc-desc">Збіраю канцэпцыю бізнесу</div></div>
-<div class="role-card" onclick="pickRole(this,'contractor')"><div class="rc-icon">&#128736;</div><div class="rc-name">Падрадчык</div><div class="rc-desc">Прапаную паслугі / работы</div></div>
-<div class="role-card" onclick="pickRole(this,'supplier')"><div class="rc-icon">&#128230;</div><div class="rc-name">Пастаўшчык</div><div class="rc-desc">Прадаю абсталяванне</div></div>
-<div class="role-card" onclick="pickRole(this,'investor')"><div class="rc-icon">&#128200;</div><div class="rc-name">Інвестар</div><div class="rc-desc">Шукаю канцэпцыі для ўкладанняў</div></div>
+<div class="role-card sel" onclick="pickRole(this,'owner')"><div class="rc-icon">&#127970;</div><div class="rc-name" data-t="rg_role_owner">Уладальнік</div><div class="rc-desc" data-t="rg_role_owner_d">Збіраю канцэпцыю бізнесу</div></div>
+<div class="role-card" onclick="pickRole(this,'contractor')"><div class="rc-icon">&#128736;</div><div class="rc-name" data-t="rg_role_contractor">Падрадчык</div><div class="rc-desc" data-t="rg_role_contractor_d">Прапаную паслугі / работы</div></div>
+<div class="role-card" onclick="pickRole(this,'supplier')"><div class="rc-icon">&#128230;</div><div class="rc-name" data-t="rg_role_supplier">Пастаўшчык</div><div class="rc-desc" data-t="rg_role_supplier_d">Прадаю абсталяванне</div></div>
+<div class="role-card" onclick="pickRole(this,'investor')"><div class="rc-icon">&#128200;</div><div class="rc-name" data-t="rg_role_investor">Інвестар</div><div class="rc-desc" data-t="rg_role_investor_d">Шукаю канцэпцыі для ўкладанняў</div></div>
 </div>
 
 <!-- PERSON FIELDS -->
 <div id="regPerson">
 <div class="af-row">
-<div class="af"><label>Імя</label><input id="rpFname" type="text" placeholder="Jan"></div>
-<div class="af"><label>Прозвішча</label><input id="rpLname" type="text" placeholder="Kowalski"></div>
+<div class="af"><label data-t="rg_fname">Імя</label><input id="rpFname" type="text" placeholder="Jan"></div>
+<div class="af"><label data-t="rg_lname">Прозвішча</label><input id="rpLname" type="text" placeholder="Kowalski"></div>
 </div>
-<div class="af"><label>PESEL <span style="font-size:8px;color:rgba(255,255,255,.15);text-transform:none;letter-spacing:0">(або нумар пашпарта для замежных)</span></label><input id="rpPesel" type="text" placeholder="00000000000" maxlength="11"></div>
-<div class="af"><label>Тэлефон</label><input id="rpPhone" type="tel" placeholder="+48 000 000 000"></div>
+<div class="af"><label><span data-t="rg_pesel">PESEL</span> <span style="font-size:8px;color:rgba(255,255,255,.15);text-transform:none;letter-spacing:0" data-t="rg_pesel_hint">(або нумар пашпарта для замежных)</span></label><input id="rpPesel" type="text" placeholder="00000000000" maxlength="11"></div>
+<div class="af"><label data-t="rg_phone">Тэлефон</label><input id="rpPhone" type="tel" placeholder="+48 000 000 000"></div>
 <div class="af-row">
-<div class="af"><label>Горад</label><input id="rpCity" type="text" placeholder="Warszawa"></div>
-<div class="af"><label>Паштовы код</label><input id="rpZip" type="text" placeholder="00-000"></div>
+<div class="af"><label data-t="rg_city">Горад</label><input id="rpCity" type="text" placeholder="Warszawa"></div>
+<div class="af"><label data-t="rg_zip">Паштовы код</label><input id="rpZip" type="text" placeholder="00-000"></div>
 </div>
-<div class="af"><label>Вуліца, дом, кв.</label><input id="rpStreet" type="text" placeholder="ul. Marszałkowska 1/2"></div>
-<div class="af"><label>Краіна</label>
-<select id="rpCountry"><option value="PL" selected>Polska</option><option value="DE">Deutschland</option><option value="BY">Беларусь</option><option value="UA">Україна</option><option value="LT">Lietuva</option><option value="CZ">Česko</option><option value="SK">Slovensko</option><option value="GB">United Kingdom</option><option value="US">United States</option><option value="OTHER">Іншая</option></select></div>
+<div class="af"><label data-t="rg_street">Вуліца, дом, кв.</label><input id="rpStreet" type="text" placeholder="ul. Marszałkowska 1/2"></div>
+<div class="af"><label data-t="rg_country">Краіна</label>
+<select id="rpCountry"><option value="PL" selected>Polska</option><option value="DE">Deutschland</option><option value="BY">Беларусь</option><option value="UA">Україна</option><option value="LT">Lietuva</option><option value="CZ">Česko</option><option value="SK">Slovensko</option><option value="GB">United Kingdom</option><option value="US">United States</option><option value="OTHER" data-t="rg_country_other">Іншая</option></select></div>
 </div>
 
 <!-- COMPANY FIELDS (hidden by default) -->
 <div id="regCompany" style="display:none">
-<div class="af"><label>Назва кампаніі</label><input id="rcName" type="text" placeholder="Example Sp. z o.o."></div>
-<div class="af"><label>NIP</label><input id="rcNip" type="text" placeholder="0000000000" maxlength="10"><div class="af-hint">Numer Identyfikacji Podatkowej — 10 лічбаў</div></div>
+<div class="af"><label data-t="rc_company_name">Назва кампаніі</label><input id="rcName" type="text" placeholder="Example Sp. z o.o."></div>
+<div class="af"><label data-t="rc_nip">NIP</label><input id="rcNip" type="text" placeholder="0000000000" maxlength="10"><div class="af-hint" data-t="rc_nip_hint">Numer Identyfikacji Podatkowej — 10 лічбаў</div></div>
 <div class="af-row">
-<div class="af"><label>REGON</label><input id="rcRegon" type="text" placeholder="000000000" maxlength="14"><div class="af-hint">Не абавязковае</div></div>
-<div class="af"><label>KRS</label><input id="rcKrs" type="text" placeholder="0000000000" maxlength="10"><div class="af-hint">Калі ёсць (Sp. z o.o., S.A.)</div></div>
+<div class="af"><label data-t="rc_regon">REGON</label><input id="rcRegon" type="text" placeholder="000000000" maxlength="14"><div class="af-hint" data-t="rc_regon_hint">Не абавязковае</div></div>
+<div class="af"><label data-t="rc_krs">KRS</label><input id="rcKrs" type="text" placeholder="0000000000" maxlength="10"><div class="af-hint" data-t="rc_krs_hint">Калі ёсць (Sp. z o.o., S.A.)</div></div>
 </div>
-<div class="af"><label>Форма праўная</label>
-<select id="rcForm"><option value="jdg">Jednoosobowa działalność gospodarcza (ІП)</option><option value="spzoo">Spółka z o.o.</option><option value="sa">Spółka akcyjna (S.A.)</option><option value="sc">Spółka cywilna</option><option value="sj">Spółka jawna</option><option value="sk">Spółka komandytowa</option><option value="foreign">Замежная кампанія</option></select></div>
+<div class="af"><label data-t="rc_legal_form">Форма праўная</label>
+<select id="rcForm"><option value="jdg" data-t="rc_jdg">Jednoosobowa działalność gospodarcza (ІП)</option><option value="spzoo" data-t="rc_spzoo">Spółka z o.o.</option><option value="sa" data-t="rc_sa">Spółka akcyjna (S.A.)</option><option value="sc" data-t="rc_sc">Spółka cywilna</option><option value="sj" data-t="rc_sj">Spółka jawna</option><option value="sk" data-t="rc_sk">Spółka komandytowa</option><option value="foreign" data-t="rc_foreign">Замежная кампанія</option></select></div>
 <div class="af-row">
-<div class="af"><label>Імя прадстаўніка</label><input id="rcRepFname" type="text" placeholder="Jan"></div>
-<div class="af"><label>Прозвішча прадстаўніка</label><input id="rcRepLname" type="text" placeholder="Kowalski"></div>
+<div class="af"><label data-t="rc_rep_fname">Імя прадстаўніка</label><input id="rcRepFname" type="text" placeholder="Jan"></div>
+<div class="af"><label data-t="rc_rep_lname">Прозвішча прадстаўніка</label><input id="rcRepLname" type="text" placeholder="Kowalski"></div>
 </div>
-<div class="af"><label>Пасада прадстаўніка</label><input id="rcRepRole" type="text" placeholder="Prezes Zarządu"></div>
-<div class="af"><label>Тэлефон кампаніі</label><input id="rcPhone" type="tel" placeholder="+48 000 000 000"></div>
+<div class="af"><label data-t="rc_rep_role">Пасада прадстаўніка</label><input id="rcRepRole" type="text" placeholder="Prezes Zarządu"></div>
+<div class="af"><label data-t="rc_phone">Тэлефон кампаніі</label><input id="rcPhone" type="tel" placeholder="+48 000 000 000"></div>
 <div class="af-row">
-<div class="af"><label>Горад</label><input id="rcCity" type="text" placeholder="Warszawa"></div>
-<div class="af"><label>Паштовы код</label><input id="rcZip" type="text" placeholder="00-000"></div>
+<div class="af"><label data-t="rg_city">Горад</label><input id="rcCity" type="text" placeholder="Warszawa"></div>
+<div class="af"><label data-t="rg_zip">Паштовы код</label><input id="rcZip" type="text" placeholder="00-000"></div>
 </div>
-<div class="af"><label>Адрас сядзібы</label><input id="rcStreet" type="text" placeholder="ul. Marszałkowska 1/2"></div>
-<div class="af"><label>Краіна</label>
-<select id="rcCountry"><option value="PL" selected>Polska</option><option value="DE">Deutschland</option><option value="BY">Беларусь</option><option value="UA">Україна</option><option value="LT">Lietuva</option><option value="CZ">Česko</option><option value="SK">Slovensko</option><option value="GB">United Kingdom</option><option value="US">United States</option><option value="OTHER">Іншая</option></select></div>
+<div class="af"><label data-t="rc_address">Адрас сядзібы</label><input id="rcStreet" type="text" placeholder="ul. Marszałkowska 1/2"></div>
+<div class="af"><label data-t="rg_country">Краіна</label>
+<select id="rcCountry"><option value="PL" selected>Polska</option><option value="DE">Deutschland</option><option value="BY">Беларусь</option><option value="UA">Україна</option><option value="LT">Lietuva</option><option value="CZ">Česko</option><option value="SK">Slovensko</option><option value="GB">United Kingdom</option><option value="US">United States</option><option value="OTHER" data-t="rg_country_other">Іншая</option></select></div>
 </div>
 
 <!-- COMMON: EMAIL + PASSWORD -->
 <div style="border-top:1px solid rgba(255,255,255,0.06);margin:20px 0 16px;padding-top:16px">
-<div class="af"><label>Email</label><input id="rgEmail" type="email" placeholder="email@example.com"></div>
-<div class="af"><label>Пароль</label><input id="rgPass" type="password" placeholder="Мінімум 6 сімвалаў"></div>
-<div class="af"><label>Паўтарыце пароль</label><input id="rgPass2" type="password" placeholder="Яшчэ раз" onkeydown="if(event.key==='Enter')doRegister()"></div>
+<div class="af"><label data-t="rg_email">Email</label><input id="rgEmail" type="email" placeholder="email@example.com"></div>
+<div class="af"><label data-t="rg_pass">Пароль</label><input id="rgPass" type="password" data-i18n-placeholder="rg_pass_ph" placeholder="Мінімум 6 сімвалаў"></div>
+<div class="af"><label data-t="rg_pass2">Паўтарыце пароль</label><input id="rgPass2" type="password" data-i18n-placeholder="rg_pass2_ph" placeholder="Яшчэ раз" onkeydown="if(event.key==='Enter')doRegister()"></div>
 </div>
 
-<div style="margin-bottom:12px"><label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:11px;color:var(--dim)"><input type="checkbox" id="rgTerms" style="margin-top:2px;accent-color:var(--gold)"> Я згаджаюся з <a href="#" style="color:var(--gold)">Умовамі выкарыстання</a> і <a href="#" style="color:var(--gold)">Палітыкай прыватнасці</a></label></div>
+<div style="margin-bottom:12px"><label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:11px;color:var(--dim)"><input type="checkbox" id="rgTerms" style="margin-top:2px;accent-color:var(--gold)"> <span data-t="rg_terms">Я згаджаюся з</span> <a href="#" style="color:var(--gold)" data-t="rg_terms_link">Умовамі выкарыстання</a> <span data-t="rg_and">і</span> <a href="#" style="color:var(--gold)" data-t="rg_privacy_link">Палітыкай прыватнасці</a></label></div>
 
 <div class="auth-error" id="rgErr"></div>
-<button class="auth-btn" onclick="doRegister()">Зарэгістравацца</button>
+<button class="auth-btn" onclick="doRegister()" data-t="rg_btn">Зарэгістравацца</button>
 
-<div class="auth-divider"><span>або</span></div>
+<div class="auth-divider"><span data-t="li_or">або</span></div>
 <div class="oauth-row">
 <button class="oauth-btn" onclick="doOAuth('google')"><svg width="14" height="14" viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#34A853" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59A14.5 14.5 0 019.5 24c0-1.59.28-3.14.76-4.59l-7.98-6.19A23.99 23.99 0 000 24c0 3.77.87 7.34 2.56 10.78l7.97-6.19z"/><path fill="#EA4335" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> Google</button>
 <button class="oauth-btn" onclick="doOAuth('github')"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg> GitHub</button>
 <button class="oauth-btn" onclick="doOAuth('apple')"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg> Apple</button>
 </div>
 
-<div class="auth-switch">Ужо маеце акаўнт? <a onclick="openAuth('login')">Увайсці</a></div>
+<div class="auth-switch"><span data-t="rg_has_acc">Ужо маеце акаўнт?</span> <a onclick="openAuth('login')" data-t="li_title">Увайсці</a></div>
 </div>
 </div>
 
@@ -1024,12 +1026,12 @@ function updateNavForUser(meta){
 <div class="auth-box" style="text-align:center">
 <button class="auth-close" onclick="closeAuth()">&times;</button>
 <div style="font-size:56px;margin-bottom:16px">&#9993;</div>
-<div class="auth-title">Пацвердзіце email</div>
-<div class="auth-sub" style="margin-bottom:8px">Мы адправілі пісьмо на</div>
+<div class="auth-title" data-t="vr_title">Пацвердзіце email</div>
+<div class="auth-sub" style="margin-bottom:8px" data-t="vr_sent">Мы адправілі пісьмо на</div>
 <div style="font-family:var(--fd);font-size:14px;font-weight:600;color:var(--gold);margin-bottom:20px" id="verifyAddr"></div>
-<div style="font-size:11px;color:var(--dim);margin-bottom:20px">Перайдзіце па спасылцы ў пісьме, потым вярніцеся і ўвайдзіце</div>
-<button class="oauth-btn" style="width:100%;justify-content:center;margin-bottom:8px" id="resendBtn2" onclick="doResend()">Адправіць паўторна</button>
-<button class="auth-btn" onclick="closeAuth();openAuth('login')">Увайсці</button>
+<div style="font-size:11px;color:var(--dim);margin-bottom:20px" data-t="vr_hint">Перайдзіце па спасылцы ў пісьме, потым вярніцеся і ўвайдзіце</div>
+<button class="oauth-btn" style="width:100%;justify-content:center;margin-bottom:8px" id="resendBtn2" onclick="doResend()" data-t="vr_resend">Адправіць паўторна</button>
+<button class="auth-btn" onclick="closeAuth();openAuth('login')" data-t="li_btn">Увайсці</button>
 </div>
 </div>
 
