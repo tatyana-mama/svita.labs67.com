@@ -3131,10 +3131,9 @@ ${p.items.map(i=>`<div style="padding:8px 10px;border:1px solid var(--bd);border
 }
 
 function renderContractors(){
-  const c=document.getElementById('contractorCards');
+  const c=document.getElementById('contractorCards');if(!c)return;
   c.innerHTML=DB.contractors.map(r=>{
-    const picked=!!DB.pickedContractors[r.id];
-    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}"><div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:rgba(249,115,22,.1);color:var(--or)">${r.spec}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Город</div><div class="db-card-val">${r.city}</div></div><div class="db-card-field"><div class="db-card-label">Цена</div><div class="db-card-val">${r.price}</div></div><div class="db-card-field"><div class="db-card-label">Рейтинг</div><div class="db-card-val">${r.rating} ★</div></div><div class="db-card-field"><div class="db-card-label">Контакт</div><div class="db-card-val">${r.phone}</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePick('pickedContractors','${r.id}','contractors')">${picked?'✓ Назначен':'+ Подрядчик → Таб 2'}</button><button class="btn sm" onclick="delItem('contractors','${r.id}')">Удалить</button></div></div>`;
+    return `<div class="db-card"><div class="db-card-head"><span class="db-card-name">${esc(r.name)}</span><span class="db-card-role" style="background:rgba(249,115,22,.1);color:var(--or)">${esc(r.spec)}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Город</div><div class="db-card-val">${esc(r.city)}</div></div><div class="db-card-field"><div class="db-card-label">Ставка</div><div class="db-card-val">${esc(r.price)}</div></div><div class="db-card-field"><div class="db-card-label">Рейтинг</div><div class="db-card-val">${r.rating} ★</div></div><div class="db-card-field"><div class="db-card-label">Контакт</div><div class="db-card-val">${esc(r.phone)}</div></div></div></div>`;
   }).join('');
 }
 
