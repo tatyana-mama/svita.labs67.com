@@ -35,6 +35,7 @@
 .side-sec{font-size:9px;font-weight:600;color:var(--tx3);letter-spacing:1.5px;text-transform:uppercase;padding:16px 12px 6px}
 .si{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--tx2);border:none;transition:all .15s;user-select:none}.si.locked{opacity:.5}
 .si:hover{background:var(--sf2);color:var(--tx)}.si.act{background:var(--acbg);color:var(--ac2);font-weight:600}
+.si.si-clr{border-left:3px solid var(--si-clr);border-radius:0 8px 8px 0}.si.si-clr .sb{background:color-mix(in srgb,var(--si-clr) 12%,transparent);color:var(--si-clr)}.si.si-clr.act{background:color-mix(in srgb,var(--si-clr) 8%,transparent);color:var(--si-clr);border-left-color:var(--si-clr)}
 .si .ico{font-size:15px;width:20px;text-align:center;flex-shrink:0}
 .sn{width:24px;height:24px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;border:1.5px solid var(--bd2);color:var(--tx3);flex-shrink:0}
 .sn.ok{background:var(--gn);color:#fff;border:none}.sn.cur{background:var(--ac);color:#fff;border:none}
@@ -301,7 +302,33 @@
 /* RESPONSIVE */
 @media(max-width:1400px){.rpanel{width:260px}.main{margin-right:260px}}
 @media(max-width:1100px){.sts{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:1fr}.rpanel{display:none}.main{margin-right:0}}
-@media(max-width:768px){.side{display:none}.main{margin-left:0!important}.sts{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}.sec{padding:12px}.login-box{width:90%;padding:24px}.tab{padding:10px 8px;font-size:10px;gap:4px}.tab .tab-icon{display:none}.top-uname,.top-urole{display:none}.top-user{padding:4px}}
+/* Mobile burger */
+.mob-burger{display:none;background:none;border:none;font-size:22px;cursor:pointer;padding:4px 8px;color:var(--tx);line-height:1}
+.mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
+.side.mob-open{transform:translateX(0)!important;display:flex!important}
+@media(max-width:768px){
+.mob-burger{display:block}
+.side{transform:translateX(-100%);transition:transform .25s;z-index:101}
+.side.mob-open+.mob-overlay,.mob-overlay.vis{display:block}
+.main{margin-left:0!important}
+.sts{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(2,1fr)}
+.sec{padding:12px}
+.login-box{width:90%;padding:24px}
+.tab{padding:8px 8px;font-size:9px;gap:2px}
+.tab .tab-icon{display:none}
+.tab .tab-num{width:18px;height:18px;font-size:9px}
+.tab-bar{padding:4px 8px 0;gap:0}
+.top-p,.top-bc{display:none}
+.top-uname,.top-urole{display:none}
+.top-user{padding:4px}
+.top{padding:8px 12px}
+.top-r{gap:4px}
+.top-upgrade{font-size:9px;padding:4px 10px}
+.ph{flex-direction:column;align-items:flex-start;gap:8px}
+.c{margin:0 0 8px}
+.modal-box{width:95%!important;max-height:90vh;overflow-y:auto}
+}
 </style>
 </head>
 <body>
@@ -475,10 +502,12 @@ Apple</button>
 <div class="side-head"><div class="side-logo"><span class="d"></span>SVITA</div><div class="side-tag">Конструктор клиники</div></div>
 <nav class="side-nav" id="sideNav"></nav>
 </aside>
+<div class="mob-overlay" id="mobOverlay" onclick="toggleMobileSidebar()"></div>
 
 <!-- MAIN -->
 <div class="main">
 <div class="top">
+<button class="mob-burger" onclick="toggleMobileSidebar()">&#9776;</button>
 <div class="top-l"><span class="top-p">Свитлица</span><span class="top-t" id="roleLabel" style="background:var(--acbg);color:var(--ac2)">Стоматология</span><span class="top-bc" id="bc">Обзор</span></div>
 <div class="top-r">
 <div style="display:flex;gap:6px" id="topActions">
@@ -2560,6 +2589,12 @@ document.addEventListener('click',function(e){
   });
 })();
 
+function toggleMobileSidebar(){
+  const s=document.getElementById('sidebar');
+  const o=document.getElementById('mobOverlay');
+  s.classList.toggle('mob-open');
+  o.classList.toggle('vis');
+}
 function buildSidebar(){
   const n=document.getElementById('sideNav');
   let html='<div class="si act" data-nav="overview"><span class="ico">&#9673;</span><span class="sl">Обзор</span></div>';
@@ -2574,12 +2609,12 @@ function buildSidebar(){
 
   if(currentRole==='admin'||currentRole==='owner'){
     html+='<div class="side-sec">Базы данных</div>';
-    html+='<div class="si" data-nav="db-premises"><span class="ico">&#127970;</span><span class="sl">Помещения</span><span class="sb wip">'+DB.premises.length+'</span></div>';
-    html+='<div class="si" data-nav="db-renovations"><span class="ico">&#128736;</span><span class="sl">Модернизация</span><span class="sb wip">'+(DB.renovations.length+DB.services.length)+'</span></div>';
-    html+='<div class="si" data-nav="db-suppliers"><span class="ico">&#128230;</span><span class="sl">Оборудование</span><span class="sb wip">'+DB.suppliers.length+'</span></div>';
-    html+='<div class="si" data-nav="db-employees"><span class="ico">&#129489;</span><span class="sl">Сотрудники</span><span class="sb wip">'+DB.employees.length+'</span></div>';
-    html+='<div class="si" data-nav="db-services"><span class="ico">&#129657;</span><span class="sl">Услуги</span><span class="sb wip">'+DB.services.length+'</span></div>';
-    html+='<div class="si" data-nav="s7"><span class="ico">&#128203;</span><span class="sl">Документация</span><span class="sb wip">'+(DB.docItems||[]).length+'</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#3b82f6" data-nav="db-premises"><span class="ico">&#127970;</span><span class="sl">Помещения</span><span class="sb wip">'+DB.premises.length+'</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#f59e0b" data-nav="db-renovations"><span class="ico">&#128736;</span><span class="sl">Модернизация</span><span class="sb wip">'+(DB.renovations.length+DB.services.length)+'</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#8b5cf6" data-nav="db-suppliers"><span class="ico">&#128230;</span><span class="sl">Оборудование</span><span class="sb wip">'+DB.suppliers.length+'</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#06b6d4" data-nav="db-employees"><span class="ico">&#129489;</span><span class="sl">Сотрудники</span><span class="sb wip">'+DB.employees.length+'</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#22c55e" data-nav="db-services"><span class="ico">&#129657;</span><span class="sl">Услуги</span><span class="sb wip">'+DB.services.length+'</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#ef4444" data-nav="s7"><span class="ico">&#128203;</span><span class="sl">Документация</span><span class="sb wip">'+(DB.docItems||[]).length+'</span></div>';
     html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
     const canContractors=currentRole==='admin'||userSubscription.contractors_access;
     html+='<div class="si'+(canContractors?'':' locked')+'" data-nav="'+(canContractors?'db-contractors':'upgrade-gate')+'"><span class="ico">&#128736;</span><span class="sl">Подрядчики</span>'+(canContractors?'<span class="sb wip">'+DB.contractors.length+'</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; Unlimited</span>')+'</div>';
@@ -2617,6 +2652,9 @@ let cur='overview';
 
 function nav(id){
   if(id==='upgrade-gate'){showUpgradeModal();return}
+  // Close mobile sidebar
+  const _sb=document.getElementById('sidebar');if(_sb)_sb.classList.remove('mob-open');
+  const _mo=document.getElementById('mobOverlay');if(_mo)_mo.classList.remove('vis');
   cur=id;
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('vis'));
   const el=document.getElementById('sec-'+id);
