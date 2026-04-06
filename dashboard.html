@@ -981,11 +981,11 @@ Apple</button>
 
 <!-- ═══ S7: ДОКУМЕНТАЦИЯ ═══ -->
 <div class="sec" id="sec-s7">
-<div class="ph"><div><h2>07 &middot; Документация</h2><div class="ph-s">Юридическое оформление, лицензии, санэпиднадзор, RODO</div></div><button class="btn sm pr" onclick="addDocItem()">+ Добавить</button></div>
+<div class="ph"><div><h2>07 &middot; Документация</h2><div class="ph-s">Выбранные документы для проекта — добавляйте строки расходов</div></div><button class="btn sm pr" onclick="nav('db-docs')">Каталог документов &rarr;</button></div>
 <div class="sts">
-<div class="st"><div class="st-l">Позиций</div><div class="st-v" id="docCount">0</div><div class="st-s">документов</div></div>
+<div class="st"><div class="st-l">Документов</div><div class="st-v" id="docCount">0</div><div class="st-s">в проекте</div></div>
 <div class="st"><div class="st-l">Готово</div><div class="st-v" id="docDone">0</div><div class="st-s">выполнено</div><div class="st-b"><div class="st-bf" id="docBar" style="width:0%;background:var(--gn)"></div></div></div>
-<div class="st"><div class="st-l">Стоимость</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="docCostStat">0</div><div class="st-s">PLN</div></div>
+<div class="st"><div class="st-l">Общая стоимость</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="docCostStat">0</div><div class="st-s">PLN</div></div>
 </div>
 <div id="docCards"></div>
 <div style="text-align:right;padding:12px 0;border-top:1px solid var(--bd);margin-top:8px"><span style="font-size:12px;color:var(--tx3)">Итого: </span><span style="font-size:18px;font-weight:800;color:var(--ac2)" id="s7Total">0 PLN</span></div>
@@ -1067,16 +1067,16 @@ Apple</button>
 <!-- ═══ DATABASES (ADMIN) ═══ -->
 <div class="sec" id="sec-db-premises">
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
-<div class="ph"><div><h2>&#127970; БД Помещений</h2><div class="ph-s">Объекты недвижимости с адресами и характеристиками</div></div><button class="btn sm pr" onclick="openModal('premise')">+ Добавить</button></div>
+<div class="ph"><div><h2>&#127970; БД Помещений</h2><div class="ph-s">Объекты недвижимости с адресами и характеристиками</div></div><div style="display:flex;gap:6px;align-items:center"><div id="premiseViewToggle" style="display:flex;border:1px solid var(--bd);border-radius:6px;overflow:hidden"><button class="btn sm" onclick="setPremiseView('grid')" id="pvGrid" style="border:none;border-radius:0;padding:4px 8px;font-size:11px" title="Сетка">&#9638;</button><button class="btn sm" onclick="setPremiseView('list')" id="pvList" style="border:none;border-radius:0;padding:4px 8px;font-size:11px" title="Список">&#9776;</button><button class="btn sm" onclick="setPremiseView('compact')" id="pvCompact" style="border:none;border-radius:0;padding:4px 8px;font-size:11px" title="Компакт">&#9632;</button></div><button class="btn sm pr" onclick="openModal('premise')">+ Добавить</button></div></div>
 <div id="premiseCards"></div>
 </div>
 
 <div class="sec" id="sec-db-renovations">
 <div class="bk" onclick="nav('s2')">&larr; Модернизация</div>
-<div class="ph"><div><h2>&#128736; Каталог модернизации</h2><div class="ph-s">Ремонтные работы и процедуры для проекта</div></div><button class="btn sm or" onclick="openModal('renovation')">+ Работа</button></div>
+<div class="ph"><div><h2>&#128736; Модернизация и услуги</h2><div class="ph-s">Ремонтные работы и перечень стоматологических услуг</div></div><button class="btn sm or" onclick="openModal('renovation')">+ Работа</button></div>
 <div class="c"><div class="ch"><h3>&#9889; Ремонтные работы</h3><span style="font-size:10px;color:var(--tx3)">Строительство и отделка</span></div>
 <div class="cb" id="renCatalogCards"></div></div>
-<div class="c" style="margin-top:12px"><div class="ch"><h3>&#129657; Процедуры согласования</h3><span style="font-size:10px;color:var(--tx3)">Из каталога услуг</span></div>
+<div class="c" style="margin-top:12px"><div class="ch"><h3>&#129657; Перечень услуг</h3><span style="font-size:10px;color:var(--tx3)">Стоматологические услуги для перечня и экономики</span></div>
 <div class="cb" id="renServiceCards"></div></div>
 </div>
 
@@ -1085,6 +1085,13 @@ Apple</button>
 <div class="ph"><div><h2>&#129657; Каталог услуг</h2><div class="ph-s">Все стоматологические услуги — добавляйте в перечень</div></div><button class="btn sm pr" onclick="openModal('service')">+ Услуга</button></div>
 <div class="c"><div class="ch"><h3>&#129657; Услуги</h3><span style="font-size:10px;color:var(--tx3)">Из Supabase</span></div>
 <div class="cb" id="dbServiceCards"></div></div>
+</div>
+
+<!-- ═══ DB-DOCS: Document catalog ═══ -->
+<div class="sec" id="sec-db-docs">
+<div class="bk" onclick="nav('s7')">&larr; Документация</div>
+<div class="ph"><div><h2>&#128203; Каталог документов</h2><div class="ph-s">Лицензии, согласования, регистрации — добавляйте в проект</div></div><button class="btn sm pr" onclick="addCustomDoc()">+ Свой документ</button></div>
+<div id="docCatalogCards"></div>
 </div>
 
 <!-- ═══ CONTRACTOR: Available works ═══ -->
@@ -1250,7 +1257,7 @@ const DB={
   pickedEquip:{},
   pickedStaff:{},
   pickedRenovations:{},
-  docItems:[],
+  pickedDocs:{},
   renovations:[
     // ⚡ Электрика
     {id:'e1',name:'Расширение мощности',cat:'Электрика',price:8000,unit:'кВт',baseVal:50},
@@ -1737,7 +1744,8 @@ const ADMIN_EMAILS=['scyraai@proton.me','artem@labs67.com'];
 // Helper: escape HTML for safe attribute/content injection
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
 // Per-user localStorage helpers
-function uKey(k){const uid=currentUser&&currentUser.id?currentUser.id:'anon';return k+'_'+uid}
+function uKey(k){const uid=currentUser&&currentUser.id?currentUser.id:'anon';const r=currentRole||'';return k+'_'+uid+(r?'_'+r:'')}
+function uKeyOld(k){const uid=currentUser&&currentUser.id?currentUser.id:'anon';return k+'_'+uid}
 function uSet(k,v){localStorage.setItem(uKey(k),v)}
 function uGet(k){return localStorage.getItem(uKey(k))}
 function uRemove(k){localStorage.removeItem(uKey(k))}
@@ -2018,7 +2026,7 @@ function restoreProperty(p){
   renderProperty();recalc();
 }
 // ═══ PERSIST PICKED DATA ═══
-const PICKED_KEYS=['pickedEquip','pickedRenovations','pickedStaff','pickedServices','pickedRooms','pickedContractors'];
+const PICKED_KEYS=['pickedEquip','pickedRenovations','pickedStaff','pickedServices','pickedRooms','pickedContractors','pickedDocs'];
 function savePicked(){
   const obj={};
   PICKED_KEYS.forEach(k=>{obj[k]=DB[k]||{}});
@@ -2029,7 +2037,9 @@ function loadPicked(){
   PICKED_KEYS.forEach(k=>{DB[k]={}});
   try{
     let raw=uGet('svita_picked');
-    // Fallback: try legacy key without userId (migration from pre-isolation)
+    // Fallback: try old key format (userId without role)
+    if(!raw){const oldKey=uKeyOld('svita_picked');raw=localStorage.getItem(oldKey);if(raw){uSet('svita_picked',raw)}}
+    // Fallback: try legacy key without userId at all
     if(!raw){raw=localStorage.getItem('svita_picked');if(raw){uSet('svita_picked',raw);localStorage.removeItem('svita_picked')}}
     if(!raw)return;
     const obj=JSON.parse(raw);
@@ -2049,6 +2059,9 @@ const BM_DEFAULTS={cType:'Стоматологическая клиника',cBr
 function loadBusinessModel(){
   try{
     let raw=uGet('svita_bm');
+    // Fallback: old key format (userId without role)
+    if(!raw){const oldKey=uKeyOld('svita_bm');raw=localStorage.getItem(oldKey);if(raw){uSet('svita_bm',raw)}}
+    // Fallback: legacy key without userId
     if(!raw){raw=localStorage.getItem('svita_bm');if(raw){uSet('svita_bm',raw);localStorage.removeItem('svita_bm')}}
     if(!raw){
       const vals=currentRole==='admin'?BM_DEFAULTS:{};
@@ -2447,10 +2460,13 @@ function enterApp(){
   }
   // Restore property card state (per-user) with legacy migration
   let savedProp=uGet('svita_property');
+  // Fallback: old key format (userId without role)
+  if(!savedProp){const oldKey=uKeyOld('svita_property');savedProp=localStorage.getItem(oldKey);if(savedProp){uSet('svita_property',savedProp)}}
+  // Fallback: legacy key without userId
   if(!savedProp){savedProp=localStorage.getItem('svita_property');if(savedProp){uSet('svita_property',savedProp);localStorage.removeItem('svita_property')}}
   if(savedProp){try{activeProperty=JSON.parse(savedProp)}catch(e){activeProperty=null}}
   else{activeProperty=currentRole==='admin'?{...DEFAULT_PROPERTY}:null}
-  loadPicked();loadBusinessModel();loadDocItems();
+  loadPicked();loadBusinessModel();
   // Apply saved staff edits from pickedStaff onto DB.employees
   Object.entries(DB.pickedStaff||{}).forEach(([id,over])=>{
     if(over.name||over.salary||over.spec||over.status){
@@ -2476,7 +2492,6 @@ async function logout(){
   currentUser=null;currentRole=null;
   // Clear in-memory data to prevent bleed between accounts
   PICKED_KEYS.forEach(k=>{DB[k]={}});
-  DB.docItems=[];
   activeProperty=null;
   if(FP){FP.rooms=[];FP.elements=[];if(typeof fpDraw==='function')fpDraw()}
   achUnlocked=new Set();itemImages={};
@@ -2613,8 +2628,7 @@ function buildSidebar(){
     html+='<div class="si si-clr" style="--si-clr:#f59e0b" data-nav="db-renovations"><span class="ico">&#128736;</span><span class="sl">Модернизация</span><span class="sb wip">'+(DB.renovations.length+DB.services.length)+'</span></div>';
     html+='<div class="si si-clr" style="--si-clr:#8b5cf6" data-nav="db-suppliers"><span class="ico">&#128230;</span><span class="sl">Оборудование</span><span class="sb wip">'+DB.suppliers.length+'</span></div>';
     html+='<div class="si si-clr" style="--si-clr:#06b6d4" data-nav="db-employees"><span class="ico">&#129489;</span><span class="sl">Сотрудники</span><span class="sb wip">'+DB.employees.length+'</span></div>';
-    html+='<div class="si si-clr" style="--si-clr:#22c55e" data-nav="db-services"><span class="ico">&#129657;</span><span class="sl">Услуги</span><span class="sb wip">'+DB.services.length+'</span></div>';
-    html+='<div class="si si-clr" style="--si-clr:#ef4444" data-nav="s7"><span class="ico">&#128203;</span><span class="sl">Документация</span><span class="sb wip">'+(DB.docItems||[]).length+'</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#ef4444" data-nav="db-docs"><span class="ico">&#128203;</span><span class="sl">Документация</span><span class="sb wip">'+ADMIN_DOC_ITEMS.length+'</span></div>';
     html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
     const canContractors=currentRole==='admin'||userSubscription.contractors_access;
     html+='<div class="si'+(canContractors?'':' locked')+'" data-nav="'+(canContractors?'db-contractors':'upgrade-gate')+'"><span class="ico">&#128736;</span><span class="sl">Подрядчики</span>'+(canContractors?'<span class="sb wip">'+DB.contractors.length+'</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; Unlimited</span>')+'</div>';
@@ -2646,7 +2660,7 @@ function buildSidebar(){
 }
 
 // ═══════════════ NAVIGATION ═══════════════
-const secNames={overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:'Перечень услуг',s6:'Концепция',s7:'Документация',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны','db-premises':'БД Помещений','db-renovations':'Каталог модернизации','db-services':'Каталог услуг','db-contractors':'БД Подрядчиков','db-suppliers':'Каталог оборудования','db-employees':'БД Сотрудников','db-vendor-companies':'Поставщики',users:'Пользователи','cabinet-types':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения'};
+const secNames={overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:'Перечень услуг',s6:'Концепция',s7:'Документация',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны','db-premises':'БД Помещений','db-renovations':'Модернизация и услуги','db-services':'Каталог услуг','db-docs':'Каталог документов','db-contractors':'БД Подрядчиков','db-suppliers':'Каталог оборудования','db-employees':'БД Сотрудников','db-vendor-companies':'Поставщики',users:'Пользователи','cabinet-types':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения'};
 const stageOrder=['s1','s2','s3','s4','s5','s6','s7'];
 let cur='overview';
 
@@ -2999,7 +3013,7 @@ function toggleCheck(el){
 
 // ═══════════════ RENDER DB CARDS ═══════════════
 function renderAll(){
-  const fns=[renderProperty,renderPremises,renderContractors,renderEmployees,renderVendors,renderEquip,renderSelectedEquip,renderRenovationsCatalog,renderRenServices,renderSelectedRenovations,renderStaff,renderServices,renderSelectedServices,renderUsers,renderCabinetTypes,renderPickedRooms,renderPickedContractors,renderZones,renderDocs,loadPropertyParams,updateRightPanel,renderOwnerProposals];
+  const fns=[renderProperty,renderPremises,renderContractors,renderEmployees,renderVendors,renderEquip,renderSelectedEquip,renderRenovationsCatalog,renderRenServices,renderSelectedRenovations,renderStaff,renderServices,renderSelectedServices,renderUsers,renderCabinetTypes,renderPickedRooms,renderPickedContractors,renderZones,renderDocCatalog,renderDocs,loadPropertyParams,updateRightPanel,renderOwnerProposals];
   fns.forEach(fn=>{try{fn()}catch(e){console.error('[SVITA] renderAll error in '+fn.name+':',e)}});
 }
 
@@ -3032,9 +3046,23 @@ async function respondProposal(id,status){
   renderOwnerProposals();
 }
 
+let premiseViewMode='grid';
+function setPremiseView(mode){
+  premiseViewMode=mode;
+  document.querySelectorAll('#premiseViewToggle button').forEach(b=>b.style.background='transparent');
+  const btn=document.getElementById(mode==='grid'?'pvGrid':mode==='list'?'pvList':'pvCompact');
+  if(btn)btn.style.background='var(--acbg)';
+  renderPremises();
+}
 function renderPremises(){
   const c=document.getElementById('premiseCards');if(!c)return;
   if(!DB.premises.length){c.innerHTML='<div style="padding:32px;text-align:center;color:var(--tx3);font-size:13px">Нет объектов. Добавьте помещение вручную или загрузите из каталога.</div>';return}
+  // Highlight active view button
+  document.querySelectorAll('#premiseViewToggle button').forEach(b=>b.style.background='transparent');
+  const vBtn=document.getElementById(premiseViewMode==='grid'?'pvGrid':premiseViewMode==='list'?'pvList':'pvCompact');
+  if(vBtn)vBtn.style.background='var(--acbg)';
+  if(premiseViewMode==='list'){renderPremisesList(c);return}
+  if(premiseViewMode==='compact'){renderPremisesCompact(c);return}
   c.innerHTML=DB.premises.map(p=>{
     const sp=p.specs||{};
     const addr=esc(sp.address||p.name||'—');
@@ -3090,6 +3118,32 @@ ${p.source?`<a href="${esc(p.source)}" target="_blank" rel="noopener" class="btn
 <button class="btn sm" onclick="delPremise('${pid}')">Удалить</button>
 </div></div>`;
   }).join('');
+}
+function renderPremisesList(c){
+  const statusLabels={candidate:'Кандидат',shortlist:'Шортлист',ordered:'Бронь',delivered:'Получено',rejected:'Отклонён'};
+  const statusColors={candidate:'#eab308',shortlist:'#3b82f6',ordered:'#8b5cf6',delivered:'#22c55e',rejected:'#ef4444'};
+  let html='<table class="dt" style="font-size:11px"><thead><tr><th>Адрес</th><th>Район</th><th>Площадь</th><th>Цена/мес</th><th>Этаж</th><th>Статус</th><th></th></tr></thead><tbody>';
+  DB.premises.forEach(p=>{
+    const sp=p.specs||{};const s=p.status||'candidate';
+    html+=`<tr><td style="font-weight:600">${esc(sp.address||p.name||'—')}</td><td>${esc(sp.district||'')}</td><td>${sp.area||0} м²</td><td style="color:var(--ac);font-weight:600">${p.price?p.price.toLocaleString('ru')+' PLN':'—'}</td><td>${sp.floor!=null?sp.floor:''}</td><td><span style="color:${statusColors[s]};font-weight:600;font-size:10px">${statusLabels[s]||s}</span></td><td style="white-space:nowrap"><button class="btn sm pr" onclick="selectPremiseAsProperty('${p.id}')" style="padding:2px 6px;font-size:9px">→ Таб 1</button> <button class="btn sm" onclick="editPremise('${p.id}')" style="padding:2px 6px;font-size:9px">Ред.</button></td></tr>`;
+  });
+  html+='</tbody></table>';
+  c.innerHTML=html;
+}
+function renderPremisesCompact(c){
+  const statusLabels={candidate:'Кандидат',shortlist:'Шортлист',ordered:'Бронь',delivered:'Получено',rejected:'Отклонён'};
+  const statusColors={candidate:'#eab308',shortlist:'#3b82f6',ordered:'#8b5cf6',delivered:'#22c55e',rejected:'#ef4444'};
+  let html='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px">';
+  DB.premises.forEach(p=>{
+    const sp=p.specs||{};const s=p.status||'candidate';
+    html+=`<div style="border:1px solid var(--bd);border-radius:8px;padding:10px;cursor:pointer" onclick="selectPremiseAsProperty('${p.id}')">
+<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:4px"><div style="font-size:12px;font-weight:600;color:var(--tx)">${esc(sp.address||p.name||'—')}</div><span style="font-size:8px;padding:2px 6px;border-radius:4px;background:${statusColors[s]||'#eab308'}22;color:${statusColors[s]||'#eab308'};font-weight:600;white-space:nowrap">${statusLabels[s]||s}</span></div>
+<div style="font-size:10px;color:var(--tx3)">${esc(sp.district||'')}${sp.city?' · '+esc(sp.city):''}</div>
+<div style="display:flex;gap:8px;margin-top:6px;font-size:10px"><span style="color:var(--ac);font-weight:600">${p.price?p.price.toLocaleString('ru')+' PLN':'—'}</span><span>${sp.area||0} м²</span></div>
+</div>`;
+  });
+  html+='</div>';
+  c.innerHTML=html;
 }
 
 function selectPremiseAsProperty(id){
@@ -3335,7 +3389,7 @@ function renderRenovationsCatalog(){
     items.forEach(r=>{
       const picked=!!DB.pickedRenovations[r.id];
       const valLabel=r.baseVal&&r.unit?` · ${r.baseVal} ${r.unit}`:'';
-      html+=`<div class="ci" style="padding:8px 12px;display:flex;align-items:center;gap:8px;${picked?'background:var(--acbg)':''}"><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:${picked?'600':'400'}">${r.name}${valLabel}</div><div style="font-size:10px;color:var(--ac2)">${r.price.toLocaleString('ru')} PLN</div></div><button class="btn sm ${picked?'gn':'pr'}" style="flex-shrink:0;padding:3px 10px;font-size:10px" onclick="togglePickRenovation('${r.id}')">${picked?'&#10003;':'+'}</button></div>`;
+      html+=`<div class="ci" style="padding:8px 12px;display:flex;align-items:center;gap:8px;${picked?'background:var(--acbg)':''}"><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:${picked?'600':'400'}">${r.name}${valLabel}</div><div style="font-size:10px;color:var(--ac2)">${r.price.toLocaleString('ru')} PLN</div></div><button class="btn sm ${picked?'gn':'pr'}" style="flex-shrink:0;min-width:100px;font-size:10px" onclick="togglePickRenovation('${r.id}')">${picked?'✓ Добавлено':'+ В модернизацию'}</button></div>`;
     });
     html+='</div></div>';
   });
@@ -3357,7 +3411,7 @@ function renderRenServices(){
     html+=`<div id="renSvcBody${ci}" style="display:none;border-top:1px solid var(--bd)">`;
     items.forEach(s=>{
       const picked=!!DB.pickedServices[s.id];
-      html+=`<div class="ci" style="padding:8px 12px;display:flex;align-items:center;gap:8px;${picked?'background:var(--acbg)':''}"><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:${picked?'600':'400'}">${esc(s.name)}</div><div style="font-size:10px;color:var(--ac2)">${(s.price||0).toLocaleString('ru')} PLN · ${s.time||''}</div></div><button class="btn sm ${picked?'gn':'pr'}" style="flex-shrink:0;padding:3px 10px;font-size:10px" onclick="togglePickSvc('${s.id}')">${picked?'&#10003;':'+'}</button></div>`;
+      html+=`<div class="ci" style="padding:8px 12px;display:flex;align-items:center;gap:8px;${picked?'background:var(--acbg)':''}"><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:${picked?'600':'400'}">${esc(s.name)}</div><div style="font-size:10px;color:var(--ac2)">${(s.price||0).toLocaleString('ru')} PLN · ${s.time||''}</div></div><button class="btn sm ${picked?'gn':'pr'}" style="flex-shrink:0;min-width:100px;font-size:10px" onclick="togglePickSvc('${s.id}')">${picked?'✓ Добавлено':'+ В перечень'}</button></div>`;
     });
     html+='</div></div>';
   });
@@ -3596,87 +3650,145 @@ const ADMIN_DOC_ITEMS=[
 {cat:'Прочее',name:'Музыка в зале ожидания (ZAiKS)',desc:'Абонемент за музыку в публичном помещении',price:600,required:false},
 {cat:'Прочее',name:'Ящик для жалоб',desc:'Ящик для жалоб — по закону о правах пациента',price:100,required:true},
 ];
-function saveDocItems(){uSet('svita_docs',JSON.stringify(DB.docItems))}
-function loadDocItems(){
-  DB.docItems=[];
-  try{let raw=uGet('svita_docs');
-    if(!raw){raw=localStorage.getItem('svita_docs');if(raw){uSet('svita_docs',raw);localStorage.removeItem('svita_docs')}}
-    if(raw){DB.docItems=JSON.parse(raw);return}
-    if(currentRole==='admin')DB.docItems=ADMIN_DOC_ITEMS.map((d,i)=>({id:'doc_'+i,...d,done:false}));
-  }catch(e){DB.docItems=[]}
+// ═══ DOC CATALOG + PICK SYSTEM ═══
+function togglePickDoc(idx){
+  const key='doc_'+idx;
+  if(DB.pickedDocs[key]){delete DB.pickedDocs[key]}
+  else{const d=ADMIN_DOC_ITEMS[idx];DB.pickedDocs[key]={name:d.name,cat:d.cat,desc:d.desc,price:d.price,required:d.required,done:false,items:[]}}
+  savePicked();renderDocCatalog();renderDocs();recalc();
 }
-function addDocItem(){
+function addCustomDoc(){
   const name=prompt('Название документа:');if(!name)return;
-  const cat=prompt('Категория (или пусто):','Прочее')||'Прочее';
-  const price=parseFloat(prompt('Стоимость (PLN):','0'))||0;
-  DB.docItems.push({id:'doc_'+Date.now(),cat,name,desc:'',price,done:false,required:false});
-  saveDocItems();renderDocs();recalc();
+  const cat=prompt('Категория:','Прочее')||'Прочее';
+  const price=Math.max(0,parseFloat(prompt('Стоимость (PLN):','0'))||0);
+  const key='cdoc_'+Date.now();
+  DB.pickedDocs[key]={name,cat,desc:'',price,required:false,done:false,items:[],custom:true};
+  savePicked();renderDocCatalog();renderDocs();recalc();
 }
-function editDocItem(id){
-  const d=DB.docItems.find(x=>x.id===id);if(!d)return;
-  openModal('Редактировать документ',`
-<div style="display:flex;flex-direction:column;gap:12px">
-<div><label style="font-size:10px;color:var(--tx3);text-transform:uppercase">Название</label><input id="edDocName" class="price-edit" value="${esc(d.name)}" style="width:100%;font-size:13px;margin-top:4px"></div>
-<div><label style="font-size:10px;color:var(--tx3);text-transform:uppercase">Категория</label><input id="edDocCat" class="price-edit" value="${esc(d.cat)}" style="width:100%;font-size:13px;margin-top:4px"></div>
-<div><label style="font-size:10px;color:var(--tx3);text-transform:uppercase">Описание</label><textarea id="edDocDesc" class="price-edit" style="width:100%;font-size:12px;margin-top:4px;min-height:60px;resize:vertical">${esc(d.desc||'')}</textarea></div>
-<div style="display:flex;gap:12px">
-<div style="flex:1"><label style="font-size:10px;color:var(--tx3);text-transform:uppercase">Стоимость (PLN)</label><input id="edDocPrice" type="number" class="price-edit" value="${d.price}" style="width:100%;font-size:13px;margin-top:4px"></div>
-<div style="flex:1"><label style="font-size:10px;color:var(--tx3);text-transform:uppercase">Обязательный</label><select id="edDocReq" class="price-edit" style="width:100%;font-size:13px;margin-top:4px"><option value="1" ${d.required?'selected':''}>Да</option><option value="0" ${!d.required?'selected':''}>Нет</option></select></div>
-</div>
-<button class="btn pr" onclick="saveDocEdit('${d.id}')" style="margin-top:8px">Сохранить</button>
-</div>`);
+function removePickedDoc(key){
+  delete DB.pickedDocs[key];
+  savePicked();renderDocCatalog();renderDocs();recalc();
 }
-function saveDocEdit(id){
-  const d=DB.docItems.find(x=>x.id===id);if(!d)return;
-  d.name=document.getElementById('edDocName').value||d.name;
-  d.cat=document.getElementById('edDocCat').value||d.cat;
-  d.desc=document.getElementById('edDocDesc').value||'';
-  d.price=Math.max(0,parseFloat(document.getElementById('edDocPrice').value)||0);
-  d.required=document.getElementById('edDocReq').value==='1';
-  saveDocItems();renderDocs();recalc();closeModal();
+function toggleDocDone(key){
+  if(!DB.pickedDocs[key])return;
+  DB.pickedDocs[key].done=!DB.pickedDocs[key].done;
+  savePicked();renderDocs();recalc();
 }
-function toggleDocDone(id){
-  const d=DB.docItems.find(x=>x.id===id);if(!d)return;
-  d.done=!d.done;saveDocItems();renderDocs();recalc();
+function addDocSubItem(key){
+  if(!DB.pickedDocs[key])return;
+  if(!DB.pickedDocs[key].items)DB.pickedDocs[key].items=[];
+  DB.pickedDocs[key].items.push({name:'Новая позиция',price:0});
+  savePicked();renderDocs();recalc();
 }
-function setDocPrice(id,val){
-  const d=DB.docItems.find(x=>x.id===id);if(!d)return;
-  d.price=Math.max(0,parseFloat(val)||0);saveDocItems();recalc();
+function removeDocSubItem(key,idx){
+  if(!DB.pickedDocs[key]||!DB.pickedDocs[key].items)return;
+  DB.pickedDocs[key].items.splice(idx,1);
+  savePicked();renderDocs();recalc();
 }
-function removeDocItem(id){
-  DB.docItems=DB.docItems.filter(x=>x.id!==id);saveDocItems();renderDocs();recalc();
+function setDocSubName(key,idx,val){
+  if(!DB.pickedDocs[key]||!DB.pickedDocs[key].items||!DB.pickedDocs[key].items[idx])return;
+  DB.pickedDocs[key].items[idx].name=val;
+  savePicked();
 }
+function setDocSubPrice(key,idx,val){
+  if(!DB.pickedDocs[key]||!DB.pickedDocs[key].items||!DB.pickedDocs[key].items[idx])return;
+  DB.pickedDocs[key].items[idx].price=Math.max(0,parseFloat(val)||0);
+  savePicked();recalc();
+}
+function setDocBasePrice(key,val){
+  if(!DB.pickedDocs[key])return;
+  DB.pickedDocs[key].price=Math.max(0,parseFloat(val)||0);
+  savePicked();recalc();
+}
+function getDocTotalCost(){
+  let total=0;
+  Object.values(DB.pickedDocs||{}).forEach(d=>{
+    total+=d.price||0;
+    (d.items||[]).forEach(it=>{total+=it.price||0});
+  });
+  return total;
+}
+function renderDocCatalog(){
+  const c=document.getElementById('docCatalogCards');if(!c)return;
+  const groups={};
+  ADMIN_DOC_ITEMS.forEach((d,i)=>{if(!groups[d.cat])groups[d.cat]=[];groups[d.cat].push({...d,idx:i})});
+  // Also show custom docs that aren't from catalog
+  let html='';
+  const catKeys=Object.keys(groups);
+  html+='<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">';
+  catKeys.forEach((cat,ci)=>{
+    const items=groups[cat];
+    const pickedCnt=items.filter(d=>!!DB.pickedDocs['doc_'+d.idx]).length;
+    html+=`<div class="c" style="margin:0">`;
+    html+=`<div class="ch" style="cursor:pointer;user-select:none" onclick="toggleDocCatDB(${ci})"><div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0"><span style="font-size:16px">&#128203;</span><div style="min-width:0"><h3 style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(cat)}</h3><div style="font-size:10px;color:${pickedCnt?'var(--gn)':'var(--tx3)'};font-weight:600">${pickedCnt} / ${items.length} добавлено</div></div></div><span id="docCatDBArrow${ci}" style="font-size:10px;color:var(--tx3);transition:transform .2s;transform:rotate(0deg)">&#9654;</span></div>`;
+    html+=`<div id="docCatDBBody${ci}" style="display:none;border-top:1px solid var(--bd)">`;
+    items.forEach(d=>{
+      const picked=!!DB.pickedDocs['doc_'+d.idx];
+      html+=`<div class="ci" style="padding:8px 12px;display:flex;align-items:center;gap:8px;${picked?'background:var(--acbg)':''}"><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:${picked?'600':'400'}">${esc(d.name)}${d.required?'<span style="color:var(--rd);font-size:9px"> *</span>':''}</div><div style="font-size:10px;color:var(--tx3)">${esc(d.desc||'')}</div><div style="font-size:10px;color:var(--ac2)">${d.price.toLocaleString('ru')} PLN</div></div><button class="btn sm ${picked?'gn':'pr'}" style="flex-shrink:0;min-width:100px;font-size:10px" onclick="togglePickDoc(${d.idx})">${picked?'✓ Добавлено':'+ В документы'}</button></div>`;
+    });
+    html+='</div></div>';
+  });
+  html+='</div>';
+  c.innerHTML=html;
+}
+function toggleDocCatDB(i){const b=document.getElementById('docCatDBBody'+i);const a=document.getElementById('docCatDBArrow'+i);if(!b)return;const open=b.style.display!=='none';b.style.display=open?'none':'block';if(a)a.style.transform=open?'rotate(0deg)':'rotate(90deg)'}
 function renderDocs(){
   const c=document.getElementById('docCards');if(!c)return;
-  const items=DB.docItems||[];
-  if(!items.length){c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Добавьте документы и лицензии для вашего проекта</div>';
-    const el=id=>document.getElementById(id);
-    if(el('docCount'))el('docCount').textContent='0';if(el('docDone'))el('docDone').textContent='0';if(el('docCostStat'))el('docCostStat').textContent='0';if(el('s7Total'))el('s7Total').textContent='0 PLN';if(el('docBar'))el('docBar').style.width='0%';return}
+  const el=id=>document.getElementById(id);
+  const keys=Object.keys(DB.pickedDocs||{});
+  if(!keys.length){
+    c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Добавьте документы из <a href="#" onclick="nav(\'db-docs\');return false" style="color:var(--ac2)">каталога</a></div>';
+    if(el('docCount'))el('docCount').textContent='0';if(el('docDone'))el('docDone').textContent='0';if(el('docCostStat'))el('docCostStat').textContent='0';if(el('s7Total'))el('s7Total').textContent='0 PLN';if(el('docBar'))el('docBar').style.width='0%';return;
+  }
   const groups={};let total=0,done=0;
-  items.forEach(d=>{if(!groups[d.cat])groups[d.cat]=[];groups[d.cat].push(d);total+=d.price;if(d.done)done++});
+  keys.forEach(key=>{
+    const d=DB.pickedDocs[key];
+    const cat=d.cat||'Прочее';
+    if(!groups[cat])groups[cat]=[];
+    groups[cat].push({key,...d});
+    total+=d.price||0;
+    (d.items||[]).forEach(it=>{total+=it.price||0});
+    if(d.done)done++;
+  });
   let html='';
   Object.keys(groups).forEach(cat=>{
-    const g=groups[cat];const catCost=g.reduce((s,d)=>s+d.price,0);
+    const g=groups[cat];
+    const catCost=g.reduce((s,d)=>{let c=d.price||0;(d.items||[]).forEach(it=>{c+=it.price||0});return s+c},0);
     const req=g.some(d=>d.required);
     html+=`<div class="c"><div class="ch"><h3 style="font-size:13px">${esc(cat)}</h3>${req?'<span style="font-size:9px;color:var(--rd);font-weight:600">ОБЯЗАТЕЛЬНО</span>':''}<span style="font-size:10px;color:var(--gn);font-weight:600;margin-left:auto">${catCost.toLocaleString('ru')} PLN</span></div><div class="cb">`;
     g.forEach(d=>{
-      html+=`<div class="ci cost-row" style="padding:8px 12px;${d.done?'opacity:.5':''}">
-<input type="checkbox" ${d.done?'checked':''} onchange="toggleDocDone('${d.id}')" style="flex-shrink:0">
-<div class="ct" style="flex:1;min-width:0;font-size:11px;cursor:pointer;${d.done?'text-decoration:line-through':''}" onclick="editDocItem('${d.id}')">${esc(d.name)}${d.required?'<span style="color:var(--rd);font-size:9px"> *</span>':''}${d.desc?'<div class="ct-sub">'+esc(d.desc)+'</div>':''}</div>
-<div style="display:flex;align-items:center;gap:2px;flex-shrink:0"><input type="number" value="${d.price}" onchange="setDocPrice('${d.id}',this.value)" style="width:60px;font-size:11px;font-weight:700;color:var(--ac2);text-align:right;border:1px solid var(--bd);border-radius:4px;padding:2px 4px;background:var(--sf)"><span style="font-size:9px;color:var(--tx3)">PLN</span></div>
-<button onclick="editDocItem('${d.id}')" style="background:none;border:none;color:var(--ac);cursor:pointer;font-size:11px;padding:2px;flex-shrink:0">&#9998;</button>
-<button onclick="removeDocItem('${d.id}')" style="background:none;border:none;color:var(--rd);cursor:pointer;font-size:12px;padding:2px;flex-shrink:0">&#10005;</button>
+      const subTotal=(d.items||[]).reduce((s,it)=>s+(it.price||0),0);
+      html+=`<div style="border-bottom:1px solid var(--bd);padding:10px 12px;${d.done?'opacity:.5':''}">
+<div class="ci cost-row" style="padding:0">
+<input type="checkbox" ${d.done?'checked':''} onchange="toggleDocDone('${d.key}')" style="flex-shrink:0">
+<div class="ct" style="flex:1;min-width:0;font-size:11px;${d.done?'text-decoration:line-through':''}">${esc(d.name)}${d.required?'<span style="color:var(--rd);font-size:9px"> *</span>':''}${d.desc?'<div class="ct-sub" style="text-decoration:none">'+esc(d.desc)+'</div>':''}</div>
+<div style="display:flex;align-items:center;gap:2px;flex-shrink:0"><input type="number" value="${d.price||0}" onchange="setDocBasePrice('${d.key}',this.value)" style="width:60px;font-size:11px;font-weight:700;color:var(--ac2);text-align:right;border:1px solid var(--bd);border-radius:4px;padding:2px 4px;background:var(--sf)"><span style="font-size:9px;color:var(--tx3)">PLN</span></div>
+<button onclick="addDocSubItem('${d.key}')" style="background:none;border:none;color:var(--ac);cursor:pointer;font-size:14px;padding:2px;flex-shrink:0" title="Добавить строку">&#43;</button>
+<button onclick="removePickedDoc('${d.key}')" style="background:none;border:none;color:var(--rd);cursor:pointer;font-size:12px;padding:2px;flex-shrink:0">&#10005;</button>
 </div>`;
+      // Sub-items
+      if(d.items&&d.items.length){
+        html+='<div style="margin-left:28px;margin-top:6px;display:flex;flex-direction:column;gap:4px">';
+        d.items.forEach((it,idx)=>{
+          html+=`<div style="display:flex;align-items:center;gap:6px;padding:4px 8px;background:var(--sf2);border-radius:6px;border:1px solid var(--bd)">
+<input value="${esc(it.name)}" onchange="setDocSubName('${d.key}',${idx},this.value)" style="flex:1;font-size:11px;border:none;background:transparent;color:var(--tx);font-family:var(--f);outline:none" placeholder="Описание позиции">
+<input type="number" value="${it.price||0}" onchange="setDocSubPrice('${d.key}',${idx},this.value)" style="width:55px;font-size:11px;font-weight:600;color:var(--ac2);text-align:right;border:1px solid var(--bd);border-radius:4px;padding:2px 4px;background:var(--sf)">
+<span style="font-size:9px;color:var(--tx3)">PLN</span>
+<button onclick="removeDocSubItem('${d.key}',${idx})" style="background:none;border:none;color:var(--rd);cursor:pointer;font-size:10px;padding:2px">&#10005;</button>
+</div>`;
+        });
+        html+='</div>';
+      }
+      html+='</div>';
     });
     html+='</div></div>';
   });
   c.innerHTML=html;
-  const el=id=>document.getElementById(id);
-  if(el('docCount'))el('docCount').textContent=items.length;
+  if(el('docCount'))el('docCount').textContent=keys.length;
   if(el('docDone'))el('docDone').textContent=done;
   if(el('docCostStat'))el('docCostStat').textContent=total.toLocaleString('ru');
   if(el('s7Total'))el('s7Total').textContent=total.toLocaleString('ru')+' PLN';
-  const pct=items.length?Math.round(done/items.length*100):0;
+  const pct=keys.length?Math.round(done/keys.length*100):0;
   if(el('docBar'))el('docBar').style.width=pct+'%';
 }
 
@@ -4094,6 +4206,7 @@ function fpInit(){
     }
   });
   let saved=uGet('svita_floorplan');
+  if(!saved){const oldKey=uKeyOld('svita_floorplan');saved=localStorage.getItem(oldKey);if(saved){uSet('svita_floorplan',saved)}}
   if(!saved){saved=localStorage.getItem('svita_floorplan');if(saved){uSet('svita_floorplan',saved);localStorage.removeItem('svita_floorplan')}}
   if(saved){try{const d=JSON.parse(saved);FP.rooms=(d.rooms||[]).map(r=>fpEnsurePoly(r));FP.elements=d.elements||[];FP.scale=d.scale||20;FP.ox=d.ox||40;FP.oy=d.oy||40;
     console.log('[SVITA] Loaded: '+FP.rooms.length+' rooms, '+FP.elements.length+' elements');
@@ -5908,7 +6021,7 @@ function calcTotals(){
     const item=DB.suppliers.find(s=>s.id==id);
     if(item)equip+=(p.customPrice!=null?p.customPrice:item.price)*(p.qty||1);
   });
-  const docs=(DB.docItems||[]).reduce((s,d)=>s+d.price,0);
+  const docs=getDocTotalCost();
   const staff=getAllCosts('st_');
   const avgCheck=getVal('avgCheck');
   const ppc=getVal('patientsPerChair');
@@ -6010,7 +6123,7 @@ function updateTabCosts(t){
     stP>=3?2:(stP>0?1:0),
     svcP>=5?2:(svcP>0?1:0),
     0,
-    t.docs>0?2:((DB.docItems||[]).length>0?1:0)
+    t.docs>0?2:(Object.keys(DB.pickedDocs||{}).length>0?1:0)
   ];
   tabs.forEach((tab,i)=>{
     tab.classList.remove('ok','wip');
@@ -6056,8 +6169,8 @@ function updateOverviewStats(){
   if(stages[5])updateStage(stages[5],s6prog,'—');
 
   // S7: Документация
-  const docsDone=(DB.docItems||[]).filter(d=>d.done).length;
-  const docsAll=(DB.docItems||[]).length;
+  const docsDone=Object.values(DB.pickedDocs||{}).filter(d=>d.done).length;
+  const docsAll=Object.keys(DB.pickedDocs||{}).length;
   const s7prog=docsAll?Math.round(docsDone/docsAll*100):0;
   if(stages[6])updateStage(stages[6],s7prog,docsDone+'/'+docsAll+' док.');
 
@@ -6173,8 +6286,9 @@ function updateBudget(){
     items.push({name:esc(item.name)+(qty>1?' x'+qty:''),cost:price*qty});
   });
   // Documents
-  const docTotal=(DB.docItems||[]).reduce((s,d)=>s+d.price,0);
-  if(docTotal>0)items.push({name:'Документация ('+DB.docItems.length+' позиций)',cost:docTotal});
+  const docTotal=getDocTotalCost();
+  const docCount=Object.keys(DB.pickedDocs||{}).length;
+  if(docTotal>0)items.push({name:'Документация ('+docCount+' позиций)',cost:docTotal});
   const list=document.getElementById('budgetList');
   if(!items.length){list.innerHTML='<div style="color:var(--tx3);padding:16px;text-align:center">Добавьте позиции в концепцию для расчёта бюджета</div>';return}
   items.sort((a,b)=>b.cost-a.cost);
