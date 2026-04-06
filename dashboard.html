@@ -80,6 +80,8 @@
 .tab .tab-num{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;background:var(--bd);color:var(--tx3);flex-shrink:0}
 .tab.act .tab-num{background:var(--ac);color:#fff}
 .tab.ok .tab-num{background:var(--gn);color:#fff}
+.tab-cost{font-size:9px;color:var(--ac2);font-weight:700;margin-left:4px;white-space:nowrap}
+.tab-cost:empty{display:none}
 .tab .tab-icon{font-size:14px;flex-shrink:0}
 
 /* CONTENT */
@@ -407,12 +409,12 @@ Apple</button>
 </div>
 </div>
 <div class="tab-bar" id="tabBar">
-<div class="tab act" data-nav="s1" onclick="nav('s1')"><span class="tab-num">1</span><span class="tab-icon">&#127970;</span>Помещение</div>
-<div class="tab" data-nav="s2" onclick="nav('s2')"><span class="tab-num">2</span><span class="tab-icon">&#128736;</span>Модернизация</div>
-<div class="tab" data-nav="s3" onclick="nav('s3')"><span class="tab-num">3</span><span class="tab-icon">&#128230;</span>Оснащение</div>
-<div class="tab" data-nav="s4" onclick="nav('s4')"><span class="tab-num">4</span><span class="tab-icon">&#129657;</span>Услуги</div>
-<div class="tab" data-nav="s5" onclick="nav('s5')"><span class="tab-num">5</span><span class="tab-icon">&#129489;</span>Персонал</div>
-<div class="tab" data-nav="s6" onclick="nav('s6')"><span class="tab-num">6</span><span class="tab-icon">&#128200;</span>Концепция</div>
+<div class="tab act" data-nav="s1" onclick="nav('s1')"><span class="tab-num">1</span><span class="tab-icon">&#127970;</span>Помещение<span class="tab-cost" id="tabCost1"></span></div>
+<div class="tab" data-nav="s2" onclick="nav('s2')"><span class="tab-num">2</span><span class="tab-icon">&#128736;</span>Модернизация<span class="tab-cost" id="tabCost2"></span></div>
+<div class="tab" data-nav="s3" onclick="nav('s3')"><span class="tab-num">3</span><span class="tab-icon">&#128230;</span>Оснащение<span class="tab-cost" id="tabCost3"></span></div>
+<div class="tab" data-nav="s4" onclick="nav('s4')"><span class="tab-num">4</span><span class="tab-icon">&#129657;</span>Услуги<span class="tab-cost" id="tabCost4"></span></div>
+<div class="tab" data-nav="s5" onclick="nav('s5')"><span class="tab-num">5</span><span class="tab-icon">&#129489;</span>Персонал<span class="tab-cost" id="tabCost5"></span></div>
+<div class="tab" data-nav="s6" onclick="nav('s6')"><span class="tab-num">6</span><span class="tab-icon">&#128200;</span>Концепция<span class="tab-cost" id="tabCost6"></span></div>
 </div>
 
 <!-- ═══ OVERVIEW ═══ -->
@@ -940,9 +942,9 @@ Apple</button>
 <!-- ═══ CABINET COSTS ═══ -->
 <div class="sec" id="sec-cabinet-types">
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
-<div class="ph"><div><h2>🏥 Стоимость по помещениям</h2><div class="ph-s">Итоговая стоимость оснащения каждого помещения проекта</div></div></div>
+<div class="ph"><div><h2>🏥 Стоимость по кабинетам</h2><div class="ph-s">Итоговая стоимость оснащения каждого кабинета проекта</div></div></div>
 <div class="sts" id="cabTotals" style="grid-template-columns:repeat(3,1fr)">
-<div class="st"><div class="st-n" id="cabRoomCnt">0</div><div class="st-l">Помещений</div></div>
+<div class="st"><div class="st-n" id="cabRoomCnt">0</div><div class="st-l">Кабинетов</div></div>
 <div class="st"><div class="st-n" id="cabAssigned">0</div><div class="st-l">Оборудования назначено</div></div>
 <div class="st"><div class="st-n" id="cabTotalCost">0</div><div class="st-l">Итого PLN</div></div>
 </div>
@@ -1097,20 +1099,39 @@ const DB={
     {id:8,name:'Санузел',icon:'🚿',desc:'Санузлы для пациентов и персонала',minArea:3,equipCats:['Туалет']}
   ],
   rooms:[
-    {id:1,name:'Кабинет 1',type:'Стоматологический',w:4.2,h:2.9,l:3.8,area:15.96},
-    {id:2,name:'Кабинет 2',type:'Стоматологический',w:4.2,h:2.9,l:3.8,area:15.96},
-    {id:3,name:'Кабинет 3',type:'Стоматологический',w:4.0,h:2.9,l:3.5,area:14.0},
-    {id:4,name:'Кабинет 4',type:'Стоматологический',w:4.0,h:2.9,l:3.5,area:14.0},
-    {id:5,name:'Кабинет 5',type:'Стоматологический',w:3.8,h:2.9,l:3.5,area:13.3},
-    {id:6,name:'Кабинет 6',type:'Хирургический',w:5.0,h:2.9,l:4.0,area:20.0},
-    {id:7,name:'Кабинет 7',type:'Ортодонтический',w:4.0,h:2.9,l:3.5,area:14.0},
-    {id:8,name:'Стерилизаторная',type:'Техническая',w:3.5,h:2.9,l:2.5,area:8.75},
-    {id:9,name:'Рентген-кабинет',type:'Рентген',w:3.0,h:2.9,l:2.5,area:7.5},
-    {id:10,name:'Ресепшен',type:'Общественная',w:6.0,h:2.9,l:4.0,area:24.0},
-    {id:11,name:'Зал ожидания',type:'Общественная',w:5.0,h:2.9,l:3.0,area:15.0},
-    {id:12,name:'Серверная',type:'Техническая',w:2.5,h:2.9,l:2.0,area:5.0},
-    {id:13,name:'Санузел (пациенты)',type:'Общественная',w:2.5,h:2.9,l:1.8,area:4.5},
-    {id:14,name:'Санузел (персонал)',type:'Служебная',w:2.0,h:2.9,l:1.5,area:3.0}
+    // Медицинская зона — кабинеты
+    {id:1,name:'Кабинет терапии 1',type:'Стоматологический',w:4.2,h:2.9,l:3.8,area:15.96},
+    {id:2,name:'Кабинет терапии 2',type:'Стоматологический',w:4.2,h:2.9,l:3.8,area:15.96},
+    {id:3,name:'Кабинет терапии 3',type:'Стоматологический',w:4.0,h:2.9,l:3.5,area:14.0},
+    {id:4,name:'Кабинет гигиены 1',type:'Стоматологический',w:4.0,h:2.9,l:3.5,area:14.0},
+    {id:5,name:'Кабинет гигиены 2',type:'Стоматологический',w:3.8,h:2.9,l:3.5,area:13.3},
+    {id:6,name:'Кабинет хирургии',type:'Хирургический',w:5.0,h:2.9,l:4.0,area:20.0},
+    {id:7,name:'Кабинет ортодонтии',type:'Ортодонтический',w:4.0,h:2.9,l:3.5,area:14.0},
+    {id:8,name:'Кабинет детской стоматологии',type:'Стоматологический',w:4.0,h:2.9,l:3.5,area:14.0},
+    {id:9,name:'Кабинет ортопедии / протезирования',type:'Стоматологический',w:4.0,h:2.9,l:3.8,area:15.2},
+    {id:10,name:'Кабинет эндодонтии',type:'Стоматологический',w:4.0,h:2.9,l:3.5,area:14.0},
+    {id:11,name:'Кабинет отбеливания',type:'Стоматологический',w:3.5,h:2.9,l:3.0,area:10.5},
+    // Диагностика
+    {id:12,name:'Рентген-кабинет (КЛКТ)',type:'Рентген',w:3.5,h:2.9,l:3.0,area:10.5},
+    {id:13,name:'Кабинет 3D-сканирования',type:'Рентген',w:2.5,h:2.9,l:2.5,area:6.25},
+    // Техническая зона
+    {id:14,name:'Стерилизаторная',type:'Техническая',w:3.5,h:2.9,l:2.5,area:8.75},
+    {id:15,name:'Серверная / AI-центр (Jetson)',type:'Техническая',w:2.5,h:2.9,l:2.0,area:5.0},
+    {id:16,name:'Зуботехническая лаборатория',type:'Техническая',w:3.0,h:2.9,l:2.5,area:7.5},
+    {id:17,name:'Склад расходных материалов',type:'Техническая',w:2.5,h:2.9,l:2.0,area:5.0},
+    // Общественная зона
+    {id:18,name:'Ресепшен / Администраторская',type:'Общественная',w:6.0,h:2.9,l:4.0,area:24.0},
+    {id:19,name:'Зал ожидания',type:'Общественная',w:5.0,h:2.9,l:3.0,area:15.0},
+    {id:20,name:'Детская игровая зона',type:'Общественная',w:3.0,h:2.9,l:2.5,area:7.5},
+    {id:21,name:'Коридор основной',type:'Общественная',w:12.0,h:2.9,l:1.8,area:21.6},
+    {id:22,name:'Санузел (пациенты)',type:'Общественная',w:2.5,h:2.9,l:1.8,area:4.5},
+    {id:23,name:'Санузел (маломобильные)',type:'Общественная',w:3.0,h:2.9,l:2.0,area:6.0},
+    // Служебная зона
+    {id:24,name:'Комната персонала',type:'Служебная',w:3.5,h:2.9,l:3.0,area:10.5},
+    {id:25,name:'Кабинет главного врача',type:'Служебная',w:3.5,h:2.9,l:3.0,area:10.5},
+    {id:26,name:'Санузел (персонал)',type:'Служебная',w:2.0,h:2.9,l:1.5,area:3.0},
+    {id:27,name:'Подсобное / хоз. инвентарь',type:'Служебная',w:2.0,h:2.9,l:1.5,area:3.0},
+    {id:28,name:'Гардероб персонала',type:'Служебная',w:2.5,h:2.9,l:2.0,area:5.0}
   ],
   contractors:[
     {id:1,name:'ElectroPolska',spec:'Электрика',city:'Быдгощ',price:'от 80 PLN/м',rating:4.8,phone:'+48 500 111 222'},
@@ -1836,7 +1857,7 @@ function buildSidebar(){
     html+='<div class="si" data-nav="budget"><span class="ico">&#128176;</span><span class="sl">Бюджет</span></div>';
     html+='<div class="si" data-nav="profit"><span class="ico">&#128200;</span><span class="sl">Рентабельность</span></div>';
     html+='<div class="si" data-nav="zones"><span class="ico">&#127968;</span><span class="sl">Зоны</span></div>';
-    html+='<div class="si" data-nav="cabinet-types"><span class="ico">🏥</span><span class="sl">Стоимость помещений</span><span class="sb wip">'+Object.keys(DB.pickedRooms).length+'</span></div>';
+    html+='<div class="si" data-nav="cabinet-types"><span class="ico">🏥</span><span class="sl">Стоимость кабинетов</span><span class="sb wip">'+Object.keys(DB.pickedRooms).length+'</span></div>';
   }
 
   if(currentRole==='admin'){
@@ -4068,13 +4089,43 @@ function recalc(){
   const el6r=document.getElementById('s6Revenue');if(el6r)el6r.textContent=t.revenue.toLocaleString('ru')+' PLN';
   const profit=t.revenue-t.expenses;
   document.getElementById('ovROI').textContent=profit>0&&t.grand>0?Math.ceil(t.grand/profit):'--';
-  let picked=0;document.querySelectorAll('#equipCards .sel.picked').forEach(()=>picked++);
-  document.getElementById('totalItems').textContent=picked;
+  document.getElementById('totalItems').textContent=Object.keys(DB.pickedEquip||{}).length;
   updateSumbar();
   updateZoneStats();
   updateOverviewStats();
   if(cur==='budget')updateBudget();
   if(cur==='profit')updateProfit();
+  updateTabCosts(t);
+}
+function updateTabCosts(t){
+  // Tab 1: Помещение — аренда + депозит
+  const tc1=document.getElementById('tabCost1');
+  if(tc1)tc1.textContent=t.rent>0?t.rent.toLocaleString('ru')+' PLN':'';
+  // Tab 2: Модернизация — инженерия
+  const tc2=document.getElementById('tabCost2');
+  if(tc2)tc2.textContent=t.eng>0?t.eng.toLocaleString('ru')+' PLN':'';
+  // Tab 3: Оснащение — оборудование
+  const tc3=document.getElementById('tabCost3');
+  if(tc3)tc3.textContent=t.equip>0?t.equip.toLocaleString('ru')+' PLN':'';
+  // Tab 4: Услуги — средний чек (доход)
+  let svcTotal=0;
+  Object.entries(DB.pickedServices||{}).forEach(([id,p])=>{
+    const s=DB.services.find(x=>x.id==id);
+    if(s)svcTotal+=s.price*(p.qty||1);
+  });
+  const tc4=document.getElementById('tabCost4');
+  if(tc4)tc4.textContent=svcTotal>0?svcTotal.toLocaleString('ru')+' PLN':'';
+  // Tab 5: Персонал — ФОТ/мес
+  let fot=0;
+  Object.entries(DB.pickedStaff||{}).forEach(([id,p])=>{
+    const e=DB.employees.find(x=>x.id==id);
+    if(e)fot+=(e.salary||0)*(p.qty||1);
+  });
+  const tc5=document.getElementById('tabCost5');
+  if(tc5)tc5.textContent=fot>0?fot.toLocaleString('ru')+'/мес':'';
+  // Tab 6: Концепция — документация
+  const tc6=document.getElementById('tabCost6');
+  if(tc6)tc6.textContent=t.docs>0?t.docs.toLocaleString('ru')+' PLN':'';
 }
 
 function updateOverviewStats(){
