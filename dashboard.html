@@ -6068,19 +6068,39 @@ function updateBudget(){
   document.getElementById('bCatEng').textContent=t.eng.toLocaleString('ru')+' PLN';
   document.getElementById('bCatEquip').textContent=t.equip.toLocaleString('ru')+' PLN';
   document.getElementById('bCatDocs').textContent=t.docs.toLocaleString('ru')+' PLN';
+  // Build itemized list from DB data (not DOM) to work even when sections are hidden
   const items=[];
-  document.querySelectorAll('[data-cost]').forEach(el=>{
-    const v=parseInt(el.value)||0;
-    if(v>0){const row=el.closest('.ci,.cost-row');const ct=row?.querySelector('.ct');items.push({name:ct?ct.childNodes[0].textContent.trim():'Позиция',cost:v})}
+  // Rent + deposit
+  const rentMonth=getVal2('rent');
+  const depMonths=parseInt(document.getElementById('depositMonths')?.value)||3;
+  if(rentMonth>0)items.push({name:'Аренда (депозит '+depMonths+' мес)',cost:rentMonth*depMonths});
+  // Renovations
+  Object.keys(DB.pickedRenovations||{}).forEach(id=>{
+    const c=getRenItemCost(id);if(c<=0)return;
+    const item=[...DB.services,...(DB.conceptItems||[])].find(s=>s.id==id);
+    items.push({name:(item?item.name:'Работа #'+id),cost:c});
   });
-  document.querySelectorAll('#equipCards .sel.picked').forEach(el=>{
-    const n=el.querySelector('.sel-name').textContent;
-    const p=parseInt(el.querySelector('.price-edit').value)||0;
-    const q=parseInt(el.querySelector('.sel-qty span').textContent)||1;
-    items.push({name:n+' x'+q,cost:p*q});
+  // Engineering (from DOM data-cost inputs)
+  ['elec_','water_','vent_','sec_'].forEach(pfx=>{
+    document.querySelectorAll('[data-cost^="'+pfx+'"]').forEach(el=>{
+      const v=parseInt(el.value)||0;if(v<=0)return;
+      const row=el.closest('.ci,.cost-row');const ct=row?.querySelector('.ct');
+      items.push({name:ct?ct.childNodes[0].textContent.trim():'Инж. сети',cost:v});
+    });
   });
+  // Equipment
+  Object.entries(DB.pickedEquip||{}).forEach(([id,p])=>{
+    const item=DB.suppliers.find(s=>s.id==id);if(!item)return;
+    const price=p.customPrice!=null?p.customPrice:item.price;
+    const qty=p.qty||1;if(price*qty<=0)return;
+    items.push({name:esc(item.name)+(qty>1?' x'+qty:''),cost:price*qty});
+  });
+  // Documents
+  const docTotal=(DB.docItems||[]).reduce((s,d)=>s+d.price,0);
+  if(docTotal>0)items.push({name:'Документация ('+DB.docItems.length+' позиций)',cost:docTotal});
   const list=document.getElementById('budgetList');
-  if(!items.length){list.innerHTML='<div style="color:var(--tx3)">Измените цены для расчёта.</div>';return}
+  if(!items.length){list.innerHTML='<div style="color:var(--tx3);padding:16px;text-align:center">Добавьте позиции в концепцию для расчёта бюджета</div>';return}
+  items.sort((a,b)=>b.cost-a.cost);
   list.innerHTML='<table class="dt"><thead><tr><th>Позиция</th><th style="text-align:right">Стоимость</th></tr></thead><tbody>'+items.map(i=>`<tr><td>${i.name}</td><td style="text-align:right;font-weight:600;color:var(--ac2)">${i.cost.toLocaleString('ru')} PLN</td></tr>`).join('')+`<tr style="border-top:2px solid var(--bd)"><td style="font-weight:800">ИТОГО</td><td style="text-align:right;font-weight:800;color:var(--ac2);font-size:14px">${t.grand.toLocaleString('ru')} PLN</td></tr></tbody></table>`;
 }
 
