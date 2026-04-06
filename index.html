@@ -10,6 +10,7 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;500;600;700;800&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -174,6 +175,50 @@ footer{padding:40px 48px;border-top:1px solid rgba(255,255,255,0.04);display:fle
 .pulse-nav:hover .pn-action{opacity:1}
 .pn-action:hover{border-color:var(--gold);color:var(--gold)}
 
+/* ═══ AUTH MODALS ═══ */
+.auth-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
+.auth-overlay.vis{display:flex}
+.auth-box{background:var(--bk2);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:40px;width:520px;max-width:95vw;max-height:90vh;overflow-y:auto;position:relative}
+.auth-box::-webkit-scrollbar{width:3px}.auth-box::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+.auth-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--dim);font-size:20px;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;transition:all .2s}
+.auth-close:hover{color:var(--wh);background:rgba(255,255,255,0.05)}
+.auth-title{font-family:var(--fd);font-size:22px;font-weight:700;margin-bottom:4px;letter-spacing:-0.5px}
+.auth-sub{font-size:12px;color:var(--dim);margin-bottom:24px}
+.auth-tabs{display:flex;gap:0;margin-bottom:24px;border:1px solid rgba(255,255,255,0.08);border-radius:10px;overflow:hidden}
+.auth-tab{flex:1;padding:10px;font-family:var(--fm);font-size:10px;letter-spacing:1px;text-transform:uppercase;background:none;border:none;color:var(--dim);cursor:pointer;transition:all .2s;text-align:center}
+.auth-tab.active{background:rgba(186,117,23,0.12);color:var(--gold)}
+.auth-tab:hover:not(.active){background:rgba(255,255,255,0.03)}
+.af{margin-bottom:14px}
+.af label{display:block;font-family:var(--fm);font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:6px}
+.af input,.af select{width:100%;padding:12px 14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:var(--wh);font-family:var(--fb);font-size:13px;outline:none;transition:border-color .2s}
+.af input:focus,.af select:focus{border-color:rgba(186,117,23,0.4)}
+.af input::placeholder{color:rgba(255,255,255,0.15)}
+.af select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M3 4.5l3 3 3-3'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.af select option{background:var(--bk2);color:var(--wh)}
+.af-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.af-hint{font-size:10px;color:rgba(255,255,255,0.2);margin-top:4px}
+.auth-btn{width:100%;padding:14px;font-family:var(--fd);font-size:13px;font-weight:600;background:var(--gold);color:var(--bk);border:none;border-radius:10px;cursor:pointer;transition:all .2s;letter-spacing:0.3px;margin-top:8px}
+.auth-btn:hover{background:var(--gl)}
+.auth-btn:disabled{opacity:.5;cursor:not-allowed}
+.auth-divider{display:flex;align-items:center;gap:12px;margin:20px 0}
+.auth-divider span{font-family:var(--fm);font-size:9px;letter-spacing:2px;color:rgba(255,255,255,0.15);text-transform:uppercase}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.06)}
+.oauth-row{display:flex;gap:8px;margin-bottom:8px}
+.oauth-btn{flex:1;padding:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:var(--dim);cursor:pointer;font-family:var(--fb);font-size:11px;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s}
+.oauth-btn:hover{border-color:rgba(186,117,23,0.3);color:var(--wh);background:rgba(255,255,255,0.05)}
+.auth-error{font-size:11px;color:#ef4444;min-height:18px;margin-bottom:4px}
+.auth-success{font-size:11px;color:#22c55e;min-height:18px;margin-bottom:4px}
+.auth-switch{font-size:11px;color:var(--dim);text-align:center;margin-top:16px}
+.auth-switch a{color:var(--gold);cursor:pointer;text-decoration:none}
+.auth-switch a:hover{text-decoration:underline}
+.role-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.role-card{padding:14px;border:1px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;transition:all .2s;text-align:center}
+.role-card:hover{border-color:rgba(255,255,255,0.15);background:rgba(255,255,255,0.02)}
+.role-card.sel{border-color:var(--gold);background:rgba(186,117,23,0.08)}
+.role-card .rc-icon{font-size:24px;margin-bottom:6px}
+.role-card .rc-name{font-family:var(--fd);font-size:12px;font-weight:600;margin-bottom:2px}
+.role-card .rc-desc{font-size:10px;color:var(--dim)}
+
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:900px){
   nav{padding:0 24px}
@@ -239,7 +284,8 @@ footer{padding:40px 48px;border-top:1px solid rgba(255,255,255,0.04);display:fle
     <a href="#surf" data-t="nav_showcase">Агляд</a>
     <a href="#how" data-t="nav_how">Працэс</a>
     <a href="#pricing" data-t="nav_pricing">Кошт</a>
-    <a href="dashboard.html" class="nav-cta" data-t="nav_start">Пачаць</a>
+    <a href="#" onclick="openAuth('login');return false" style="font-family:var(--fm);font-size:10px;letter-spacing:1px;color:var(--dim);transition:color .2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color=''">Log In</a>
+    <a href="#" onclick="openAuth('register');return false" class="nav-cta">Sign Up</a>
     <a href="https://labs67.com" class="nav-back" style="font-size:10px;letter-spacing:2px;color:rgba(255,255,255,.4);text-decoration:none;margin-left:12px;white-space:nowrap;">← LABS67</a>
     <div class="lang-switcher" style="margin-left:8px;"></div>
   </div>
@@ -251,7 +297,7 @@ footer{padding:40px 48px;border-top:1px solid rgba(255,255,255,0.04);display:fle
   <div class="hero-title">SVITA</div>
   <div class="hero-sub" data-t="hero_sub">Канструктар бізнес-канцэпцый заведзенняў.<br><strong data-t="hero_sub_strong">Створы. Упакуй. Прадай. Запусці.</strong></div>
   <div class="hero-cta-row">
-    <a href="dashboard.html" class="btn-primary" data-t="hero_cta">Стварыць канцэпцыю</a>
+    <a href="#" onclick="openAuth('register');return false" class="btn-primary" data-t="hero_cta">Стварыць канцэпцыю</a>
     <a href="#concept" class="btn-ghost" data-t="hero_more">Даведацца больш</a>
   </div>
   <div class="hero-scroll">
@@ -539,7 +585,7 @@ footer{padding:40px 48px;border-top:1px solid rgba(255,255,255,0.04);display:fle
   <div class="cta-title sr" data-t="cta_title">Гатовы стварыць?</div>
   <div class="cta-desc sr sr-d1" data-t="cta_desc">Першая канцэпцыя — бясплатна. Пачніце прама зараз і ўбачце, як лёгка ператварыць ідэю ў гатовы бізнес-пакет.</div>
   <div class="hero-cta-row sr sr-d2">
-    <a href="dashboard.html" class="btn-primary" data-t="cta_btn">Пачаць бясплатна</a>
+    <a href="#" onclick="openAuth('register');return false" class="btn-primary" data-t="cta_btn">Пачаць бясплатна</a>
     <a href="https://labs67.com" class="btn-ghost" data-t="cta_about">Пра LABS67</a>
   </div>
 </section>
@@ -601,9 +647,392 @@ footer{padding:40px 48px;border-top:1px solid rgba(255,255,255,0.04);display:fle
 })();
 </script>
 
+<!-- ═══ AUTH SCRIPT ═══ -->
+<script>
+const SB_URL='https://ctdleobjnzniqkqomlrq.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZGxlb2JqbnpuaXFrcW9tbHJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMzE4MTEsImV4cCI6MjA4NzgwNzgxMX0.AMHtY7zGPemKYCxMy2bqRTOEAp8trA_Slor9wmg7C38';
+const sb=(typeof supabase!=='undefined')?supabase.createClient(SB_URL,SB_KEY):null;
+let regAccType='person';
+let regRole='owner';
+
+function openAuth(mode){
+  closeAuth();
+  if(mode==='login')document.getElementById('loginModal').classList.add('vis');
+  else if(mode==='register')document.getElementById('regModal').classList.add('vis');
+  else if(mode==='verify')document.getElementById('verifyModal').classList.add('vis');
+  else if(mode==='profile')document.getElementById('profileModal').classList.add('vis');
+}
+function closeAuth(){
+  document.querySelectorAll('.auth-overlay').forEach(m=>m.classList.remove('vis'));
+}
+// Close on overlay click
+document.querySelectorAll('.auth-overlay').forEach(ov=>{
+  ov.addEventListener('click',function(e){if(e.target===this)closeAuth()});
+});
+// Close on ESC
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAuth()});
+
+function setAccType(type,btn){
+  regAccType=type;
+  document.querySelectorAll('.auth-tabs .auth-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('regPerson').style.display=type==='person'?'block':'none';
+  document.getElementById('regCompany').style.display=type==='company'?'block':'none';
+}
+
+function pickRole(el,role){
+  regRole=role;
+  document.querySelectorAll('.role-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+async function doLogin(){
+  const email=document.getElementById('liEmail').value.trim();
+  const pass=document.getElementById('liPass').value;
+  const err=document.getElementById('liErr');
+  if(!email||!pass){err.textContent='Увядзіце email і пароль';return}
+  if(!sb){err.textContent='Supabase не загружаны';return}
+  err.textContent='Уваходзім...';
+  const{data,error}=await sb.auth.signInWithPassword({email,password:pass});
+  if(error){err.textContent=error.message==='Invalid login credentials'?'Няправільны email або пароль':error.message;return}
+  // Check if profile is complete
+  const meta=data.user.user_metadata||{};
+  if(!meta.profile_complete){
+    closeAuth();
+    openProfileComplete(data.user);
+    return;
+  }
+  // Success — go to dashboard
+  window.location.href='dashboard.html';
+}
+
+async function doRegister(){
+  const email=document.getElementById('rgEmail').value.trim();
+  const pass=document.getElementById('rgPass').value;
+  const pass2=document.getElementById('rgPass2').value;
+  const terms=document.getElementById('rgTerms').checked;
+  const err=document.getElementById('rgErr');
+
+  if(!terms){err.textContent='Прыміце ўмовы выкарыстання';return}
+  if(!email||!pass){err.textContent='Запоўніце email і пароль';return}
+  if(pass.length<6){err.textContent='Пароль мінімум 6 сімвалаў';return}
+  if(pass!==pass2){err.textContent='Паролі не супадаюць';return}
+  if(!sb){err.textContent='Supabase не загружаны';return}
+
+  // Collect metadata
+  const meta={role:regRole,account_type:regAccType,profile_complete:true};
+  if(regAccType==='person'){
+    const fn=document.getElementById('rpFname').value.trim();
+    const ln=document.getElementById('rpLname').value.trim();
+    if(!fn||!ln){err.textContent='Увядзіце імя і прозвішча';return}
+    Object.assign(meta,{
+      name:fn+' '+ln,first_name:fn,last_name:ln,
+      pesel:document.getElementById('rpPesel').value.trim(),
+      phone:document.getElementById('rpPhone').value.trim(),
+      city:document.getElementById('rpCity').value.trim(),
+      zip:document.getElementById('rpZip').value.trim(),
+      street:document.getElementById('rpStreet').value.trim(),
+      country:document.getElementById('rpCountry').value
+    });
+  }else{
+    const cname=document.getElementById('rcName').value.trim();
+    const nip=document.getElementById('rcNip').value.trim();
+    if(!cname){err.textContent='Увядзіце назву кампаніі';return}
+    if(!nip){err.textContent='Увядзіце NIP';return}
+    const rfn=document.getElementById('rcRepFname').value.trim();
+    const rln=document.getElementById('rcRepLname').value.trim();
+    if(!rfn||!rln){err.textContent='Увядзіце імя прадстаўніка';return}
+    Object.assign(meta,{
+      name:rfn+' '+rln,first_name:rfn,last_name:rln,
+      company_name:cname,nip:nip,
+      regon:document.getElementById('rcRegon').value.trim(),
+      krs:document.getElementById('rcKrs').value.trim(),
+      legal_form:document.getElementById('rcForm').value,
+      rep_role:document.getElementById('rcRepRole').value.trim(),
+      phone:document.getElementById('rcPhone').value.trim(),
+      city:document.getElementById('rcCity')?.value?.trim()||document.getElementById('rcCity')?.value||'',
+      zip:document.getElementById('rcZip')?.value?.trim()||'',
+      street:document.getElementById('rcStreet').value.trim(),
+      country:document.getElementById('rcCountry').value
+    });
+  }
+
+  err.textContent='Рэгіструем...';
+  const{data,error}=await sb.auth.signUp({email,password:pass,options:{data:meta,emailRedirectTo:location.origin+'/dashboard.html'}});
+  if(error){err.textContent=error.message;return}
+  if(data.user&&!data.user.email_confirmed_at){
+    closeAuth();
+    document.getElementById('verifyAddr').textContent=email;
+    openAuth('verify');
+    return;
+  }
+  window.location.href='dashboard.html';
+}
+
+async function doOAuth(provider){
+  if(!sb)return;
+  // OAuth auto-registers if new user, redirect to profile completion
+  const{error}=await sb.auth.signInWithOAuth({provider,options:{
+    redirectTo:location.origin+'/dashboard.html',
+    queryParams:{prompt:'consent'}
+  }});
+  if(error)alert(error.message);
+}
+
+async function doResend(){
+  const email=document.getElementById('verifyAddr').textContent;
+  if(!sb||!email)return;
+  const btn=document.getElementById('resendBtn2');
+  btn.textContent='Адпраўляем...';
+  const{error}=await sb.auth.resend({type:'signup',email,options:{emailRedirectTo:location.origin+'/dashboard.html'}});
+  btn.textContent=error?'Памылка':'Адпраўлена!';
+  setTimeout(()=>{btn.textContent='Адправіць паўторна'},3000);
+}
+
+// ═══ PROFILE COMPLETION MODAL (for OAuth users who need to fill details) ═══
+function openProfileComplete(user){
+  const meta=user.user_metadata||{};
+  // Build a minimal profile form in loginModal
+  const box=document.getElementById('loginModal').querySelector('.auth-box');
+  box.innerHTML=`
+    <button class="auth-close" onclick="closeAuth()">&times;</button>
+    <div class="auth-title">Завяршыце профіль</div>
+    <div class="auth-sub">Вы ўвайшлі як <strong>${meta.full_name||meta.name||user.email}</strong>. Запоўніце дадатковыя даныя.</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="setAccType2('person',this)">Фізічная асоба</button>
+      <button class="auth-tab" onclick="setAccType2('company',this)">Кампанія / ІП</button>
+    </div>
+    <label style="display:block;font-family:var(--fm);font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:8px">Ваша роля</label>
+    <div class="role-cards" id="cpRoles">
+      <div class="role-card sel" onclick="pickRole2(this,'owner')"><div class="rc-icon">&#127970;</div><div class="rc-name">Уладальнік</div><div class="rc-desc">Збіраю канцэпцыю</div></div>
+      <div class="role-card" onclick="pickRole2(this,'contractor')"><div class="rc-icon">&#128736;</div><div class="rc-name">Падрадчык</div><div class="rc-desc">Паслугі / работы</div></div>
+      <div class="role-card" onclick="pickRole2(this,'supplier')"><div class="rc-icon">&#128230;</div><div class="rc-name">Пастаўшчык</div><div class="rc-desc">Абсталяванне</div></div>
+      <div class="role-card" onclick="pickRole2(this,'investor')"><div class="rc-icon">&#128200;</div><div class="rc-name">Інвестар</div><div class="rc-desc">Укладанні</div></div>
+    </div>
+    <div id="cpPerson">
+      <div class="af-row">
+        <div class="af"><label>Імя</label><input id="cpFn" type="text" value="${meta.first_name||meta.full_name?.split(' ')[0]||''}"></div>
+        <div class="af"><label>Прозвішча</label><input id="cpLn" type="text" value="${meta.last_name||meta.full_name?.split(' ').slice(1).join(' ')||''}"></div>
+      </div>
+      <div class="af"><label>Тэлефон</label><input id="cpPhone" type="tel" placeholder="+48 000 000 000"></div>
+      <div class="af-row">
+        <div class="af"><label>Горад</label><input id="cpCity" type="text" placeholder="Warszawa"></div>
+        <div class="af"><label>Краіна</label><select id="cpCountry"><option value="PL" selected>Polska</option><option value="DE">Deutschland</option><option value="BY">Беларусь</option><option value="UA">Україна</option><option value="OTHER">Іншая</option></select></div>
+      </div>
+    </div>
+    <div id="cpCompany" style="display:none">
+      <div class="af"><label>Назва кампаніі</label><input id="cpCName" type="text"></div>
+      <div class="af"><label>NIP</label><input id="cpNip" type="text" maxlength="10"></div>
+      <div class="af"><label>Форма праўная</label><select id="cpForm"><option value="jdg">JDG (ІП)</option><option value="spzoo">Sp. z o.o.</option><option value="sa">S.A.</option><option value="foreign">Замежная</option></select></div>
+      <div class="af"><label>Тэлефон</label><input id="cpCPhone" type="tel" placeholder="+48 000 000 000"></div>
+    </div>
+    <div class="auth-error" id="cpErr"></div>
+    <button class="auth-btn" onclick="saveProfile()">Захаваць і працягнуць</button>
+  `;
+  document.getElementById('loginModal').classList.add('vis');
+}
+
+let cpAccType='person',cpRole='owner';
+function setAccType2(t,btn){
+  cpAccType=t;
+  btn.parentElement.querySelectorAll('.auth-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('cpPerson').style.display=t==='person'?'block':'none';
+  document.getElementById('cpCompany').style.display=t==='company'?'block':'none';
+}
+function pickRole2(el,role){
+  cpRole=role;
+  el.parentElement.querySelectorAll('.role-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+async function saveProfile(){
+  if(!sb)return;
+  const err=document.getElementById('cpErr');
+  const meta={role:cpRole,account_type:cpAccType,profile_complete:true};
+  if(cpAccType==='person'){
+    const fn=(document.getElementById('cpFn')?.value||'').trim();
+    const ln=(document.getElementById('cpLn')?.value||'').trim();
+    if(!fn){err.textContent='Увядзіце імя';return}
+    Object.assign(meta,{name:fn+' '+ln,first_name:fn,last_name:ln,
+      phone:(document.getElementById('cpPhone')?.value||'').trim(),
+      city:(document.getElementById('cpCity')?.value||'').trim(),
+      country:(document.getElementById('cpCountry')?.value||'PL')});
+  }else{
+    const cn=(document.getElementById('cpCName')?.value||'').trim();
+    if(!cn){err.textContent='Увядзіце назву кампаніі';return}
+    Object.assign(meta,{company_name:cn,
+      nip:(document.getElementById('cpNip')?.value||'').trim(),
+      legal_form:(document.getElementById('cpForm')?.value||''),
+      phone:(document.getElementById('cpCPhone')?.value||'').trim()});
+  }
+  err.textContent='Захоўваем...';
+  const{error}=await sb.auth.updateUser({data:meta});
+  if(error){err.textContent=error.message;return}
+  window.location.href='dashboard.html';
+}
+
+// Check if user came back from OAuth and needs profile completion
+(async function checkOAuthReturn(){
+  if(!sb)return;
+  const{data:{session}}=await sb.auth.getSession();
+  if(!session||!session.user)return;
+  const meta=session.user.user_metadata||{};
+  if(!meta.profile_complete){
+    openProfileComplete(session.user);
+  }else{
+    // Already logged in + complete profile → update nav
+    updateNavForUser(meta);
+  }
+})();
+
+function updateNavForUser(meta){
+  const links=document.querySelector('.nav-links');
+  if(!links)return;
+  // Replace Log In / Sign Up with user avatar + dashboard link
+  const loginLink=links.querySelector('a[onclick*="login"]');
+  const signupLink=links.querySelector('a[onclick*="register"]');
+  if(loginLink){
+    loginLink.textContent=meta.name||meta.first_name||'Профіль';
+    loginLink.setAttribute('onclick','');
+    loginLink.href='dashboard.html';
+    loginLink.style.color='var(--gold)';
+  }
+  if(signupLink){
+    signupLink.textContent='Dashboard';
+    signupLink.setAttribute('onclick','');
+    signupLink.href='dashboard.html';
+  }
+}
+</script>
+
 <!-- I18N -->
 <script src="lang.js"></script>
 <script src="labs67-i18n.js"></script>
+<!-- ═══ AUTH: LOGIN MODAL ═══ -->
+<div class="auth-overlay" id="loginModal">
+<div class="auth-box">
+<button class="auth-close" onclick="closeAuth()">&times;</button>
+<div class="auth-title">Увайсці</div>
+<div class="auth-sub">Увядзіце вашы даныя для ўваходу ў SVITA</div>
+
+<div class="af"><label>Email</label><input id="liEmail" type="email" placeholder="email@example.com"></div>
+<div class="af"><label>Пароль</label><input id="liPass" type="password" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" onkeydown="if(event.key==='Enter')doLogin()"></div>
+<div class="auth-error" id="liErr"></div>
+<button class="auth-btn" onclick="doLogin()">Увайсці</button>
+
+<div class="auth-divider"><span>або</span></div>
+<div class="oauth-row">
+<button class="oauth-btn" onclick="doOAuth('google')"><svg width="14" height="14" viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#34A853" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59A14.5 14.5 0 019.5 24c0-1.59.28-3.14.76-4.59l-7.98-6.19A23.99 23.99 0 000 24c0 3.77.87 7.34 2.56 10.78l7.97-6.19z"/><path fill="#EA4335" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> Google</button>
+<button class="oauth-btn" onclick="doOAuth('github')"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg> GitHub</button>
+<button class="oauth-btn" onclick="doOAuth('apple')"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg> Apple</button>
+</div>
+
+<div class="auth-switch">Няма акаўнта? <a onclick="openAuth('register')">Зарэгістравацца</a></div>
+</div>
+</div>
+
+<!-- ═══ AUTH: REGISTER MODAL ═══ -->
+<div class="auth-overlay" id="regModal">
+<div class="auth-box">
+<button class="auth-close" onclick="closeAuth()">&times;</button>
+<div class="auth-title">Рэгістрацыя</div>
+<div class="auth-sub">Стварыце акаўнт для работы з SVITA</div>
+
+<!-- ACCOUNT TYPE TABS -->
+<div class="auth-tabs">
+<button class="auth-tab active" onclick="setAccType('person',this)">Фізічная асоба</button>
+<button class="auth-tab" onclick="setAccType('company',this)">Кампанія / ІП</button>
+</div>
+
+<!-- ROLE SELECT -->
+<label style="display:block;font-family:var(--fm);font-size:9px;letter-spacing:2px;color:var(--dim);text-transform:uppercase;margin-bottom:8px">Ваша роля</label>
+<div class="role-cards" id="regRoles">
+<div class="role-card sel" onclick="pickRole(this,'owner')"><div class="rc-icon">&#127970;</div><div class="rc-name">Уладальнік</div><div class="rc-desc">Збіраю канцэпцыю бізнесу</div></div>
+<div class="role-card" onclick="pickRole(this,'contractor')"><div class="rc-icon">&#128736;</div><div class="rc-name">Падрадчык</div><div class="rc-desc">Прапаную паслугі / работы</div></div>
+<div class="role-card" onclick="pickRole(this,'supplier')"><div class="rc-icon">&#128230;</div><div class="rc-name">Пастаўшчык</div><div class="rc-desc">Прадаю абсталяванне</div></div>
+<div class="role-card" onclick="pickRole(this,'investor')"><div class="rc-icon">&#128200;</div><div class="rc-name">Інвестар</div><div class="rc-desc">Шукаю канцэпцыі для ўкладанняў</div></div>
+</div>
+
+<!-- PERSON FIELDS -->
+<div id="regPerson">
+<div class="af-row">
+<div class="af"><label>Імя</label><input id="rpFname" type="text" placeholder="Jan"></div>
+<div class="af"><label>Прозвішча</label><input id="rpLname" type="text" placeholder="Kowalski"></div>
+</div>
+<div class="af"><label>PESEL <span style="font-size:8px;color:rgba(255,255,255,.15);text-transform:none;letter-spacing:0">(або нумар пашпарта для замежных)</span></label><input id="rpPesel" type="text" placeholder="00000000000" maxlength="11"></div>
+<div class="af"><label>Тэлефон</label><input id="rpPhone" type="tel" placeholder="+48 000 000 000"></div>
+<div class="af-row">
+<div class="af"><label>Горад</label><input id="rpCity" type="text" placeholder="Warszawa"></div>
+<div class="af"><label>Паштовы код</label><input id="rpZip" type="text" placeholder="00-000"></div>
+</div>
+<div class="af"><label>Вуліца, дом, кв.</label><input id="rpStreet" type="text" placeholder="ul. Marszałkowska 1/2"></div>
+<div class="af"><label>Краіна</label>
+<select id="rpCountry"><option value="PL" selected>Polska</option><option value="DE">Deutschland</option><option value="BY">Беларусь</option><option value="UA">Україна</option><option value="LT">Lietuva</option><option value="CZ">Česko</option><option value="SK">Slovensko</option><option value="GB">United Kingdom</option><option value="US">United States</option><option value="OTHER">Іншая</option></select></div>
+</div>
+
+<!-- COMPANY FIELDS (hidden by default) -->
+<div id="regCompany" style="display:none">
+<div class="af"><label>Назва кампаніі</label><input id="rcName" type="text" placeholder="Example Sp. z o.o."></div>
+<div class="af"><label>NIP</label><input id="rcNip" type="text" placeholder="0000000000" maxlength="10"><div class="af-hint">Numer Identyfikacji Podatkowej — 10 лічбаў</div></div>
+<div class="af-row">
+<div class="af"><label>REGON</label><input id="rcRegon" type="text" placeholder="000000000" maxlength="14"><div class="af-hint">Не абавязковае</div></div>
+<div class="af"><label>KRS</label><input id="rcKrs" type="text" placeholder="0000000000" maxlength="10"><div class="af-hint">Калі ёсць (Sp. z o.o., S.A.)</div></div>
+</div>
+<div class="af"><label>Форма праўная</label>
+<select id="rcForm"><option value="jdg">Jednoosobowa działalność gospodarcza (ІП)</option><option value="spzoo">Spółka z o.o.</option><option value="sa">Spółka akcyjna (S.A.)</option><option value="sc">Spółka cywilna</option><option value="sj">Spółka jawna</option><option value="sk">Spółka komandytowa</option><option value="foreign">Замежная кампанія</option></select></div>
+<div class="af-row">
+<div class="af"><label>Імя прадстаўніка</label><input id="rcRepFname" type="text" placeholder="Jan"></div>
+<div class="af"><label>Прозвішча прадстаўніка</label><input id="rcRepLname" type="text" placeholder="Kowalski"></div>
+</div>
+<div class="af"><label>Пасада прадстаўніка</label><input id="rcRepRole" type="text" placeholder="Prezes Zarządu"></div>
+<div class="af"><label>Тэлефон кампаніі</label><input id="rcPhone" type="tel" placeholder="+48 000 000 000"></div>
+<div class="af-row">
+<div class="af"><label>Горад</label><input id="rcCity" type="text" placeholder="Warszawa"></div>
+<div class="af"><label>Паштовы код</label><input id="rcZip" type="text" placeholder="00-000"></div>
+</div>
+<div class="af"><label>Адрас сядзібы</label><input id="rcStreet" type="text" placeholder="ul. Marszałkowska 1/2"></div>
+<div class="af"><label>Краіна</label>
+<select id="rcCountry"><option value="PL" selected>Polska</option><option value="DE">Deutschland</option><option value="BY">Беларусь</option><option value="UA">Україна</option><option value="LT">Lietuva</option><option value="CZ">Česko</option><option value="SK">Slovensko</option><option value="GB">United Kingdom</option><option value="US">United States</option><option value="OTHER">Іншая</option></select></div>
+</div>
+
+<!-- COMMON: EMAIL + PASSWORD -->
+<div style="border-top:1px solid rgba(255,255,255,0.06);margin:20px 0 16px;padding-top:16px">
+<div class="af"><label>Email</label><input id="rgEmail" type="email" placeholder="email@example.com"></div>
+<div class="af"><label>Пароль</label><input id="rgPass" type="password" placeholder="Мінімум 6 сімвалаў"></div>
+<div class="af"><label>Паўтарыце пароль</label><input id="rgPass2" type="password" placeholder="Яшчэ раз" onkeydown="if(event.key==='Enter')doRegister()"></div>
+</div>
+
+<div style="margin-bottom:12px"><label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer;font-size:11px;color:var(--dim)"><input type="checkbox" id="rgTerms" style="margin-top:2px;accent-color:var(--gold)"> Я згаджаюся з <a href="#" style="color:var(--gold)">Умовамі выкарыстання</a> і <a href="#" style="color:var(--gold)">Палітыкай прыватнасці</a></label></div>
+
+<div class="auth-error" id="rgErr"></div>
+<button class="auth-btn" onclick="doRegister()">Зарэгістравацца</button>
+
+<div class="auth-divider"><span>або</span></div>
+<div class="oauth-row">
+<button class="oauth-btn" onclick="doOAuth('google')"><svg width="14" height="14" viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#34A853" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59A14.5 14.5 0 019.5 24c0-1.59.28-3.14.76-4.59l-7.98-6.19A23.99 23.99 0 000 24c0 3.77.87 7.34 2.56 10.78l7.97-6.19z"/><path fill="#EA4335" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> Google</button>
+<button class="oauth-btn" onclick="doOAuth('github')"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg> GitHub</button>
+<button class="oauth-btn" onclick="doOAuth('apple')"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg> Apple</button>
+</div>
+
+<div class="auth-switch">Ужо маеце акаўнт? <a onclick="openAuth('login')">Увайсці</a></div>
+</div>
+</div>
+
+<!-- ═══ AUTH: VERIFY EMAIL MODAL ═══ -->
+<div class="auth-overlay" id="verifyModal">
+<div class="auth-box" style="text-align:center">
+<button class="auth-close" onclick="closeAuth()">&times;</button>
+<div style="font-size:56px;margin-bottom:16px">&#9993;</div>
+<div class="auth-title">Пацвердзіце email</div>
+<div class="auth-sub" style="margin-bottom:8px">Мы адправілі пісьмо на</div>
+<div style="font-family:var(--fd);font-size:14px;font-weight:600;color:var(--gold);margin-bottom:20px" id="verifyAddr"></div>
+<div style="font-size:11px;color:var(--dim);margin-bottom:20px">Перайдзіце па спасылцы ў пісьме, потым вярніцеся і ўвайдзіце</div>
+<button class="oauth-btn" style="width:100%;justify-content:center;margin-bottom:8px" id="resendBtn2" onclick="doResend()">Адправіць паўторна</button>
+<button class="auth-btn" onclick="closeAuth();openAuth('login')">Увайсці</button>
+</div>
+</div>
+
 <!-- Side Panel -->
 <aside class="side-panel">
   <a href="https://labs67.com" class="sp-link" style="--c:#B8860B"><span class="sp-dot"></span><span class="sp-name">LABS67</span></a>
