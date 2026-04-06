@@ -73,16 +73,17 @@
 .btn.yl{background:var(--yl);border-color:transparent;color:#000}.btn.or{background:var(--or);border-color:transparent;color:#fff}
 
 /* TABS */
-.tab-bar{display:flex;background:var(--sf);border-bottom:1px solid var(--bd);padding:0 24px;gap:0;overflow-x:auto;position:sticky;top:41px;z-index:49}
-.tab{display:flex;align-items:center;justify-content:center;gap:6px;padding:12px 12px;font-size:11px;font-weight:600;color:var(--tx3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;user-select:none;text-align:center}
+.tab-bar{display:flex;background:var(--sf);border-bottom:1px solid var(--bd);padding:0 16px;gap:0;overflow-x:auto;position:sticky;top:41px;z-index:49}
+.tab{display:flex;align-items:center;justify-content:center;gap:4px;padding:6px 8px;font-size:10px;font-weight:600;color:var(--tx3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;user-select:none;text-align:center}
 .tab:hover{color:var(--tx);background:var(--sf2)}
 .tab.act{color:var(--ac2);border-bottom-color:var(--ac);background:var(--acbg)}
-.tab .tab-num{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;background:var(--bd);color:var(--tx3);flex-shrink:0}
+.tab .tab-num{width:18px;height:18px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;background:var(--rd);color:#fff;flex-shrink:0}
 .tab.act .tab-num{background:var(--ac);color:#fff}
 .tab.ok .tab-num{background:var(--gn);color:#fff}
-.tab-cost{font-size:9px;color:var(--ac2);font-weight:700;margin-left:4px;white-space:nowrap}
+.tab.ok{color:var(--gn)}
+.tab-cost{font-size:8px;color:var(--ac2);font-weight:700;margin-left:2px;white-space:nowrap}
 .tab-cost:empty{display:none}
-.tab .tab-icon{font-size:14px;flex-shrink:0}
+.tab .tab-icon{font-size:12px;flex-shrink:0}
 
 /* CONTENT */
 .sec{display:none;padding:20px 24px;animation:fi .2s ease}.sec.vis{display:block}
@@ -431,6 +432,11 @@ Apple</button>
 <div class="stg" onclick="nav('s4')"><div style="display:flex;justify-content:space-between"><div class="stg-n">04</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Услуги</div><div class="stg-d">Прайс стоматологических услуг</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
 <div class="stg" onclick="nav('s5')"><div style="display:flex;justify-content:space-between"><div class="stg-n">05</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Персонал</div><div class="stg-d">Штат, ФОТ, специалисты</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
 <div class="stg" onclick="nav('s6')"><div style="display:flex;justify-content:space-between"><div class="stg-n">06</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Концепция</div><div class="stg-d">Рентабельность, бюджет, документы</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
+</div>
+<!-- ACHIEVEMENTS -->
+<div class="c" id="achievementsBlock">
+<div class="ch"><h3>&#127942; Достижения</h3><span style="font-size:10px;color:var(--tx3)" id="achCount">0 / 12</span></div>
+<div class="cb" id="achGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px"></div>
 </div>
 </div>
 
@@ -1495,6 +1501,33 @@ function i18n(v){
   return v.ru||v.en||v.pl||Object.values(v)[0]||'—';
 }
 
+// ═══════════════ EQUIPMENT CATEGORY TRANSLATIONS ═══════════════
+const EQUIP_CAT_RU={
+  air_polisher:'Воздушный полировщик',amalgam_separator:'Амальгамосепаратор',
+  apex_locator:'Апекслокатор',autoclaves:'Автоклавы',compressors:'Компрессоры',
+  consumables:'Расходные материалы',contra_angle:'Угловой наконечник',
+  curing_lamp:'Фотополимерная лампа',dental_assistant_cart:'Ассистентский столик',
+  dental_loupes:'Стоматологические лупы',dental_microscope:'Стоматологический микроскоп',
+  dental_stool:'Стоматологический стул',dental_unit:'Стоматологическая установка',
+  dental_units:'Стоматологические установки',diagnostic_lamp:'Диагностическая лампа',
+  endomotor:'Эндомотор',furniture:'Медицинская мебель',instruments:'Инструменты',
+  intraoral_camera:'Интраоральная камера',intraoral_scanner:'Интраоральный сканер',
+  lighting:'Освещение',medical_accessory:'Медицинские аксессуары',
+  medical_cabinet:'Медицинский шкаф',medical_screen:'Медицинская ширма',
+  medical_table:'Медицинский стол',medical_trolley:'Медицинская тележка',
+  micromotor:'Микромотор',obturation_system:'Система обтурации',
+  office_chair:'Офисное кресло',office_desk:'Офисный стол',
+  piezosurgery:'Пьезохирургия',premises:'Помещения',
+  quick_coupler:'Быстросъёмный переходник',rvg_sensor:'RVG-сенсор',
+  scaler:'Скалер',sealer:'Силер',sterilization:'Стерилизация',
+  straight_handpiece:'Прямой наконечник',suction_pump:'Аспиратор',
+  surgical_lamp:'Хирургическая лампа',thermodisinfector:'Термодезинфектор',
+  treatment_chair:'Кресло пациента',turbine:'Турбинный наконечник',
+  ultrasonic_cleaner:'Ультразвуковая мойка',water_distiller:'Дистиллятор воды',
+  whitening_lamp:'Лампа для отбеливания',xray:'Рентген',
+  xray_protection:'Рентгенозащита',xray_unit:'Рентген-аппарат'
+};
+
 // ═══════════════ SUPABASE DATA SYNC ═══════════════
 async function loadSupabaseData(){
   try{
@@ -1514,7 +1547,7 @@ async function loadSupabaseData(){
         .map(e=>({
           id:e.id,
           name:e.name+(e.model&&!e.name.includes(e.model)?' '+e.model:''),
-          category:catMap[e.category_id]||catSlugMap[e.category]||e.category||'Другое',
+          category:catMap[e.category_id]||catSlugMap[e.category]||EQUIP_CAT_RU[e.category]||e.category||'Другое',
           price:e.price_pln||0,
           supplier:e.supplier_name||e.brand||'—',
           warranty:e.status||'—',
@@ -2113,17 +2146,18 @@ function renderSelectedRenovations(){
     if(!groups[cat])groups[cat]=[];
     const p=picked[id];
     const qty=p.qty||1;const done=!!p.done;
-    totalCost+=r.price*qty;
+    const unitPrice=p.customPrice!=null?p.customPrice:r.price;
+    totalCost+=unitPrice*qty;
     if(done)doneCount++;
-    groups[cat].push({...r,qty,done});
+    groups[cat].push({...r,qty,done,unitPrice,isCustom:p.customPrice!=null});
   });
   let html='';
   Object.keys(groups).forEach(cat=>{
     const items=groups[cat];
-    const catTotal=items.reduce((s,r)=>s+r.price*r.qty,0);
+    const catTotal=items.reduce((s,r)=>s+r.unitPrice*r.qty,0);
     html+=`<div class="c"><div class="ch"><h3 style="font-size:12px">${cat}</h3><span style="font-size:10px;color:var(--gn);font-weight:600">${items.length} работ · ${catTotal.toLocaleString('ru')} PLN</span></div><div class="cb" style="padding:8px 12px">`;
     items.forEach(r=>{
-      html+=`<div class="ci cost-row" style="flex-wrap:nowrap;padding:6px 0;${r.done?'opacity:0.5':''}"><label style="display:flex;align-items:center;cursor:pointer;flex-shrink:0"><input type="checkbox" ${r.done?'checked':''} onchange="toggleRenDone('${r.id}')" style="margin-right:8px"></label><div class="ct" style="flex:1;min-width:0;font-size:11px;${r.done?'text-decoration:line-through':''}">${r.name}</div><div class="sel-qty" style="margin:0 4px"><button onclick="renSelQty('${r.id}',-1)">−</button><span>${r.qty}</span><button onclick="renSelQty('${r.id}',1)">+</button></div><div style="font-size:11px;font-weight:700;color:var(--ac2);white-space:nowrap;min-width:70px;text-align:right">${(r.price*r.qty).toLocaleString('ru')} PLN</div><button class="btn sm" style="color:var(--rd);padding:2px 6px;margin-left:4px" onclick="togglePickRenovation('${r.id}')">&#10005;</button></div>`;
+      html+=`<div class="ci cost-row" style="flex-wrap:nowrap;padding:6px 0;${r.done?'opacity:0.5':''}"><label style="display:flex;align-items:center;cursor:pointer;flex-shrink:0"><input type="checkbox" ${r.done?'checked':''} onchange="toggleRenDone('${r.id}')" style="margin-right:8px"></label><div class="ct" style="flex:1;min-width:0;font-size:11px;${r.done?'text-decoration:line-through':''}">${r.name}</div><div class="sel-qty" style="margin:0 4px"><button onclick="renSelQty('${r.id}',-1)">−</button><span>${r.qty}</span><button onclick="renSelQty('${r.id}',1)">+</button></div><div style="display:flex;align-items:center;gap:2px;min-width:90px;justify-content:flex-end"><input type="number" value="${r.unitPrice}" onchange="setCustomPrice('ren','${r.id}',this.value)" style="width:55px;font-size:11px;font-weight:700;color:${r.isCustom?'var(--or)':'var(--ac2)'};text-align:right;border:1px solid var(--bd);border-radius:4px;padding:2px 4px;background:var(--sf)"><span style="font-size:9px;color:var(--tx3)">PLN</span></div><button class="btn sm" style="color:var(--rd);padding:2px 6px;margin-left:4px" onclick="togglePickRenovation('${r.id}')">&#10005;</button></div>`;
     });
     html+='</div></div>';
   });
@@ -2232,7 +2266,7 @@ function renderSelectedEquip(){
     const cat=s.category||'Другое';
     if(!allCats[cat])allCats[cat]={total:0,picked:[]};
     allCats[cat].total++;
-    if(picked[s.id])allCats[cat].picked.push({...s,qty:picked[s.id].qty||1});
+    if(picked[s.id]){const cp=picked[s.id].customPrice;allCats[cat].picked.push({...s,qty:picked[s.id].qty||1,unitPrice:cp!=null?cp:s.price})}
   });
 
   const catKeys=Object.keys(allCats);
@@ -2243,7 +2277,7 @@ function renderSelectedEquip(){
   catKeys.forEach(cat=>{
     const g=allCats[cat];
     const cnt=g.picked.length;
-    const catTotal=g.picked.reduce((s,r)=>s+r.price*r.qty,0);
+    const catTotal=g.picked.reduce((s,r)=>s+r.unitPrice*r.qty,0);
     totalCost+=catTotal;
     const statusTag=cnt>0
       ?`<span style="font-size:10px;color:var(--gn);font-weight:600">${cnt} / ${g.total} выбрано · ${catTotal.toLocaleString('ru')} PLN</span>`
@@ -2255,7 +2289,8 @@ function renderSelectedEquip(){
       g.picked.forEach(r=>{
         const roomId=picked[r.id].room||'';
         const roomOpts=getPickedRoomsList().map(rm=>`<option value="${rm.id}" ${rm.id==roomId?'selected':''}>${rm.name}</option>`).join('');
-        html+=`<div class="ci cost-row" style="flex-wrap:nowrap"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.supplier}</div></div><select onchange="assignEquipRoom('${r.id}',this.value)" style="font-size:10px;padding:3px 6px;border:1px solid var(--bd);border-radius:6px;background:var(--sf);color:var(--tx);max-width:130px;flex-shrink:0"><option value="">— комната</option>${roomOpts}</select><div class="sel-qty" style="margin:0 4px"><button onclick="eqSelQty('${r.id}',-1)">−</button><span id="eq_${r.id}">${r.qty}</span><button onclick="eqSelQty('${r.id}',1)">+</button></div><div class="cost-val" style="min-width:80px;justify-content:flex-end"><strong style="color:var(--ac2)">${(r.price*r.qty).toLocaleString('ru')}</strong> PLN</div><button class="btn sm" style="color:var(--rd);flex-shrink:0" onclick="togglePickEquip('${r.id}')">✕</button></div>`;
+        const isCustom=picked[r.id].customPrice!=null;
+        html+=`<div class="ci cost-row" style="flex-wrap:nowrap"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.supplier}</div></div><select onchange="assignEquipRoom('${r.id}',this.value)" style="font-size:10px;padding:3px 6px;border:1px solid var(--bd);border-radius:6px;background:var(--sf);color:var(--tx);max-width:130px;flex-shrink:0"><option value="">— комната</option>${roomOpts}</select><div class="sel-qty" style="margin:0 4px"><button onclick="eqSelQty('${r.id}',-1)">−</button><span id="eq_${r.id}">${r.qty}</span><button onclick="eqSelQty('${r.id}',1)">+</button></div><div style="display:flex;align-items:center;gap:2px;min-width:100px;justify-content:flex-end"><input type="number" value="${r.unitPrice}" onchange="setCustomPrice('equip','${r.id}',this.value)" style="width:60px;font-size:11px;font-weight:700;color:${isCustom?'var(--or)':'var(--ac2)'};text-align:right;border:1px solid var(--bd);border-radius:4px;padding:2px 4px;background:var(--sf)"><span style="font-size:10px;color:var(--tx3)">PLN</span></div><button class="btn sm" style="color:var(--rd);flex-shrink:0" onclick="togglePickEquip('${r.id}')">✕</button></div>`;
       });
       html+='</div>';
     }
@@ -2264,7 +2299,7 @@ function renderSelectedEquip(){
   c.innerHTML=html;
 
   // Update stats
-  const prices=pickedIds.map(id=>{const s=DB.suppliers.find(x=>x.id==id);return s?s.price:0});
+  const prices=pickedIds.map(id=>{const s=DB.suppliers.find(x=>x.id==id);const p=picked[id];return p&&p.customPrice!=null?p.customPrice:s?s.price:0});
   document.getElementById('eqCount').textContent=pickedIds.length;
   document.getElementById('eqTotal').textContent=totalCost.toLocaleString('ru');
   document.getElementById('eqCats').textContent=catKeys.filter(cat=>allCats[cat].picked.length>0).length;
@@ -2285,6 +2320,13 @@ function assignEquipRoom(equipId,roomId){
   if(!DB.pickedEquip[equipId])return;
   DB.pickedEquip[equipId].room=roomId||null;
   renderCabinetTypes();
+}
+function setCustomPrice(type,id,val){
+  const v=Math.max(0,parseFloat(val)||0);
+  if(type==='equip'){if(DB.pickedEquip[id])DB.pickedEquip[id].customPrice=v;renderSelectedEquip();}
+  else if(type==='ren'){if(DB.pickedRenovations[id])DB.pickedRenovations[id].customPrice=v;renderSelectedRenovations();}
+  else if(type==='svc'){if(DB.pickedServices[id])DB.pickedServices[id].customPrice=v;renderSelectedServices();}
+  recalc();
 }
 
 function toggleZone(zi){
@@ -3748,7 +3790,7 @@ function renderSelectedServices(){
     const cat=s.category||'Другое';
     if(!allCats[cat])allCats[cat]={icon:s.categoryIcon||'',total:0,picked:[]};
     allCats[cat].total++;
-    if(picked[s.id])allCats[cat].picked.push({...s,qty:picked[s.id].qty||1});
+    if(picked[s.id]){const cp=picked[s.id].customPrice;allCats[cat].picked.push({...s,qty:picked[s.id].qty||1,unitPrice:cp!=null?cp:s.price,isCustom:cp!=null})}
   });
 
   const catKeys=Object.keys(allCats);
@@ -3761,7 +3803,7 @@ function renderSelectedServices(){
   catKeys.forEach(cat=>{
     const g=allCats[cat];
     const cnt=g.picked.length;
-    const catTotal=g.picked.reduce((s,r)=>s+r.price*r.qty,0);
+    const catTotal=g.picked.reduce((s,r)=>s+r.unitPrice*r.qty,0);
     const statusTag=cnt>0
       ?`<span style="font-size:10px;color:var(--gn);font-weight:600">${cnt} / ${g.total} выбрано · ${catTotal.toLocaleString('ru')} PLN</span>`
       :`<span style="font-size:10px;color:var(--tx3)">0 / ${g.total} — не выбрано</span>`;
@@ -3771,7 +3813,7 @@ function renderSelectedServices(){
     if(cnt){
       html+='<div class="cb">';
       g.picked.forEach(r=>{
-        html+=`<div class="ci cost-row" style="flex-wrap:nowrap"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.desc||''}</div></div><div class="sel-qty" style="margin:0 4px"><button onclick="svcSelQty('${r.id}',-1)">−</button><span id="sq_${r.id}">${r.qty}</span><button onclick="svcSelQty('${r.id}',1)">+</button></div><span style="font-size:10px;color:var(--tx3);min-width:30px;text-align:center">${r.unit}</span><div class="cost-val" style="min-width:80px;justify-content:flex-end"><strong style="color:var(--ac2)">${(r.price*r.qty).toLocaleString('ru')}</strong> PLN</div><button class="btn sm" style="color:var(--rd);flex-shrink:0" onclick="removeSvcPick('${r.id}')">✕</button></div>`;
+        html+=`<div class="ci cost-row" style="flex-wrap:nowrap"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.desc||''}</div></div><div class="sel-qty" style="margin:0 4px"><button onclick="svcSelQty('${r.id}',-1)">−</button><span id="sq_${r.id}">${r.qty}</span><button onclick="svcSelQty('${r.id}',1)">+</button></div><span style="font-size:10px;color:var(--tx3);min-width:30px;text-align:center">${r.unit}</span><div style="display:flex;align-items:center;gap:2px;min-width:90px;justify-content:flex-end"><input type="number" value="${r.unitPrice}" onchange="setCustomPrice('svc','${r.id}',this.value)" style="width:55px;font-size:11px;font-weight:700;color:${r.isCustom?'var(--or)':'var(--ac2)'};text-align:right;border:1px solid var(--bd);border-radius:4px;padding:2px 4px;background:var(--sf)"><span style="font-size:9px;color:var(--tx3)">PLN</span></div><button class="btn sm" style="color:var(--rd);flex-shrink:0" onclick="removeSvcPick('${r.id}')">✕</button></div>`;
       });
       html+='</div>';
     }
@@ -4209,14 +4251,14 @@ function calcTotals(){
   let renovation=0;
   Object.entries(DB.pickedRenovations||{}).forEach(([id,p])=>{
     const item=DB.renovations.find(r=>r.id==id);
-    if(item)renovation+=item.price*(p.qty||1);
+    if(item)renovation+=(p.customPrice!=null?p.customPrice:item.price)*(p.qty||1);
   });
   const rent=deposit+renovation;
   const eng=getAllCosts('elec_')+getAllCosts('water_')+getAllCosts('vent_')+getAllCosts('sec_');
   let equip=0;
   Object.entries(DB.pickedEquip||{}).forEach(([id,p])=>{
     const item=DB.suppliers.find(s=>s.id==id);
-    if(item)equip+=item.price*(p.qty||1);
+    if(item)equip+=(p.customPrice!=null?p.customPrice:item.price)*(p.qty||1);
   });
   const docs=getAllCosts('doc_');
   const staff=getAllCosts('st_');
@@ -4254,6 +4296,7 @@ function recalc(){
   if(cur==='budget')updateBudget();
   if(cur==='profit')updateProfit();
   updateTabCosts(t);
+  updateAchievements();
 }
 function updateTabCosts(t){
   // Tab 1: Помещение — аренда + депозит
@@ -4269,7 +4312,7 @@ function updateTabCosts(t){
   let svcTotal=0;
   Object.entries(DB.pickedServices||{}).forEach(([id,p])=>{
     const s=DB.services.find(x=>x.id==id);
-    if(s)svcTotal+=s.price*(p.qty||1);
+    if(s)svcTotal+=(p.customPrice!=null?p.customPrice:s.price)*(p.qty||1);
   });
   const tc4=document.getElementById('tabCost4');
   if(tc4)tc4.textContent=svcTotal>0?svcTotal.toLocaleString('ru')+' PLN':'';
@@ -4284,6 +4327,17 @@ function updateTabCosts(t){
   // Tab 6: Концепция — документация
   const tc6=document.getElementById('tabCost6');
   if(tc6)tc6.textContent=t.docs>0?t.docs.toLocaleString('ru')+' PLN':'';
+  // Tab status: red (default) → green (ok) when has data
+  const tabs=document.querySelectorAll('#tabBar .tab');
+  const ready=[
+    t.rent>0,
+    t.renovation>0||Object.keys(DB.pickedRenovations||{}).length>0,
+    Object.keys(DB.pickedEquip||{}).length>0,
+    svcTotal>0||Object.keys(DB.pickedServices||{}).length>0,
+    fot>0||Object.keys(DB.pickedStaff||{}).length>0,
+    t.docs>0
+  ];
+  tabs.forEach((tab,i)=>{if(ready[i])tab.classList.add('ok');else tab.classList.remove('ok')});
 }
 
 function updateOverviewStats(){
@@ -4362,6 +4416,49 @@ function updateStage(el,pct,meta){
 }
 
 function updateSumbar(){}
+
+// ═══════════════ ACHIEVEMENTS SYSTEM ═══════════════
+const ACHIEVEMENTS=[
+  {id:'prop',icon:'&#127970;',name:'Найден объект',desc:'Выбрано помещение',check:()=>!!activeProperty},
+  {id:'rooms',icon:'&#128682;',name:'Планировка',desc:'Добавлены кабинеты',check:()=>FP&&FP.rooms&&FP.rooms.length>=2},
+  {id:'ren3',icon:'&#128736;',name:'Начало ремонта',desc:'3+ работы в модернизации',check:()=>Object.keys(DB.pickedRenovations||{}).length>=3},
+  {id:'ren10',icon:'&#127959;',name:'Полный ремонт',desc:'10+ работ в модернизации',check:()=>Object.keys(DB.pickedRenovations||{}).length>=10},
+  {id:'eq5',icon:'&#129656;',name:'Первое оснащение',desc:'5+ единиц оборудования',check:()=>Object.keys(DB.pickedEquip||{}).length>=5},
+  {id:'eq20',icon:'&#128230;',name:'Полная комплектация',desc:'20+ единиц оборудования',check:()=>Object.keys(DB.pickedEquip||{}).length>=20},
+  {id:'svc5',icon:'&#129657;',name:'Прайс-лист',desc:'5+ услуг добавлено',check:()=>Object.keys(DB.pickedServices||{}).length>=5},
+  {id:'staff3',icon:'&#129489;',name:'Команда',desc:'3+ сотрудника',check:()=>Object.keys(DB.pickedStaff||{}).length>=3},
+  {id:'budget',icon:'&#128176;',name:'Бюджет',desc:'Общий бюджет > 100K',check:()=>{const t=calcTotals();return t.grand>100000}},
+  {id:'profit',icon:'&#128200;',name:'Рентабельность',desc:'Доход превышает расход',check:()=>{const t=calcTotals();return t.revenue>t.expenses&&t.revenue>0}},
+  {id:'all6',icon:'&#11088;',name:'Все этапы',desc:'Все 6 табов зелёные',check:()=>document.querySelectorAll('#tabBar .tab.ok').length>=6},
+  {id:'roi',icon:'&#127942;',name:'Быстрый старт',desc:'Окупаемость < 24 мес',check:()=>{const t=calcTotals();const p=t.revenue-t.expenses;return p>0&&t.grand>0&&Math.ceil(t.grand/p)<24}}
+];
+const achUnlocked=new Set(JSON.parse(localStorage.getItem('svita_ach')||'[]'));
+
+function updateAchievements(){
+  const grid=document.getElementById('achGrid');
+  if(!grid)return;
+  let newUnlock=false;
+  let html='';
+  let count=0;
+  ACHIEVEMENTS.forEach(a=>{
+    const done=a.check();
+    if(done&&!achUnlocked.has(a.id)){achUnlocked.add(a.id);newUnlock=true}
+    if(done)count++;
+    html+=`<div style="text-align:center;padding:8px 4px;border-radius:8px;background:${done?'rgba(34,197,94,.08)':'var(--sf2)'};border:1px solid ${done?'var(--gn)':'var(--bd)'};opacity:${done?'1':'0.4'}"><div style="font-size:20px">${a.icon}</div><div style="font-size:9px;font-weight:700;margin-top:4px;color:${done?'var(--gn)':'var(--tx3)'}">${a.name}</div><div style="font-size:8px;color:var(--tx3)">${a.desc}</div></div>`;
+  });
+  grid.innerHTML=html;
+  document.getElementById('achCount').textContent=count+' / '+ACHIEVEMENTS.length;
+  localStorage.setItem('svita_ach',JSON.stringify([...achUnlocked]));
+  if(newUnlock)showAchToast(count);
+}
+function showAchToast(count){
+  const t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:24px;right:24px;background:var(--gn);color:#fff;padding:12px 20px;border-radius:12px;font-size:12px;font-weight:700;z-index:9999;animation:fi .3s ease;box-shadow:0 4px 20px rgba(34,197,94,.3)';
+  t.textContent='&#127942; Новое достижение! ('+count+'/'+ACHIEVEMENTS.length+')';
+  t.innerHTML='&#127942; Новое достижение! ('+count+'/'+ACHIEVEMENTS.length+')';
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),3000);
+}
 
 function updateBudget(){
   const t=calcTotals();
