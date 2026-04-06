@@ -103,7 +103,7 @@
 
 /* TABS */
 .tab-bar{display:flex;background:var(--sf);border-bottom:1px solid var(--bd);padding:0 24px;gap:0;overflow-x:auto;position:sticky;top:41px;z-index:49}
-.tab{display:flex;align-items:center;justify-content:center;gap:6px;padding:12px 12px;font-size:11px;font-weight:600;color:var(--tx3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;user-select:none;text-align:center}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:10px 12px;font-size:11px;font-weight:600;color:var(--tx3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;user-select:none;text-align:center}
 .tab:hover{color:var(--tx);background:var(--sf2)}
 .tab.act{color:var(--ac2);border-bottom-color:var(--ac);background:var(--acbg)}
 .tab .tab-num{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;background:var(--rd);color:#fff;flex-shrink:0;transition:background .3s}
@@ -112,7 +112,8 @@
 .tab.wip{color:var(--or)}
 .tab.ok .tab-num{background:var(--gn);color:#fff}
 .tab.ok{color:var(--gn)}
-.tab-cost{font-size:9px;color:var(--ac2);font-weight:700;margin-left:4px;white-space:nowrap}
+.tab-top{display:flex;align-items:center;gap:6px}
+.tab-cost{font-size:9px;color:var(--ac2);font-weight:700;white-space:nowrap}
 .tab-cost:empty{display:none}
 .tab .tab-icon{font-size:14px;flex-shrink:0}
 
@@ -512,13 +513,13 @@ Apple</button>
 </div>
 </div>
 <div class="tab-bar" id="tabBar">
-<div class="tab act" data-nav="s1" onclick="nav('s1')"><span class="tab-num">1</span><span class="tab-icon">&#127970;</span>Помещение<span class="tab-cost" id="tabCost1"></span></div>
-<div class="tab" data-nav="s2" onclick="nav('s2')"><span class="tab-num">2</span><span class="tab-icon">&#128736;</span>Модернизация<span class="tab-cost" id="tabCost2"></span></div>
-<div class="tab" data-nav="s3" onclick="nav('s3')"><span class="tab-num">3</span><span class="tab-icon">&#128230;</span>Оснащение<span class="tab-cost" id="tabCost3"></span></div>
-<div class="tab" data-nav="s4" onclick="nav('s4')"><span class="tab-num">4</span><span class="tab-icon">&#129489;</span>Персонал<span class="tab-cost" id="tabCost4"></span></div>
-<div class="tab" data-nav="s5" onclick="nav('s5')"><span class="tab-num">5</span><span class="tab-icon">&#129657;</span>Перечень услуг<span class="tab-cost" id="tabCost5"></span></div>
-<div class="tab" data-nav="s6" onclick="nav('s6')"><span class="tab-num">6</span><span class="tab-icon">&#128200;</span>Концепция<span class="tab-cost" id="tabCost6"></span></div>
-<div class="tab" data-nav="s7" onclick="nav('s7')"><span class="tab-num">7</span><span class="tab-icon">&#128203;</span>Документация<span class="tab-cost" id="tabCost7"></span></div>
+<div class="tab act" data-nav="s1" onclick="nav('s1')"><div class="tab-top"><span class="tab-num">1</span><span class="tab-icon">&#127970;</span>Помещение</div><span class="tab-cost" id="tabCost1"></span></div>
+<div class="tab" data-nav="s2" onclick="nav('s2')"><div class="tab-top"><span class="tab-num">2</span><span class="tab-icon">&#128736;</span>Модернизация</div><span class="tab-cost" id="tabCost2"></span></div>
+<div class="tab" data-nav="s3" onclick="nav('s3')"><div class="tab-top"><span class="tab-num">3</span><span class="tab-icon">&#128230;</span>Оснащение</div><span class="tab-cost" id="tabCost3"></span></div>
+<div class="tab" data-nav="s4" onclick="nav('s4')"><div class="tab-top"><span class="tab-num">4</span><span class="tab-icon">&#129489;</span>Персонал</div><span class="tab-cost" id="tabCost4"></span></div>
+<div class="tab" data-nav="s5" onclick="nav('s5')"><div class="tab-top"><span class="tab-num">5</span><span class="tab-icon">&#129657;</span>Перечень услуг</div><span class="tab-cost" id="tabCost5"></span></div>
+<div class="tab" data-nav="s6" onclick="nav('s6')"><div class="tab-top"><span class="tab-num">6</span><span class="tab-icon">&#128200;</span>Концепция</div><span class="tab-cost" id="tabCost6"></span></div>
+<div class="tab" data-nav="s7" onclick="nav('s7')"><div class="tab-top"><span class="tab-num">7</span><span class="tab-icon">&#128203;</span>Документация</div><span class="tab-cost" id="tabCost7"></span></div>
 </div>
 
 <!-- ═══ OVERVIEW ═══ -->
