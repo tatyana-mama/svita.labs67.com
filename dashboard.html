@@ -2560,7 +2560,7 @@ function buildSidebar(){
     html+='<div class="si" data-nav="budget"><span class="ico">&#128176;</span><span class="sl">Бюджет</span></div>';
     html+='<div class="si" data-nav="profit"><span class="ico">&#128200;</span><span class="sl">Рентабельность</span></div>';
     html+='<div class="si" data-nav="zones"><span class="ico">&#127968;</span><span class="sl">Зоны</span></div>';
-    html+='<div class="si" data-nav="cabinet-types"><span class="ico">🏥</span><span class="sl">Стоимость кабинетов</span><span class="sb wip">'+Object.keys(DB.pickedRooms).length+'</span></div>';
+    html+='<div class="si" data-nav="cabinet-types"><span class="ico">🏥</span><span class="sl">Стоимость кабинетов</span><span class="sb wip">'+getPickedRoomsList().length+'</span></div>';
   }
 
   if(currentRole==='admin'){
