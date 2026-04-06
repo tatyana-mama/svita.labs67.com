@@ -1121,6 +1121,13 @@ Apple</button>
 <div id="employeeCards"></div>
 </div>
 
+<!-- ═══ VENDOR COMPANIES (Поставщики) ═══ -->
+<div class="sec" id="sec-db-vendor-companies">
+<div class="bk" onclick="nav('overview')">&larr; Обзор</div>
+<div class="ph"><div><h2>&#127970; Поставщики</h2><div class="ph-s">Компании-поставщики оборудования и услуг</div></div><button class="btn sm pr" onclick="openModal('vendor')">+ Добавить</button></div>
+<div id="vendorCards"></div>
+</div>
+
 <!-- ═══ USERS ═══ -->
 <div class="sec" id="sec-users">
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
@@ -1421,6 +1428,18 @@ const DB={
     {id:1,name:'ElectroPolska',spec:'Электрика',city:'Быдгощ',price:'от 80 PLN/м',rating:4.8,phone:'+48 500 111 222'},
     {id:2,name:'AquaInstall',spec:'Водоснабжение',city:'Быдгощ',price:'от 100 PLN/м',rating:4.5,phone:'+48 500 333 444'},
     {id:3,name:'VentKlima',spec:'Вентиляция + кондиционирование',city:'Торунь',price:'от 120 PLN/м',rating:4.7,phone:'+48 500 555 666'}
+  ],
+  vendorCompanies:[
+    {id:'v1',name:'DentPro.pl',desc:'Крупнейший дистрибьютор стоматологического оборудования в Польше',city:'Warszawa',phone:'+48 22 123 4567',website:'dentpro.pl',tags:['Установки','Кресла','Диагностика','Рентген']},
+    {id:'v2',name:'Hu-Friedy / Cantel',desc:'Производитель стоматологических инструментов премиум-класса',city:'Chicago (PL dist)',phone:'+48 22 234 5678',website:'hu-friedy.com',tags:['Инструменты','Диагностика','Терапия','Хирургия']},
+    {id:'v3',name:'Dentsply Sirona',desc:'Мировой лидер — установки, эндомоторы, материалы, рентген',city:'Warszawa',phone:'+48 22 345 6789',website:'dentsplysirona.com',tags:['Установки','Эндодонтия','Рентген','Материалы']},
+    {id:'v4',name:'Planmeca',desc:'Финский производитель — установки, 3D-рентген, CAD/CAM',city:'Helsinki (PL dist)',phone:'+48 22 456 7890',website:'planmeca.com',tags:['Установки','Рентген','CAD/CAM']},
+    {id:'v5',name:'NSK Nakanishi',desc:'Японские наконечники, скалеры, микромоторы',city:'Tokyo (PL dist)',phone:'+48 22 567 8901',website:'nsk-dental.com',tags:['Наконечники','Скалеры','Хирургия']},
+    {id:'v6',name:'W&H Dentalwerk',desc:'Австрийские стерилизаторы, наконечники, моторы',city:'Wien (PL dist)',phone:'+48 22 678 9012',website:'wh.com',tags:['Стерилизация','Наконечники','Хирургия']},
+    {id:'v7',name:'Melag',desc:'Немецкие автоклавы и системы стерилизации',city:'Berlin (PL dist)',phone:'+48 22 789 0123',website:'melag.com',tags:['Стерилизация','Автоклавы']},
+    {id:'v8',name:'Cattani',desc:'Итальянские компрессоры, аспираторы, системы подачи воздуха',city:'Parma (PL dist)',phone:'+48 22 890 1234',website:'cattani.com',tags:['Компрессоры','Аспираторы','Инженерия']},
+    {id:'v9',name:'Aqara / Lumi',desc:'Умный дом — датчики, розетки, камеры, хабы',city:'Shenzhen (PL dist)',phone:'—',website:'aqara.com',tags:['Умный дом','Датчики','Камеры']},
+    {id:'v10',name:'Garrison Dental',desc:'Матричные системы, клинья, инструменты для реставрации',city:'Spring Lake, MI',phone:'—',website:'garrisondental.com',tags:['Терапия','Матрицы','Реставрация']}
   ],
   suppliers:[
     // ═══ 1. СТОМАТОЛОГИЧЕСКИЙ КАБИНЕТ ═══
@@ -2515,10 +2534,11 @@ function buildSidebar(){
     html+='<div class="si" data-nav="db-premises"><span class="ico">&#127970;</span><span class="sl">Помещения</span><span class="sb wip">'+DB.premises.length+'</span></div>';
     html+='<div class="si" data-nav="db-renovations"><span class="ico">&#128736;</span><span class="sl">Модернизация</span><span class="sb wip">'+DB.renovations.length+'</span></div>';
     html+='<div class="si" data-nav="db-services"><span class="ico">&#129657;</span><span class="sl">Процедуры</span><span class="sb wip">'+DB.services.length+'</span></div>';
-    html+='<div class="si" data-nav="db-suppliers"><span class="ico">&#128230;</span><span class="sl">Поставщики</span><span class="sb wip">'+DB.suppliers.length+'</span></div>';
+    html+='<div class="si" data-nav="db-suppliers"><span class="ico">&#128230;</span><span class="sl">Оборудование</span><span class="sb wip">'+DB.suppliers.length+'</span></div>';
     html+='<div class="si" data-nav="db-employees"><span class="ico">&#129489;</span><span class="sl">Сотрудники</span><span class="sb wip">'+DB.employees.length+'</span></div>';
     html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
     html+='<div class="si" data-nav="db-contractors"><span class="ico">&#128736;</span><span class="sl">Подрядчики</span><span class="sb wip">'+DB.contractors.length+'</span></div>';
+    html+='<div class="si" data-nav="db-vendor-companies"><span class="ico">&#127970;</span><span class="sl">Поставщики</span><span class="sb wip">'+(DB.vendorCompanies||[]).length+'</span></div>';
     html+='<div class="side-sec">Администрирование</div>';
     html+='<div class="si" data-nav="users"><span class="ico">&#128101;</span><span class="sl">Пользователи</span><span class="sb wip">'+DB.users.length+'</span></div>';
   }
@@ -2544,7 +2564,7 @@ function buildSidebar(){
 }
 
 // ═══════════════ NAVIGATION ═══════════════
-const secNames={overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:'Прайс-лист',s6:'Концепция',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны','db-premises':'БД Помещений','db-renovations':'Каталог модернизации','db-services':'Каталог процедур','db-contractors':'БД Подрядчиков','db-suppliers':'БД Поставщиков','db-employees':'БД Сотрудников',users:'Пользователи','cabinet-types':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения'};
+const secNames={overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:'Прайс-лист',s6:'Концепция',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны','db-premises':'БД Помещений','db-renovations':'Каталог модернизации','db-services':'Каталог процедур','db-contractors':'БД Подрядчиков','db-suppliers':'Каталог оборудования','db-employees':'БД Сотрудников','db-vendor-companies':'Поставщики',users:'Пользователи','cabinet-types':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения'};
 const stageOrder=['s1','s2','s3','s4','s5','s6'];
 let cur='overview';
 
@@ -2886,7 +2906,7 @@ function toggleCheck(el){
 
 // ═══════════════ RENDER DB CARDS ═══════════════
 function renderAll(){
-  renderProperty();renderPremises();renderContractors();renderEmployees();renderEquip();renderSelectedEquip();renderRenovationsCatalog();renderSelectedRenovations();renderStaff();renderServices();renderSelectedServices();renderUsers();renderCabinetTypes();renderPickedRooms();renderPickedContractors();renderZones();loadPropertyParams();updateRightPanel();renderOwnerProposals();
+  renderProperty();renderPremises();renderContractors();renderEmployees();renderVendors();renderEquip();renderSelectedEquip();renderRenovationsCatalog();renderSelectedRenovations();renderStaff();renderServices();renderSelectedServices();renderUsers();renderCabinetTypes();renderPickedRooms();renderPickedContractors();renderZones();loadPropertyParams();updateRightPanel();renderOwnerProposals();
 }
 
 function renderOwnerProposals(){
@@ -3098,6 +3118,20 @@ function renderContractors(){
     const picked=!!DB.pickedContractors[r.id];
     return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}"><div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:rgba(249,115,22,.1);color:var(--or)">${r.spec}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Город</div><div class="db-card-val">${r.city}</div></div><div class="db-card-field"><div class="db-card-label">Цена</div><div class="db-card-val">${r.price}</div></div><div class="db-card-field"><div class="db-card-label">Рейтинг</div><div class="db-card-val">${r.rating} ★</div></div><div class="db-card-field"><div class="db-card-label">Контакт</div><div class="db-card-val">${r.phone}</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePick('pickedContractors','${r.id}','contractors')">${picked?'✓ Назначен':'+ Подрядчик → Таб 2'}</button><button class="btn sm" onclick="delItem('contractors','${r.id}')">Удалить</button></div></div>`;
   }).join('');
+}
+
+function renderVendors(){
+  const c=document.getElementById('vendorCards');if(!c)return;
+  if(!DB.vendorCompanies.length){c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Нет поставщиков</div>';return}
+  c.innerHTML=DB.vendorCompanies.map(v=>{
+    const tags=(v.tags||[]).map(t=>`<span style="display:inline-block;font-size:9px;padding:2px 8px;border-radius:4px;background:var(--acbg);color:var(--ac2);margin:2px">${esc(t)}</span>`).join('');
+    return `<div class="db-card"><div class="db-card-head"><span class="db-card-name">${esc(v.name)}</span><span class="db-card-role" style="background:rgba(139,92,246,.1);color:#8b5cf6">${esc(v.city||'')}</span></div><div style="padding:0 16px 8px;font-size:11px;color:var(--tx2);line-height:1.4">${esc(v.desc)}</div>${tags?`<div style="padding:0 16px 8px">${tags}</div>`:''}<div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Телефон</div><div class="db-card-val">${esc(v.phone||'—')}</div></div><div class="db-card-field"><div class="db-card-label">Сайт</div><div class="db-card-val">${v.website?`<a href="https://${esc(v.website)}" target="_blank" rel="noopener" style="color:var(--ac2);text-decoration:none">${esc(v.website)}</a>`:'—'}</div></div></div><div class="db-card-actions"><button class="btn sm" onclick="delVendor('${v.id}')">Удалить</button></div></div>`;
+  }).join('');
+}
+function delVendor(id){
+  if(!confirm('Удалить поставщика?'))return;
+  DB.vendorCompanies=DB.vendorCompanies.filter(v=>v.id!=id);
+  renderVendors();buildSidebar();
 }
 
 function renderSuppliers(){
@@ -3349,7 +3383,7 @@ function renderEquip(){
     html+=`<div class="zone-head" onclick="toggleZone(${zi})">`;
     html+=`<div class="zone-icon" style="background:${zc.bg};color:${zc.color}">${icon}</div>`;
     html+=`<div class="zone-info"><div class="zone-name">${cat}</div><div class="zone-desc">${items.length} позиций</div></div>`;
-    html+=`<div class="zone-meta"><div class="zone-cost">${items.reduce((s,r)=>s+r.price,0).toLocaleString('ru')} PLN</div><div class="zone-count">${catPicked} / ${items.length} добавлено</div></div>`;
+    html+=`<div class="zone-meta"><div class="zone-count">${catPicked} / ${items.length} добавлено</div></div>`;
     html+=`<span class="zone-arrow" id="zoneArrow${zi}">&#9654;</span>`;
     html+=`</div>`;
     html+=`<div class="zone-bar"><div class="zone-bar-fill" id="zoneBar${zi}" style="width:${items.length?Math.round(catPicked/items.length*100):0}%;background:${zc.color}"></div></div>`;
@@ -5340,13 +5374,14 @@ const MODAL_FIELDS={
   user:[{k:'name',l:'Имя',ph:'Иван Иванов'},{k:'email',l:'Email',ph:'user@clinic.com'},{k:'phone',l:'Телефон',ph:'+48 500 000 000'},{k:'position',l:'Должность',ph:'Врач-стоматолог'},{k:'role',l:'Роль',ph:'owner'},{k:'status',l:'Статус',ph:'Активен'},{k:'notes',l:'Заметки',ph:'Доп. информация'}],
   cabinetType:[{k:'name',l:'Название типа',ph:'Стоматологический'},{k:'icon',l:'Иконка',ph:'🦷'},{k:'desc',l:'Описание',ph:'Стандартный кабинет'},{k:'minArea',l:'Мин. площадь (м²)',ph:'12',t:'number'}],
   renovation:[{k:'name',l:'Название работы',ph:'Монтаж перегородок'},{k:'cat',l:'Категория',ph:'Отделка и строительные работы'},{k:'price',l:'Стоимость (PLN)',ph:'10000',t:'number'}],
-  premise:[{k:'name',l:'Адрес / Название',ph:'ул. Гданьская 15'},{k:'city',l:'Город',ph:'Быдгощ'},{k:'area',l:'Площадь (м²)',ph:'180',t:'number'},{k:'floors',l:'Этажей',ph:'3',t:'number'},{k:'price',l:'Цена за м²/мес (PLN)',ph:'67',t:'number'},{k:'owner_name',l:'Владелец',ph:'Иван Иванов'},{k:'owner_phone',l:'Телефон владельца',ph:'+48 500 000 000'},{k:'notes',l:'Описание',ph:'Угловое помещение, витринные окна'},{k:'source',l:'Источник (URL)',ph:'https://otodom.pl/...'}]
+  premise:[{k:'name',l:'Адрес / Название',ph:'ул. Гданьская 15'},{k:'city',l:'Город',ph:'Быдгощ'},{k:'area',l:'Площадь (м²)',ph:'180',t:'number'},{k:'floors',l:'Этажей',ph:'3',t:'number'},{k:'price',l:'Цена за м²/мес (PLN)',ph:'67',t:'number'},{k:'owner_name',l:'Владелец',ph:'Иван Иванов'},{k:'owner_phone',l:'Телефон владельца',ph:'+48 500 000 000'},{k:'notes',l:'Описание',ph:'Угловое помещение, витринные окна'},{k:'source',l:'Источник (URL)',ph:'https://otodom.pl/...'}],
+  vendor:[{k:'name',l:'Название компании',ph:'DentPro.pl'},{k:'desc',l:'Описание',ph:'Дистрибьютор стоматологического оборудования'},{k:'city',l:'Город',ph:'Warszawa'},{k:'phone',l:'Телефон',ph:'+48 22 123 4567'},{k:'website',l:'Сайт',ph:'dentpro.pl'},{k:'tags',l:'Теги (через запятую)',ph:'Установки, Кресла, Рентген'}]
 };
 
 function openModal(mode){
   modalMode=mode;
   editingId=null;
-  const titles={property:'Карточка помещения',premise:'Добавить помещение',room:'Добавить комнату',contractor:'Заявка подрядчика',supplier:'Добавить товар',employee:'Добавить сотрудника',equip:'Добавить оборудование',staff:'Добавить должность',service:'Добавить процедуру',user:'Пригласить пользователя',cabinetType:'Добавить тип кабинета'};
+  const titles={property:'Карточка помещения',premise:'Добавить помещение',room:'Добавить комнату',contractor:'Заявка подрядчика',supplier:'Добавить товар',employee:'Добавить сотрудника',equip:'Добавить оборудование',staff:'Добавить должность',service:'Добавить процедуру',user:'Пригласить пользователя',cabinetType:'Добавить тип кабинета',vendor:'Добавить поставщика'};
   document.getElementById('modalTitle').textContent=titles[mode]||'Добавить';
   const fields=MODAL_FIELDS[mode]||[];
   document.getElementById('modalFields').innerHTML=fields.map(f=>{
@@ -5398,6 +5433,13 @@ function saveModal(){
     closeModal();
     renderPremises();buildSidebar();
     return;
+  }
+
+  if(modalMode==='vendor'){
+    const v={id:editingId||'v'+(++nextId),name:obj.name,desc:obj.desc||'',city:obj.city||'',phone:obj.phone||'',website:obj.website||'',tags:(obj.tags||'').split(',').map(t=>t.trim()).filter(Boolean)};
+    if(editingId){const idx=DB.vendorCompanies.findIndex(x=>x.id===editingId);if(idx!==-1)Object.assign(DB.vendorCompanies[idx],v)}
+    else DB.vendorCompanies.push(v);
+    editingId=null;closeModal();renderVendors();buildSidebar();return;
   }
 
   const tableMap={room:'rooms',contractor:'contractors',supplier:'suppliers',employee:'employees',equip:'suppliers',staff:'employees',service:'services',user:'users',cabinetType:'cabinetTypes',renovation:'renovations'};
