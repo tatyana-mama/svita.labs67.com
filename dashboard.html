@@ -591,7 +591,7 @@ Apple</button>
 <div class="g3">
 <div class="cost-row" style="flex-direction:column;gap:4px;align-items:flex-start"><label style="font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase">Аренда / мес.</label><div class="cost-val"><input class="price-edit" data-cost="rent" value="12000" onchange="recalc()" style="width:100px"> PLN</div></div>
 <div class="cost-row" style="flex-direction:column;gap:4px;align-items:flex-start"><label style="font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase">Депозит (кол-во мес.)</label><div style="display:flex;gap:6px;align-items:center"><input class="price-edit" id="depositMonths" value="3" onchange="calcDeposit()" style="width:40px;text-align:center"> &times; аренда = <span id="depositVal" style="font-weight:700;color:var(--ac2)">36 000</span> PLN</div></div>
-<div class="cost-row" style="flex-direction:column;gap:4px;align-items:flex-start"><label style="font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase">Ремонт / адаптация</label><div class="cost-val"><input class="price-edit" data-cost="renovation" value="45000" onchange="recalc()" style="width:100px"> PLN</div></div>
+<div class="cost-row" style="flex-direction:column;gap:4px;align-items:flex-start"><label style="font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase">Модернизация (Таб 2)</label><div class="cost-val"><span id="renCostDisplay" style="font-weight:700;color:var(--ac2);min-width:80px">0</span> PLN <button class="btn sm" onclick="nav('s2')" style="margin-left:8px;font-size:9px">Перейти →</button></div></div>
 </div>
 <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
 <span style="font-size:12px;color:var(--tx2)">Итого помещение (депозит + ремонт):</span>
@@ -728,45 +728,17 @@ Apple</button>
 
 <!-- ═══ S2: МОДЕРНИЗАЦИЯ ═══ -->
 <div class="sec" id="sec-s2">
-<div class="ph"><div><h2>02 &middot; Модернизация</h2><div class="ph-s">Инженерные работы, ремонт, коммуникации</div></div><span class="tag t-wip">В работе</span></div>
-<div class="c"><div class="ch"><h3>&#9889; Электрика</h3></div><div class="cb"><div class="proc">
-<div class="proc-grp"><div class="proc-grp-head" onclick="toggleGrp(this)"><span class="proc-grp-arrow open">&#9654;</span><span class="proc-grp-title">Силовая часть + освещение + умный дом</span></div>
-<div class="proc-grp-body open">
-<div class="ci cost-row"><div class="cx ok" onclick="toggleCheck(this)">&#10003;</div><div class="ct dn">Расширение мощности до 50 кВт</div><div class="cost-val"><input class="price-edit" data-cost="elec_power" value="8000" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx ok" onclick="toggleCheck(this)">&#10003;</div><div class="ct dn">Электрощит 380В, автоматы, УЗО</div><div class="cost-val"><input class="price-edit" data-cost="elec_panel" value="7700" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Кабельные трассы + разводка &times;7 кабинетов</div><div class="cost-val"><input class="price-edit" data-cost="elec_wiring" value="36000" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Линия рентген + стерилизаторная</div><div class="cost-val"><input class="price-edit" data-cost="elec_special" value="7500" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Освещение (кабинеты + общие + аварийное + вывеска)</div><div class="cost-val"><input class="price-edit" data-cost="elec_light" value="33500" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx ok" onclick="toggleCheck(this)">&#10003;</div><div class="ct dn">Aqara (&times;7 хабов, &times;28 розеток, датчики, Wi-Fi)</div><div class="cost-val"><input class="price-edit" data-cost="elec_smart" value="14060" onchange="recalc()"> PLN</div></div>
-</div></div></div></div></div>
-
-<div class="c"><div class="ch"><h3>&#128295; Водоснабжение и канализация</h3></div><div class="cb"><div class="proc">
-<div class="proc-grp"><div class="proc-grp-head" onclick="toggleGrp(this)"><span class="proc-grp-arrow">&#9654;</span><span class="proc-grp-title">ХВС / ГВС / Канализация</span></div>
-<div class="proc-grp-body">
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Разводка ХВС + ГВС + бойлер 200л</div><div class="cost-val"><input class="price-edit" data-cost="water_all" value="17500" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Фильтрация + обратный осмос</div><div class="cost-val"><input class="price-edit" data-cost="water_filter" value="4500" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Канализация (кресла + стерилизаторная + санузлы)</div><div class="cost-val"><input class="price-edit" data-cost="water_sewer" value="12000" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Сепаратор амальгамы (NFZ)</div><div class="cost-val"><input class="price-edit" data-cost="water_amalgam" value="4500" onchange="recalc()"> PLN</div></div>
-</div></div></div></div></div>
-
-<div class="c"><div class="ch"><h3>&#127744; Вентиляция + кондиционирование</h3></div><div class="cb"><div class="proc">
-<div class="proc-grp"><div class="proc-grp-head" onclick="toggleGrp(this)"><span class="proc-grp-arrow">&#9654;</span><span class="proc-grp-title">Приточка / кондиционирование</span></div>
-<div class="proc-grp-body">
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Проект + приточная установка с рекуператором</div><div class="cost-val"><input class="price-edit" data-cost="vent_ahu" value="23000" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Вытяжка + воздуховоды + диффузоры</div><div class="cost-val"><input class="price-edit" data-cost="vent_ducts" value="14000" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Мульти-сплит &times;7 + серверная</div><div class="cost-val"><input class="price-edit" data-cost="vent_ac" value="31500" onchange="recalc()"> PLN</div></div>
-</div></div></div></div></div>
-
-<div class="c"><div class="ch"><h3>&#128249; Видеонаблюдение</h3></div><div class="cb"><div class="proc">
-<div class="proc-grp"><div class="proc-grp-head" onclick="toggleGrp(this)"><span class="proc-grp-arrow">&#9654;</span><span class="proc-grp-title">Камеры + сигнализация</span></div>
-<div class="proc-grp-body">
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Aqara G5 Pro &times;7 + reCamera &times;4 + Jetson</div><div class="cost-val"><input class="price-edit" data-cost="sec_cam" value="18200" onchange="recalc()"> PLN</div></div>
-<div class="ci cost-row"><div class="cx" onclick="toggleCheck(this)"></div><div class="ct">Охранная + пожарная сигнализация</div><div class="cost-val"><input class="price-edit" data-cost="sec_alarm" value="9000" onchange="recalc()"> PLN</div></div>
-</div></div></div></div></div>
-<div style="text-align:right;padding:8px 0"><span style="font-size:12px;color:var(--tx3)">Итого инженерия: </span><span style="font-size:16px;font-weight:800;color:var(--ac2)" id="s2Total">0 PLN</span></div>
+<div class="ph"><div><h2>02 &middot; Модернизация</h2><div class="ph-s">Выбранные работы для проекта</div></div><button class="btn sm pr" onclick="nav('db-renovations')">Каталог работ →</button></div>
+<div class="sts" id="renStats" style="grid-template-columns:repeat(4,1fr)">
+<div class="st"><div class="st-l">Работ</div><div class="st-v" id="renCount">0</div><div class="st-s">выбрано</div></div>
+<div class="st"><div class="st-l">Общая стоимость</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="renTotal">0</div><div class="st-s">PLN</div></div>
+<div class="st"><div class="st-l">Категорий</div><div class="st-v" id="renCats">0</div><div class="st-s">типов</div></div>
+<div class="st"><div class="st-l">Выполнено</div><div class="st-v" style="color:var(--gn)" id="renDone">0</div><div class="st-s">из выбранных</div></div>
+</div>
+<div id="selectedRenCards"></div>
 
 <!-- Подрядчики проекта из БД -->
-<div class="c"><div class="ch"><h3>🔧 Подрядчики проекта</h3><button class="btn sm pr" onclick="nav('db-contractors')">Каталог подрядчиков →</button></div>
+<div class="c" style="margin-top:16px"><div class="ch"><h3>🔧 Подрядчики проекта</h3><button class="btn sm pr" onclick="nav('db-contractors')">Каталог подрядчиков →</button></div>
 <div class="cb" id="pickedContractorCards"><div style="padding:12px;text-align:center;font-size:11px;color:var(--tx3)">Назначьте подрядчиков из БД</div></div>
 </div>
 
@@ -894,6 +866,12 @@ Apple</button>
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
 <div class="ph"><div><h2>&#127970; БД Помещений</h2><div class="ph-s">Все комнаты объекта с параметрами</div></div><button class="btn sm pr" onclick="openModal('room')">+ Добавить</button></div>
 <div id="roomCards"></div>
+</div>
+
+<div class="sec" id="sec-db-renovations">
+<div class="bk" onclick="nav('s2')">&larr; Модернизация</div>
+<div class="ph"><div><h2>⚡ Каталог работ</h2><div class="ph-s">Выберите работы для модернизации помещения</div></div><button class="btn sm or" onclick="openModal('renovation')">+ Новая работа</button></div>
+<div id="renCatalogCards"></div>
 </div>
 
 <div class="sec" id="sec-db-contractors">
@@ -1042,6 +1020,57 @@ const DB={
   pickedContractors:{},
   pickedEquip:{},
   pickedStaff:{},
+  pickedRenovations:{},
+  renovations:[
+    // ⚡ Электрика
+    {id:'e1',name:'Расширение мощности до 50 кВт',cat:'Электрика',price:8000},
+    {id:'e2',name:'Электрощит 380В, автоматы, УЗО',cat:'Электрика',price:7700},
+    {id:'e3',name:'Кабельные трассы + разводка (×7 кабинетов)',cat:'Электрика',price:36000},
+    {id:'e4',name:'Линия рентген + стерилизаторная',cat:'Электрика',price:7500},
+    {id:'e5',name:'Освещение (кабинеты + общие + аварийное + вывеска)',cat:'Электрика',price:33500},
+    {id:'e6',name:'Умный дом Aqara (хабы, розетки, датчики, Wi-Fi)',cat:'Электрика',price:14060},
+    {id:'e7',name:'Заземление медицинское (по нормативу)',cat:'Электрика',price:4500},
+    {id:'e8',name:'UPS серверная + рентген',cat:'Электрика',price:6000},
+    // 🔧 Водоснабжение и канализация
+    {id:'w1',name:'Разводка ХВС + ГВС + бойлер 200л',cat:'Водоснабжение и канализация',price:17500},
+    {id:'w2',name:'Фильтрация + обратный осмос',cat:'Водоснабжение и канализация',price:4500},
+    {id:'w3',name:'Канализация (кресла + стерилизаторная + санузлы)',cat:'Водоснабжение и канализация',price:12000},
+    {id:'w4',name:'Сепаратор амальгамы (NFZ)',cat:'Водоснабжение и канализация',price:4500},
+    {id:'w5',name:'Компрессорная станция стоматологическая',cat:'Водоснабжение и канализация',price:8000},
+    // 🌀 Вентиляция и кондиционирование
+    {id:'v1',name:'Проект + приточная установка с рекуператором',cat:'Вентиляция и кондиционирование',price:23000},
+    {id:'v2',name:'Вытяжка + воздуховоды + диффузоры',cat:'Вентиляция и кондиционирование',price:14000},
+    {id:'v3',name:'Мульти-сплит ×7 + серверная',cat:'Вентиляция и кондиционирование',price:31500},
+    {id:'v4',name:'Вентиляция стерилизаторной (принудительная)',cat:'Вентиляция и кондиционирование',price:3500},
+    // 📹 Видеонаблюдение и безопасность
+    {id:'s1',name:'Камеры Aqara G5 Pro ×7 + reCamera ×4 + Jetson',cat:'Видеонаблюдение и безопасность',price:18200},
+    {id:'s2',name:'Охранная + пожарная сигнализация',cat:'Видеонаблюдение и безопасность',price:9000},
+    {id:'s3',name:'Контроль доступа (двери серверная + склад)',cat:'Видеонаблюдение и безопасность',price:4500},
+    {id:'s4',name:'Домофон + электрозамок входной',cat:'Видеонаблюдение и безопасность',price:2800},
+    // 🏗 Отделка и строительные работы
+    {id:'f1',name:'Демонтаж старой отделки',cat:'Отделка и строительные работы',price:12000},
+    {id:'f2',name:'Стяжка пола + гидроизоляция',cat:'Отделка и строительные работы',price:18000},
+    {id:'f3',name:'Напольное покрытие (медицинский линолеум)',cat:'Отделка и строительные работы',price:22000},
+    {id:'f4',name:'Стены: штукатурка + покраска (антибактериальная)',cat:'Отделка и строительные работы',price:16000},
+    {id:'f5',name:'Потолки подвесные (кабинеты + коридор)',cat:'Отделка и строительные работы',price:14000},
+    {id:'f6',name:'Перегородки / зонирование (гипсокартон)',cat:'Отделка и строительные работы',price:15000},
+    {id:'f7',name:'Плитка санузлы + стерилизаторная',cat:'Отделка и строительные работы',price:8500},
+    // 🚪 Двери, окна, фасад
+    {id:'d1',name:'Входная группа (дверь + тамбур + вывеска)',cat:'Двери, окна, фасад',price:12000},
+    {id:'d2',name:'Двери межкомнатные медицинские ×14',cat:'Двери, окна, фасад',price:21000},
+    {id:'d3',name:'Дверь рентген-кабинета (свинцовая защита)',cat:'Двери, окна, фасад',price:8000},
+    {id:'d4',name:'Окна (замена/тонировка)',cat:'Двери, окна, фасад',price:9000},
+    // 🖧 IT-инфраструктура
+    {id:'i1',name:'СКС: витая пара Cat6a + патч-панель + коммутатор',cat:'IT-инфраструктура',price:12000},
+    {id:'i2',name:'Wi-Fi 6E (Ubiquiti/TP-Link) точки доступа ×5',cat:'IT-инфраструктура',price:5000},
+    {id:'i3',name:'NAS 48TB + настройка RAID',cat:'IT-инфраструктура',price:8500},
+    {id:'i4',name:'Монтаж серверного шкафа 19"',cat:'IT-инфраструктура',price:3500},
+    // 🏥 Медицинские коммуникации
+    {id:'m1',name:'Подводка сжатого воздуха к креслам',cat:'Медицинские коммуникации',price:7000},
+    {id:'m2',name:'Вакуумная (аспирационная) система',cat:'Медицинские коммуникации',price:15000},
+    {id:'m3',name:'Рентгензащита стен (баритовая штукатурка / свинец)',cat:'Медицинские коммуникации',price:9000},
+    {id:'m4',name:'Трубопровод для дистиллированной воды',cat:'Медицинские коммуникации',price:4000}
+  ],
   zones:[
     {id:'medical',name:'Медицинская',color:'var(--gn)',icon:'🏥'},
     {id:'public',name:'Общественная',color:'var(--ac)',icon:'🏛️'},
@@ -1863,6 +1892,7 @@ function buildSidebar(){
   if(currentRole==='admin'){
     html+='<div class="side-sec">Базы данных</div>';
     html+='<div class="si" data-nav="db-rooms"><span class="ico">&#127970;</span><span class="sl">Помещения</span><span class="sb wip">'+DB.rooms.length+'</span></div>';
+    html+='<div class="si" data-nav="db-renovations"><span class="ico">&#9889;</span><span class="sl">Работы / Ремонт</span><span class="sb wip">'+DB.renovations.length+'</span></div>';
     html+='<div class="si" data-nav="db-contractors"><span class="ico">&#128736;</span><span class="sl">Подрядчики</span><span class="sb wip">'+DB.contractors.length+'</span></div>';
     html+='<div class="si" data-nav="db-suppliers"><span class="ico">&#128230;</span><span class="sl">Поставщики</span><span class="sb wip">'+DB.suppliers.length+'</span></div>';
     html+='<div class="si" data-nav="db-employees"><span class="ico">&#129489;</span><span class="sl">Сотрудники</span><span class="sb wip">'+DB.employees.length+'</span></div>';
@@ -1939,7 +1969,7 @@ function toggleCheck(el){
 
 // ═══════════════ RENDER DB CARDS ═══════════════
 function renderAll(){
-  renderProperty();renderRooms();renderContractors();renderEmployees();renderEquip();renderSelectedEquip();renderStaff();renderServices();renderSelectedServices();renderUsers();renderCabinetTypes();renderPickedRooms();renderPickedContractors();renderZones();loadPropertyParams();updateRightPanel();
+  renderProperty();renderRooms();renderContractors();renderEmployees();renderEquip();renderSelectedEquip();renderRenovationsCatalog();renderSelectedRenovations();renderStaff();renderServices();renderSelectedServices();renderUsers();renderCabinetTypes();renderPickedRooms();renderPickedContractors();renderZones();loadPropertyParams();updateRightPanel();
 }
 
 function renderRooms(){
@@ -1986,6 +2016,84 @@ function togglePick(store,id,renderTable){
 function togglePickEquip(id){
   if(DB.pickedEquip[id]){delete DB.pickedEquip[id]}else{DB.pickedEquip[id]={qty:1}}
   renderEquip();renderSelectedEquip();renderCabinetTypes();recalc();
+}
+
+// ═══════════════ RENOVATIONS (Tab 2) ═══════════════
+function togglePickRenovation(id){
+  if(DB.pickedRenovations[id]){delete DB.pickedRenovations[id]}else{DB.pickedRenovations[id]={qty:1,done:false}}
+  renderRenovationsCatalog();renderSelectedRenovations();recalc();
+}
+function renSelQty(id,d){
+  if(!DB.pickedRenovations[id])return;
+  DB.pickedRenovations[id].qty=Math.max(1,(DB.pickedRenovations[id].qty||1)+d);
+  renderSelectedRenovations();recalc();
+}
+function toggleRenDone(id){
+  if(!DB.pickedRenovations[id])return;
+  DB.pickedRenovations[id].done=!DB.pickedRenovations[id].done;
+  renderSelectedRenovations();recalc();
+}
+function renderRenovationsCatalog(){
+  const c=document.getElementById('renCatalogCards');
+  if(!c)return;
+  const cats={};
+  DB.renovations.forEach(r=>{
+    const cat=r.cat||'Другое';
+    if(!cats[cat])cats[cat]=[];
+    cats[cat].push(r);
+  });
+  let html='';
+  Object.keys(cats).forEach(cat=>{
+    html+=`<div class="c"><div class="ch"><h3>${cat}</h3><span style="font-size:10px;color:var(--tx3)">${cats[cat].length} работ</span></div><div class="cb">`;
+    cats[cat].forEach(r=>{
+      const picked=!!DB.pickedRenovations[r.id];
+      html+=`<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}"><div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:rgba(234,88,12,.1);color:var(--or)">${r.cat}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Стоимость</div><div class="db-card-val" style="color:var(--ac2)">${r.price.toLocaleString('ru')} PLN</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePickRenovation('${r.id}')">${picked?'✓ В проекте':'+ Работа → Таб 2'}</button><button class="btn sm" onclick="delItem('renovations','${r.id}')">Удалить</button></div></div>`;
+    });
+    html+='</div></div>';
+  });
+  c.innerHTML=html;
+}
+function renderSelectedRenovations(){
+  const c=document.getElementById('selectedRenCards');
+  if(!c)return;
+  const picked=DB.pickedRenovations||{};
+  const pickedIds=Object.keys(picked);
+  const allCats={};
+  DB.renovations.forEach(r=>{
+    const cat=r.cat||'Другое';
+    if(!allCats[cat])allCats[cat]={total:0,picked:[]};
+    allCats[cat].total++;
+    if(picked[r.id])allCats[cat].picked.push({...r,qty:picked[r.id].qty||1,done:!!picked[r.id].done});
+  });
+  const catKeys=Object.keys(allCats);
+  let totalCost=0,doneCount=0;
+  let html='';
+  catKeys.forEach(cat=>{
+    const g=allCats[cat];
+    const cnt=g.picked.length;
+    const catTotal=g.picked.reduce((s,r)=>s+r.price*r.qty,0);
+    totalCost+=catTotal;
+    doneCount+=g.picked.filter(r=>r.done).length;
+    const statusTag=cnt>0
+      ?`<span style="font-size:10px;color:var(--gn);font-weight:600">${cnt} / ${g.total} выбрано · ${catTotal.toLocaleString('ru')} PLN</span>`
+      :`<span style="font-size:10px;color:var(--tx3)">0 / ${g.total} — не выбрано</span>`;
+    html+=`<div class="c" style="${cnt?'':'opacity:0.7'}"><div class="ch"><h3>${cat}</h3><div style="display:flex;align-items:center;gap:8px">${statusTag}<button class="btn sm pr" onclick="nav('db-renovations')" style="font-size:9px">+ Добавить</button></div></div>`;
+    if(cnt){
+      html+='<div class="cb">';
+      g.picked.forEach(r=>{
+        html+=`<div class="ci cost-row" style="flex-wrap:nowrap;${r.done?'opacity:0.5':''}"><label style="display:flex;align-items:center;cursor:pointer;flex-shrink:0"><input type="checkbox" ${r.done?'checked':''} onchange="toggleRenDone('${r.id}')" style="margin-right:8px"></label><div class="ct" style="flex:1;min-width:0;${r.done?'text-decoration:line-through':''}">${r.name}</div><div class="sel-qty" style="margin:0 4px"><button onclick="renSelQty('${r.id}',-1)">−</button><span>${r.qty}</span><button onclick="renSelQty('${r.id}',1)">+</button></div><div class="cost-val" style="min-width:80px;justify-content:flex-end"><strong style="color:var(--ac2)">${(r.price*r.qty).toLocaleString('ru')}</strong> PLN</div><button class="btn sm" style="color:var(--rd);flex-shrink:0" onclick="togglePickRenovation('${r.id}')">✕</button></div>`;
+      });
+      html+='</div>';
+    }
+    html+='</div>';
+  });
+  if(!pickedIds.length)html='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Добавьте работы из каталога</div>';
+  c.innerHTML=html;
+  // Update stats
+  document.getElementById('renCount').textContent=pickedIds.length;
+  document.getElementById('renTotal').textContent=totalCost.toLocaleString('ru');
+  document.getElementById('renCats').textContent=catKeys.filter(cat=>allCats[cat].picked.length>0).length;
+  document.getElementById('renDone').textContent=doneCount;
 }
 
 // Render picked items inside tabs
@@ -3673,6 +3781,11 @@ function updEquipPrice(inp,sid){
 
 function delItem(table,id){
   DB[table]=DB[table].filter(r=>r.id!=id);
+  if(table==='renovations')delete DB.pickedRenovations[id];
+  if(table==='suppliers')delete DB.pickedEquip[id];
+  if(table==='rooms')delete DB.pickedRooms[id];
+  if(table==='contractors')delete DB.pickedContractors[id];
+  if(table==='employees')delete DB.pickedStaff[id];
   renderAll();buildSidebar();recalc();
 }
 
@@ -3979,7 +4092,8 @@ const MODAL_FIELDS={
   staff:[{k:'name',l:'Должность',ph:'Должность'},{k:'spec',l:'Описание',ph:'Полная ставка'},{k:'salary',l:'ФОТ/мес (PLN)',ph:'0',t:'number'},{k:'status',l:'Статус',ph:'Вакансия'}],
   service:[{k:'name',l:'Услуга',ph:'Название'},{k:'time',l:'Время',ph:'30 мин'},{k:'price',l:'Цена (PLN)',ph:'0',t:'number'}],
   user:[{k:'name',l:'Имя',ph:'Иван Иванов'},{k:'email',l:'Email',ph:'user@clinic.com'},{k:'role',l:'Роль',ph:'owner'},{k:'status',l:'Статус',ph:'Активен'}],
-  cabinetType:[{k:'name',l:'Название типа',ph:'Стоматологический'},{k:'icon',l:'Иконка',ph:'🦷'},{k:'desc',l:'Описание',ph:'Стандартный кабинет'},{k:'minArea',l:'Мин. площадь (м²)',ph:'12',t:'number'}]
+  cabinetType:[{k:'name',l:'Название типа',ph:'Стоматологический'},{k:'icon',l:'Иконка',ph:'🦷'},{k:'desc',l:'Описание',ph:'Стандартный кабинет'},{k:'minArea',l:'Мин. площадь (м²)',ph:'12',t:'number'}],
+  renovation:[{k:'name',l:'Название работы',ph:'Монтаж перегородок'},{k:'cat',l:'Категория',ph:'Отделка и строительные работы'},{k:'price',l:'Стоимость (PLN)',ph:'10000',t:'number'}]
 };
 
 function openModal(mode){
@@ -4015,7 +4129,7 @@ function saveModal(){
     return;
   }
 
-  const tableMap={room:'rooms',contractor:'contractors',supplier:'suppliers',employee:'employees',equip:'suppliers',staff:'employees',service:'services',user:'users',cabinetType:'cabinetTypes'};
+  const tableMap={room:'rooms',contractor:'contractors',supplier:'suppliers',employee:'employees',equip:'suppliers',staff:'employees',service:'services',user:'users',cabinetType:'cabinetTypes',renovation:'renovations'};
   const table=tableMap[modalMode];
 
   // Edit existing item
@@ -4054,7 +4168,11 @@ function calcTotals(){
   const rentMonth=getVal2('rent');
   const depMonths=parseInt(document.getElementById('depositMonths')?.value)||3;
   const deposit=rentMonth*depMonths;
-  const renovation=getAllCosts('renovation');
+  let renovation=0;
+  Object.entries(DB.pickedRenovations||{}).forEach(([id,p])=>{
+    const item=DB.renovations.find(r=>r.id==id);
+    if(item)renovation+=item.price*(p.qty||1);
+  });
   const rent=deposit+renovation;
   const eng=getAllCosts('elec_')+getAllCosts('water_')+getAllCosts('vent_')+getAllCosts('sec_');
   let equip=0;
@@ -4074,7 +4192,9 @@ function calcTotals(){
   // Update S1 cost total
   const s1el=document.getElementById('s1CostTotal');
   if(s1el)s1el.textContent=rent.toLocaleString('ru')+' PLN';
-  return{rent,eng,equip,docs,staff,grand,revenue,expenses,chairs,ppc,wd,avgCheck,rentMonth};
+  const renDisp=document.getElementById('renCostDisplay');
+  if(renDisp)renDisp.textContent=renovation.toLocaleString('ru');
+  return{rent,renovation,eng,equip,docs,staff,grand,revenue,expenses,chairs,ppc,wd,avgCheck,rentMonth};
 }
 function getVal2(costKey){
   const el=document.querySelector('[data-cost="'+costKey+'"]');
@@ -4083,7 +4203,7 @@ function getVal2(costKey){
 
 function recalc(){
   const t=calcTotals();
-  document.getElementById('s2Total').textContent=t.eng.toLocaleString('ru')+' PLN';
+  // s2Total removed — renTotal is updated by renderSelectedRenovations()
   document.getElementById('s4Total').textContent=t.staff.toLocaleString('ru')+' PLN';
   document.getElementById('s6Total').textContent=t.docs.toLocaleString('ru')+' PLN';
   const el6r=document.getElementById('s6Revenue');if(el6r)el6r.textContent=t.revenue.toLocaleString('ru')+' PLN';
@@ -4101,9 +4221,9 @@ function updateTabCosts(t){
   // Tab 1: Помещение — аренда + депозит
   const tc1=document.getElementById('tabCost1');
   if(tc1)tc1.textContent=t.rent>0?t.rent.toLocaleString('ru')+' PLN':'';
-  // Tab 2: Модернизация — инженерия
+  // Tab 2: Модернизация — работы
   const tc2=document.getElementById('tabCost2');
-  if(tc2)tc2.textContent=t.eng>0?t.eng.toLocaleString('ru')+' PLN':'';
+  if(tc2)tc2.textContent=t.renovation>0?t.renovation.toLocaleString('ru')+' PLN':'';
   // Tab 3: Оснащение — оборудование
   const tc3=document.getElementById('tabCost3');
   if(tc3)tc3.textContent=t.equip>0?t.equip.toLocaleString('ru')+' PLN':'';
