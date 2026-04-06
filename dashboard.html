@@ -1880,8 +1880,14 @@ async function loadSupabaseData(){
     console.log('Supabase: loaded',DB.suppliers.length,'equipment,',DB.services.length,'services,',
       DB.premises.length,'premises,',DB.users.length,'users,',DB.proposals.length,'proposals');
 
-    // Re-render
-    if(document.getElementById('appContainer').style.display!=='none'){console.log('[SVITA] Re-rendering after Supabase load...');buildSidebar();renderAll();renderEquip();recalc();nav(cur);console.log('[SVITA] Re-render done, cur='+cur)}
+    // Re-render after data load
+    if(document.getElementById('appContainer').style.display!=='none'){
+      buildSidebar();renderAll();renderEquip();recalc();
+      // Restore current section visibility
+      document.querySelectorAll('.sec').forEach(s=>s.classList.remove('vis'));
+      const curSec=document.getElementById('sec-'+cur);
+      if(curSec)curSec.classList.add('vis');
+    }
   }catch(e){console.warn('Supabase sync failed, using local DB:',e.message)}finally{_loadingData=false}
 }
 
@@ -2416,30 +2422,10 @@ function enterApp(){
   achUnlocked=new Set(JSON.parse(uGet('svita_ach')||'[]'));
   try{itemImages=JSON.parse(uGet('svita_images')||'{}')}catch(e){itemImages={}}
   fpInit();
-  // Admin: restore floorplan from last Supabase concept if local is empty
-  if(currentRole==='admin'&&sb&&FP&&FP.rooms.length===0){
-    sb.from('concepts').select('data').eq('user_id',currentUser.id).order('updated_at',{ascending:false}).limit(1).single().then(({data:c})=>{
-      if(c&&c.data&&c.data.floorPlan&&c.data.floorPlan.rooms&&c.data.floorPlan.rooms.length){
-        const fp=c.data.floorPlan;
-        FP.rooms=(fp.rooms||[]).map(r=>fpEnsurePoly?fpEnsurePoly(r):r);
-        FP.elements=fp.elements||[];FP.scale=fp.scale||20;
-        fpDraw();fpUpdateList();fpSave();
-        console.log('[SVITA] Restored floorplan from Supabase:',FP.rooms.length,'rooms');
-        // Also restore picked data from concept if available
-        const d=c.data;
-        if(d.pickedEquip&&Object.keys(d.pickedEquip).length){DB.pickedEquip=d.pickedEquip;savePicked()}
-        if(d.pickedRenovations&&Object.keys(d.pickedRenovations).length){DB.pickedRenovations=d.pickedRenovations;savePicked()}
-        if(d.pickedStaff&&Object.keys(d.pickedStaff).length){DB.pickedStaff=d.pickedStaff;savePicked()}
-        if(d.pickedServices&&Object.keys(d.pickedServices).length){DB.pickedServices=d.pickedServices;savePicked()}
-        if(d.pickedRooms&&Object.keys(d.pickedRooms).length){DB.pickedRooms=d.pickedRooms;savePicked()}
-        if(d.property){activeProperty=d.property;uSet('svita_property',JSON.stringify(activeProperty))}
-        buildSidebar();renderAll();recalc();
-      }
-    }).catch(()=>{});
-  }
   buildSidebar();
   renderAll();
   recalc();
+  nav('overview');
   loadSupabaseData();
   // Onboarding for first-time users (not admin)
   if(currentRole!=='admin'&&!uGet('svita_onboarded')){setTimeout(startOnboarding,500)}
@@ -2623,8 +2609,7 @@ function nav(id){
   cur=id;
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('vis'));
   const el=document.getElementById('sec-'+id);
-  if(el){el.classList.add('vis');console.log('[NAV] show sec-'+id,el.children.length+'children')}
-  else{console.error('[NAV] sec-'+id+' NOT FOUND!')}
+  if(el)el.classList.add('vis');
   // Sidebar items
   document.querySelectorAll('.si').forEach(s=>s.classList.remove('act'));
   const si=document.querySelector('.si[data-nav="'+id+'"]');
@@ -2999,8 +2984,7 @@ async function respondProposal(id,status){
 }
 
 function renderPremises(){
-  const c=document.getElementById('premiseCards');if(!c){console.error('[renderPremises] premiseCards NOT FOUND');return}
-  console.log('[renderPremises] DB.premises='+DB.premises.length);
+  const c=document.getElementById('premiseCards');if(!c)return;
   if(!DB.premises.length){c.innerHTML='<div style="padding:32px;text-align:center;color:var(--tx3);font-size:13px">Нет объектов. Добавьте помещение вручную или загрузите из каталога.</div>';return}
   c.innerHTML=DB.premises.map(p=>{
     const sp=p.specs||{};
