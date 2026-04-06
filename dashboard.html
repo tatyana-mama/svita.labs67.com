@@ -552,7 +552,7 @@ Apple</button>
 
 <!-- БЛОК 1: КАРТОЧКА ПОМЕЩЕНИЯ (удаляемая/заменяемая) -->
 <div class="c" id="propertyCardWrap">
-<div class="ch"><h3>&#127970; Объект</h3><div style="display:flex;gap:6px"><button class="btn sm pr" onclick="openModal('property')">Выбрать</button><button class="btn sm gn" onclick="saveProperty()">Сохранить</button><button class="btn sm" style="color:var(--rd)" onclick="clearProperty()">Убрать</button></div></div>
+<div class="ch"><h3>&#127970; Объект</h3><div style="display:flex;gap:6px"><button class="btn sm pr" onclick="openPremisePicker()">Выбрать</button><button class="btn sm gn" onclick="saveProperty()">Сохранить</button><button class="btn sm" style="color:var(--rd)" onclick="clearProperty()">Убрать</button></div></div>
 <div class="cb" id="propertyCardBody">
 <!-- filled by renderProperty() -->
 </div>
@@ -561,7 +561,7 @@ Apple</button>
 <!-- Кнопка добавить помещение (видна когда карточки нет) -->
 <div id="addPropertyBtn" style="display:none;padding:16px;gap:8px">
 <button class="btn pr" onclick="openAddPropertyModal()" style="flex:1">+ Добавить помещение</button>
-<button class="btn" onclick="openModal('property')" style="flex:1">&#128209; Выбрать из каталога</button>
+<button class="btn" onclick="openPremisePicker()" style="flex:1">&#128209; Выбрать из каталога</button>
 </div>
 
 <!-- БЛОК 1.5: ПЛАНИРОВКА (конструктор) -->
@@ -2037,6 +2037,33 @@ function openAddPropertyModal(){
     document.getElementById('modalBg').classList.remove('vis');
   };
   document.getElementById('modalBg').classList.add('vis');
+}
+
+function openPremisePicker(){
+  if(!DB.premises.length){nav('db-premises');return}
+  const mb=document.getElementById('modalBg');
+  document.getElementById('modalTitle').textContent='Выбрать помещение';
+  const statusLabels={candidate:'Кандидат',shortlist:'Шортлист',ordered:'Забронировано',delivered:'Получено',rejected:'Отклонён'};
+  let html='<div style="max-height:60vh;overflow-y:auto;display:flex;flex-direction:column;gap:8px">';
+  DB.premises.forEach(p=>{
+    const sp=p.specs||{};
+    const addr=esc(sp.address||p.name||'—');
+    const city=esc(sp.city||'');
+    const area=sp.area||0;
+    const price=p.price?p.price.toLocaleString('ru')+' PLN/мес':'—';
+    const st=statusLabels[p.status]||p.status;
+    const pid=p.id;
+    html+=`<div style="display:flex;gap:10px;padding:10px;border:1px solid var(--bd);border-radius:10px;cursor:pointer;transition:border-color .15s" onmouseover="this.style.borderColor='var(--ac)'" onmouseout="this.style.borderColor='var(--bd)'" onclick="selectPremiseAsProperty('${pid}');closeModal()">`;
+    if(p.img)html+=`<img src="${esc(p.img)}" style="width:80px;height:56px;object-fit:cover;border-radius:6px;flex-shrink:0">`;
+    html+=`<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${addr}</div>`;
+    if(city)html+=`<div style="font-size:10px;color:var(--tx3)">${city}</div>`;
+    html+=`<div style="display:flex;gap:8px;margin-top:4px;font-size:11px;color:var(--tx2)"><span>${area} м²</span><span style="color:var(--ac)">${price}</span><span style="font-size:9px;opacity:.7">${esc(st)}</span></div></div></div>`;
+  });
+  html+='</div>';
+  html+=`<div style="margin-top:12px;text-align:center"><span style="font-size:11px;color:var(--ac2);cursor:pointer" onclick="closeModal();nav('db-premises')">Открыть полный каталог →</span></div>`;
+  document.getElementById('modalFields').innerHTML=html;
+  const ms=document.getElementById('modalSave');if(ms)ms.style.display='none';
+  mb.classList.add('vis');
 }
 
 function calcDeposit(){
