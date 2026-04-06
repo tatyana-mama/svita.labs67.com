@@ -4669,5 +4669,21 @@ updateRightPanel();
 </div>
 </div>
 
+<!-- Cookie Consent -->
+<div id="cookieConsent" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,.08);padding:14px 24px;font-family:var(--f)">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+<div style="flex:1;min-width:200px;font-size:11px;color:var(--tx2);line-height:1.5">&#127850; Мы используем cookie для авторизации и работы сервиса. Продолжая, вы соглашаетесь с политикой конфиденциальности.</div>
+<div style="display:flex;gap:8px;flex-shrink:0">
+<button onclick="cookieDecline()" class="btn sm">Отклонить</button>
+<button onclick="cookieAccept()" class="btn sm pr">Принять</button>
+</div>
+</div>
+</div>
+<script>
+if(!localStorage.getItem('svita_cookies')){document.getElementById('cookieConsent').style.display='block'}
+function cookieAccept(){localStorage.setItem('svita_cookies','accepted');document.getElementById('cookieConsent').style.display='none'}
+function cookieDecline(){localStorage.setItem('svita_cookies','declined');document.getElementById('cookieConsent').style.display='none'}
+</script>
+
 </body>
 </html>

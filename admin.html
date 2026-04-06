@@ -82,19 +82,24 @@ body{font-family:var(--fb);background:var(--bk);color:var(--wh);-webkit-font-smo
   <div class="side-section">контент</div>
   <button class="side-btn active" onclick="showTab('blocks')">Блоки <span class="cnt" id="cntBlocks">0</span></button>
   <button class="side-btn" onclick="showTab('keywords')">Ключевые слова <span class="cnt" id="cntKw">0</span></button>
+  <div class="side-section">пользователи</div>
+  <button class="side-btn" onclick="showTab('users')">Пользователи <span class="cnt" id="cntUsers">0</span></button>
+  <button class="side-btn" onclick="showTab('sessions')">Сессии <span class="cnt" id="cntSessions">0</span></button>
+  <button class="side-btn" onclick="showTab('visitors')">Посетители <span class="cnt" id="cntVisitors">0</span></button>
   <div class="side-section">аналитика</div>
   <button class="side-btn" onclick="showTab('unanswered')">Неотвеченные <span class="cnt" id="cntUn">0</span></button>
   <div class="side-section">ссылки</div>
-  <button class="side-btn" onclick="window.open('index.html','_blank')">Открыть сайт &#8599;</button>
+  <button class="side-btn" onclick="window.open('index.html','_blank')">Сайт &#8599;</button>
+  <button class="side-btn" onclick="window.open('dashboard.html','_blank')">Dashboard &#8599;</button>
   <button class="side-btn" onclick="window.open('https://supabase.com/dashboard/project/ctdleobjnzniqkqomlrq','_blank')">Supabase &#8599;</button>
   <div class="side-footer"><a href="//labs67.com">labs67.com</a> &middot; v1.0</div>
 </div>
 
 <div class="main">
   <!-- STATS -->
-  <div class="stats">
+  <div class="stats" id="mainStats">
     <div class="stat"><div class="stat-val" id="sBlocks">-</div><div class="stat-label">блоков</div></div>
-    <div class="stat"><div class="stat-val" id="sKw">-</div><div class="stat-label">ключевых слов</div></div>
+    <div class="stat"><div class="stat-val" id="sUsers">-</div><div class="stat-label">пользователей</div></div>
     <div class="stat"><div class="stat-val" id="sCat">-</div><div class="stat-label">категорий</div></div>
     <div class="stat"><div class="stat-val" id="sUn">-</div><div class="stat-label">неотвеченных</div></div>
   </div>
@@ -127,6 +132,55 @@ body{font-family:var(--fb);background:var(--bk);color:var(--wh);-webkit-font-smo
       <thead><tr><th>вопрос</th><th>дата</th><th>session</th><th></th></tr></thead>
       <tbody id="unBody"></tbody>
     </table>
+  </div>
+
+  <!-- TAB: USERS -->
+  <div id="tab-users" style="display:none">
+    <div class="topbar"><h1>Пользователи</h1><div class="topbar-actions">
+      <input id="userSearch" placeholder="Поиск по email..." style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--wh);padding:8px 14px;font-family:var(--fb);font-size:12px;width:240px;outline:none" oninput="filterUsers(this.value)">
+      <button class="btn" onclick="loadUsers()">обновить</button>
+    </div></div>
+    <table class="tbl">
+      <thead><tr><th>email</th><th>роль</th><th>создан</th><th>последний вход</th><th>статус</th><th>действия</th></tr></thead>
+      <tbody id="usersBody"></tbody>
+    </table>
+  </div>
+
+  <!-- TAB: SESSIONS -->
+  <div id="tab-sessions" style="display:none">
+    <div class="topbar"><h1>Активные сессии</h1><div class="topbar-actions"><button class="btn" onclick="loadSessions()">обновить</button></div></div>
+    <table class="tbl">
+      <thead><tr><th>пользователь</th><th>IP</th><th>устройство</th><th>начало</th><th>последняя активность</th></tr></thead>
+      <tbody id="sessionsBody"></tbody>
+    </table>
+  </div>
+
+  <!-- TAB: VISITORS -->
+  <div id="tab-visitors" style="display:none">
+    <div class="topbar"><h1>Посетители</h1><div class="topbar-actions"><button class="btn" onclick="loadVisitors()">обновить</button></div></div>
+    <div class="stats" style="grid-template-columns:repeat(3,1fr);margin-bottom:16px">
+      <div class="stat"><div class="stat-val" id="vToday">-</div><div class="stat-label">сегодня</div></div>
+      <div class="stat"><div class="stat-val" id="vWeek">-</div><div class="stat-label">за неделю</div></div>
+      <div class="stat"><div class="stat-val" id="vTotal">-</div><div class="stat-label">всего</div></div>
+    </div>
+    <table class="tbl">
+      <thead><tr><th>страница</th><th>IP</th><th>устройство</th><th>дата</th><th>реферер</th></tr></thead>
+      <tbody id="visitorsBody"></tbody>
+    </table>
+  </div>
+
+  <!-- PASSWORD RESET MODAL -->
+  <div class="modal-bg" id="resetModal">
+    <div class="modal" style="position:relative;max-width:400px">
+      <button class="modal-close" onclick="document.getElementById('resetModal').classList.remove('on')">&#10005;</button>
+      <h2>Сброс пароля</h2>
+      <div class="field"><label>email пользователя</label><input id="resetEmail" type="email" readonly></div>
+      <div style="margin-top:16px;display:flex;gap:8px">
+        <button class="btn btn-gold" onclick="sendPasswordReset()">Отправить ссылку</button>
+        <button class="btn" onclick="document.getElementById('resetModal').classList.remove('on')">отмена</button>
+      </div>
+      <div id="resetResult" style="margin-top:12px;font-size:11px;color:var(--grn)"></div>
+    </div>
   </div>
 </div>
 
@@ -183,15 +237,21 @@ body{font-family:var(--fb);background:var(--bk);color:var(--wh);-webkit-font-smo
   function esc(s){if(!s)return'';var d=document.createElement('div');d.textContent=s;return d.innerHTML}
   function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(function(){t.classList.remove('on')},2500)}
 
+  var sb=supabase.createClient(SB,SK);
+
   /* ── TABS ── */
   window.showTab=function(tab){
-    ['blocks','keywords','unanswered'].forEach(function(t){
-      document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
+    ['blocks','keywords','unanswered','users','sessions','visitors'].forEach(function(t){
+      var el=document.getElementById('tab-'+t);
+      if(el)el.style.display=t===tab?'block':'none';
     });
     document.querySelectorAll('.side-btn').forEach(function(b){b.classList.remove('active')});
     event.target.closest('.side-btn').classList.add('active');
     if(tab==='keywords') loadKeywords();
     if(tab==='unanswered') loadUnanswered();
+    if(tab==='users') loadUsers();
+    if(tab==='sessions') loadSessions();
+    if(tab==='visitors') loadVisitors();
   };
 
   /* ── LOAD BLOCKS ── */
@@ -361,6 +421,145 @@ body{font-family:var(--fb);background:var(--bk);color:var(--wh);-webkit-font-smo
   window.delKw=function(id){
     fetch(SB+'/rest/v1/concept_keywords?id=eq.'+id,{method:'DELETE',headers:H}).then(function(){
       toast('Слово удалено');loadKeywords();
+    });
+  };
+
+  /* ── USERS (from profiles or auth) ── */
+  var usersCache=[];
+  window.loadUsers=function(){
+    // Try profiles table first, fallback to dashboard users
+    api('GET','profiles','select=*&order=created_at.desc').then(function(rows){
+      if(rows&&rows.length){
+        usersCache=rows;
+        renderUsers(rows);
+      } else {
+        // Fallback: try auth metadata via Supabase Auth
+        sb.auth.getSession().then(function(res){
+          // Can only see own session with anon key
+          // Show what we have from concept_blocks + local data
+          usersCache=[];
+          renderUsers([]);
+        });
+      }
+    }).catch(function(){renderUsers([])});
+  };
+  function renderUsers(rows){
+    document.getElementById('sUsers').textContent=rows.length;
+    document.getElementById('cntUsers').textContent=rows.length;
+    if(!rows.length){
+      document.getElementById('usersBody').innerHTML='<tr><td colspan="6" style="color:var(--mu);text-align:center;padding:24px">Создайте таблицу profiles в Supabase для полного управления пользователями.<br><br><code style="font-family:var(--fm);font-size:10px;color:var(--gold)">CREATE TABLE profiles (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), email text, role text DEFAULT \'owner\', display_name text, avatar_url text, plan text DEFAULT \'free\', status text DEFAULT \'active\', last_login timestamptz, created_at timestamptz DEFAULT now());</code></td></tr>';
+      return;
+    }
+    var html='';
+    rows.forEach(function(u){
+      var d=u.created_at?new Date(u.created_at).toLocaleDateString():'—';
+      var ll=u.last_login?new Date(u.last_login).toLocaleString():'—';
+      var st=u.status||'active';
+      var stColor=st==='active'?'var(--grn)':st==='banned'?'var(--red)':'var(--mu)';
+      html+='<tr>';
+      html+='<td style="color:var(--wh)">'+esc(u.email||u.display_name||'—')+'</td>';
+      html+='<td><span class="cat-badge">'+esc(u.role||'owner')+'</span></td>';
+      html+='<td style="font-size:10px;color:var(--mu)">'+d+'</td>';
+      html+='<td style="font-size:10px;color:var(--mu)">'+ll+'</td>';
+      html+='<td style="color:'+stColor+';font-size:11px;font-weight:600">'+esc(st)+'</td>';
+      html+='<td style="white-space:nowrap">';
+      html+='<button class="btn btn-sm" onclick="openResetPassword(\''+esc(u.email||'')+'\')">&#128273; пароль</button> ';
+      if(st==='active')html+='<button class="btn btn-sm btn-red" onclick="toggleUserStatus(\''+u.id+'\',\'banned\')">бан</button>';
+      else html+='<button class="btn btn-sm" onclick="toggleUserStatus(\''+u.id+'\',\'active\')" style="border-color:var(--grn);color:var(--grn)">разбан</button>';
+      html+='</td></tr>';
+    });
+    document.getElementById('usersBody').innerHTML=html;
+  }
+  window.filterUsers=function(q){
+    q=q.toLowerCase();
+    var filtered=usersCache.filter(function(u){return(u.email||'').toLowerCase().includes(q)||(u.display_name||'').toLowerCase().includes(q)});
+    renderUsers(filtered);
+  };
+  window.openResetPassword=function(email){
+    document.getElementById('resetEmail').value=email;
+    document.getElementById('resetResult').textContent='';
+    document.getElementById('resetModal').classList.add('on');
+  };
+  window.sendPasswordReset=function(){
+    var email=document.getElementById('resetEmail').value;
+    if(!email){toast('Email не указан');return}
+    sb.auth.resetPasswordForEmail(email,{redirectTo:'https://svita.labs67.com/dashboard.html'}).then(function(res){
+      if(res.error){
+        document.getElementById('resetResult').style.color='var(--red)';
+        document.getElementById('resetResult').textContent='Ошибка: '+res.error.message;
+      } else {
+        document.getElementById('resetResult').style.color='var(--grn)';
+        document.getElementById('resetResult').textContent='Ссылка для сброса отправлена на '+email;
+        toast('Письмо отправлено ✓');
+      }
+    });
+  };
+  window.toggleUserStatus=function(id,newStatus){
+    if(!confirm(newStatus==='banned'?'Заблокировать пользователя?':'Разблокировать пользователя?'))return;
+    api('PATCH','profiles?id=eq.'+id,'',{status:newStatus}).then(function(){
+      toast(newStatus==='banned'?'Пользователь заблокирован':'Пользователь разблокирован');
+      loadUsers();
+    });
+  };
+
+  /* ── SESSIONS ── */
+  window.loadSessions=function(){
+    api('GET','user_sessions','select=*&order=last_active.desc&limit=50').then(function(rows){
+      rows=rows||[];
+      document.getElementById('cntSessions').textContent=rows.length;
+      if(!rows.length){
+        document.getElementById('sessionsBody').innerHTML='<tr><td colspan="5" style="color:var(--mu);text-align:center;padding:24px">Создайте таблицу user_sessions для отслеживания сессий.<br><br><code style="font-family:var(--fm);font-size:10px;color:var(--gold)">CREATE TABLE user_sessions (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), user_id uuid, email text, ip_address text, user_agent text, started_at timestamptz DEFAULT now(), last_active timestamptz DEFAULT now());</code></td></tr>';
+        return;
+      }
+      var html='';
+      rows.forEach(function(s){
+        var start=s.started_at?new Date(s.started_at).toLocaleString():'—';
+        var active=s.last_active?new Date(s.last_active).toLocaleString():'—';
+        var ua=s.user_agent||'—';
+        var device=ua.includes('Mobile')?'&#128241; Mobile':ua.includes('Mac')?'&#128187; Mac':ua.includes('Windows')?'&#128187; Win':ua.includes('Linux')?'&#128187; Linux':'&#127760; Web';
+        html+='<tr><td style="color:var(--wh)">'+esc(s.email||'—')+'</td>';
+        html+='<td style="font-family:var(--fm);font-size:10px;color:var(--mu)">'+esc(s.ip_address||'—')+'</td>';
+        html+='<td style="font-size:11px">'+device+'</td>';
+        html+='<td style="font-size:10px;color:var(--mu)">'+start+'</td>';
+        html+='<td style="font-size:10px;color:var(--mu)">'+active+'</td></tr>';
+      });
+      document.getElementById('sessionsBody').innerHTML=html;
+    }).catch(function(){
+      document.getElementById('sessionsBody').innerHTML='<tr><td colspan="5" style="color:var(--mu);text-align:center">Таблица user_sessions не найдена</td></tr>';
+    });
+  };
+
+  /* ── VISITORS ── */
+  window.loadVisitors=function(){
+    api('GET','page_views','select=*&order=created_at.desc&limit=100').then(function(rows){
+      rows=rows||[];
+      document.getElementById('cntVisitors').textContent=rows.length;
+      // Stats
+      var now=new Date();var today=now.toISOString().slice(0,10);
+      var weekAgo=new Date(now-7*86400000).toISOString();
+      var vToday=rows.filter(function(v){return(v.created_at||'').startsWith(today)}).length;
+      var vWeek=rows.filter(function(v){return v.created_at>=weekAgo}).length;
+      document.getElementById('vToday').textContent=vToday;
+      document.getElementById('vWeek').textContent=vWeek;
+      document.getElementById('vTotal').textContent=rows.length;
+      if(!rows.length){
+        document.getElementById('visitorsBody').innerHTML='<tr><td colspan="5" style="color:var(--mu);text-align:center;padding:24px">Создайте таблицу page_views для трекинга посетителей.<br><br><code style="font-family:var(--fm);font-size:10px;color:var(--gold)">CREATE TABLE page_views (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), page text, ip_address text, user_agent text, referrer text, created_at timestamptz DEFAULT now());</code></td></tr>';
+        return;
+      }
+      var html='';
+      rows.forEach(function(v){
+        var d=v.created_at?new Date(v.created_at).toLocaleString():'—';
+        var ua=v.user_agent||'—';
+        var device=ua.includes('Mobile')?'&#128241;':ua.includes('Mac')?'&#128187;':'&#127760;';
+        html+='<tr><td style="color:var(--wh)">'+esc(v.page||'/')+'</td>';
+        html+='<td style="font-family:var(--fm);font-size:10px;color:var(--mu)">'+esc(v.ip_address||'—')+'</td>';
+        html+='<td>'+device+' <span style="font-size:9px;color:var(--mu)">'+esc(ua.slice(0,40))+'</span></td>';
+        html+='<td style="font-size:10px;color:var(--mu)">'+d+'</td>';
+        html+='<td style="font-size:10px;color:var(--mu)">'+esc(v.referrer||'direct')+'</td></tr>';
+      });
+      document.getElementById('visitorsBody').innerHTML=html;
+    }).catch(function(){
+      document.getElementById('visitorsBody').innerHTML='<tr><td colspan="5" style="color:var(--mu);text-align:center">Таблица page_views не найдена</td></tr>';
     });
   };
 

@@ -1044,4 +1044,23 @@ function updateNavForUser(meta){
   <a href="https://trade.labs67.com" class="sp-link" style="--c:#30dcff"><span class="sp-dot"></span><span class="sp-name">Skarby</span></a>
   <a href="https://svita.labs67.com" class="sp-link active" style="--c:#ff4d6d"><span class="sp-dot"></span><span class="sp-name">SVITA</span></a>
 </aside>
+
+<!-- Cookie Consent -->
+<div id="cookieConsent" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:rgba(10,10,15,.95);backdrop-filter:blur(20px);border-top:1px solid rgba(186,117,23,.2);padding:16px 48px;font-family:var(--fb)">
+<div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
+<div style="flex:1;min-width:240px">
+<div style="font-size:12px;font-weight:600;color:var(--wh);margin-bottom:4px">&#127850; Файлы cookie</div>
+<div style="font-size:11px;color:rgba(255,255,255,.5);line-height:1.5" data-t="cookie_text">Мы используем cookie для авторизации и улучшения работы сервиса. Продолжая, вы соглашаетесь с нашей политикой.</div>
+</div>
+<div style="display:flex;gap:8px;flex-shrink:0">
+<button onclick="cookieDecline()" style="padding:8px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:transparent;color:rgba(255,255,255,.6);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--fb)" data-t="cookie_decline">Отклонить</button>
+<button onclick="cookieAccept()" style="padding:8px 16px;border-radius:8px;border:none;background:var(--gold);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--fb)" data-t="cookie_accept">Принять</button>
+</div>
+</div>
+</div>
+<script>
+if(!localStorage.getItem('svita_cookies')){document.getElementById('cookieConsent').style.display='block'}
+function cookieAccept(){localStorage.setItem('svita_cookies','accepted');document.getElementById('cookieConsent').style.display='none'}
+function cookieDecline(){localStorage.setItem('svita_cookies','declined');document.getElementById('cookieConsent').style.display='none'}
+</script>
 </body></html>
