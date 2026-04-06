@@ -1062,5 +1062,12 @@ function updateNavForUser(meta){
 if(!localStorage.getItem('svita_cookies')){document.getElementById('cookieConsent').style.display='block'}
 function cookieAccept(){localStorage.setItem('svita_cookies','accepted');document.getElementById('cookieConsent').style.display='none'}
 function cookieDecline(){localStorage.setItem('svita_cookies','declined');document.getElementById('cookieConsent').style.display='none'}
+// Page view tracking
+(function(){
+  if(localStorage.getItem('svita_cookies')!=='accepted')return;
+  var SB='https://ctdleobjnzniqkqomlrq.supabase.co';
+  var SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZGxlb2JqbnpuaXFrcW9tbHJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMzE4MTEsImV4cCI6MjA4NzgwNzgxMX0.AMHtY7zGPemKYCxMy2bqRTOEAp8trA_Slor9wmg7C38';
+  fetch(SB+'/rest/v1/page_views',{method:'POST',headers:{'apikey':SK,'Authorization':'Bearer '+SK,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({page:location.pathname,user_agent:navigator.userAgent,referrer:document.referrer||null})}).catch(function(){});
+})();
 </script>
 </body></html>

@@ -1872,6 +1872,12 @@ function enterApp(){
   document.getElementById('roleLabel').style.color=currentRole==='admin'?'var(--ac2)':currentRole==='contractor'?'var(--or)':currentRole==='supplier'?'#d946ef':currentRole==='employee'?'#06b6d4':'var(--gn)';
   // Save role in localStorage (Supabase handles session)
   localStorage.setItem('svita_role',currentRole);
+  // Track session + update profile
+  if(sb&&currentUser.email){
+    sb.from('user_sessions').insert({email:currentUser.email,user_agent:navigator.userAgent}).then(()=>{});
+    sb.from('profiles').upsert({email:currentUser.email,role:currentRole,last_login:new Date().toISOString()},{onConflict:'email'}).then(()=>{});
+    sb.from('page_views').insert({page:'/dashboard',user_agent:navigator.userAgent,referrer:document.referrer||null}).then(()=>{});
+  }
   // Restore property card state
   const savedProp=localStorage.getItem('svita_property');
   if(savedProp){try{activeProperty=JSON.parse(savedProp)}catch(e){}}
