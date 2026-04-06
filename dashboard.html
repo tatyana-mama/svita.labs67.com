@@ -2420,6 +2420,14 @@ function enterApp(){
   if(savedProp){try{activeProperty=JSON.parse(savedProp)}catch(e){activeProperty=null}}
   else{activeProperty=currentRole==='admin'?{...DEFAULT_PROPERTY}:null}
   loadPicked();loadBusinessModel();loadDocItems();
+  // Apply saved staff edits from pickedStaff onto DB.employees
+  Object.entries(DB.pickedStaff||{}).forEach(([id,over])=>{
+    if(over.name||over.salary||over.spec||over.status){
+      const e=DB.employees.find(x=>String(x.id)===String(id));
+      if(e)Object.assign(e,over);
+      else DB.employees.push({id:id,...over});
+    }
+  });
   achUnlocked=new Set(JSON.parse(uGet('svita_ach')||'[]'));
   try{itemImages=JSON.parse(uGet('svita_images')||'{}')}catch(e){itemImages={}}
   fpInit();
@@ -5202,7 +5210,7 @@ function renderStaff(){
   const picked=DB.pickedStaff||{};
   const pickedIds=Object.keys(picked);
   // Show only picked staff in tab 4
-  const items=pickedIds.map(id=>DB.employees.find(e=>e.id==id)).filter(Boolean);
+  const items=pickedIds.map(id=>{const e=DB.employees.find(x=>x.id==id);if(!e)return null;const over=picked[id]||{};return {...e,...over,id:e.id}}).filter(Boolean);
   // Stats
   let totalFot=0;
   items.forEach(r=>{totalFot+=(r.salary||0)});
@@ -5787,6 +5795,11 @@ function saveModal(){
     const idx=arr.findIndex(x=>x.id==editingId);
     if(idx!==-1){
       Object.assign(arr[idx],obj);
+      // Persist staff edits in pickedStaff so they survive reload
+      if(modalMode==='staff'&&DB.pickedStaff[editingId]){
+        Object.assign(DB.pickedStaff[editingId],obj);
+        savePicked();
+      }
       editingId=null;
       closeModal();
       renderAll();buildSidebar();recalc();
@@ -5800,6 +5813,11 @@ function saveModal(){
   if(modalMode==='contractor')obj.rating=0;
   if(modalMode==='cabinetType')obj.equipCats=[];
   DB[table].push(obj);
+  // Auto-pick new staff members and persist
+  if(modalMode==='staff'){
+    DB.pickedStaff[obj.id]={qty:1,...obj};
+    savePicked();
+  }
   editingId=null;
   closeModal();
   renderAll();buildSidebar();recalc();
