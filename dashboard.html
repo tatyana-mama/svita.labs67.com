@@ -1964,13 +1964,36 @@ function fpPropEdit(key,val){
 }
 
 function clearProperty(){
+  if(!confirm('Удалить помещение? Все привязанные данные (планировка, комнаты, оборудование по комнатам, работы по модернизации) будут сброшены.'))return;
   activeProperty=null;
   localStorage.setItem('svita_property','null');
-  renderProperty();recalc();
+  // Каскадное обнуление — источник правды = помещение
+  // 1. Планировка
+  if(FP){FP.rooms=[];FP.elements=[];fpSave();fpDraw();fpUpdateList()}
+  // 2. Привязка комнат
+  DB.pickedRooms={};
+  // 3. Снять привязку оборудования к комнатам (оборудование остаётся, но без room)
+  Object.values(DB.pickedEquip||{}).forEach(p=>{delete p.room});
+  // 4. Работы по модернизации (привязаны к помещению)
+  DB.pickedRenovations={};
+  // 5. Параметры помещения (chips)
+  localStorage.removeItem('svita_prop_params');
+  // Re-render всё
+  renderProperty();buildSidebar();renderAll();recalc();
 }
 function restoreProperty(p){
+  const wasOther=activeProperty&&activeProperty.id!==p.id;
   activeProperty=p;
   localStorage.setItem('svita_property',JSON.stringify(p));
+  if(wasOther){
+    // Новое помещение — сброс привязок старого
+    if(FP){FP.rooms=[];FP.elements=[];fpSave();fpDraw();fpUpdateList()}
+    DB.pickedRooms={};
+    DB.pickedRenovations={};
+    Object.values(DB.pickedEquip||{}).forEach(pe=>{delete pe.room});
+    localStorage.removeItem('svita_prop_params');
+    buildSidebar();renderAll();
+  }
   renderProperty();recalc();
 }
 function saveProperty(){
