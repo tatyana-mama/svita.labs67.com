@@ -1881,7 +1881,7 @@ async function loadSupabaseData(){
       DB.premises.length,'premises,',DB.users.length,'users,',DB.proposals.length,'proposals');
 
     // Re-render
-    if(document.getElementById('appContainer').style.display!=='none'){buildSidebar();renderAll();renderEquip();recalc()}
+    if(document.getElementById('appContainer').style.display!=='none'){console.log('[SVITA] Re-rendering after Supabase load...');buildSidebar();renderAll();renderEquip();recalc();nav(cur);console.log('[SVITA] Re-render done, cur='+cur)}
   }catch(e){console.warn('Supabase sync failed, using local DB:',e.message)}finally{_loadingData=false}
 }
 
@@ -2623,7 +2623,8 @@ function nav(id){
   cur=id;
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('vis'));
   const el=document.getElementById('sec-'+id);
-  if(el)el.classList.add('vis');
+  if(el){el.classList.add('vis');console.log('[NAV] show sec-'+id,el.children.length+'children')}
+  else{console.error('[NAV] sec-'+id+' NOT FOUND!')}
   // Sidebar items
   document.querySelectorAll('.si').forEach(s=>s.classList.remove('act'));
   const si=document.querySelector('.si[data-nav="'+id+'"]');
@@ -2964,7 +2965,8 @@ function toggleCheck(el){
 
 // ═══════════════ RENDER DB CARDS ═══════════════
 function renderAll(){
-  renderProperty();renderPremises();renderContractors();renderEmployees();renderVendors();renderEquip();renderSelectedEquip();renderRenovationsCatalog();renderSelectedRenovations();renderStaff();renderServices();renderSelectedServices();renderUsers();renderCabinetTypes();renderPickedRooms();renderPickedContractors();renderZones();renderDocs();loadPropertyParams();updateRightPanel();renderOwnerProposals();
+  const fns=[renderProperty,renderPremises,renderContractors,renderEmployees,renderVendors,renderEquip,renderSelectedEquip,renderRenovationsCatalog,renderSelectedRenovations,renderStaff,renderServices,renderSelectedServices,renderUsers,renderCabinetTypes,renderPickedRooms,renderPickedContractors,renderZones,renderDocs,loadPropertyParams,updateRightPanel,renderOwnerProposals];
+  fns.forEach(fn=>{try{fn()}catch(e){console.error('[SVITA] renderAll error in '+fn.name+':',e)}});
 }
 
 function renderOwnerProposals(){
