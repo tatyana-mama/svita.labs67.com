@@ -3176,11 +3176,31 @@ function renderSuppliers(){
   }).join('');
 }
 
+function editEmployee(id){
+  const r=DB.employees.find(x=>x.id==id);if(!r)return;
+  modalMode='employee';editingId=r.id;
+  document.getElementById('modalTitle').textContent='Редактировать сотрудника';
+  const fields=MODAL_FIELDS.employee;
+  document.getElementById('modalFields').innerHTML=fields.map(f=>`<div class="modal-field"><label>${f.l}</label><input id="mf_${f.k}" type="${f.t||'text'}" placeholder="${f.ph||''}" value="${r[f.k]!=null?r[f.k]:''}"></div>`).join('');
+  document.getElementById('modalSave').style.display='';
+  document.getElementById('modalBg').classList.add('vis');
+}
 function renderEmployees(){
   const c=document.getElementById('employeeCards');
   c.innerHTML=DB.employees.map(r=>{
     const picked=!!DB.pickedStaff[r.id];
-    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}"><div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:rgba(6,182,212,.1);color:#06b6d4">${r.status}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Специализация</div><div class="db-card-val">${r.spec}</div></div><div class="db-card-field"><div class="db-card-label">ФОТ</div><div class="db-card-val" style="color:var(--ac2)">${r.salary.toLocaleString('ru')} PLN/мес</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePick('pickedStaff','${r.id}','employees')">${picked?'✓ В штате':'+ Сотрудник → Таб 5'}</button><button class="btn sm" onclick="delItem('employees','${r.id}')">Удалить</button></div></div>`;
+    const statusColor=r.status==='Вакансия'?'background:rgba(249,115,22,.1);color:var(--or)':'background:rgba(34,197,94,.1);color:var(--gn)';
+    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}">
+<div class="db-card-head"><span class="db-card-name">${esc(r.name)}</span><span class="db-card-role" style="${statusColor}">${esc(r.status)}</span></div>
+<div class="db-card-grid">
+<div class="db-card-field"><div class="db-card-label">Специализация</div><div class="db-card-val">${esc(r.spec)}</div></div>
+<div class="db-card-field"><div class="db-card-label">ФОТ</div><div class="db-card-val" style="color:var(--ac2)">${(r.salary||0).toLocaleString('ru')} PLN/мес</div></div>
+</div>
+<div class="db-card-actions">
+<button class="btn sm ${picked?'gn':'pr'}" onclick="togglePick('pickedStaff','${r.id}','employees')">${picked?'✓ В штате':'+ Сотрудник → Таб 5'}</button>
+<button class="btn sm" onclick="editEmployee('${r.id}')" style="color:var(--ac2)">Редактировать</button>
+<button class="btn sm" onclick="delItem('employees','${r.id}')" style="color:var(--rd)">Удалить</button>
+</div></div>`;
   }).join('');
 }
 
