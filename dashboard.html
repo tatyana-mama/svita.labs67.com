@@ -728,7 +728,7 @@ Apple</button>
 
 <!-- ═══ S2: МОДЕРНИЗАЦИЯ ═══ -->
 <div class="sec" id="sec-s2">
-<div class="ph"><div><h2>02 &middot; Модернизация</h2><div class="ph-s">Выбранные работы для проекта</div></div><button class="btn sm pr" onclick="nav('db-renovations')">Каталог работ →</button></div>
+<div class="ph"><div><h2>02 &middot; Модернизация</h2><div class="ph-s">Выбранные работы для проекта</div></div><button class="btn sm pr" onclick="nav('db-renovations')">Модернизация →</button></div>
 <div class="sts" id="renStats" style="grid-template-columns:repeat(4,1fr)">
 <div class="st"><div class="st-l">Работ</div><div class="st-v" id="renCount">0</div><div class="st-s">выбрано</div></div>
 <div class="st"><div class="st-l">Общая стоимость</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="renTotal">0</div><div class="st-s">PLN</div></div>
@@ -870,7 +870,7 @@ Apple</button>
 
 <div class="sec" id="sec-db-renovations">
 <div class="bk" onclick="nav('s2')">&larr; Модернизация</div>
-<div class="ph"><div><h2>⚡ Каталог работ</h2><div class="ph-s">Выберите ремонтные работы для помещения</div></div><button class="btn sm or" onclick="openModal('renovation')">+ Новая работа</button></div>
+<div class="ph"><div><h2>⚡ Модернизация</h2><div class="ph-s">Каталог работ по модернизации помещения</div></div><button class="btn sm or" onclick="openModal('renovation')">+ Новая позиция</button></div>
 <div id="renCatalogCards"></div>
 </div>
 
@@ -1920,7 +1920,7 @@ function buildSidebar(){
   if(currentRole==='admin'){
     html+='<div class="side-sec">Базы данных</div>';
     html+='<div class="si" data-nav="db-rooms"><span class="ico">&#127970;</span><span class="sl">Помещения</span><span class="sb wip">'+DB.rooms.length+'</span></div>';
-    html+='<div class="si" data-nav="db-renovations"><span class="ico">&#9889;</span><span class="sl">Работы / Ремонт</span><span class="sb wip">'+DB.renovations.length+'</span></div>';
+    html+='<div class="si" data-nav="db-renovations"><span class="ico">&#9889;</span><span class="sl">Модернизация</span><span class="sb wip">'+DB.renovations.length+'</span></div>';
     html+='<div class="si" data-nav="db-contractors"><span class="ico">&#128736;</span><span class="sl">Подрядчики</span><span class="sb wip">'+DB.contractors.length+'</span></div>';
     html+='<div class="si" data-nav="db-suppliers"><span class="ico">&#128230;</span><span class="sl">Поставщики</span><span class="sb wip">'+DB.suppliers.length+'</span></div>';
     html+='<div class="si" data-nav="db-employees"><span class="ico">&#129489;</span><span class="sl">Сотрудники</span><span class="sb wip">'+DB.employees.length+'</span></div>';
