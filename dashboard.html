@@ -1696,7 +1696,7 @@ const DB={
   conceptItems:[],  // works added to project (from concept_items table)
   premises:[]       // real estate from equipment where category=premises
 };
-function genId(){return crypto.randomUUID?crypto.randomUUID():('id-'+Date.now()+'-'+Math.random().toString(36).slice(2,8))}
+let nextId=200;
 
 // ═══════════════ SUPABASE INIT ═══════════════
 const SB_URL='https://ctdleobjnzniqkqomlrq.supabase.co';
@@ -1705,12 +1705,6 @@ const sb=(typeof supabase!=='undefined')?supabase.createClient(SB_URL,SB_KEY):nu
 const ADMIN_EMAILS=['scyraai@proton.me','artem@labs67.com'];
 // Helper: escape HTML for safe attribute/content injection
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
-// URL scheme validation — only allow http(s) and relative URLs
-function safeHref(url){if(!url)return'#';const s=String(url).trim().toLowerCase();if(s.startsWith('http://')||s.startsWith('https://')||s.startsWith('/'))return url;return'#'}
-// Toast notification
-function toast(msg,type){const t=document.createElement('div');t.textContent=msg;t.style.cssText='position:fixed;top:20px;right:20px;z-index:9999;padding:12px 20px;border-radius:10px;font-size:12px;font-weight:600;font-family:var(--f);color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.15);transition:opacity .3s;max-width:360px';t.style.background=type==='ok'?'var(--gn)':type==='error'?'var(--rd)':'var(--ac2)';document.body.appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3500)}
-// Supabase operation wrapper — catches errors and shows toast
-async function sbOp(promise,successMsg){try{const r=await promise;if(r.error)throw r.error;if(successMsg)toast(successMsg,'ok');return r}catch(e){toast('Ошибка: '+(e.message||e),'error');console.error('[SVITA]',e);return{data:null,error:e}}}
 // Per-user localStorage helpers
 function uKey(k){const uid=currentUser&&currentUser.id?currentUser.id:'anon';return k+'_'+uid}
 function uSet(k,v){localStorage.setItem(uKey(k),v)}
@@ -1751,13 +1745,11 @@ const EQUIP_CAT_RU={
 };
 
 // ═══════════════ SUPABASE DATA SYNC ═══════════════
-let _loadingData=false;let _loadingTimeout=null;
+let _loadingData=false;
 async function loadSupabaseData(){
   try{
     if(!sb||_loadingData)return;
     _loadingData=true;
-    if(_loadingTimeout)clearTimeout(_loadingTimeout);
-    _loadingTimeout=setTimeout(()=>{_loadingData=false;console.warn('[SVITA] loadSupabaseData timeout reset')},30000);
 
     // 1. Categories first (needed for mapping), then everything else in parallel
     const[{data:eqCats},{data:svcCats},{data:svcSubs}]=await Promise.all([
@@ -1869,7 +1861,7 @@ async function loadSupabaseData(){
           }
         }else{
           DB.users.push({
-            id:p.id||genId(),
+            id:p.id||++nextId,
             name:p.display_name||p.email.split('@')[0],
             email:p.email,
             role:p.role||'owner',
@@ -1897,7 +1889,7 @@ async function loadSupabaseData(){
       const curSec=document.getElementById('sec-'+cur);
       if(curSec)curSec.classList.add('vis');
     }
-  }catch(e){console.warn('Supabase sync failed, using local DB:',e.message)}finally{_loadingData=false;if(_loadingTimeout){clearTimeout(_loadingTimeout);_loadingTimeout=null}}
+  }catch(e){console.warn('Supabase sync failed, using local DB:',e.message)}finally{_loadingData=false}
 }
 
 // ═══════════════ PROPERTY (S1) ═══════════════
@@ -2011,7 +2003,7 @@ function loadPicked(){
     if(!raw)return;
     const obj=JSON.parse(raw);
     PICKED_KEYS.forEach(k=>{if(obj[k])DB[k]=obj[k]});
-  }catch(e){console.warn('[SVITA]',e)}
+  }catch(e){}
 }
 
 const BM_FIELDS=['cType','cBrand','cCity','cDate','cFormat','cAudience','cUsp','cTech'];
@@ -2034,7 +2026,7 @@ function loadBusinessModel(){
     }
     const bm=JSON.parse(raw);
     BM_FIELDS.forEach(k=>{const el=document.getElementById(k);if(el)el.value=bm[k]||''});
-  }catch(e){console.warn('[SVITA]',e)}
+  }catch(e){}
 }
 
 function saveProperty(){
@@ -2155,7 +2147,7 @@ function loadPropertyParams(){
         });
       }
     });
-  }catch(e){console.warn('[SVITA]',e)}
+  }catch(e){}
 }
 
 // ═══════════════ AUTH SYSTEM (Supabase Auth) ═══════════════
@@ -2188,6 +2180,25 @@ async function loginCheck(){
   document.getElementById('loginError').textContent='Входим...';
   const{data,error}=await sb.auth.signInWithPassword({email,password:pass});
   if(error){
+    // Try auto-signup if admin email with these credentials (migration from localStorage)
+    if(ADMIN_EMAILS.includes(email)){
+      const{data:sd,error:se}=await sb.auth.signUp({email,password:pass,options:{data:{name:'Артём Веелко',role:'admin',profile_complete:true},emailRedirectTo:location.origin+location.pathname}});
+      if(!se&&sd.user){
+        // If email not confirmed, try sign in again (Supabase may auto-confirm for some configs)
+        const{data:d2,error:e2}=await sb.auth.signInWithPassword({email,password:pass});
+        if(!e2&&d2.user){
+          const u=d2.user;
+          currentUser={email:u.email,name:u.user_metadata?.name||'Admin',isAdmin:true,emailConfirmed:!!u.email_confirmed_at,id:u.id};
+          proceedToRoleSelect();
+          return;
+        }
+        // If needs confirmation
+        if(sd.user&&!sd.user.email_confirmed_at){
+          document.getElementById('loginError').textContent='Аккаунт создан — проверьте почту '+email+' для подтверждения';
+          return;
+        }
+      }
+    }
     document.getElementById('loginError').textContent=error.message==='Invalid login credentials'?'Неверный email или пароль':error.message;
     return;
   }
@@ -2248,10 +2259,13 @@ function rateLimit(key,maxAttempts,windowMs){
   return true;
 }
 
+// ═══ SANITIZE (XSS) ═══
+function sanitize(str){const d=document.createElement('div');d.textContent=str;return d.innerHTML}
+
 // ═══ AUDIT LOG ═══
 function logAction(action,entityType,entityId,metadata){
   if(!sb||!currentUser)return;
-  sbOp(sb.from('audit_logs').insert({user_id:currentUser.id,action,entity_type:entityType||null,entity_id:entityId||null,metadata:metadata||{}}));
+  sb.from('audit_logs').insert({user_id:currentUser.id,action,entity_type:entityType||null,entity_id:entityId||null,metadata:metadata||{}}).then(()=>{});
 }
 
 // ═══ FORGOT / RESET PASSWORD ═══
@@ -2392,12 +2406,12 @@ function enterApp(){
   localStorage.setItem('svita_role',currentRole);
   // Track session + update profile + sync to DB.users
   if(sb&&currentUser.email){
-    sbOp(sb.from('user_sessions').insert({email:currentUser.email,user_agent:navigator.userAgent}));
-    sbOp(sb.from('profiles').upsert({email:currentUser.email,display_name:currentUser.name,role:currentRole,last_login:new Date().toISOString()},{onConflict:'email'}));
-    sbOp(sb.from('page_views').insert({page:'/dashboard',user_agent:navigator.userAgent,referrer:document.referrer||null}));
+    sb.from('user_sessions').insert({email:currentUser.email,user_agent:navigator.userAgent}).then(()=>{});
+    sb.from('profiles').upsert({email:currentUser.email,display_name:currentUser.name,role:currentRole,last_login:new Date().toISOString()},{onConflict:'email'}).then(()=>{});
+    sb.from('page_views').insert({page:'/dashboard',user_agent:navigator.userAgent,referrer:document.referrer||null}).then(()=>{});
     // Ensure current user is in DB.users
     if(!DB.users.find(u=>u.email===currentUser.email)){
-      DB.users.push({id:currentUser.id||genId(),name:currentUser.name,email:currentUser.email,role:currentRole,plan:'trial',status:'Активен'});
+      DB.users.push({id:currentUser.id||++nextId,name:currentUser.name,email:currentUser.email,role:currentRole,plan:'trial',status:'Активен'});
     }
   }
   // Restore property card state (per-user) with legacy migration
@@ -2421,9 +2435,6 @@ function enterApp(){
 async function logout(){
   logAction('logout','auth');
   currentUser=null;currentRole=null;
-  // Clear auto-save intervals
-  if(window._conceptAutoSaveId){clearInterval(window._conceptAutoSaveId);window._conceptAutoSaveId=null}
-  if(window._fpAutoSaveId){clearInterval(window._fpAutoSaveId);window._fpAutoSaveId=null}
   // Clear in-memory data to prevent bleed between accounts
   PICKED_KEYS.forEach(k=>{DB[k]={}});
   DB.docItems=[];
@@ -2462,10 +2473,10 @@ function updateTopUser(){
 function showProfileModal(){
   document.getElementById('topUser').classList.remove('open');
   const u=currentUser;if(!u)return;
-  const html=`<div class="modal-field"><label>Имя</label><input id="mf_profName" value="${esc(u.name||'')}" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
-<div class="modal-field"><label>Email</label><input value="${esc(u.email||'')}" disabled style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx3);font-family:var(--f);font-size:13px;width:100%"></div>
-<div class="modal-field"><label>Телефон</label><input id="mf_profPhone" value="${esc(u.phone||'')}" placeholder="+48 500 000 000" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
-<div class="modal-field"><label>Компания</label><input id="mf_profCompany" value="${esc(u.company||'')}" placeholder="Название" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+  const html=`<div class="modal-field"><label>Имя</label><input id="mf_profName" value="${u.name||''}" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+<div class="modal-field"><label>Email</label><input value="${u.email||''}" disabled style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx3);font-family:var(--f);font-size:13px;width:100%"></div>
+<div class="modal-field"><label>Телефон</label><input id="mf_profPhone" value="${u.phone||''}" placeholder="+48 500 000 000" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+<div class="modal-field"><label>Компания</label><input id="mf_profCompany" value="${u.company||''}" placeholder="Название" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
 <div class="modal-field"><label>Роль <span style="font-size:9px;color:var(--tx3);font-weight:400">(нельзя изменить)</span></label><input value="${ROLE_NAMES[currentRole]||''}" disabled style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx3);font-family:var(--f);font-size:13px;width:100%"></div>`;
   document.getElementById('modalTitle').textContent='Профиль';
   document.getElementById('modalFields').innerHTML=html;
@@ -2480,7 +2491,7 @@ function showProfileModal(){
       updateTopUser();
       const _sa2=document.getElementById('sideAvatar');if(_sa2)_sa2.textContent=newName.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
       const _sn2=document.getElementById('sideName');if(_sn2)_sn2.textContent=newName;
-      if(sb)sbOp(sb.from('profiles').upsert({email:currentUser.email,display_name:newName,phone,company},{onConflict:'email'}),'Профиль сохранён');
+      if(sb)sb.from('profiles').upsert({email:currentUser.email,display_name:newName,phone,company},{onConflict:'email'}).then(()=>{});
     }
     closeModal();
   };
@@ -2520,7 +2531,7 @@ document.addEventListener('click',function(e){
       // Incomplete profile — show onboarding
       setTimeout(()=>{showOnboarding()},50);
     }
-  }catch(e){console.warn('[SVITA]',e)}
+  }catch(e){}
 
   // Listen for OAuth callback and password recovery
   sb.auth.onAuthStateChange((event,session)=>{
@@ -2638,7 +2649,7 @@ async function renderAccount(){
   const bg=ROLE_COLORS[currentRole]||'var(--ac)';
   // Profile section
   const av=document.getElementById('accAvatar');if(av){av.style.background=bg;av.textContent=initials}
-  const an=document.getElementById('accName');if(an)an.textContent=esc(u.name);
+  const an=document.getElementById('accName');if(an)an.textContent=sanitize(u.name);
   const ae=document.getElementById('accEmail');if(ae)ae.textContent=u.email;
   const ar=document.getElementById('accRoleBadge');if(ar){ar.textContent=ROLE_NAMES[currentRole]||currentRole;ar.style.background=currentRole==='admin'?'rgba(59,130,246,.1)':'var(--acbg)'}
   // Form fields
@@ -2683,13 +2694,11 @@ function renderPlanDetails(){
 
 async function loadConcepts(){
   if(!sb||!currentUser)return;
-  try{
   const{data}=await sb.from('concepts').select('id,name,stage,status,updated_at,created_at').eq('user_id',currentUser.id).order('updated_at',{ascending:false});
   userConcepts=data||[];
   const cc=document.getElementById('conceptsCount');
   if(cc)cc.textContent=userConcepts.length+' / '+(userSubscription.concepts_limit||1);
   renderConceptsList();
-  }catch(e){console.error('[SVITA] loadConcepts',e);toast('Ошибка загрузки концепций','error')}
 }
 
 function renderConceptsList(){
@@ -2709,14 +2718,14 @@ function renderConceptsList(){
     const statusColor={draft:'var(--tx3)',active:'var(--gn)',completed:'var(--ac2)',archived:'var(--tx3)'};
     html+=`<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd)">
 <div style="flex:1;min-width:0">
-<div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(cp.name)}</div>
+<div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${sanitize(cp.name)}</div>
 <div style="font-size:10px;color:var(--tx3)">Этап ${cp.stage}/6 · ${date}</div>
 </div>
 <span style="font-size:9px;font-weight:600;color:${statusColor[cp.status]||'var(--tx3)'};padding:2px 8px;border-radius:4px;background:var(--sf2)">${statusMap[cp.status]||cp.status}</span>
 <div style="display:flex;gap:4px;flex-shrink:0">
 <button class="btn sm pr" onclick="loadConceptById('${cp.id}')">Открыть</button>
 <button class="btn sm" onclick="duplicateConcept('${cp.id}')">&#128203;</button>
-<button class="btn sm" style="color:var(--rd)" onclick="deleteConcept('${cp.id}','${esc(cp.name).replace(/'/g,"\\'")}')">✕</button>
+<button class="btn sm" style="color:var(--rd)" onclick="deleteConcept('${cp.id}','${sanitize(cp.name).replace(/'/g,"\\'")}')">✕</button>
 </div>
 </div>`;
   });
@@ -2750,9 +2759,9 @@ async function createConcept(){
 async function loadConceptById(id){
   if(userSubscription.plan==='trial'){showUpgradeModal();return}
   if(!sb)return;
-  try{
   const{data,error}=await sb.from('concepts').select('*').eq('id',id).single();
-  if(error||!data){toast('Ошибка загрузки концепции','error');return}
+  if(error||!data){alert('Ошибка загрузки');return}
+  // Hydrate workspace from concept data
   const d=data.data||{};
   DB.pickedRooms=d.pickedRooms||{};DB.pickedRenovations=d.pickedRenovations||{};
   DB.pickedServices=d.pickedServices||{};DB.pickedEquip=d.pickedEquip||{};
@@ -2764,14 +2773,12 @@ async function loadConceptById(id){
   logAction('concept_load','concept',id,{name:data.name});
   nav('overview');
   buildSidebar();renderAll();recalc();
-  }catch(e){console.error('[SVITA] loadConceptById',e);toast('Ошибка загрузки','error')}
 }
 
 async function saveCurrentConcept(){
   const id=window._currentConceptId;
   if(!id||!sb||!currentUser)return;
   if(userSubscription.plan==='trial')return;
-  try{
   const conceptData={
     pickedRooms:DB.pickedRooms||{},pickedRenovations:DB.pickedRenovations||{},
     pickedServices:DB.pickedServices||{},pickedEquip:DB.pickedEquip||{},
@@ -2781,35 +2788,29 @@ async function saveCurrentConcept(){
   const si=stageOrder.indexOf(cur);
   await sb.from('concepts').update({data:conceptData,stage:si>=0?si+1:1,updated_at:new Date().toISOString()}).eq('id',id);
   logAction('concept_save','concept',id);
-  }catch(e){console.error('[SVITA] saveCurrentConcept',e);toast('Ошибка сохранения','error')}
 }
 
 async function duplicateConcept(id){
   if(!sb||!currentUser)return;
   const limit=userSubscription.concepts_limit||1;
   if(userConcepts.length>=limit){showUpgradeModal();return}
-  try{
   const{data:orig}=await sb.from('concepts').select('name,data,stage').eq('id',id).single();
   if(!orig)return;
   await sb.from('concepts').insert({user_id:currentUser.id,name:orig.name+' (копия)',data:orig.data,stage:orig.stage});
   logAction('concept_duplicate','concept',id);
   loadConcepts();
-  }catch(e){console.error('[SVITA] duplicateConcept',e);toast('Ошибка дублирования','error')}
 }
 
 async function deleteConcept(id,name){
   if(!confirm('Удалить концепцию «'+name+'»? Это действие нельзя отменить.'))return;
-  try{
   await sb.from('concepts').delete().eq('id',id);
   if(window._currentConceptId===id){window._currentConceptId=null;window._currentConceptName=null}
   logAction('concept_delete','concept',id,{name});
   loadConcepts();
-  }catch(e){console.error('[SVITA] deleteConcept',e);toast('Ошибка удаления','error')}
 }
 
 async function saveAccountProfile(){
   if(!sb||!currentUser)return;
-  try{
   const name=document.getElementById('acc_name').value.trim();
   const phone=document.getElementById('acc_phone').value.trim();
   const company=document.getElementById('acc_company').value.trim();
@@ -2825,7 +2826,6 @@ async function saveAccountProfile(){
   // Visual feedback
   const btn=document.querySelector('#sec-account .ch .btn.gn');
   if(btn){const old=btn.textContent;btn.textContent='✓ Сохранено';setTimeout(()=>btn.textContent=old,2000)}
-  }catch(e){console.error('[SVITA] saveAccountProfile',e);toast('Ошибка сохранения профиля','error')}
 }
 
 function showChangePassword(){
@@ -2853,7 +2853,7 @@ function showChangePassword(){
 async function confirmDeleteAccount(){
   if(!confirm('ВНИМАНИЕ! Все ваши данные, концепции и настройки будут безвозвратно удалены. Продолжить?'))return;
   if(!confirm('Вы абсолютно уверены? Это действие НЕЛЬЗЯ отменить.'))return;
-  try{
+  // Delete user data
   if(sb&&currentUser.id){
     await sb.from('concepts').delete().eq('user_id',currentUser.id);
     await sb.from('subscriptions').delete().eq('user_id',currentUser.id);
@@ -2861,14 +2861,12 @@ async function confirmDeleteAccount(){
   }
   logAction('account_delete','auth');
   logout();
-  }catch(e){console.error('[SVITA] confirmDeleteAccount',e);toast('Ошибка удаления аккаунта','error')}
 }
 
 async function loadAuditLog(){
   if(!sb||!currentUser)return;
   const el=document.getElementById('auditLogList');
   el.innerHTML='<div style="text-align:center;padding:8px;font-size:11px;color:var(--tx3)">Загрузка...</div>';
-  try{
   const{data}=await sb.from('audit_logs').select('action,entity_type,metadata,created_at').eq('user_id',currentUser.id).order('created_at',{ascending:false}).limit(50);
   if(!data||!data.length){el.innerHTML='<div style="text-align:center;padding:16px;font-size:12px;color:var(--tx3)">Нет записей</div>';return}
   const actionNames={login:'Вход',logout:'Выход',concept_create:'Создание концепции',concept_load:'Загрузка концепции',concept_save:'Сохранение',concept_delete:'Удаление концепции',concept_duplicate:'Дублирование',profile_update:'Обновление профиля',password_change:'Смена пароля',account_delete:'Удаление аккаунта',payment_success:'Оплата'};
@@ -2876,11 +2874,10 @@ async function loadAuditLog(){
   data.forEach(l=>{
     const date=new Date(l.created_at).toLocaleString('ru');
     const name=actionNames[l.action]||l.action;
-    const meta=l.metadata?.name?(' — '+esc(l.metadata.name)):'';
+    const meta=l.metadata?.name?(' — '+sanitize(l.metadata.name)):'';
     html+=`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bd);font-size:11px"><span style="color:var(--tx3);min-width:120px;flex-shrink:0">${date}</span><span style="font-weight:600;color:var(--tx)">${name}</span><span style="color:var(--tx2)">${meta}</span></div>`;
   });
   el.innerHTML=html;
-  }catch(e){console.error('[SVITA] loadAuditLog',e);toast('Ошибка загрузки журнала','error')}
 }
 
 // Auto-save concept every 2 minutes
@@ -2968,10 +2965,10 @@ function renderOwnerProposals(){
     const statusText=p.status==='accepted'?'Принято':p.status==='rejected'?'Отклонено':'Новое';
     return `<div style="border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:8px">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-<div><div style="font-size:13px;font-weight:600">${esc(p.contractor_name)}</div><div style="font-size:10px;color:var(--tx3)">${esc(p.contractor_email)} · ${new Date(p.created_at).toLocaleDateString()}</div></div>
+<div><div style="font-size:13px;font-weight:600">${p.contractor_name}</div><div style="font-size:10px;color:var(--tx3)">${p.contractor_email} · ${new Date(p.created_at).toLocaleDateString()}</div></div>
 <span style="font-size:10px;padding:3px 8px;border-radius:5px;background:${statusColor}22;color:${statusColor};font-weight:600">${statusText}</span>
 </div>
-<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px">${p.items.map(i=>`<span style="font-size:10px;padding:3px 8px;border:1px solid var(--bd);border-radius:5px">${esc(i.name)}: ${i.price.toLocaleString()} PLN</span>`).join('')}</div>
+<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px">${p.items.map(i=>`<span style="font-size:10px;padding:3px 8px;border:1px solid var(--bd);border-radius:5px">${i.name}: ${i.price.toLocaleString()} PLN</span>`).join('')}</div>
 <div style="display:flex;justify-content:space-between;align-items:center">
 <div style="font-size:14px;font-weight:700">${p.total.toLocaleString()} PLN</div>
 <div style="display:flex;gap:4px">
@@ -3040,7 +3037,7 @@ ${owner||phone?`<div style="padding:4px 16px;display:flex;gap:12px;font-size:10p
 ${p.notes?`<div style="padding:4px 16px 8px;font-size:10px;color:var(--tx3);line-height:1.4">${esc(p.notes)}</div>`:''}
 <div class="db-card-actions">
 <button class="btn sm pr" onclick="selectPremiseAsProperty('${pid}')">Выбрать → Таб 1</button>
-${p.source?`<a href="${safeHref(p.source)}" target="_blank" rel="noopener" class="btn sm" style="text-decoration:none;text-align:center">Источник</a>`:''}
+${p.source?`<a href="${esc(p.source)}" target="_blank" rel="noopener" class="btn sm" style="text-decoration:none;text-align:center">Источник</a>`:''}
 <button class="btn sm" onclick="editPremise('${pid}')">Ред.</button>
 <button class="btn sm" onclick="delPremise('${pid}')">Удалить</button>
 </div></div>`;
@@ -3048,7 +3045,7 @@ ${p.source?`<a href="${safeHref(p.source)}" target="_blank" rel="noopener" class
 }
 
 function selectPremiseAsProperty(id){
-  const p=DB.premises.find(x=>x.id===id);if(!p)return;
+  const p=DB.premises.find(x=>x.id==id);if(!p)return;
   const sp=p.specs||{};
   const area=sp.area||0;
   const side=Math.round(Math.sqrt(area)*10)/10;
@@ -3058,7 +3055,7 @@ function selectPremiseAsProperty(id){
 }
 
 function editPremise(id){
-  const p=DB.premises.find(x=>x.id===id);if(!p)return;
+  const p=DB.premises.find(x=>x.id==id);if(!p)return;
   openModal('premise');
   editingId=id;
   const sp=p.specs||{};
@@ -3069,7 +3066,7 @@ function editPremise(id){
 function delPremise(id){
   if(!confirm('Удалить это помещение из базы?'))return;
   DB.premises=DB.premises.filter(x=>x.id!=id);
-  if(sb)sbOp(sb.from('equipment').delete().eq('id',id),'Помещение удалено');
+  if(sb)sb.from('equipment').delete().eq('id',id).then(()=>{});
   renderPremises();buildSidebar();
 }
 
@@ -3093,12 +3090,12 @@ function renderContractorWorks(){
       const sel=!!contractorSelected[r.id];
       const unit=r.unit?` (${r.baseVal||''} ${r.unit})`:'';
       html+=`<div class="db-card" style="${sel?'border-color:var(--gn);background:rgba(34,197,94,.04)':''}">
-<div class="db-card-head"><span class="db-card-name">${esc(r.name)}${esc(unit)}</span></div>
+<div class="db-card-head"><span class="db-card-name">${r.name}${unit}</span></div>
 <div class="db-card-grid">
-<div class="db-card-field"><div class="db-card-label">Категория</div><div class="db-card-val">${esc(r.cat)}</div></div>
+<div class="db-card-field"><div class="db-card-label">Категория</div><div class="db-card-val">${r.cat}</div></div>
 <div class="db-card-field"><div class="db-card-label">Базовая цена</div><div class="db-card-val">${r.price.toLocaleString()} PLN</div></div>
 ${sel?`<div class="db-card-field" style="grid-column:1/3"><div class="db-card-label">Ваша цена (PLN)</div><input type="number" value="${contractorSelected[r.id].price||r.price}" onchange="contractorSelected['${r.id}'].price=+this.value" style="width:100%;padding:6px 8px;font-size:12px;border:1px solid var(--bd);border-radius:6px;background:var(--sf2);color:var(--tx);font-family:var(--f)"></div>
-<div class="db-card-field" style="grid-column:1/3"><div class="db-card-label">Комментарий</div><input type="text" placeholder="Сроки, условия..." value="${esc(contractorSelected[r.id].note||'')}" onchange="contractorSelected['${r.id}'].note=this.value" style="width:100%;padding:6px 8px;font-size:12px;border:1px solid var(--bd);border-radius:6px;background:var(--sf2);color:var(--tx);font-family:var(--f)"></div>`:''}
+<div class="db-card-field" style="grid-column:1/3"><div class="db-card-label">Комментарий</div><input type="text" placeholder="Сроки, условия..." value="${contractorSelected[r.id].note||''}" onchange="contractorSelected['${r.id}'].note=this.value" style="width:100%;padding:6px 8px;font-size:12px;border:1px solid var(--bd);border-radius:6px;background:var(--sf2);color:var(--tx);font-family:var(--f)"></div>`:''}
 </div>
 <div class="db-card-actions"><button class="btn sm ${sel?'gn':'pr'}" onclick="toggleContractorWork('${r.id}',${r.price})">${sel?'&#10003; Выбрано':'+ Я делаю это'}</button></div>
 </div>`;
@@ -3139,7 +3136,7 @@ async function sendProposal(){
   };
   DB.proposals.push(proposal);
   if(sb){
-    await sbOp(sb.from('proposals').upsert(proposal),'Предложение отправлено');
+    await sb.from('proposals').upsert(proposal).then(()=>{});
   }
   contractorSelected={};
   renderContractorWorks();
@@ -3156,7 +3153,7 @@ function renderContractorProposals(){
     const statusText=p.status==='accepted'?'Принято':p.status==='rejected'?'Отклонено':'На рассмотрении';
     return `<div class="c" style="margin-bottom:12px"><div class="ch"><h3>КП от ${new Date(p.created_at).toLocaleDateString()}</h3><span style="font-size:10px;padding:3px 8px;border-radius:5px;background:${statusColor}22;color:${statusColor};font-weight:600">${statusText}</span></div>
 <div class="cb" style="padding:12px"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-${p.items.map(i=>`<div style="padding:8px 10px;border:1px solid var(--bd);border-radius:6px;font-size:11px"><div style="font-weight:600">${esc(i.name)}</div><div style="color:var(--tx3);margin-top:2px">${esc(i.cat)} · ${i.price.toLocaleString()} PLN</div>${i.note?`<div style="color:var(--tx2);margin-top:2px;font-style:italic">${esc(i.note)}</div>`:''}</div>`).join('')}
+${p.items.map(i=>`<div style="padding:8px 10px;border:1px solid var(--bd);border-radius:6px;font-size:11px"><div style="font-weight:600">${i.name}</div><div style="color:var(--tx3);margin-top:2px">${i.cat} · ${i.price.toLocaleString()} PLN</div>${i.note?`<div style="color:var(--tx2);margin-top:2px;font-style:italic">${i.note}</div>`:''}</div>`).join('')}
 </div><div style="text-align:right;font-size:14px;font-weight:700">Итого: ${p.total.toLocaleString()} PLN</div></div></div>`;
   }).join('');
 }
@@ -3173,7 +3170,7 @@ function renderVendors(){
   if(!DB.vendorCompanies.length){c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Нет поставщиков</div>';return}
   c.innerHTML=DB.vendorCompanies.map(v=>{
     const tags=(v.tags||[]).map(t=>`<span style="display:inline-block;font-size:9px;padding:2px 8px;border-radius:4px;background:var(--acbg);color:var(--ac2);margin:2px">${esc(t)}</span>`).join('');
-    return `<div class="db-card"><div class="db-card-head"><span class="db-card-name">${esc(v.name)}</span><span class="db-card-role" style="background:rgba(139,92,246,.1);color:#8b5cf6">${esc(v.city||'')}</span></div><div style="padding:0 16px 8px;font-size:11px;color:var(--tx2);line-height:1.4">${esc(v.desc)}</div>${tags?`<div style="padding:0 16px 8px">${tags}</div>`:''}<div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Телефон</div><div class="db-card-val">${esc(v.phone||'—')}</div></div><div class="db-card-field"><div class="db-card-label">Сайт</div><div class="db-card-val">${v.website?`<a href="${safeHref('https://'+v.website)}" target="_blank" rel="noopener" style="color:var(--ac2);text-decoration:none">${esc(v.website)}</a>`:'—'}</div></div></div><div class="db-card-actions"><button class="btn sm" onclick="delVendor('${v.id}')">Удалить</button></div></div>`;
+    return `<div class="db-card"><div class="db-card-head"><span class="db-card-name">${esc(v.name)}</span><span class="db-card-role" style="background:rgba(139,92,246,.1);color:#8b5cf6">${esc(v.city||'')}</span></div><div style="padding:0 16px 8px;font-size:11px;color:var(--tx2);line-height:1.4">${esc(v.desc)}</div>${tags?`<div style="padding:0 16px 8px">${tags}</div>`:''}<div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Телефон</div><div class="db-card-val">${esc(v.phone||'—')}</div></div><div class="db-card-field"><div class="db-card-label">Сайт</div><div class="db-card-val">${v.website?`<a href="https://${esc(v.website)}" target="_blank" rel="noopener" style="color:var(--ac2);text-decoration:none">${esc(v.website)}</a>`:'—'}</div></div></div><div class="db-card-actions"><button class="btn sm" onclick="delVendor('${v.id}')">Удалить</button></div></div>`;
   }).join('');
 }
 function delVendor(id){
@@ -3188,16 +3185,16 @@ function renderSuppliers(){
     const picked=!!DB.pickedEquip[r.id];
     const img=getItemImg('suppliers',r.id);
     const imgHtml=img?`<img class="db-card-img" src="${img}" onclick="openLightbox('suppliers','${r.id}')">`:`<div class="db-card-img-placeholder" onclick="uploadPhoto('suppliers','${r.id}')"><span>&#128247;</span><span>Добавить фото</span></div>`;
-    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}">${imgHtml}<div class="db-card-head"><span class="db-card-name">${esc(r.name)}</span><span class="db-card-role" style="background:rgba(139,92,246,.1);color:#d946ef">${esc(r.category)}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Цена</div><div class="db-card-val" style="color:var(--ac2)">${r.price.toLocaleString('ru')} PLN</div></div><div class="db-card-field"><div class="db-card-label">Поставщик</div><div class="db-card-val">${esc(r.supplier)}</div></div><div class="db-card-field"><div class="db-card-label">Гарантия</div><div class="db-card-val">${esc(r.warranty)}</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePickEquip('${r.id}')">${picked?'✓ В оснащении':'+ Товар → Таб 3'}</button><button class="btn sm" onclick="delItem('suppliers','${r.id}')">Удалить</button></div></div>`;
+    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}">${imgHtml}<div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:rgba(139,92,246,.1);color:#d946ef">${r.category}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Цена</div><div class="db-card-val" style="color:var(--ac2)">${r.price.toLocaleString('ru')} PLN</div></div><div class="db-card-field"><div class="db-card-label">Поставщик</div><div class="db-card-val">${r.supplier}</div></div><div class="db-card-field"><div class="db-card-label">Гарантия</div><div class="db-card-val">${r.warranty}</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePickEquip('${r.id}')">${picked?'✓ В оснащении':'+ Товар → Таб 3'}</button><button class="btn sm" onclick="delItem('suppliers','${r.id}')">Удалить</button></div></div>`;
   }).join('');
 }
 
 function editEmployee(id){
-  const r=DB.employees.find(x=>x.id===id);if(!r)return;
+  const r=DB.employees.find(x=>x.id==id);if(!r)return;
   modalMode='employee';editingId=r.id;
   document.getElementById('modalTitle').textContent='Редактировать сотрудника';
   const fields=MODAL_FIELDS.employee;
-  document.getElementById('modalFields').innerHTML=fields.map(f=>`<div class="modal-field"><label>${f.l}</label><input id="mf_${f.k}" type="${f.t||'text'}" placeholder="${f.ph||''}" value="${esc(r[f.k]!=null?r[f.k]:'')}"></div>`).join('');
+  document.getElementById('modalFields').innerHTML=fields.map(f=>`<div class="modal-field"><label>${f.l}</label><input id="mf_${f.k}" type="${f.t||'text'}" placeholder="${f.ph||''}" value="${r[f.k]!=null?r[f.k]:''}"></div>`).join('');
   document.getElementById('modalSave').style.display='';
   document.getElementById('modalBg').classList.add('vis');
 }
@@ -3344,7 +3341,7 @@ function setRenActionPrice(renId,ai,val){
 function getRenItemCost(id){
   const p=DB.pickedRenovations[id];if(!p)return 0;
   if(p.actions&&p.actions.length)return p.actions.reduce((s,a)=>s+a.price,0);
-  const r=DB.renovations.find(x=>x.id===id);
+  const r=DB.renovations.find(x=>x.id==id);
   return(p.customPrice!=null?p.customPrice:(r?r.price:0))*(p.qty||1);
 }
 function toggleRenExpand(renId){
@@ -3365,7 +3362,7 @@ function renderSelectedRenovations(){
   const groups={};
   let totalCost=0,doneCount=0;
   pickedIds.forEach(id=>{
-    const r=DB.renovations.find(x=>x.id===id);if(!r)return;
+    const r=DB.renovations.find(x=>x.id==id);if(!r)return;
     const cat=r.cat||'Другое';
     if(!groups[cat])groups[cat]=[];
     const p=picked[id];
@@ -3618,7 +3615,7 @@ function renderPickedRooms(){
   if(!ids.length){c.innerHTML='<div style="padding:12px;text-align:center;font-size:11px;color:var(--tx3)">Добавьте комнаты из БД Помещений</div>';return}
   let html='';
   ids.forEach(id=>{
-    const r=DB.rooms.find(x=>x.id===id);
+    const r=DB.rooms.find(x=>x.id==id);
     if(!r)return;
     html+=`<div class="ci cost-row"><div class="ct" style="flex:1">${r.name}<div class="ct-sub">${r.type} · ${r.area} м²</div></div><button class="btn sm" style="color:var(--rd)" onclick="togglePick('pickedRooms','${r.id}','rooms')">✕</button></div>`;
   });
@@ -3631,7 +3628,7 @@ function renderPickedContractors(){
   if(!ids.length){c.innerHTML='<div style="padding:12px;text-align:center;font-size:11px;color:var(--tx3)">Назначьте подрядчиков из БД</div>';return}
   let html='';
   ids.forEach(id=>{
-    const r=DB.contractors.find(x=>x.id===id);
+    const r=DB.contractors.find(x=>x.id==id);
     if(!r)return;
     html+=`<div class="ci cost-row"><div class="ct" style="flex:1">${r.name}<div class="ct-sub">${r.spec} · ${r.city} · ${r.price}</div></div><button class="btn sm" style="color:var(--rd)" onclick="togglePick('pickedContractors','${r.id}','contractors')">✕</button></div>`;
   });
@@ -3757,7 +3754,7 @@ function renderSelectedEquip(){
       html+='<div class="cb">';
       g.picked.forEach(r=>{
         const roomId=picked[r.id].room||'';
-        const roomOpts=getPickedRoomsList().map(rm=>`<option value="${rm.id}" ${rm.id===roomId?'selected':''}>${rm.name}</option>`).join('');
+        const roomOpts=getPickedRoomsList().map(rm=>`<option value="${rm.id}" ${rm.id==roomId?'selected':''}>${rm.name}</option>`).join('');
         const isCustom=picked[r.id].customPrice!=null;
         html+=`<div class="ci cost-row" style="flex-wrap:nowrap"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.supplier}</div></div><select onchange="assignEquipRoom('${r.id}',this.value)" style="font-size:10px;padding:3px 6px;border:1px solid var(--bd);border-radius:6px;background:var(--sf);color:var(--tx);max-width:130px;flex-shrink:0"><option value="">— комната</option>${roomOpts}</select><div class="sel-qty" style="margin:0 4px"><button onclick="eqSelQty('${r.id}',-1)">−</button><span id="eq_${r.id}">${r.qty}</span><button onclick="eqSelQty('${r.id}',1)">+</button></div><div style="display:flex;align-items:center;gap:2px;min-width:100px;justify-content:flex-end"><input type="number" value="${r.unitPrice}" onchange="setCustomPrice('equip','${r.id}',this.value)" style="width:60px;font-size:11px;font-weight:700;color:${isCustom?'var(--or)':'var(--ac2)'};text-align:right;border:1px solid var(--bd);border-radius:4px;padding:2px 4px;background:var(--sf)"><span style="font-size:10px;color:var(--tx3)">PLN</span></div><button class="btn sm" style="color:var(--rd);flex-shrink:0" onclick="togglePickEquip('${r.id}')">✕</button></div>`;
       });
@@ -3768,7 +3765,7 @@ function renderSelectedEquip(){
   c.innerHTML=html;
 
   // Update stats
-  const prices=pickedIds.map(id=>{const s=DB.suppliers.find(x=>x.id===id);const p=picked[id];return p&&p.customPrice!=null?p.customPrice:s?s.price:0});
+  const prices=pickedIds.map(id=>{const s=DB.suppliers.find(x=>x.id==id);const p=picked[id];return p&&p.customPrice!=null?p.customPrice:s?s.price:0});
   document.getElementById('eqCount').textContent=pickedIds.length;
   document.getElementById('eqTotal').textContent=totalCost.toLocaleString('ru');
   document.getElementById('eqCats').textContent=catKeys.filter(cat=>allCats[cat].picked.length>0).length;
@@ -3784,7 +3781,7 @@ function eqSelQty(id,d){
 }
 function getPickedRoomsList(){
   // Из каталога БД
-  const fromDB=Object.keys(DB.pickedRooms).map(id=>DB.rooms.find(r=>r.id===id)).filter(Boolean);
+  const fromDB=Object.keys(DB.pickedRooms).map(id=>DB.rooms.find(r=>r.id==id)).filter(Boolean);
   // Из конструктора планировки
   const fromFP=(FP&&FP.rooms||[]).map((r,i)=>{
     const bb=fpPolyBBox(r.pts);
@@ -4849,11 +4846,11 @@ function fpShowElemInfo(idx){
     spec.fields.forEach(f=>{
       const val=el.specs[f.k]!==undefined?el.specs[f.k]:f.v;
       if(f.t==='select'){
-        html+=`<div class="modal-field"><label>${f.l}</label><select onchange="FP.elements[${idx}].specs['${f.k}']=this.value" style="width:100%">${f.opts.map(o=>`<option${o===val?' selected':''}>${o}</option>`).join('')}</select></div>`;
+        html+=`<div class="modal-field"><label>${f.l}</label><select onchange="FP.elements[${idx}].specs['${f.k}']=this.value" style="width:100%">${f.opts.map(o=>`<option${o==val?' selected':''}>${o}</option>`).join('')}</select></div>`;
       }else if(f.t==='number'){
-        html+=`<div class="modal-field"><label>${f.l}</label><input type="number" step="any" value="${esc(val)}" onchange="FP.elements[${idx}].specs['${f.k}']=parseFloat(this.value)||0" style="width:100%"></div>`;
+        html+=`<div class="modal-field"><label>${f.l}</label><input type="number" step="any" value="${val}" onchange="FP.elements[${idx}].specs['${f.k}']=parseFloat(this.value)||0" style="width:100%"></div>`;
       }else{
-        html+=`<div class="modal-field"><label>${f.l}</label><input type="text" value="${esc(val)}" onchange="FP.elements[${idx}].specs['${f.k}']=this.value" style="width:100%"></div>`;
+        html+=`<div class="modal-field"><label>${f.l}</label><input type="text" value="${val}" onchange="FP.elements[${idx}].specs['${f.k}']=this.value" style="width:100%"></div>`;
       }
     });
   }
@@ -5027,7 +5024,7 @@ function fpSave(){
     try{const old=JSON.parse(existing);if((old.rooms&&old.rooms.length)||(old.elements&&old.elements.length)){
       console.warn('fpSave blocked: refusing to overwrite '+old.rooms.length+' rooms with empty state');
       return;
-    }}catch(e){console.warn('[SVITA]',e)}
+    }}catch(e){}
   }
   // Keep rolling backup (last 3 saves)
   if(existing){
@@ -5039,7 +5036,7 @@ function fpSave(){
   uSet('svita_floorplan',json);
   // Auto-export backup to file every 10 saves
   FP._saveCount=(FP._saveCount||0)+1;
-  if(FP._saveCount%10===0){try{fpAutoBackup(data)}catch(e){console.warn('[SVITA]',e)}}
+  if(FP._saveCount%10===0){try{fpAutoBackup(data)}catch(e){}}
   // Visual feedback
   const btn=document.querySelector('[onclick*="fpSave"]');
   if(btn){btn.textContent='✓ Сохранено';btn.classList.add('gn');setTimeout(()=>{btn.textContent='Сохранить';btn.classList.remove('gn')},1500)}
@@ -5057,13 +5054,13 @@ function fpAutoBackup(data){
       store.put({id:'latest',data,ts:Date.now()});
       store.put({id:'backup_'+new Date().toISOString().slice(0,16),data,ts:Date.now()});
     };
-  }catch(e){console.warn('[SVITA]',e)}
+  }catch(e){}
 }
 
 // Restore from backup
 function fpRestoreBackup(level){
   const key=level===2?'svita_floorplan_bk2':level===1?'svita_floorplan_bk1':'svita_floorplan';
-  const raw=localStorage.getItem(key);
+  const raw=uGet(key);
   if(!raw){alert('Бэкап '+(level||0)+' не найден');return}
   try{
     const d=JSON.parse(raw);
@@ -5205,7 +5202,7 @@ function renderStaff(){
   const picked=DB.pickedStaff||{};
   const pickedIds=Object.keys(picked);
   // Show only picked staff in tab 4
-  const items=pickedIds.map(id=>DB.employees.find(e=>e.id===id)).filter(Boolean);
+  const items=pickedIds.map(id=>DB.employees.find(e=>e.id==id)).filter(Boolean);
   // Stats
   let totalFot=0;
   items.forEach(r=>{totalFot+=(r.salary||0)});
@@ -5241,13 +5238,13 @@ function renderStaff(){
 }
 
 function editStaff(id){
-  const item=DB.employees.find(e=>e.id===id);
+  const item=DB.employees.find(e=>e.id==id);
   if(!item)return;
   editingId=id;
   modalMode='staff';
   document.getElementById('modalTitle').textContent='Редактировать: '+item.name;
   const fields=MODAL_FIELDS.staff;
-  document.getElementById('modalFields').innerHTML=fields.map(f=>`<div class="modal-field"><label>${f.l}</label><input id="mf_${f.k}" type="${f.t||'text'}" placeholder="${f.ph||''}" value="${esc(item[f.k]||'')}"></div>`).join('');
+  document.getElementById('modalFields').innerHTML=fields.map(f=>`<div class="modal-field"><label>${f.l}</label><input id="mf_${f.k}" type="${f.t||'text'}" placeholder="${f.ph||''}" value="${item[f.k]||''}"></div>`).join('');
   document.getElementById('modalBg').classList.add('vis');
 }
 
@@ -5365,7 +5362,7 @@ function eqQty(btn,d){
   recalc();
 }
 function updEquipPrice(inp,sid){
-  const item=DB.suppliers.find(s=>s.id===sid);
+  const item=DB.suppliers.find(s=>s.id==sid);
   if(item)item.price=parseInt(inp.value)||0;
   recalc();
 }
@@ -5487,23 +5484,23 @@ function renderRoleCabinets(){
 }
 
 function changeUserRole(id,role){
-  const u=DB.users.find(x=>x.id===id);
+  const u=DB.users.find(x=>x.id==id);
   if(u){u.role=role;if(role==='admin')u.plan='admin';else if(!u.plan||u.plan==='admin')u.plan='trial';}
   renderUsers();buildSidebar();
 }
 function changeUserPlan(id,plan){
-  const u=DB.users.find(x=>x.id===id);
+  const u=DB.users.find(x=>x.id==id);
   if(u)u.plan=plan;
   renderUsers();
 }
 function editUser(id){
-  const item=DB.users.find(e=>e.id===id);
+  const item=DB.users.find(e=>e.id==id);
   if(!item)return;
   editingId=id;
   modalMode='user';
   document.getElementById('modalTitle').textContent='Редактировать: '+item.name;
   const fields=MODAL_FIELDS.user;
-  document.getElementById('modalFields').innerHTML=fields.map(f=>`<div class="modal-field"><label>${f.l}</label><input id="mf_${f.k}" type="${f.t||'text'}" placeholder="${f.ph||''}" value="${esc(item[f.k]||'')}"></div>`).join('');
+  document.getElementById('modalFields').innerHTML=fields.map(f=>`<div class="modal-field"><label>${f.l}</label><input id="mf_${f.k}" type="${f.t||'text'}" placeholder="${f.ph||''}" value="${item[f.k]||''}"></div>`).join('');
   document.getElementById('modalBg').classList.add('vis');
 }
 function deleteUser(id){
@@ -5606,7 +5603,7 @@ function renderCabinetTypes(){
   let totalAssigned=0,grandTotal=0;
 
   Object.entries(picked).forEach(([id,p])=>{
-    const item=DB.suppliers.find(s=>s.id===id);
+    const item=DB.suppliers.find(s=>s.id==id);
     if(!item)return;
     const qty=p.qty||1;
     const cost=item.price*qty;
@@ -5725,7 +5722,7 @@ function openModal(mode){
   const fields=MODAL_FIELDS[mode]||[];
   document.getElementById('modalFields').innerHTML=fields.map(f=>{
     const val=(mode==='property'&&activeProperty)?activeProperty[f.k]||'':'';
-    return `<div class="modal-field"><label>${f.l}</label><input id="mf_${f.k}" type="${f.t||'text'}" placeholder="${f.ph||''}" value="${esc(val)}"></div>`;
+    return `<div class="modal-field"><label>${f.l}</label><input id="mf_${f.k}" type="${f.t||'text'}" placeholder="${f.ph||''}" value="${val}"></div>`;
   }).join('');
   document.getElementById('modalBg').classList.add('vis');
 }
@@ -5743,7 +5740,7 @@ function saveModal(){
 
   // Property is special — sets activeProperty
   if(modalMode==='property'){
-    obj.id=editingId||genId();
+    obj.id=editingId||++nextId;
     activeProperty=obj;
     closeModal();
     renderProperty();
@@ -5752,7 +5749,7 @@ function saveModal(){
 
   // Premise — full property object for DB
   if(modalMode==='premise'){
-    const premiseObj={id:editingId||genId(),name:obj.name,price:obj.price||0,status:'candidate',notes:obj.notes||'',img:null,source:obj.source||'',specs:{address:obj.name,city:obj.city||'',area:obj.area||0,floors:obj.floors||0,owner_name:obj.owner_name||'',owner_phone:obj.owner_phone||''}};
+    const premiseObj={id:editingId||++nextId,name:obj.name,price:obj.price||0,status:'candidate',notes:obj.notes||'',img:null,source:obj.source||'',specs:{address:obj.name,city:obj.city||'',area:obj.area||0,floors:obj.floors||0,owner_name:obj.owner_name||'',owner_phone:obj.owner_phone||''}};
     if(editingId){
       const idx=DB.premises.findIndex(x=>x.id===editingId);
       if(idx!==-1)Object.assign(DB.premises[idx],premiseObj);
@@ -5764,8 +5761,8 @@ function saveModal(){
       const premisesCatId=DB._eqCats?.find(c=>c.slug==='premises')?.id;
       if(premisesCatId){
         const row={name:obj.name,price_pln:obj.price||0,status:'candidate',notes:obj.notes||'',source_url:obj.source||'',specs:premiseObj.specs,category_id:premisesCatId};
-        if(editingId)sbOp(sb.from('equipment').update(row).eq('id',editingId),'Обновлено');
-        else sbOp(sb.from('equipment').insert(row),'Добавлено');
+        if(editingId)sb.from('equipment').update(row).eq('id',editingId).then(()=>{});
+        else sb.from('equipment').insert(row).then(()=>{});
       }
     }
     editingId=null;
@@ -5775,7 +5772,7 @@ function saveModal(){
   }
 
   if(modalMode==='vendor'){
-    const v={id:editingId||'v'+(genId()),name:obj.name,desc:obj.desc||'',city:obj.city||'',phone:obj.phone||'',website:obj.website||'',tags:(obj.tags||'').split(',').map(t=>t.trim()).filter(Boolean)};
+    const v={id:editingId||'v'+(++nextId),name:obj.name,desc:obj.desc||'',city:obj.city||'',phone:obj.phone||'',website:obj.website||'',tags:(obj.tags||'').split(',').map(t=>t.trim()).filter(Boolean)};
     if(editingId){const idx=DB.vendorCompanies.findIndex(x=>x.id===editingId);if(idx!==-1)Object.assign(DB.vendorCompanies[idx],v)}
     else DB.vendorCompanies.push(v);
     editingId=null;closeModal();renderVendors();buildSidebar();return;
@@ -5787,7 +5784,7 @@ function saveModal(){
   // Edit existing item
   if(editingId&&table){
     const arr=DB[table];
-    const idx=arr.findIndex(x=>x.id===editingId);
+    const idx=arr.findIndex(x=>x.id==editingId);
     if(idx!==-1){
       Object.assign(arr[idx],obj);
       editingId=null;
@@ -5798,7 +5795,7 @@ function saveModal(){
   }
 
   // Add new item
-  obj.id=genId();
+  obj.id=++nextId;
   if(modalMode==='room')obj.area=Math.round((obj.w||0)*(obj.l||0)*100)/100;
   if(modalMode==='contractor')obj.rating=0;
   if(modalMode==='cabinetType')obj.equipCats=[];
@@ -5826,7 +5823,7 @@ function calcTotals(){
   const eng=getAllCosts('elec_')+getAllCosts('water_')+getAllCosts('vent_')+getAllCosts('sec_');
   let equip=0;
   Object.entries(DB.pickedEquip||{}).forEach(([id,p])=>{
-    const item=DB.suppliers.find(s=>s.id===id);
+    const item=DB.suppliers.find(s=>s.id==id);
     if(item)equip+=(p.customPrice!=null?p.customPrice:item.price)*(p.qty||1);
   });
   const docs=(DB.docItems||[]).reduce((s,d)=>s+d.price,0);
@@ -5867,8 +5864,8 @@ function _recalcNow(){
   updateSumbar();
   updateZoneStats();
   updateOverviewStats();
-  if(cur==='budget')updateBudget(t);
-  if(cur==='profit')updateProfit(t);
+  if(cur==='budget')updateBudget();
+  if(cur==='profit')updateProfit();
   updateTabCosts(t);
   updateAchievements();
 }
@@ -5885,7 +5882,7 @@ function updateTabCosts(t){
   // Tab 4: Персонал — ФОТ/мес
   let fot=0;
   Object.entries(DB.pickedStaff||{}).forEach(([id,p])=>{
-    const e=DB.employees.find(x=>x.id===id);
+    const e=DB.employees.find(x=>x.id==id);
     if(e)fot+=(e.salary||0)*(p.qty||1);
   });
   const tc4=document.getElementById('tabCost4');
@@ -5894,7 +5891,7 @@ function updateTabCosts(t){
   let svcTotal=0;
   const svcPicked=DB.pickedServices||{};
   Object.entries(svcPicked).forEach(([id,p])=>{
-    const s=DB.services.find(x=>x.id===id);
+    const s=DB.services.find(x=>x.id==id);
     if(s)svcTotal+=(p.customPrice!=null?p.customPrice:s.price)*(p.qty||1);
   });
   const tc5=document.getElementById('tabCost5');
@@ -5906,7 +5903,7 @@ function updateTabCosts(t){
   const svcRevEl=document.getElementById('svcRevenue');
   const svcPickedCount=Object.keys(svcPicked).length;
   if(svcCountEl)svcCountEl.textContent=svcPickedCount;
-  if(svcCatsEl){const cats=new Set();Object.keys(svcPicked).forEach(id=>{const s=DB.services.find(x=>x.id===id);if(s)cats.add(s.category||s.category_id||'Другое')});svcCatsEl.textContent=cats.size}
+  if(svcCatsEl){const cats=new Set();Object.keys(svcPicked).forEach(id=>{const s=DB.services.find(x=>x.id==id);if(s)cats.add(s.category||s.category_id||'Другое')});svcCatsEl.textContent=cats.size}
   if(svcAvgEl)svcAvgEl.textContent=svcPickedCount>0?Math.round(svcTotal/svcPickedCount).toLocaleString('ru'):'0';
   if(svcRevEl){const chairs=parseInt(document.getElementById('chairsCount')?.value||7);const ppd=parseInt(document.getElementById('patientsPerChair')?.value||6);const wd=parseInt(document.getElementById('workDays')?.value||22);const avgP=svcPickedCount>0?svcTotal/svcPickedCount:0;svcRevEl.textContent=Math.round(avgP*chairs*ppd*wd).toLocaleString('ru')}
   const s5t=document.getElementById('s5Total');
@@ -5937,8 +5934,10 @@ function updateTabCosts(t){
 }
 
 function updateOverviewStats(){
+  // Stage progress based on real data
   const stages=document.querySelectorAll('#stagesGrid .stg');
   if(!stages.length)return;
+  const t=calcTotals();
 
   // S1: Помещение — has property + rooms
   const s1prog=activeProperty?50:0;
@@ -6050,8 +6049,8 @@ function showAchToast(count){
   setTimeout(()=>t.remove(),3000);
 }
 
-function updateBudget(t){
-  if(!t)t=calcTotals();
+function updateBudget(){
+  const t=calcTotals();
   document.getElementById('budgetGrand').textContent=t.grand.toLocaleString('ru')+' PLN';
   document.getElementById('bCatRent').textContent=t.rent.toLocaleString('ru')+' PLN';
   document.getElementById('bCatEng').textContent=t.eng.toLocaleString('ru')+' PLN';
@@ -6066,7 +6065,7 @@ function updateBudget(t){
   // Renovations
   Object.keys(DB.pickedRenovations||{}).forEach(id=>{
     const c=getRenItemCost(id);if(c<=0)return;
-    const item=[...DB.services,...(DB.conceptItems||[])].find(s=>s.id===id);
+    const item=[...DB.services,...(DB.conceptItems||[])].find(s=>s.id==id);
     items.push({name:(item?item.name:'Работа #'+id),cost:c});
   });
   // Engineering (from DOM data-cost inputs)
@@ -6079,7 +6078,7 @@ function updateBudget(t){
   });
   // Equipment
   Object.entries(DB.pickedEquip||{}).forEach(([id,p])=>{
-    const item=DB.suppliers.find(s=>s.id===id);if(!item)return;
+    const item=DB.suppliers.find(s=>s.id==id);if(!item)return;
     const price=p.customPrice!=null?p.customPrice:item.price;
     const qty=p.qty||1;if(price*qty<=0)return;
     items.push({name:esc(item.name)+(qty>1?' x'+qty:''),cost:price*qty});
@@ -6093,8 +6092,8 @@ function updateBudget(t){
   list.innerHTML='<table class="dt"><thead><tr><th>Позиция</th><th style="text-align:right">Стоимость</th></tr></thead><tbody>'+items.map(i=>`<tr><td>${i.name}</td><td style="text-align:right;font-weight:600;color:var(--ac2)">${i.cost.toLocaleString('ru')} PLN</td></tr>`).join('')+`<tr style="border-top:2px solid var(--bd)"><td style="font-weight:800">ИТОГО</td><td style="text-align:right;font-weight:800;color:var(--ac2);font-size:14px">${t.grand.toLocaleString('ru')} PLN</td></tr></tbody></table>`;
 }
 
-function updateProfit(t){
-  if(!t)t=calcTotals();
+function updateProfit(){
+  const t=calcTotals();
   const profit=t.revenue-t.expenses;
   const margin=t.revenue>0?Math.round(profit/t.revenue*100):0;
   const roi=t.grand>0?Math.round(profit*12/t.grand*100):0;
@@ -6217,7 +6216,7 @@ function updateRightPanel(){
     const picked=DB.pickedServices||{};
     const pIds=Object.keys(picked);
     let total=0;
-    pIds.forEach(id=>{const s=DB.services.find(x=>x.id===id);if(s)total+=(picked[id].customPrice!=null?picked[id].customPrice:s.price)*(picked[id].qty||1)});
+    pIds.forEach(id=>{const s=DB.services.find(x=>x.id==id);if(s)total+=(picked[id].customPrice!=null?picked[id].customPrice:s.price)*(picked[id].qty||1)});
     const avgP=pIds.length?Math.round(total/pIds.length):0;
     html+=`<div class="rp-sec"><div class="rp-sec-title">Ценообразование</div>
     <div class="rp-stat"><span class="rp-stat-label">Процедур</span><span class="rp-stat-val">${pIds.length}</span></div>
