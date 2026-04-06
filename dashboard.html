@@ -3279,36 +3279,96 @@ function setRenVal(id,val){
   DB.pickedRenovations[id].customVal=Math.max(0,parseFloat(val)||0);
   renderSelectedRenovations();recalc();
 }
+// ── Renovation actions (sub-tasks) ──
+function addRenAction(renId){
+  const p=DB.pickedRenovations[renId];if(!p)return;
+  if(!p.actions)p.actions=[];
+  const nameEl=document.getElementById('raName_'+renId);
+  const name=(nameEl?nameEl.value:'').trim();
+  if(!name)return;
+  p.actions.push({name,price:0,done:false});
+  if(nameEl)nameEl.value='';
+  savePicked();renderSelectedRenovations();recalc();
+}
+function removeRenAction(renId,ai){
+  const p=DB.pickedRenovations[renId];if(!p||!p.actions)return;
+  p.actions.splice(ai,1);
+  savePicked();renderSelectedRenovations();recalc();
+}
+function toggleRenActionDone(renId,ai){
+  const p=DB.pickedRenovations[renId];if(!p||!p.actions||!p.actions[ai])return;
+  p.actions[ai].done=!p.actions[ai].done;
+  savePicked();renderSelectedRenovations();recalc();
+}
+function setRenActionPrice(renId,ai,val){
+  const p=DB.pickedRenovations[renId];if(!p||!p.actions||!p.actions[ai])return;
+  p.actions[ai].price=Math.max(0,parseFloat(val)||0);
+  savePicked();renderSelectedRenovations();recalc();
+}
+function getRenItemCost(id){
+  const p=DB.pickedRenovations[id];if(!p)return 0;
+  if(p.actions&&p.actions.length)return p.actions.reduce((s,a)=>s+a.price,0);
+  const r=DB.renovations.find(x=>x.id==id);
+  return(p.customPrice!=null?p.customPrice:(r?r.price:0))*(p.qty||1);
+}
+function toggleRenExpand(renId){
+  const el=document.getElementById('renActions_'+renId);
+  if(!el)return;
+  el.style.display=el.style.display==='none'?'block':'none';
+}
+
 function renderSelectedRenovations(){
   const c=document.getElementById('selectedRenCards');
   if(!c)return;
   const picked=DB.pickedRenovations||{};
   const pickedIds=Object.keys(picked);
   if(!pickedIds.length){c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Добавьте работы из каталога</div>';document.getElementById('renCount').textContent='0';document.getElementById('renTotal').textContent='0';document.getElementById('renCats').textContent='0 категорий';document.getElementById('renDone').textContent='0';return}
-  // Group picked items by category
   const groups={};
   let totalCost=0,doneCount=0;
   pickedIds.forEach(id=>{
-    const r=DB.renovations.find(x=>x.id==id);
-    if(!r)return;
+    const r=DB.renovations.find(x=>x.id==id);if(!r)return;
     const cat=r.cat||'Другое';
     if(!groups[cat])groups[cat]=[];
     const p=picked[id];
-    const qty=p.qty||1;const done=!!p.done;
-    const unitPrice=p.customPrice!=null?p.customPrice:r.price;
-    totalCost+=unitPrice*qty;
-    if(done)doneCount++;
-    const curVal=p.customVal!=null?p.customVal:(r.baseVal||'');
-    groups[cat].push({...r,qty,done,unitPrice,isCustom:p.customPrice!=null,curVal});
+    const actions=p.actions||[];
+    const itemCost=getRenItemCost(id);
+    totalCost+=itemCost;
+    const allDone=actions.length?actions.every(a=>a.done):!!p.done;
+    if(allDone&&actions.length)doneCount++;
+    else if(p.done&&!actions.length)doneCount++;
+    groups[cat].push({...r,actions,itemCost,allDone,p});
   });
   let html='';
   Object.keys(groups).forEach(cat=>{
     const items=groups[cat];
-    const catTotal=items.reduce((s,r)=>s+r.unitPrice*r.qty,0);
-    html+=`<div class="c"><div class="ch"><h3 style="font-size:12px">${cat}</h3><span style="font-size:10px;color:var(--gn);font-weight:600">${items.length} работ · ${catTotal.toLocaleString('ru')} PLN</span></div><div class="cb" style="padding:8px 12px">`;
+    const catTotal=items.reduce((s,r)=>s+r.itemCost,0);
+    html+=`<div class="c"><div class="ch"><h3 style="font-size:12px">${cat}</h3><span style="font-size:10px;color:var(--gn);font-weight:600">${items.length} работ · ${catTotal.toLocaleString('ru')} PLN</span></div><div class="cb">`;
     items.forEach(r=>{
-      const valInput=r.unit?`<div style="display:flex;align-items:center;gap:2px;flex-shrink:0"><input type="number" value="${r.curVal}" onchange="setRenVal('${r.id}',this.value)" style="width:45px;font-size:10px;font-weight:600;color:${r.curVal!=r.baseVal?'var(--or)':'var(--tx)'};text-align:center;border:1px solid var(--bd);border-radius:4px;padding:2px 3px;background:var(--sf)"><span style="font-size:9px;color:var(--tx3);white-space:nowrap">${r.unit}</span></div>`:'';
-      html+=`<div class="ci cost-row" style="flex-wrap:nowrap;padding:6px 0;${r.done?'opacity:0.5':''}"><label style="display:flex;align-items:center;cursor:pointer;flex-shrink:0"><input type="checkbox" ${r.done?'checked':''} onchange="toggleRenDone('${r.id}')" style="margin-right:8px"></label><div class="ct" style="flex:1;min-width:0;font-size:11px;${r.done?'text-decoration:line-through':''}">${r.name}</div>${valInput}<div class="sel-qty" style="margin:0 4px"><button onclick="renSelQty('${r.id}',-1)">−</button><span>${r.qty}</span><button onclick="renSelQty('${r.id}',1)">+</button></div><div style="display:flex;align-items:center;gap:2px;min-width:90px;justify-content:flex-end"><input type="number" value="${r.unitPrice}" onchange="setCustomPrice('ren','${r.id}',this.value)" style="width:55px;font-size:11px;font-weight:700;color:${r.isCustom?'var(--or)':'var(--ac2)'};text-align:right;border:1px solid var(--bd);border-radius:4px;padding:2px 4px;background:var(--sf)"><span style="font-size:9px;color:var(--tx3)">PLN</span></div><button class="btn sm" style="color:var(--rd);padding:2px 6px;margin-left:4px" onclick="togglePickRenovation('${r.id}')">&#10005;</button></div>`;
+      const actCnt=r.actions.length;
+      const actDone=r.actions.filter(a=>a.done).length;
+      const pct=actCnt?Math.round(actDone/actCnt*100):0;
+      const costColor=r.itemCost>0?'var(--gn)':'var(--tx3)';
+      // Header row — clickable to expand
+      html+=`<div style="border-bottom:1px solid var(--bd)">`;
+      html+=`<div style="display:flex;align-items:center;gap:8px;padding:10px 12px;cursor:pointer" onclick="toggleRenExpand('${r.id}')">`;
+      html+=`<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600;${r.allDone?'text-decoration:line-through;opacity:.5':''}">${esc(r.name)}</div>`;
+      if(actCnt){
+        html+=`<div style="display:flex;align-items:center;gap:6px;margin-top:4px"><div style="flex:1;max-width:120px;height:3px;background:var(--bd);border-radius:2px;overflow:hidden"><div style="width:${pct}%;height:100%;background:var(--gn);border-radius:2px"></div></div><span style="font-size:9px;color:var(--tx3)">${actDone}/${actCnt}</span></div>`;
+      }
+      html+=`</div><div style="text-align:right;flex-shrink:0"><div style="font-size:14px;font-weight:700;color:${costColor}">${r.itemCost.toLocaleString('ru')} PLN</div><div style="font-size:9px;color:var(--tx3)">${actCnt} действий</div></div><button class="btn sm" style="color:var(--rd);padding:2px 6px;flex-shrink:0" onclick="event.stopPropagation();togglePickRenovation('${r.id}')">&#10005;</button></div>`;
+      // Expandable actions panel
+      html+=`<div id="renActions_${r.id}" style="display:none;padding:0 12px 10px;background:var(--sf)">`;
+      r.actions.forEach((a,ai)=>{
+        html+=`<div style="display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid var(--bd);${a.done?'opacity:.5':''}">`;
+        html+=`<input type="checkbox" ${a.done?'checked':''} onchange="toggleRenActionDone('${r.id}',${ai})" style="flex-shrink:0">`;
+        html+=`<div style="flex:1;font-size:11px;${a.done?'text-decoration:line-through':''}">${esc(a.name)}</div>`;
+        html+=`<div style="display:flex;align-items:center;gap:2px;flex-shrink:0"><input type="number" value="${a.price}" onchange="setRenActionPrice('${r.id}',${ai},this.value)" style="width:60px;font-size:11px;font-weight:600;color:var(--ac2);text-align:right;border:1px solid var(--bd);border-radius:4px;padding:2px 4px;background:var(--bg)"><span style="font-size:9px;color:var(--tx3)">PLN</span></div>`;
+        html+=`<button onclick="removeRenAction('${r.id}',${ai})" style="background:none;border:none;color:var(--rd);cursor:pointer;font-size:12px;padding:2px">&#10005;</button>`;
+        html+=`</div>`;
+      });
+      // Add new action input
+      html+=`<div style="display:flex;align-items:center;gap:6px;padding:8px 0"><input id="raName_${r.id}" type="text" placeholder="Новое действие..." onkeydown="if(event.key==='Enter')addRenAction('${r.id}')" style="flex:1;font-size:11px;border:1px solid var(--bd);border-radius:6px;padding:6px 8px;background:var(--bg);color:var(--tx)"><button class="btn sm gn" onclick="addRenAction('${r.id}')" style="padding:4px 10px;font-size:10px">+ Добавить</button></div>`;
+      html+=`</div></div>`;
     });
     html+='</div></div>';
   });
@@ -5514,10 +5574,7 @@ function calcTotals(){
   const depMonths=parseInt(document.getElementById('depositMonths')?.value)||3;
   const deposit=rentMonth*depMonths;
   let renovation=0;
-  Object.entries(DB.pickedRenovations||{}).forEach(([id,p])=>{
-    const item=DB.renovations.find(r=>r.id==id);
-    if(item)renovation+=(p.customPrice!=null?p.customPrice:item.price)*(p.qty||1);
-  });
+  Object.keys(DB.pickedRenovations||{}).forEach(id=>{renovation+=getRenItemCost(id)});
   const rent=deposit+renovation;
   const eng=getAllCosts('elec_')+getAllCosts('water_')+getAllCosts('vent_')+getAllCosts('sec_');
   let equip=0;
