@@ -136,7 +136,7 @@
 
 /* GRID */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+.g3{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
 
 /* STAGES */
 .stg{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:20px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
@@ -300,7 +300,7 @@
 
 /* RESPONSIVE */
 @media(max-width:1400px){.rpanel{width:260px}.main{margin-right:260px}}
-@media(max-width:1100px){.sts,.g3{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}.rpanel{display:none}.main{margin-right:0}}
+@media(max-width:1100px){.sts{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:1fr}.rpanel{display:none}.main{margin-right:0}}
 @media(max-width:768px){.side{display:none}.main{margin-left:0!important}.sts{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}.sec{padding:12px}.login-box{width:90%;padding:24px}.tab{padding:10px 8px;font-size:10px;gap:4px}.tab .tab-icon{display:none}.top-uname,.top-urole{display:none}.top-user{padding:4px}}
 </style>
 </head>
