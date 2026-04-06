@@ -701,7 +701,7 @@ Apple</button>
 </div></div>
 
 <!-- БЛОК 3: СТОИМОСТЬ (полная ширина) -->
-<div class="c"><div class="ch"><h3>&#128176; Стоимость помещения</h3></div>
+<div class="c" id="propertyCostBlock"><div class="ch"><h3>&#128176; Стоимость аренды</h3></div>
 <div class="cb">
 <div class="g3">
 <div class="cost-row" style="flex-direction:column;gap:4px;align-items:flex-start"><label style="font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase">Аренда / мес.</label><div class="cost-val"><input class="price-edit" data-cost="rent" value="12000" onchange="recalc()" style="width:100px"> PLN</div></div>
@@ -1912,15 +1912,20 @@ function renderProperty(){
   if(!activeProperty){
     wrap.style.display='none';
     const addBtn=document.getElementById('addPropertyBtn');if(addBtn)addBtn.style.display='flex';
-    document.getElementById('propArea').textContent='--';
-    document.getElementById('propUsable').textContent='--';
-    document.getElementById('propCabinets').textContent='--';
-    document.getElementById('propFloor').textContent='--';
+    const costBlk=document.getElementById('propertyCostBlock');if(costBlk)costBlk.style.display='none';
+    document.getElementById('propArea').textContent='—';
+    document.getElementById('propUsable').textContent='—';
+    document.getElementById('propCabinets').textContent='—';
+    document.getElementById('propFloor').textContent='—';
     document.getElementById('propFloorSub').textContent='';
+    const rentEl=document.querySelector('[data-cost="rent"]');if(rentEl)rentEl.value=0;
+    const depVal=document.getElementById('depositVal');if(depVal)depVal.textContent='—';
+    const s1el=document.getElementById('s1CostTotal');if(s1el)s1el.textContent='— PLN';
     return;
   }
   wrap.style.display='';
   const addBtn=document.getElementById('addPropertyBtn');if(addBtn)addBtn.style.display='none';
+  const costBlk=document.getElementById('propertyCostBlock');if(costBlk)costBlk.style.display='';
   const p=activeProperty;
   const propInp=(k,v,t,sfx)=>`<input class="prop-edit" data-prop="${k}" type="${t||'text'}" value="${esc(v)}" onchange="fpPropEdit('${k}',this.value)" style="width:100%;background:transparent;border:1px solid transparent;border-radius:4px;padding:2px 4px;font-size:12px;color:var(--tx);font-family:var(--f);outline:none" onfocus="this.style.borderColor='var(--ac)';this.style.background='var(--sf)'" onblur="this.style.borderColor='transparent';this.style.background='transparent'">${sfx||''}`;
   b.innerHTML=`<div class="db-card" style="margin:0;border:none;padding:0"><div class="db-card-head" style="margin-bottom:12px"><span class="db-card-name" style="font-size:16px">${propInp('name',p.name)}</span><span class="db-card-role" style="background:var(--gnbg);color:var(--gn)">${propInp('type',p.type)}</span></div><div class="db-card-grid" style="grid-template-columns:repeat(3,1fr);gap:12px"><div class="db-card-field"><div class="db-card-label">Город</div><div class="db-card-val">${propInp('city',p.city)}</div></div><div class="db-card-field"><div class="db-card-label">Площадь</div><div class="db-card-val">${propInp('area',p.area,'number',' м²')}</div></div><div class="db-card-field"><div class="db-card-label">Этаж</div><div class="db-card-val" style="display:flex;gap:2px;align-items:center">${propInp('floor',p.floor,'number')} / ${propInp('floors_total',p.floors_total,'number')}</div></div><div class="db-card-field"><div class="db-card-label">Длина</div><div class="db-card-val">${propInp('length',p.length,'number',' м')}</div></div><div class="db-card-field"><div class="db-card-label">Ширина</div><div class="db-card-val">${propInp('width',p.width,'number',' м')}</div></div><div class="db-card-field"><div class="db-card-label">Высота</div><div class="db-card-val">${propInp('height',p.height,'number',' м')}</div></div><div class="db-card-field"><div class="db-card-label">Назначение</div><div class="db-card-val">${propInp('purpose',p.purpose)}</div></div><div class="db-card-field"><div class="db-card-label">Цена/м²</div><div class="db-card-val" style="color:var(--ac2)">${propInp('price_m2',p.price_m2,'number',' PLN')}</div></div><div class="db-card-field"><div class="db-card-label">Источник</div><div class="db-card-val">${propInp('source',p.source||'')}</div></div></div></div>`;
