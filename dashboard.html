@@ -17,6 +17,8 @@
 .login-box{background:var(--sf);border:1px solid var(--bd2);border-radius:16px;padding:40px;width:440px;max-width:95vw;text-align:center}
 .login-box h1{font-size:24px;font-weight:800;margin-bottom:4px}
 .login-box .sub{font-size:12px;color:var(--tx3);margin-bottom:28px}
+.login-box input::placeholder{font-size:14px;font-weight:600;color:var(--tx3);opacity:.7}
+.login-box input::-webkit-input-placeholder{font-size:14px;font-weight:600;color:var(--tx3);opacity:.7}
 .login-roles{display:grid;gap:8px;margin-bottom:20px}
 .login-role{display:flex;align-items:center;gap:12px;padding:14px 16px;border:1px solid var(--bd);border-radius:10px;cursor:pointer;transition:all .15s;text-align:left}
 .login-role:hover{border-color:var(--bd2);background:var(--sf2)}
@@ -67,6 +69,33 @@
 .top-l{display:flex;align-items:center;gap:12px}
 .top-p{font-size:14px;font-weight:700}.top-t{font-size:10px;padding:3px 8px;border-radius:5px;font-weight:600}
 .top-bc{font-size:11px;color:var(--tx3)}
+.top-r{display:flex;align-items:center;gap:8px}
+.top-upgrade{padding:5px 14px;border-radius:8px;font-size:10px;font-weight:700;border:none;cursor:pointer;font-family:var(--f);background:linear-gradient(135deg,#c9a96e,#e8c97a);color:#000;transition:all .15s;white-space:nowrap;letter-spacing:.02em}
+.top-upgrade:hover{filter:brightness(1.1);transform:scale(1.02)}
+.top-gear{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;border:1px solid var(--bd);background:transparent;color:var(--tx2);cursor:pointer;transition:all .15s}
+.top-gear:hover{background:var(--sf2);color:var(--tx)}
+.top-user{position:relative;display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px 10px 4px 4px;border-radius:10px;transition:background .15s}
+.top-user:hover{background:var(--sf2)}
+.top-uav{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.top-uname{font-size:12px;font-weight:600;color:var(--tx);line-height:1.2}
+.top-urole{font-size:9px;color:var(--tx3);line-height:1.2}
+.top-umenu{position:absolute;top:calc(100% + 8px);right:0;background:var(--sf);border:1px solid var(--bd2);border-radius:14px;padding:0;min-width:280px;opacity:0;pointer-events:none;transform:translateY(-6px);transition:all .2s;z-index:999;box-shadow:0 16px 48px rgba(0,0,0,.35);overflow:hidden}
+.top-user.open .top-umenu{opacity:1;pointer-events:auto;transform:translateY(0)}
+.top-umenu-head{padding:24px 20px 16px;text-align:center;border-bottom:1px solid var(--bd)}
+.top-umenu-avatar{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;margin:0 auto 10px}
+.top-umenu-name{font-size:14px;font-weight:700;color:var(--tx)}
+.top-umenu-email{font-size:11px;color:var(--tx3);margin-top:2px}
+.top-umenu-plan{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:11px;color:var(--tx2)}
+.top-umenu-plan-badge{padding:2px 8px;border-radius:5px;font-size:9px;font-weight:700;letter-spacing:.04em}
+.top-umenu-body{padding:6px}
+.top-umenu-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;font-size:12px;color:var(--tx2);cursor:pointer;transition:all .1s;border:none;background:none;width:100%;font-family:var(--f);text-align:left}
+.top-umenu-item:hover{background:var(--sf2);color:var(--tx)}
+.top-umenu-item.danger{color:var(--rd)}
+.top-umenu-item.danger:hover{background:rgba(239,68,68,.08)}
+.top-umenu-sep{height:1px;background:var(--bd);margin:0}
+.top-umenu-foot{padding:12px 20px;text-align:center;border-top:1px solid var(--bd);font-size:10px;color:var(--tx3)}
+.top-umenu-foot a{color:var(--ac2);text-decoration:none;margin:0 4px}
+.top-umenu-foot a:hover{text-decoration:underline}
 .btn{padding:6px 14px;border-radius:7px;font-size:11px;font-weight:600;border:1px solid var(--bd);background:transparent;color:var(--tx2);cursor:pointer;font-family:var(--f);transition:all .15s}
 .btn:hover{background:var(--sf2);color:var(--tx)}.btn.pr{background:var(--ac);border-color:transparent;color:#fff}.btn.pr:hover{background:#2563eb}
 .btn.gn{background:var(--gn);border-color:transparent;color:#fff}.btn.sm{padding:4px 10px;font-size:10px}
@@ -274,11 +303,10 @@
 /* RESPONSIVE */
 @media(max-width:1400px){.rpanel{width:260px}.main{margin-right:260px}}
 @media(max-width:1100px){.sts,.g3{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}.rpanel{display:none}.main{margin-right:0}}
-@media(max-width:768px){.side{display:none}.main{margin-left:0!important}.sts{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}.sec{padding:12px}.login-box{width:90%;padding:24px}.tab{padding:10px 8px;font-size:10px;gap:4px}.tab .tab-icon{display:none}}
+@media(max-width:768px){.side{display:none}.main{margin-left:0!important}.sts{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr}.sec{padding:12px}.login-box{width:90%;padding:24px}.tab{padding:10px 8px;font-size:10px;gap:4px}.tab .tab-icon{display:none}.top-uname,.top-urole{display:none}.top-user{padding:4px}}
 </style>
 </head>
 <body>
-<div style="background:linear-gradient(90deg,#ff4d6d,#B8860B);color:#fff;text-align:center;padding:8px 16px;font:600 12px/1.4 'JetBrains Mono',monospace;letter-spacing:0.06em;position:relative;z-index:9999">DEMO VERSION — svita.labs67.com</div>
 
 <!-- ═══════════════ LOGIN SCREEN ═══════════════ -->
 <div class="login-bg" id="loginScreen">
@@ -333,11 +361,11 @@ Apple</button>
 <div><div class="lr-name">Владелец / Заказчик</div><div class="lr-desc">Конструктор клиники: этапы, бюджет</div></div></div>
 <div class="login-role" data-role="contractor" onclick="selectRole(this)">
 <div class="lr-icon" style="background:linear-gradient(135deg,var(--or),var(--yl))">&#128736;</div>
-<div><div class="lr-name">Подрядчик</div><div class="lr-desc">Внесение услуг и цен</div></div></div>
+<div><div class="lr-name">Подрядчик</div><div class="lr-desc">Работы и коммерческие предложения</div></div></div>
 <div class="login-role" data-role="supplier" onclick="selectRole(this)">
 <div class="lr-icon" style="background:linear-gradient(135deg,#8b5cf6,#d946ef)">&#128230;</div>
 <div><div class="lr-name">Поставщик</div><div class="lr-desc">Каталог оборудования</div></div></div>
-<div class="login-role" data-role="employee" onclick="selectRole(this)" style="display:none">
+<div class="login-role" data-role="employee" onclick="selectRole(this)">
 <div class="lr-icon" style="background:linear-gradient(135deg,#06b6d4,var(--ac))">&#129489;</div>
 <div><div class="lr-name">Сотрудник</div><div class="lr-desc">Профиль специалиста</div></div></div>
 </div>
@@ -386,6 +414,44 @@ Apple</button>
 <button class="btn pr" style="width:100%;padding:10px;font-size:12px" onclick="showLogin()">Войти</button>
 </div>
 
+<!-- STEP 3: ONBOARDING — complete profile after OAuth/register -->
+<div id="loginOnboard" style="display:none">
+<div style="font-size:20px;margin-bottom:4px">&#128075;</div>
+<div style="font-size:14px;font-weight:700;margin-bottom:4px">Добро пожаловать!</div>
+<div style="font-size:11px;color:var(--tx3);margin-bottom:20px">Заполните профиль для начала работы</div>
+
+<div class="modal-field" style="text-align:left;margin-bottom:12px">
+<label>Имя и фамилия</label>
+<input id="obName" type="text" placeholder="Иван Петров" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
+</div>
+<div class="modal-field" style="text-align:left;margin-bottom:12px">
+<label>Телефон</label>
+<input id="obPhone" type="tel" placeholder="+48 500 000 000" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
+</div>
+<div class="modal-field" style="text-align:left;margin-bottom:12px">
+<label>Компания / Клиника</label>
+<input id="obCompany" type="text" placeholder="Название клиники или компании" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
+</div>
+
+<div style="text-align:left;margin-bottom:8px"><label style="font-size:11px;font-weight:600;color:var(--tx2)">Ваша роль <span style="font-size:9px;color:var(--tx3);font-weight:400">(нельзя изменить позже)</span></label></div>
+<div class="login-roles" id="obRoles" style="margin-bottom:6px">
+<div class="login-role" data-role="owner" onclick="selectObRole(this)">
+<div class="lr-icon" style="background:linear-gradient(135deg,var(--gn),#059669)">&#127970;</div>
+<div><div class="lr-name">Владелец / Заказчик</div><div class="lr-desc">Конструктор клиники: этапы, бюджет</div></div></div>
+<div class="login-role" data-role="contractor" onclick="selectObRole(this)">
+<div class="lr-icon" style="background:linear-gradient(135deg,var(--or),var(--yl))">&#128736;</div>
+<div><div class="lr-name">Подрядчик</div><div class="lr-desc">Работы и коммерческие предложения</div></div></div>
+<div class="login-role" data-role="supplier" onclick="selectObRole(this)">
+<div class="lr-icon" style="background:linear-gradient(135deg,#8b5cf6,#d946ef)">&#128230;</div>
+<div><div class="lr-name">Поставщик</div><div class="lr-desc">Каталог оборудования</div></div></div>
+<div class="login-role" data-role="employee" onclick="selectObRole(this)">
+<div class="lr-icon" style="background:linear-gradient(135deg,#06b6d4,var(--ac))">&#129489;</div>
+<div><div class="lr-name">Сотрудник</div><div class="lr-desc">Профиль специалиста</div></div></div>
+</div>
+<div id="obError" style="font-size:11px;color:var(--rd);min-height:18px;margin-bottom:8px"></div>
+<button class="btn pr" style="width:100%;padding:12px;font-size:13px" onclick="completeOnboarding()">Начать работу</button>
+</div>
+
 </div>
 </div>
 
@@ -406,32 +472,58 @@ Apple</button>
 <div class="main">
 <div class="top">
 <div class="top-l"><span class="top-p">Свитлица</span><span class="top-t" id="roleLabel" style="background:var(--acbg);color:var(--ac2)">Стоматология</span><span class="top-bc" id="bc">Обзор</span></div>
+<div class="top-r">
 <div style="display:flex;gap:6px" id="topActions">
 <button class="btn" onclick="nav('overview')">&larr; Обзор</button>
 <button class="btn pr" onclick="nextStage()">Далее &rarr;</button>
 </div>
+<button class="top-upgrade" onclick="showUpgradeModal()">&#9889; Upgrade</button>
+<button class="top-gear" onclick="showProfileModal()" title="Настройки">&#9881;</button>
+<div class="top-user" id="topUser" onclick="this.classList.toggle('open')">
+<div class="top-uav" id="topAvatar" style="background:var(--ac)">АВ</div>
+<div><div class="top-uname" id="topUserName">Пользователь</div><div class="top-urole" id="topUserRole">Роль</div></div>
+<div class="top-umenu">
+<div class="top-umenu-head">
+<div class="top-uav top-umenu-avatar" id="topMenuAvatar" style="background:var(--ac)">АВ</div>
+<div class="top-umenu-name" id="topMenuName">Пользователь</div>
+<div class="top-umenu-email" id="topMenuEmail">user@email.com</div>
+<div class="top-umenu-plan"><span class="top-umenu-plan-badge" id="topMenuPlan" style="background:var(--acbg);color:var(--ac2)">TRIAL</span></div>
+</div>
+<div class="top-umenu-body">
+<button class="top-umenu-item" onclick="event.stopPropagation();nav('my-concepts')">&#128209; Мои концепции</button>
+<button class="top-umenu-item" onclick="event.stopPropagation();showProfileModal()">&#9881; Настройки</button>
+<button class="top-umenu-item" onclick="event.stopPropagation();showUpgradeModal()">&#9889; Сменить тариф</button>
+<div class="top-umenu-sep"></div>
+<button class="top-umenu-item danger" onclick="event.stopPropagation();logout()">&#10140; Выход</button>
+</div>
+<div class="top-umenu-foot">SVITA &middot; <a href="#">Условия</a> &middot; <a href="#">Политика</a></div>
+</div>
+</div>
+</div>
 </div>
 <div class="tab-bar" id="tabBar">
 <div class="tab act" data-nav="s1" onclick="nav('s1')"><span class="tab-num">1</span><span class="tab-icon">&#127970;</span>Помещение<span class="tab-cost" id="tabCost1"></span></div>
-<div class="tab" data-nav="s2" onclick="nav('s2')"><span class="tab-num">2</span><span class="tab-icon">&#128736;</span>Услуги<span class="tab-cost" id="tabCost2"></span></div>
+<div class="tab" data-nav="s2" onclick="nav('s2')"><span class="tab-num">2</span><span class="tab-icon">&#128736;</span>Модернизация<span class="tab-cost" id="tabCost2"></span></div>
 <div class="tab" data-nav="s3" onclick="nav('s3')"><span class="tab-num">3</span><span class="tab-icon">&#128230;</span>Оснащение<span class="tab-cost" id="tabCost3"></span></div>
 <div class="tab" data-nav="s4" onclick="nav('s4')"><span class="tab-num">4</span><span class="tab-icon">&#129489;</span>Персонал<span class="tab-cost" id="tabCost4"></span></div>
-<div class="tab" data-nav="s5" onclick="nav('s5')"><span class="tab-num">5</span><span class="tab-icon">&#128200;</span>Концепция<span class="tab-cost" id="tabCost5"></span></div>
+<div class="tab" data-nav="s5" onclick="nav('s5')"><span class="tab-num">5</span><span class="tab-icon">&#129657;</span>Прайс-лист<span class="tab-cost" id="tabCost5"></span></div>
+<div class="tab" data-nav="s6" onclick="nav('s6')"><span class="tab-num">6</span><span class="tab-icon">&#128200;</span>Концепция<span class="tab-cost" id="tabCost6"></span></div>
 </div>
 
 <!-- ═══ OVERVIEW ═══ -->
 <div class="sec vis" id="sec-overview">
 <div class="sts">
-<div class="st"><div class="st-l">Прогресс</div><div class="st-v" id="ovProgress">0<span style="font-size:14px;color:var(--tx2)">%</span></div><div class="st-s" id="ovStage">Этап 1 из 5</div><div class="st-b"><div class="st-bf" id="ovProgressBar" style="width:0%;background:var(--ac)"></div></div></div>
+<div class="st"><div class="st-l">Прогресс</div><div class="st-v" id="ovProgress">0<span style="font-size:14px;color:var(--tx2)">%</span></div><div class="st-s" id="ovStage">Этап 1 из 6</div><div class="st-b"><div class="st-bf" id="ovProgressBar" style="width:0%;background:var(--ac)"></div></div></div>
 <div class="st"><div class="st-l">Окупаемость</div><div class="st-v" style="font-size:18px" id="ovROI">--</div><div class="st-s">месяцев</div><div class="st-b"><div class="st-bf" style="width:30%;background:var(--gn)"></div></div></div>
 <div class="st"><div class="st-l">Позиций</div><div class="st-v" id="totalItems">0</div><div class="st-s">выбрано</div><div class="st-b"><div class="st-bf" style="width:0%;background:var(--ac)"></div></div></div>
 </div>
 <div class="g3" id="stagesGrid">
 <div class="stg cur" onclick="nav('s1')"><div style="display:flex;justify-content:space-between"><div class="stg-n">01</div><span class="tag t-wip">В работе</span></div><div class="stg-t">Помещение</div><div class="stg-d">Объект, планировка, характеристики</div><div class="stg-pb"><div class="stg-pf" style="width:0%;background:var(--ac)"></div></div><div class="stg-m"><span>180 м&sup2;</span><strong>0%</strong></div></div>
-<div class="stg" onclick="nav('s2')"><div style="display:flex;justify-content:space-between"><div class="stg-n">02</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Услуги</div><div class="stg-d">Модернизация, ремонт, стоматологические услуги</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
+<div class="stg" onclick="nav('s2')"><div style="display:flex;justify-content:space-between"><div class="stg-n">02</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Модернизация</div><div class="stg-d">Ремонт помещения: электрика, сантехника, отделка</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
 <div class="stg" onclick="nav('s3')"><div style="display:flex;justify-content:space-between"><div class="stg-n">03</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Оснащение</div><div class="stg-d">Оборудование, инструменты, расходники</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
 <div class="stg" onclick="nav('s4')"><div style="display:flex;justify-content:space-between"><div class="stg-n">04</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Персонал</div><div class="stg-d">Штат, ФОТ, специалисты</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
-<div class="stg" onclick="nav('s5')"><div style="display:flex;justify-content:space-between"><div class="stg-n">05</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Концепция</div><div class="stg-d">Рентабельность, бюджет, документы</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
+<div class="stg" onclick="nav('s5')"><div style="display:flex;justify-content:space-between"><div class="stg-n">05</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Прайс-лист</div><div class="stg-d">Процедуры для клиентов, ценообразование</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
+<div class="stg" onclick="nav('s6')"><div style="display:flex;justify-content:space-between"><div class="stg-n">06</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Концепция</div><div class="stg-d">Рентабельность, бюджет, документы</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
 </div>
 <!-- ACHIEVEMENTS -->
 <div class="c" id="achievementsBlock">
@@ -446,14 +538,17 @@ Apple</button>
 
 <!-- БЛОК 1: КАРТОЧКА ПОМЕЩЕНИЯ (удаляемая/заменяемая) -->
 <div class="c" id="propertyCardWrap">
-<div class="ch"><h3>&#127970; Объект</h3><div style="display:flex;gap:6px"><button class="btn sm" onclick="openModal('property')">Заменить</button><button class="btn sm" style="color:var(--rd)" onclick="clearProperty()">Убрать</button></div></div>
+<div class="ch"><h3>&#127970; Объект</h3><div style="display:flex;gap:6px"><button class="btn sm pr" onclick="openModal('property')">Выбрать</button><button class="btn sm gn" onclick="saveProperty()">Сохранить</button><button class="btn sm" style="color:var(--rd)" onclick="clearProperty()">Убрать</button></div></div>
 <div class="cb" id="propertyCardBody">
 <!-- filled by renderProperty() -->
 </div>
 </div>
 
 <!-- Кнопка добавить помещение (видна когда карточки нет) -->
-<div id="addPropertyBtn" style="display:none;padding:16px"><button class="btn pr" onclick="openModal('property')" style="width:100%">+ Доба��ить помещение</button></div>
+<div id="addPropertyBtn" style="display:none;padding:16px;gap:8px">
+<button class="btn pr" onclick="openAddPropertyModal()" style="flex:1">+ Добавить помещение</button>
+<button class="btn" onclick="openModal('property')" style="flex:1">&#128209; Выбрать из каталога</button>
+</div>
 
 <!-- БЛОК 1.5: ПЛАНИРОВКА (конструктор) -->
 <div class="c"><div class="ch"><h3>&#128208; Планировка</h3><div style="display:flex;gap:6px">
@@ -597,7 +692,7 @@ Apple</button>
 <div class="g3">
 <div class="cost-row" style="flex-direction:column;gap:4px;align-items:flex-start"><label style="font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase">Аренда / мес.</label><div class="cost-val"><input class="price-edit" data-cost="rent" value="12000" onchange="recalc()" style="width:100px"> PLN</div></div>
 <div class="cost-row" style="flex-direction:column;gap:4px;align-items:flex-start"><label style="font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase">Депозит (кол-во мес.)</label><div style="display:flex;gap:6px;align-items:center"><input class="price-edit" id="depositMonths" value="3" onchange="calcDeposit()" style="width:40px;text-align:center"> &times; аренда = <span id="depositVal" style="font-weight:700;color:var(--ac2)">36 000</span> PLN</div></div>
-<div class="cost-row" style="flex-direction:column;gap:4px;align-items:flex-start"><label style="font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase">Услуги (Таб 2)</label><div class="cost-val"><span id="renCostDisplay" style="font-weight:700;color:var(--ac2);min-width:80px">0</span> PLN <button class="btn sm" onclick="nav('s2')" style="margin-left:8px;font-size:9px">Перейти →</button></div></div>
+<div class="cost-row" style="flex-direction:column;gap:4px;align-items:flex-start"><label style="font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase">Модернизация (Таб 2)</label><div class="cost-val"><span id="renCostDisplay" style="font-weight:700;color:var(--ac2);min-width:80px">0</span> PLN <button class="btn sm" onclick="nav('s2')" style="margin-left:8px;font-size:9px">Перейти →</button></div></div>
 </div>
 <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
 <span style="font-size:12px;color:var(--tx2)">Итого помещение (депозит + ремонт):</span>
@@ -734,21 +829,40 @@ Apple</button>
 
 <!-- ═══ S2: МОДЕРНИЗАЦИЯ ═══ -->
 <div class="sec" id="sec-s2">
-<div class="ph"><div><h2>02 &middot; Услуги</h2><div class="ph-s">Модернизация, ремонт и стоматологические услуги</div></div><button class="btn sm pr" onclick="nav('db-renovations')">Каталог →</button></div>
+<div class="ph"><div><h2>02 &middot; Модернизация</h2><div class="ph-s">Ремонт помещения: электрика, сантехника, отделка, потолки</div></div><button class="btn sm pr" onclick="nav('db-renovations')">Каталог →</button></div>
 <div class="sts" id="renStats" style="grid-template-columns:repeat(4,1fr)">
-<div class="st"><div class="st-l">Работ</div><div class="st-v" id="renCount">0</div><div class="st-s">модернизация</div></div>
-<div class="st"><div class="st-l">Стомат. услуг</div><div class="st-v" id="svcCount">0</div><div class="st-s">в прайсе</div></div>
+<div class="st"><div class="st-l">Работ</div><div class="st-v" id="renCount">0</div><div class="st-s">выбрано</div></div>
+<div class="st"><div class="st-l">Категорий</div><div class="st-v" id="renCatCount">0</div><div class="st-s">направлений</div></div>
 <div class="st"><div class="st-l">Общая стоимость</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="renTotal">0</div><div class="st-s">PLN</div></div>
 <div class="st"><div class="st-l">Выполнено</div><div class="st-v" style="color:var(--gn)" id="renDone">0</div><div class="st-s">из выбранных</div></div>
 </div>
 
 <!-- Модернизация -->
-<div class="c"><div class="ch"><h3>&#9889; Модернизация</h3><span style="font-size:10px;color:var(--tx3)" id="renCats">0 категорий</span></div>
+<div class="c"><div class="ch"><h3>&#9889; Модернизация</h3><div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:var(--tx3)" id="renCats">0 категорий</span><button class="btn sm or" onclick="toggleCustomRenForm()" style="font-size:9px">+ Своя работа</button></div></div>
+<div id="customRenForm" style="display:none;padding:12px;border-bottom:1px solid var(--bd);background:var(--sf)">
+<div style="font-size:11px;font-weight:600;margin-bottom:8px">Добавить свою потребность</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+<input id="crName" placeholder="Название работы" style="grid-column:1/3;font-size:11px;padding:6px 8px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--tx);font-family:var(--f)">
+<select id="crCat" style="font-size:11px;padding:6px 8px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--tx);font-family:var(--f)">
+<option value="">— Категория —</option>
+<option>Электрика</option><option>Водоснабжение и канализация</option><option>Вентиляция и кондиционирование</option><option>Видеонаблюдение и безопасность</option><option>Отделка и строительные работы</option><option>Двери, окна, фасад</option><option>IT-инфраструктура</option><option>Медицинские коммуникации</option><option>Мебель и встроенные конструкции</option><option>Уборка и санитария</option><option>Вывеска и навигация</option><option>Доступность</option><option>Противопожарная безопасность</option><option>Другое</option>
+</select>
+<input id="crPrice" type="number" placeholder="Цена PLN" style="font-size:11px;padding:6px 8px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--tx);font-family:var(--f)">
+<div style="display:flex;gap:4px">
+<input id="crVal" type="number" placeholder="Кол-во" style="flex:1;font-size:11px;padding:6px 8px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--tx);font-family:var(--f)">
+<input id="crUnit" placeholder="ед. изм." style="width:60px;font-size:11px;padding:6px 8px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--tx);font-family:var(--f)">
+</div>
+</div>
+<div style="display:flex;gap:6px;margin-top:8px;justify-content:flex-end">
+<button class="btn sm" onclick="toggleCustomRenForm()">Отмена</button>
+<button class="btn sm pr" onclick="addCustomRen()">Добавить</button>
+</div>
+</div>
 <div class="cb" id="selectedRenCards"></div></div>
 
-<!-- Стоматологические услуги -->
-<div class="c" style="margin-top:12px"><div class="ch"><h3>&#129657; Стоматологические услуги</h3><button class="btn sm pr" onclick="nav('db-renovations')" style="font-size:9px">+ Добавить</button></div>
-<div class="cb" id="serviceCards"></div></div>
+<!-- Предложения подрядчиков -->
+<div class="c" style="margin-top:12px"><div class="ch"><h3>&#128196; Предложения подрядчиков</h3><span style="font-size:10px;color:var(--tx3)" id="proposalCount">0 предложений</span></div>
+<div class="cb" id="ownerProposals" style="padding:12px"><div style="text-align:center;color:var(--tx3);font-size:12px;padding:16px">Пока нет предложений от подрядчиков</div></div></div>
 
 </div>
 
@@ -777,9 +891,22 @@ Apple</button>
 <div style="text-align:right;padding:12px 0;border-top:1px solid var(--bd);margin-top:8px"><span style="font-size:12px;color:var(--tx3)">ФОТ / мес.: </span><span style="font-size:18px;font-weight:800;color:var(--ac2)" id="s4Total">0 PLN</span></div>
 </div>
 
-<!-- ═══ S5: КОНЦЕПЦИЯ ═══ -->
+<!-- ═══ S5: ПРАЙС-ЛИСТ ═══ -->
 <div class="sec" id="sec-s5">
-<div class="ph"><div><h2>05 &middot; Концепция</h2><div class="ph-s">Бизнес-модель, рентабельность, документация</div></div><span class="tag t-wip">В работе</span></div>
+<div class="ph"><div><h2>05 &middot; Прайс-лист</h2><div class="ph-s">Услуги для клиентов, ценообразование, итоговый прайс</div></div><button class="btn sm pr" onclick="nav('db-services')">Каталог процедур →</button></div>
+<div class="sts" id="svcStats" style="grid-template-columns:repeat(4,1fr)">
+<div class="st"><div class="st-l">Позиций</div><div class="st-v" id="svcCount">0</div><div class="st-s">выбрано</div></div>
+<div class="st"><div class="st-l">Категорий</div><div class="st-v" id="svcCats">0</div><div class="st-s">направлений</div></div>
+<div class="st"><div class="st-l">Средний чек</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="svcAvgPrice">0</div><div class="st-s">PLN</div></div>
+<div class="st"><div class="st-l">Выручка / мес.</div><div class="st-v" style="font-size:16px;color:var(--gn)" id="svcRevenue">0</div><div class="st-s">PLN (прогноз)</div></div>
+</div>
+<div id="serviceCards"></div>
+<div style="text-align:right;padding:12px 0;border-top:1px solid var(--bd);margin-top:8px"><span style="font-size:12px;color:var(--tx3)">Средний чек: </span><span style="font-size:18px;font-weight:800;color:var(--ac2)" id="s5Total">0 PLN</span></div>
+</div>
+
+<!-- ═══ S6: КОНЦЕПЦИЯ ═══ -->
+<div class="sec" id="sec-s6">
+<div class="ph"><div><h2>06 &middot; Концепция</h2><div class="ph-s">Бизнес-модель, рентабельность, документация</div></div><span class="tag t-wip">В работе</span></div>
 
 <!-- Бизнес-модель -->
 <div class="c"><div class="ch"><h3>&#127973; Бизнес-модель</h3><span style="font-size:10px;color:var(--ac2);font-weight:600">РЕДАКТИРУЕМАЯ</span></div>
@@ -865,16 +992,31 @@ Apple</button>
 </div>
 
 <div class="sec" id="sec-db-renovations">
-<div class="bk" onclick="nav('s2')">&larr; Услуги</div>
-<div class="ph"><div><h2>&#128736; Каталог услуг</h2><div class="ph-s">Модернизация помещения + стоматологические услуги</div></div><div style="display:flex;gap:6px"><button class="btn sm or" onclick="openModal('renovation')">+ Работа</button><button class="btn sm pr" onclick="openModal('service')">+ Услуга</button></div></div>
-
-<!-- Модернизация -->
+<div class="bk" onclick="nav('s2')">&larr; Модернизация</div>
+<div class="ph"><div><h2>&#128736; Каталог модернизации</h2><div class="ph-s">Ремонтные и строительные работы</div></div><button class="btn sm or" onclick="openModal('renovation')">+ Работа</button></div>
 <div class="c"><div class="ch"><h3>&#9889; Модернизация</h3><span style="font-size:10px;color:var(--tx3)">Ремонтные работы</span></div>
 <div class="cb" id="renCatalogCards"></div></div>
+</div>
 
-<!-- Стомат. услуги -->
-<div class="c" style="margin-top:12px"><div class="ch"><h3>&#129657; Стоматологические услуги</h3><span style="font-size:10px;color:var(--tx3)">Из Supabase</span></div>
+<div class="sec" id="sec-db-services">
+<div class="bk" onclick="nav('s5')">&larr; Прайс-лист</div>
+<div class="ph"><div><h2>&#129657; Каталог процедур</h2><div class="ph-s">Процедуры и услуги для клиентов</div></div><button class="btn sm pr" onclick="openModal('service')">+ Процедура</button></div>
+<div class="c"><div class="ch"><h3>&#129657; Процедуры</h3><span style="font-size:10px;color:var(--tx3)">Из Supabase</span></div>
 <div class="cb" id="dbServiceCards"></div></div>
+</div>
+
+<!-- ═══ CONTRACTOR: Available works ═══ -->
+<div class="sec" id="sec-contractor-works">
+<div class="bk" onclick="nav('overview')">&larr; Обзор</div>
+<div class="ph"><div><h2>&#128736; Доступные работы</h2><div class="ph-s">Работы, запрошенные заказчиками. Отметьте те, которые вы выполняете, и отправьте коммерческое предложение</div></div></div>
+<div id="contractorWorksList"></div>
+</div>
+
+<!-- ═══ CONTRACTOR: My proposals ═══ -->
+<div class="sec" id="sec-contractor-proposals">
+<div class="bk" onclick="nav('overview')">&larr; Обзор</div>
+<div class="ph"><div><h2>&#128196; Мои предложения</h2><div class="ph-s">Коммерческие предложения, отправленные заказчикам</div></div></div>
+<div id="contractorProposalsList"></div>
 </div>
 
 <div class="sec" id="sec-db-contractors">
@@ -917,7 +1059,7 @@ Apple</button>
 <!-- ═══ CABINET COSTS ═══ -->
 <div class="sec" id="sec-cabinet-types">
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
-<div class="ph"><div><h2>🏥 Стоимость по кабинетам</h2><div class="ph-s">Итоговая стоимость оснащения каждого кабинета проекта</div></div></div>
+<div class="ph"><div><h2>🏥 Стоимость по кабинетам</h2><div class="ph-s">Итоговая стоимость оснащения каждого кабинета проекта</div></div><div style="display:flex;gap:6px"><button class="btn sm pr" onclick="addCabinetFromList()">+ Из конструктора</button><button class="btn sm" onclick="nav('s1')">К планировке</button></div></div>
 <div class="sts" id="cabTotals" style="grid-template-columns:repeat(3,1fr)">
 <div class="st"><div class="st-n" id="cabRoomCnt">0</div><div class="st-l">Кабинетов</div></div>
 <div class="st"><div class="st-n" id="cabAssigned">0</div><div class="st-l">Оборудования назначено</div></div>
@@ -1004,7 +1146,7 @@ Apple</button>
 <div id="modalFields"></div>
 <div class="modal-actions">
 <button class="btn" onclick="closeModal()">Отмена</button>
-<button class="btn pr" onclick="saveModal()">Сохранить</button>
+<button class="btn pr" id="modalSave" onclick="saveModal()">Сохранить</button>
 </div>
 </div>
 </div>
@@ -1020,81 +1162,81 @@ const DB={
   pickedRenovations:{},
   renovations:[
     // ⚡ Электрика
-    {id:'e1',name:'Расширение мощности до 50 кВт',cat:'Электрика',price:8000},
-    {id:'e2',name:'Электрощит 380В, автоматы, УЗО',cat:'Электрика',price:7700},
-    {id:'e3',name:'Кабельные трассы + разводка (×7 кабинетов)',cat:'Электрика',price:36000},
-    {id:'e4',name:'Линия рентген + стерилизаторная',cat:'Электрика',price:7500},
-    {id:'e5',name:'Освещение (кабинеты + общие + аварийное + вывеска)',cat:'Электрика',price:33500},
-    {id:'e6',name:'Умный дом Aqara (хабы, розетки, датчики, Wi-Fi)',cat:'Электрика',price:14060},
-    {id:'e7',name:'Заземление медицинское (по нормативу)',cat:'Электрика',price:4500},
-    {id:'e8',name:'UPS серверная + рентген',cat:'Электрика',price:6000},
+    {id:'e1',name:'Расширение мощности',cat:'Электрика',price:8000,unit:'кВт',baseVal:50},
+    {id:'e2',name:'Электрощит 380В, автоматы, УЗО',cat:'Электрика',price:7700,unit:'компл.',baseVal:1},
+    {id:'e3',name:'Кабельные трассы + разводка',cat:'Электрика',price:36000,unit:'каб.',baseVal:7},
+    {id:'e4',name:'Линия рентген + стерилизаторная',cat:'Электрика',price:7500,unit:'линия',baseVal:2},
+    {id:'e5',name:'Освещение (кабинеты + общие + аварийное + вывеска)',cat:'Электрика',price:33500,unit:'точек',baseVal:40},
+    {id:'e6',name:'Умный дом Aqara (хабы, розетки, датчики, Wi-Fi)',cat:'Электрика',price:14060,unit:'устр.',baseVal:25},
+    {id:'e7',name:'Заземление медицинское',cat:'Электрика',price:4500,unit:'контур',baseVal:1},
+    {id:'e8',name:'UPS серверная + рентген',cat:'Электрика',price:6000,unit:'шт.',baseVal:2},
     // 🔧 Водоснабжение и канализация
-    {id:'w1',name:'Разводка ХВС + ГВС + бойлер 200л',cat:'Водоснабжение и канализация',price:17500},
-    {id:'w2',name:'Фильтрация + обратный осмос',cat:'Водоснабжение и канализация',price:4500},
-    {id:'w3',name:'Канализация (кресла + стерилизаторная + санузлы)',cat:'Водоснабжение и канализация',price:12000},
-    {id:'w4',name:'Сепаратор амальгамы (NFZ)',cat:'Водоснабжение и канализация',price:4500},
-    {id:'w5',name:'Компрессорная станция стоматологическая',cat:'Водоснабжение и канализация',price:8000},
+    {id:'w1',name:'Разводка ХВС + ГВС + бойлер',cat:'Водоснабжение и канализация',price:17500,unit:'л',baseVal:200},
+    {id:'w2',name:'Фильтрация + обратный осмос',cat:'Водоснабжение и канализация',price:4500,unit:'компл.',baseVal:1},
+    {id:'w3',name:'Канализация (кресла + стерилизаторная + санузлы)',cat:'Водоснабжение и канализация',price:12000,unit:'точек',baseVal:12},
+    {id:'w4',name:'Сепаратор амальгамы (NFZ)',cat:'Водоснабжение и канализация',price:4500,unit:'шт.',baseVal:1},
+    {id:'w5',name:'Компрессорная станция стоматологическая',cat:'Водоснабжение и канализация',price:8000,unit:'шт.',baseVal:1},
     // 🌀 Вентиляция и кондиционирование
-    {id:'v1',name:'Проект + приточная установка с рекуператором',cat:'Вентиляция и кондиционирование',price:23000},
-    {id:'v2',name:'Вытяжка + воздуховоды + диффузоры',cat:'Вентиляция и кондиционирование',price:14000},
-    {id:'v3',name:'Мульти-сплит ×7 + серверная',cat:'Вентиляция и кондиционирование',price:31500},
-    {id:'v4',name:'Вентиляция стерилизаторной (принудительная)',cat:'Вентиляция и кондиционирование',price:3500},
+    {id:'v1',name:'Проект + приточная установка с рекуператором',cat:'Вентиляция и кондиционирование',price:23000,unit:'м³/ч',baseVal:1500},
+    {id:'v2',name:'Вытяжка + воздуховоды + диффузоры',cat:'Вентиляция и кондиционирование',price:14000,unit:'м.п.',baseVal:60},
+    {id:'v3',name:'Мульти-сплит + серверная',cat:'Вентиляция и кондиционирование',price:31500,unit:'блоков',baseVal:8},
+    {id:'v4',name:'Вентиляция стерилизаторной (принудительная)',cat:'Вентиляция и кондиционирование',price:3500,unit:'компл.',baseVal:1},
     // 📹 Видеонаблюдение и безопасность
-    {id:'sec1',name:'Камеры Aqara G5 Pro ×7 + reCamera ×4 + Jetson',cat:'Видеонаблюдение и безопасность',price:18200},
-    {id:'sec2',name:'Охранная + пожарная сигнализация',cat:'Видеонаблюдение и безопасность',price:9000},
-    {id:'sec3',name:'Контроль доступа (двери серверная + склад)',cat:'Видеонаблюдение и безопасность',price:4500},
-    {id:'sec4',name:'Домофон + электрозамок входной',cat:'Видеонаблюдение и безопасность',price:2800},
+    {id:'sec1',name:'Камеры видеонаблюдения + сервер',cat:'Видеонаблюдение и безопасность',price:18200,unit:'камер',baseVal:11},
+    {id:'sec2',name:'Охранная + пожарная сигнализация',cat:'Видеонаблюдение и безопасность',price:9000,unit:'датчиков',baseVal:20},
+    {id:'sec3',name:'Контроль доступа (двери)',cat:'Видеонаблюдение и безопасность',price:4500,unit:'дверей',baseVal:3},
+    {id:'sec4',name:'Домофон + электрозамок входной',cat:'Видеонаблюдение и безопасность',price:2800,unit:'компл.',baseVal:1},
     // 🏗 Отделка и строительные работы
-    {id:'f1',name:'Демонтаж старой отделки',cat:'Отделка и строительные работы',price:12000},
-    {id:'f2',name:'Стяжка пола + гидроизоляция',cat:'Отделка и строительные работы',price:18000},
-    {id:'f3',name:'Напольное покрытие (медицинский линолеум)',cat:'Отделка и строительные работы',price:22000},
-    {id:'f4',name:'Стены: штукатурка + покраска (антибактериальная)',cat:'Отделка и строительные работы',price:16000},
-    {id:'f5',name:'Потолки подвесные (кабинеты + коридор)',cat:'Отделка и строительные работы',price:14000},
-    {id:'f6',name:'Перегородки / зонирование (гипсокартон)',cat:'Отделка и строительные работы',price:15000},
-    {id:'f7',name:'Плитка санузлы + стерилизаторная',cat:'Отделка и строительные работы',price:8500},
+    {id:'f1',name:'Демонтаж старой отделки',cat:'Отделка и строительные работы',price:12000,unit:'м²',baseVal:180},
+    {id:'f2',name:'Стяжка пола + гидроизоляция',cat:'Отделка и строительные работы',price:18000,unit:'м²',baseVal:180},
+    {id:'f3',name:'Напольное покрытие (медицинский линолеум)',cat:'Отделка и строительные работы',price:22000,unit:'м²',baseVal:180},
+    {id:'f4',name:'Стены: штукатурка + покраска (антибактериальная)',cat:'Отделка и строительные работы',price:16000,unit:'м²',baseVal:400},
+    {id:'f5',name:'Потолки подвесные',cat:'Отделка и строительные работы',price:14000,unit:'м²',baseVal:150},
+    {id:'f6',name:'Перегородки / зонирование (гипсокартон)',cat:'Отделка и строительные работы',price:15000,unit:'м.п.',baseVal:40},
+    {id:'f7',name:'Плитка санузлы + стерилизаторная',cat:'Отделка и строительные работы',price:8500,unit:'м²',baseVal:35},
     // 🚪 Двери, окна, фасад
-    {id:'d1',name:'Входная группа (дверь + тамбур + вывеска)',cat:'Двери, окна, фасад',price:12000},
-    {id:'d2',name:'Двери межкомнатные медицинские ×14',cat:'Двери, окна, фасад',price:21000},
-    {id:'d3',name:'Дверь рентген-кабинета (свинцовая защита)',cat:'Двери, окна, фасад',price:8000},
-    {id:'d4',name:'Окна (замена/тонировка)',cat:'Двери, окна, фасад',price:9000},
+    {id:'d1',name:'Входная группа (дверь + тамбур + вывеска)',cat:'Двери, окна, фасад',price:12000,unit:'компл.',baseVal:1},
+    {id:'d2',name:'Двери межкомнатные медицинские',cat:'Двери, окна, фасад',price:21000,unit:'шт.',baseVal:14},
+    {id:'d3',name:'Дверь рентген-кабинета (свинцовая защита)',cat:'Двери, окна, фасад',price:8000,unit:'шт.',baseVal:1},
+    {id:'d4',name:'Окна (замена/тонировка)',cat:'Двери, окна, фасад',price:9000,unit:'шт.',baseVal:8},
     // 🖧 IT-инфраструктура
-    {id:'i1',name:'СКС: витая пара Cat6a + патч-панель + коммутатор',cat:'IT-инфраструктура',price:12000},
-    {id:'i2',name:'Wi-Fi 6E (Ubiquiti/TP-Link) точки доступа ×5',cat:'IT-инфраструктура',price:5000},
-    {id:'i3',name:'NAS 48TB + настройка RAID',cat:'IT-инфраструктура',price:8500},
-    {id:'i4',name:'Монтаж серверного шкафа 19"',cat:'IT-инфраструктура',price:3500},
+    {id:'i1',name:'СКС: витая пара Cat6a + патч-панель + коммутатор',cat:'IT-инфраструктура',price:12000,unit:'портов',baseVal:24},
+    {id:'i2',name:'Wi-Fi 6E точки доступа',cat:'IT-инфраструктура',price:5000,unit:'шт.',baseVal:5},
+    {id:'i3',name:'NAS + настройка RAID',cat:'IT-инфраструктура',price:8500,unit:'ТБ',baseVal:48},
+    {id:'i4',name:'Монтаж серверного шкафа 19"',cat:'IT-инфраструктура',price:3500,unit:'шт.',baseVal:1},
     // 🏥 Медицинские коммуникации
-    {id:'m1',name:'Подводка сжатого воздуха к креслам',cat:'Медицинские коммуникации',price:7000},
-    {id:'m2',name:'Вакуумная (аспирационная) система',cat:'Медицинские коммуникации',price:15000},
-    {id:'m3',name:'Рентгензащита стен (баритовая штукатурка / свинец)',cat:'Медицинские коммуникации',price:9000},
-    {id:'m4',name:'Трубопровод для дистиллированной воды',cat:'Медицинские коммуникации',price:4000},
+    {id:'m1',name:'Подводка сжатого воздуха к креслам',cat:'Медицинские коммуникации',price:7000,unit:'кресел',baseVal:7},
+    {id:'m2',name:'Вакуумная (аспирационная) система',cat:'Медицинские коммуникации',price:15000,unit:'кресел',baseVal:7},
+    {id:'m3',name:'Рентгензащита стен (баритовая штукатурка / свинец)',cat:'Медицинские коммуникации',price:9000,unit:'м²',baseVal:20},
+    {id:'m4',name:'Трубопровод для дистиллированной воды',cat:'Медицинские коммуникации',price:4000,unit:'м.п.',baseVal:30},
     // 🪑 Мебель и встроенные конструкции
-    {id:'mb1',name:'Ресепшен (стойка + рабочее место)',cat:'Мебель и встроенные конструкции',price:8000},
-    {id:'mb2',name:'Шкафы медицинские для кабинетов ×7',cat:'Мебель и встроенные конструкции',price:14000},
-    {id:'mb3',name:'Зона ожидания (диваны, столики, стеллажи)',cat:'Мебель и встроенные конструкции',price:9000},
-    {id:'mb4',name:'Столы врачебные + тумбы ×7',cat:'Мебель и встроенные конструкции',price:10500},
-    {id:'mb5',name:'Шкафчики для персонала (гардероб)',cat:'Мебель и встроенные конструкции',price:4000},
-    {id:'mb6',name:'Детская зона (мебель + декор)',cat:'Мебель и встроенные конструкции',price:5000},
+    {id:'mb1',name:'Ресепшен (стойка + рабочее место)',cat:'Мебель и встроенные конструкции',price:8000,unit:'компл.',baseVal:1},
+    {id:'mb2',name:'Шкафы медицинские для кабинетов',cat:'Мебель и встроенные конструкции',price:14000,unit:'шт.',baseVal:7},
+    {id:'mb3',name:'Зона ожидания (диваны, столики, стеллажи)',cat:'Мебель и встроенные конструкции',price:9000,unit:'мест',baseVal:12},
+    {id:'mb4',name:'Столы врачебные + тумбы',cat:'Мебель и встроенные конструкции',price:10500,unit:'шт.',baseVal:7},
+    {id:'mb5',name:'Шкафчики для персонала (гардероб)',cat:'Мебель и встроенные конструкции',price:4000,unit:'шт.',baseVal:10},
+    {id:'mb6',name:'Детская зона (мебель + декор)',cat:'Мебель и встроенные конструкции',price:5000,unit:'компл.',baseVal:1},
     // 🧹 Уборка и санитария
-    {id:'sn1',name:'Санитарное оборудование (санузлы пациентов)',cat:'Уборка и санитария',price:6000},
-    {id:'sn2',name:'Санузел для маломобильных (по нормативу)',cat:'Уборка и санитария',price:8000},
-    {id:'sn3',name:'Санузлы персонала',cat:'Уборка и санитария',price:4500},
-    {id:'sn4',name:'Раковины хирургические (локтевой кран) ×3',cat:'Уборка и санитария',price:4500},
-    {id:'sn5',name:'Диспенсеры, сушилки, дозаторы',cat:'Уборка и санитария',price:2500},
+    {id:'sn1',name:'Санитарное оборудование (санузлы пациентов)',cat:'Уборка и санитария',price:6000,unit:'санузлов',baseVal:2},
+    {id:'sn2',name:'Санузел для маломобильных (по нормативу)',cat:'Уборка и санитария',price:8000,unit:'шт.',baseVal:1},
+    {id:'sn3',name:'Санузлы персонала',cat:'Уборка и санитария',price:4500,unit:'шт.',baseVal:2},
+    {id:'sn4',name:'Раковины хирургические (локтевой кран)',cat:'Уборка и санитария',price:4500,unit:'шт.',baseVal:3},
+    {id:'sn5',name:'Диспенсеры, сушилки, дозаторы',cat:'Уборка и санитария',price:2500,unit:'компл.',baseVal:5},
     // 🔊 Вывеска и навигация
-    {id:'sg1',name:'Вывеска фасадная световая',cat:'Вывеска и навигация',price:8000},
-    {id:'sg2',name:'Навигация внутренняя (таблички кабинетов, указатели)',cat:'Вывеска и навигация',price:3500},
-    {id:'sg3',name:'Информационные стенды (лицензии, прайс)',cat:'Вывеска и навигация',price:2000},
-    {id:'sg4',name:'Брендинг интерьера (логотипы, плёнка на стёкла)',cat:'Вывеска и навигация',price:5000},
+    {id:'sg1',name:'Вывеска фасадная световая',cat:'Вывеска и навигация',price:8000,unit:'шт.',baseVal:1},
+    {id:'sg2',name:'Навигация внутренняя (таблички кабинетов, указатели)',cat:'Вывеска и навигация',price:3500,unit:'шт.',baseVal:15},
+    {id:'sg3',name:'Информационные стенды (лицензии, прайс)',cat:'Вывеска и навигация',price:2000,unit:'шт.',baseVal:3},
+    {id:'sg4',name:'Брендинг интерьера (логотипы, плёнка на стёкла)',cat:'Вывеска и навигация',price:5000,unit:'компл.',baseVal:1},
     // ♿ Доступность
-    {id:'ac1',name:'Пандус / подъёмник входной',cat:'Доступность',price:7000},
-    {id:'ac2',name:'Расширение дверных проёмов (для колясок)',cat:'Доступность',price:4000},
-    {id:'ac3',name:'Тактильная плитка + поручни',cat:'Доступность',price:3000},
-    {id:'ac4',name:'Кнопка вызова персонала (входная)',cat:'Доступность',price:1500},
+    {id:'ac1',name:'Пандус / подъёмник входной',cat:'Доступность',price:7000,unit:'шт.',baseVal:1},
+    {id:'ac2',name:'Расширение дверных проёмов (для колясок)',cat:'Доступность',price:4000,unit:'проёмов',baseVal:3},
+    {id:'ac3',name:'Тактильная плитка + поручни',cat:'Доступность',price:3000,unit:'м.п.',baseVal:10},
+    {id:'ac4',name:'Кнопка вызова персонала (входная)',cat:'Доступность',price:1500,unit:'шт.',baseVal:1},
     // 🔥 Противопожарная безопасность
-    {id:'fp1',name:'Огнезащитная обработка конструкций',cat:'Противопожарная безопасность',price:5000},
-    {id:'fp2',name:'Система оповещения и эвакуации',cat:'Противопожарная безопасность',price:6000},
-    {id:'fp3',name:'Огнетушители + шкафы пожарные',cat:'Противопожарная безопасность',price:2500},
-    {id:'fp4',name:'План эвакуации (изготовление + монтаж)',cat:'Противопожарная безопасность',price:1500}
+    {id:'fp1',name:'Огнезащитная обработка конструкций',cat:'Противопожарная безопасность',price:5000,unit:'м²',baseVal:180},
+    {id:'fp2',name:'Система оповещения и эвакуации',cat:'Противопожарная безопасность',price:6000,unit:'извещ.',baseVal:15},
+    {id:'fp3',name:'Огнетушители + шкафы пожарные',cat:'Противопожарная безопасность',price:2500,unit:'шт.',baseVal:6},
+    {id:'fp4',name:'План эвакуации (изготовление + монтаж)',cat:'Противопожарная безопасность',price:1500,unit:'шт.',baseVal:3}
   ],
   zones:[
     {id:'medical',name:'Медицинская',color:'var(--gn)',icon:'🏥'},
@@ -1126,7 +1268,7 @@ const DB={
       paid:{price:299,period:'мес',label:'PRO',features:['Безлимит проектов','Все 5 этапов','Бюджет + рентабельность','Типы кабинетов / зоны','Экспорт без ограничений','Приоритетная поддержка']}
     },
     contractor:{icon:'🔧',name:'Подрядчик',
-      trial:{price:0,days:14,label:'Триал 14 дней',features:['1 профиль компании','До 5 заявок','Базовый каталог услуг']},
+      trial:{price:0,days:14,label:'Триал 14 дней',features:['1 профиль компании','До 5 заявок','1 концепция']},
       paid:{price:199,period:'мес',label:'PRO',features:['Безлимит заявок','Рейтинг и отзывы','Уведомления о тендерах','Портфолио проектов','Аналитика конверсий']}
     },
     supplier:{icon:'📦',name:'Поставщик',
@@ -1612,8 +1754,43 @@ async function loadSupabaseData(){
     DB._svcCats=svcCats||[];
     DB._svcSubs=svcSubs||[];
 
+    // 8. Users from profiles table
+    const{data:profiles}=await sb.from('profiles').select('*').order('created_at');
+    if(profiles&&profiles.length){
+      const existingEmails=new Set(DB.users.map(u=>u.email));
+      profiles.forEach(p=>{
+        if(existingEmails.has(p.email)){
+          const existing=DB.users.find(u=>u.email===p.email);
+          if(existing){
+            if(p.display_name)existing.name=p.display_name;
+            if(p.role)existing.role=p.role;
+            if(p.plan)existing.plan=p.plan;
+            if(p.avatar_url)existing.avatar=p.avatar_url;
+            existing.status=p.status||'Активен';
+            existing.lastLogin=p.last_login;
+          }
+        }else{
+          DB.users.push({
+            id:p.id||++nextId,
+            name:p.display_name||p.email.split('@')[0],
+            email:p.email,
+            role:p.role||'owner',
+            plan:p.plan||'trial',
+            status:p.status||'Активен',
+            lastLogin:p.last_login,
+            avatar:p.avatar_url||''
+          });
+          existingEmails.add(p.email);
+        }
+      });
+    }
+
+    // 9. Proposals
+    const{data:proposals}=await sb.from('proposals').select('*').order('created_at',{ascending:false});
+    if(proposals)DB.proposals=proposals;
+
     console.log('Supabase: loaded',DB.suppliers.length,'equipment,',DB.services.length,'services,',
-      DB.premises.length,'premises,', (DB.conceptItems||[]).length,'concept items');
+      DB.premises.length,'premises,',DB.users.length,'users,',DB.proposals.length,'proposals');
 
     // Re-render
     if(document.getElementById('appContainer').style.display!=='none'){buildSidebar();renderAll();renderEquip();recalc()}
@@ -1628,13 +1805,14 @@ let activeProperty={
   type:'Коммерческое',purpose:'Стоматология',
   price_m2:67,source:'OLX'
 };
+try{const _sp=localStorage.getItem('svita_property');if(_sp){activeProperty=JSON.parse(_sp)}}catch(e){}
 
 function renderProperty(){
   const wrap=document.getElementById('propertyCardWrap');
   const b=document.getElementById('propertyCardBody');
   if(!activeProperty){
     wrap.style.display='none';
-    const addBtn=document.getElementById('addPropertyBtn');if(addBtn)addBtn.style.display='';
+    const addBtn=document.getElementById('addPropertyBtn');if(addBtn)addBtn.style.display='flex';
     document.getElementById('propArea').textContent='--';
     document.getElementById('propUsable').textContent='--';
     document.getElementById('propCabinets').textContent='--';
@@ -1683,12 +1861,60 @@ function fpPropEdit(key,val){
 function clearProperty(){
   activeProperty=null;
   localStorage.setItem('svita_property','null');
-  renderProperty();
+  renderProperty();recalc();
 }
 function restoreProperty(p){
   activeProperty=p;
   localStorage.setItem('svita_property',JSON.stringify(p));
-  renderProperty();
+  renderProperty();recalc();
+}
+function saveProperty(){
+  if(!activeProperty)return;
+  localStorage.setItem('svita_property',JSON.stringify(activeProperty));
+  const b=document.querySelector('#propertyCardWrap .ch h3');
+  if(b){const old=b.textContent;b.textContent='✓ Сохранено!';setTimeout(()=>b.textContent=old,1500)}
+}
+function openAddPropertyModal(){
+  const html=`<div class="modal-field"><label>Название</label><input id="mf_pName" placeholder="Например: ул. Длуга 12" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+<div class="modal-field"><label>Город</label><input id="mf_pCity" value="Быдгощ" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+<div class="modal-field"><label>Площадь, м²</label><input id="mf_pArea" type="number" value="180" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+<div class="modal-field"><label>Этаж</label><input id="mf_pFloor" type="number" value="1" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+<div class="modal-field"><label>Всего этажей</label><input id="mf_pFloors" type="number" value="3" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+<div class="modal-field"><label>Длина, м</label><input id="mf_pLen" type="number" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+<div class="modal-field"><label>Ширина, м</label><input id="mf_pWid" type="number" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+<div class="modal-field"><label>Высота, м</label><input id="mf_pH" type="number" value="2.9" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+<div class="modal-field"><label>Тип</label><input id="mf_pType" value="Коммерческое" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+<div class="modal-field"><label>Цена/м² (PLN)</label><input id="mf_pPrice" type="number" value="55" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+</div>`;
+  document.getElementById('modalTitle').textContent='Новое помещение';
+  document.getElementById('modalFields').innerHTML=html;
+  document.getElementById('modalSave').style.display='';
+  document.getElementById('modalSave').textContent='Добавить';
+  document.getElementById('modalSave').onclick=()=>{
+    const name=document.getElementById('mf_pName').value.trim();
+    if(!name)return alert('Укажите название');
+    const p={
+      id:'custom_'+Date.now(),name,
+      city:document.getElementById('mf_pCity').value.trim(),
+      area:parseFloat(document.getElementById('mf_pArea').value)||0,
+      floor:parseInt(document.getElementById('mf_pFloor').value)||1,
+      floors_total:parseInt(document.getElementById('mf_pFloors').value)||1,
+      length:parseFloat(document.getElementById('mf_pLen').value)||0,
+      width:parseFloat(document.getElementById('mf_pWid').value)||0,
+      height:parseFloat(document.getElementById('mf_pH').value)||2.9,
+      type:document.getElementById('mf_pType').value.trim(),
+      price_m2:parseFloat(document.getElementById('mf_pPrice').value)||0,
+      purpose:'Стоматология',source:'Ручной ввод'
+    };
+    restoreProperty(p);
+    document.getElementById('modalBg').classList.remove('vis');
+  };
+  document.getElementById('modalBg').classList.add('vis');
 }
 
 function calcDeposit(){
@@ -1832,25 +2058,85 @@ async function oauthLogin(provider){
   if(error)document.getElementById('loginError').textContent=error.message;
 }
 
-function proceedToRoleSelect(){
-  document.getElementById('loginStep1').style.display='none';
-  document.getElementById('loginRegister').style.display='none';
-  document.getElementById('loginVerify').style.display='none';
-  document.getElementById('loginStep2').style.display='block';
-  document.getElementById('loginUserName').textContent=currentUser.name;
-  // Email badge
-  const badge=document.getElementById('emailBadge');
-  if(badge){
-    badge.innerHTML=currentUser.emailConfirmed?'<span style="color:var(--gn)">&#10003; Email подтверждён</span>':'<span style="color:var(--or)">&#9888; Email не подтверждён</span>';
+async function proceedToRoleSelect(){
+  // Check if user already completed onboarding (has role in profiles)
+  if(sb&&currentUser&&!currentUser.isAdmin){
+    const{data:prof}=await sb.from('profiles').select('role,profile_complete,phone,company').eq('email',currentUser.email).single();
+    if(prof&&prof.profile_complete&&prof.role){
+      // Profile complete — skip onboarding, go straight to app
+      currentRole=prof.role;
+      currentUser.phone=prof.phone||'';
+      currentUser.company=prof.company||'';
+      localStorage.setItem('svita_role',currentRole);
+      enterApp();
+      return;
+    }
   }
-  document.getElementById('roleOptAdmin').style.display=currentUser.isAdmin?'flex':'none';
+  // Admin — show role select (old flow)
   if(currentUser.isAdmin){
+    hideAllLoginSteps();
+    document.getElementById('loginStep2').style.display='block';
+    document.getElementById('loginUserName').textContent=currentUser.name;
+    const badge=document.getElementById('emailBadge');
+    if(badge)badge.innerHTML=currentUser.emailConfirmed?'<span style="color:var(--gn)">&#10003; Email подтверждён</span>':'<span style="color:var(--or)">&#9888; Email не подтверждён</span>';
+    document.getElementById('roleOptAdmin').style.display='flex';
     document.querySelector('[data-role="admin"]').classList.add('sel');
     currentRole='admin';
-  }else{
-    document.querySelector('#loginStep2 [data-role="owner"]').classList.add('sel');
-    currentRole='owner';
+    return;
   }
+  // New user or incomplete profile — show onboarding
+  showOnboarding();
+}
+
+function hideAllLoginSteps(){
+  ['loginStep1','loginRegister','loginVerify','loginStep2','loginOnboard'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.style.display='none';
+  });
+}
+
+function showOnboarding(){
+  hideAllLoginSteps();
+  document.getElementById('loginOnboard').style.display='block';
+  // Pre-fill from OAuth metadata
+  const nameEl=document.getElementById('obName');
+  if(currentUser.name&&currentUser.name!==currentUser.email?.split('@')[0])nameEl.value=currentUser.name;
+  document.getElementById('obError').textContent='';
+}
+
+let obSelectedRole=null;
+function selectObRole(el){
+  document.querySelectorAll('#obRoles .login-role').forEach(r=>r.classList.remove('sel'));
+  el.classList.add('sel');
+  obSelectedRole=el.dataset.role;
+}
+
+async function completeOnboarding(){
+  const name=document.getElementById('obName').value.trim();
+  const phone=document.getElementById('obPhone').value.trim();
+  const company=document.getElementById('obCompany').value.trim();
+  if(!name){document.getElementById('obError').textContent='Укажите имя';return}
+  if(!obSelectedRole){document.getElementById('obError').textContent='Выберите роль';return}
+  document.getElementById('obError').textContent='Сохраняем...';
+  currentUser.name=name;
+  currentUser.phone=phone;
+  currentUser.company=company;
+  currentRole=obSelectedRole;
+  // Save to Supabase profiles (role is permanent)
+  if(sb){
+    await sb.from('profiles').upsert({
+      email:currentUser.email,
+      display_name:name,
+      phone:phone,
+      company:company,
+      role:currentRole,
+      profile_complete:true,
+      last_login:new Date().toISOString()
+    },{onConflict:'email'});
+    // Update auth user metadata
+    await sb.auth.updateUser({data:{name,role:currentRole,profile_complete:true}});
+  }
+  localStorage.setItem('svita_role',currentRole);
+  enterApp();
 }
 
 function selectRole(el){
@@ -1870,13 +2156,18 @@ function enterApp(){
   document.getElementById('roleLabel').textContent=ROLE_NAMES[currentRole];
   document.getElementById('roleLabel').style.background=currentRole==='admin'?'rgba(59,130,246,.1)':currentRole==='contractor'?'rgba(249,115,22,.1)':currentRole==='supplier'?'rgba(139,92,246,.1)':currentRole==='employee'?'rgba(6,182,212,.1)':'rgba(34,197,94,.1)';
   document.getElementById('roleLabel').style.color=currentRole==='admin'?'var(--ac2)':currentRole==='contractor'?'var(--or)':currentRole==='supplier'?'#d946ef':currentRole==='employee'?'#06b6d4':'var(--gn)';
+  updateTopUser();
   // Save role in localStorage (Supabase handles session)
   localStorage.setItem('svita_role',currentRole);
-  // Track session + update profile
+  // Track session + update profile + sync to DB.users
   if(sb&&currentUser.email){
     sb.from('user_sessions').insert({email:currentUser.email,user_agent:navigator.userAgent}).then(()=>{});
-    sb.from('profiles').upsert({email:currentUser.email,role:currentRole,last_login:new Date().toISOString()},{onConflict:'email'}).then(()=>{});
+    sb.from('profiles').upsert({email:currentUser.email,display_name:currentUser.name,role:currentRole,last_login:new Date().toISOString()},{onConflict:'email'}).then(()=>{});
     sb.from('page_views').insert({page:'/dashboard',user_agent:navigator.userAgent,referrer:document.referrer||null}).then(()=>{});
+    // Ensure current user is in DB.users
+    if(!DB.users.find(u=>u.email===currentUser.email)){
+      DB.users.push({id:currentUser.id||++nextId,name:currentUser.name,email:currentUser.email,role:currentRole,plan:'trial',status:'Активен'});
+    }
   }
   // Restore property card state
   const savedProp=localStorage.getItem('svita_property');
@@ -1899,6 +2190,58 @@ async function logout(){
   document.getElementById('loginPass').value='';
 }
 
+function updateTopUser(){
+  if(!currentUser)return;
+  const initials=currentUser.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+  const bg=ROLE_COLORS[currentRole]||'var(--ac)';
+  document.getElementById('topAvatar').style.background=bg;
+  document.getElementById('topAvatar').textContent=initials;
+  document.getElementById('topUserName').textContent=currentUser.name;
+  document.getElementById('topUserRole').textContent=ROLE_NAMES[currentRole]||currentRole;
+  // Proton-style dropdown
+  const ma=document.getElementById('topMenuAvatar');
+  if(ma){ma.style.background=bg;ma.textContent=initials}
+  const mn=document.getElementById('topMenuName');
+  if(mn)mn.textContent=currentUser.name;
+  const me=document.getElementById('topMenuEmail');
+  if(me)me.textContent=currentUser.email||'';
+  const mp=document.getElementById('topMenuPlan');
+  if(mp){const plan=currentUser.plan||'trial';const plans={trial:{t:'TRIAL',bg:'var(--sf2)',c:'var(--tx3)'},pro:{t:'PRO',bg:'linear-gradient(135deg,#3b82f6,#6366f1)',c:'#fff'},unlimited:{t:'UNLIMITED',bg:'linear-gradient(135deg,#c9a96e,#e8c97a)',c:'#000'}};const p=plans[plan]||plans.trial;mp.textContent=p.t;mp.style.background=p.bg;mp.style.color=p.c}
+}
+
+function showProfileModal(){
+  document.getElementById('topUser').classList.remove('open');
+  const u=currentUser;if(!u)return;
+  const html=`<div class="modal-field"><label>Имя</label><input id="mf_profName" value="${u.name||''}" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+<div class="modal-field"><label>Email</label><input value="${u.email||''}" disabled style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx3);font-family:var(--f);font-size:13px;width:100%"></div>
+<div class="modal-field"><label>Телефон</label><input id="mf_profPhone" value="${u.phone||''}" placeholder="+48 500 000 000" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+<div class="modal-field"><label>Компания</label><input id="mf_profCompany" value="${u.company||''}" placeholder="Название" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+<div class="modal-field"><label>Роль <span style="font-size:9px;color:var(--tx3);font-weight:400">(нельзя изменить)</span></label><input value="${ROLE_NAMES[currentRole]||''}" disabled style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx3);font-family:var(--f);font-size:13px;width:100%"></div>`;
+  document.getElementById('modalTitle').textContent='Профиль';
+  document.getElementById('modalFields').innerHTML=html;
+  document.getElementById('modalSave').onclick=()=>{
+    const newName=document.getElementById('mf_profName').value.trim();
+    const phone=document.getElementById('mf_profPhone').value.trim();
+    const company=document.getElementById('mf_profCompany').value.trim();
+    if(newName){
+      currentUser.name=newName;
+      currentUser.phone=phone;
+      currentUser.company=company;
+      updateTopUser();
+      document.getElementById('sideAvatar').textContent=newName.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+      document.getElementById('sideName').textContent=newName;
+      if(sb)sb.from('profiles').upsert({email:currentUser.email,display_name:newName,phone,company},{onConflict:'email'}).then(()=>{});
+    }
+    document.getElementById('modal').style.display='none';
+  };
+  document.getElementById('modal').style.display='flex';
+}
+
+document.addEventListener('click',function(e){
+  const tu=document.getElementById('topUser');
+  if(tu&&!tu.contains(e.target))tu.classList.remove('open');
+});
+
 // Auto-restore session from Supabase Auth
 (async function restoreSession(){
   try{
@@ -1907,21 +2250,26 @@ async function logout(){
     if(!session||!session.user)return;
     const user=session.user;
     const isAdmin=ADMIN_EMAILS.includes(user.email);
-    currentUser={email:user.email,name:user.user_metadata?.name||user.email.split('@')[0],isAdmin,emailConfirmed:!!user.email_confirmed_at,id:user.id};
-    currentRole=localStorage.getItem('svita_role')||(isAdmin?'admin':'owner');
-    setTimeout(()=>{
-      document.getElementById('loginScreen').classList.add('hidden');
-      document.getElementById('appContainer').style.display='flex';
-      document.getElementById('sideAvatar').style.background=ROLE_COLORS[currentRole];
-      document.getElementById('sideAvatar').textContent=currentUser.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
-      document.getElementById('sideName').textContent=currentUser.name;
-      document.getElementById('sideRole').textContent=ROLE_NAMES[currentRole];
-      document.getElementById('roleLabel').textContent=ROLE_NAMES[currentRole];
-      document.getElementById('roleLabel').style.background=currentRole==='admin'?'rgba(59,130,246,.1)':'rgba(34,197,94,.1)';
-      document.getElementById('roleLabel').style.color=currentRole==='admin'?'var(--ac2)':'var(--gn)';
-      buildSidebar();renderAll();recalc();fpInit();loadSupabaseData();
-      window.addEventListener('resize',()=>{fpDraw()});
-    },50);
+    currentUser={email:user.email,name:user.user_metadata?.full_name||user.user_metadata?.name||user.email.split('@')[0],isAdmin,emailConfirmed:!!user.email_confirmed_at,id:user.id};
+
+    // Check profile completeness from Supabase
+    const{data:prof}=await sb.from('profiles').select('role,profile_complete,phone,company,display_name').eq('email',user.email).single();
+    if(prof&&prof.profile_complete&&prof.role){
+      // Profile complete — restore and enter app
+      currentRole=prof.role;
+      if(prof.display_name)currentUser.name=prof.display_name;
+      currentUser.phone=prof.phone||'';
+      currentUser.company=prof.company||'';
+      localStorage.setItem('svita_role',currentRole);
+      setTimeout(()=>{enterApp()},50);
+    }else if(isAdmin){
+      // Admin without profile — auto-complete
+      currentRole=localStorage.getItem('svita_role')||'admin';
+      setTimeout(()=>{enterApp()},50);
+    }else{
+      // Incomplete profile — show onboarding
+      setTimeout(()=>{showOnboarding()},50);
+    }
   }catch(e){}
 
   // Listen for OAuth callback (user returns from Google/GitHub/Apple)
@@ -1950,7 +2298,8 @@ function buildSidebar(){
   if(currentRole==='admin'){
     html+='<div class="side-sec">Базы данных</div>';
     html+='<div class="si" data-nav="db-rooms"><span class="ico">&#127970;</span><span class="sl">Помещения</span><span class="sb wip">'+DB.rooms.length+'</span></div>';
-    html+='<div class="si" data-nav="db-renovations"><span class="ico">&#128736;</span><span class="sl">Услуги</span><span class="sb wip">'+(DB.renovations.length+DB.services.length)+'</span></div>';
+    html+='<div class="si" data-nav="db-renovations"><span class="ico">&#128736;</span><span class="sl">Модернизация</span><span class="sb wip">'+DB.renovations.length+'</span></div>';
+    html+='<div class="si" data-nav="db-services"><span class="ico">&#129657;</span><span class="sl">Процедуры</span><span class="sb wip">'+DB.services.length+'</span></div>';
     html+='<div class="si" data-nav="db-suppliers"><span class="ico">&#128230;</span><span class="sl">Поставщики</span><span class="sb wip">'+DB.suppliers.length+'</span></div>';
     html+='<div class="si" data-nav="db-employees"><span class="ico">&#129489;</span><span class="sl">Сотрудники</span><span class="sb wip">'+DB.employees.length+'</span></div>';
     html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
@@ -1961,7 +2310,8 @@ function buildSidebar(){
 
   if(currentRole==='contractor'){
     html+='<div class="side-sec">Мои данные</div>';
-    html+='<div class="si" data-nav="db-contractors"><span class="ico">&#128736;</span><span class="sl">Мои услуги</span></div>';
+    html+='<div class="si" data-nav="contractor-works"><span class="ico">&#128736;</span><span class="sl">Доступные работы</span></div>';
+    html+='<div class="si" data-nav="contractor-proposals"><span class="ico">&#128196;</span><span class="sl">Мои предложения</span></div>';
   }
   if(currentRole==='supplier'){
     html+='<div class="side-sec">Мои данные</div>';
@@ -1979,8 +2329,8 @@ function buildSidebar(){
 }
 
 // ═══════════════ NAVIGATION ═══════════════
-const secNames={overview:'Обзор',s1:'Помещение',s2:'Услуги',s3:'Оснащение',s4:'Персонал',s5:'Концепция',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны','db-rooms':'БД Помещений','db-renovations':'Каталог услуг','db-contractors':'БД Подрядчиков','db-suppliers':'БД Поставщиков','db-employees':'БД Сотрудников',users:'Пользователи','cabinet-types':'Типы кабинетов'};
-const stageOrder=['s1','s2','s3','s4','s5'];
+const secNames={overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:'Прайс-лист',s6:'Концепция',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны','db-rooms':'БД Помещений','db-renovations':'Каталог модернизации','db-services':'Каталог процедур','db-contractors':'БД Подрядчиков','db-suppliers':'БД Поставщиков','db-employees':'БД Сотрудников',users:'Пользователи','cabinet-types':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения'};
+const stageOrder=['s1','s2','s3','s4','s5','s6'];
 let cur='overview';
 
 function nav(id){
@@ -2002,6 +2352,8 @@ function nav(id){
   window.scrollTo(0,0);
   if(id==='budget')updateBudget();
   if(id==='profit')updateProfit();
+  if(id==='contractor-works')renderContractorWorks();
+  if(id==='contractor-proposals')renderContractorProposals();
   updateSumbar();
   updateRightPanel();
 }
@@ -2010,6 +2362,36 @@ function nextStage(){
   const i=stageOrder.indexOf(cur);
   if(i>=0&&i<stageOrder.length-1)nav(stageOrder[i+1]);
   else nav(stageOrder[0]);
+}
+
+function showUpgradeModal(){
+  document.getElementById('topUser').classList.remove('open');
+  const html=`<div style="text-align:center;padding:8px 0 16px">
+<div style="font-size:24px;margin-bottom:8px">&#9889;</div>
+<div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:4px">Тарифные планы SVITA</div>
+<div style="font-size:11px;color:var(--tx3);margin-bottom:16px">Выберите подходящий план для вашего проекта</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:left">
+<div style="padding:12px;border:1px solid var(--bd);border-radius:10px;background:var(--sf2)">
+<div style="font-size:11px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">Trial</div>
+<div style="font-size:18px;font-weight:800;color:var(--tx);margin:4px 0">Бесплатно</div>
+<div style="font-size:10px;color:var(--tx3);line-height:1.5">1 концепция<br>Базовые функции<br>Без подрядчиков</div>
+</div>
+<div style="padding:12px;border:2px solid var(--ac);border-radius:10px;background:var(--acbg)">
+<div style="font-size:11px;font-weight:700;color:var(--ac2);text-transform:uppercase;letter-spacing:.5px">Pro</div>
+<div style="font-size:18px;font-weight:800;color:var(--tx);margin:4px 0">99 PLN<span style="font-size:10px;color:var(--tx3)">/мес</span></div>
+<div style="font-size:10px;color:var(--tx3);line-height:1.5">5 концепций<br>Полный прайс-лист<br>Без подрядчиков</div>
+</div>
+<div style="padding:12px;border:2px solid #c9a96e;border-radius:10px;background:rgba(201,169,110,.08)">
+<div style="font-size:11px;font-weight:700;color:#c9a96e;text-transform:uppercase;letter-spacing:.5px">Unlimited</div>
+<div style="font-size:18px;font-weight:800;color:var(--tx);margin:4px 0">299 PLN<span style="font-size:10px;color:var(--tx3)">/мес</span></div>
+<div style="font-size:10px;color:var(--tx3);line-height:1.5">∞ концепций<br>Все функции<br>Подрядчики и КП</div>
+</div>
+</div>
+</div>`;
+  document.getElementById('modalTitle').textContent='Тарифы';
+  document.getElementById('modalFields').innerHTML=html;
+  document.getElementById('modalSave').style.display='none';
+  document.getElementById('modalBg').classList.add('vis');
 }
 
 // ═══════════════ UI HELPERS ═══════════════
@@ -2027,7 +2409,36 @@ function toggleCheck(el){
 
 // ═══════════════ RENDER DB CARDS ═══════════════
 function renderAll(){
-  renderProperty();renderRooms();renderContractors();renderEmployees();renderEquip();renderSelectedEquip();renderRenovationsCatalog();renderSelectedRenovations();renderStaff();renderServices();renderSelectedServices();renderUsers();renderCabinetTypes();renderPickedRooms();renderPickedContractors();renderZones();loadPropertyParams();updateRightPanel();
+  renderProperty();renderRooms();renderContractors();renderEmployees();renderEquip();renderSelectedEquip();renderRenovationsCatalog();renderSelectedRenovations();renderStaff();renderServices();renderSelectedServices();renderUsers();renderCabinetTypes();renderPickedRooms();renderPickedContractors();renderZones();loadPropertyParams();updateRightPanel();renderOwnerProposals();
+}
+
+function renderOwnerProposals(){
+  const c=document.getElementById('ownerProposals');if(!c)return;
+  const props=DB.proposals||[];
+  document.getElementById('proposalCount').textContent=props.length+' предложений';
+  if(!props.length){c.innerHTML='<div style="text-align:center;color:var(--tx3);font-size:12px;padding:16px">Пока нет предложений от подрядчиков</div>';return}
+  c.innerHTML=props.map(p=>{
+    const statusColor=p.status==='accepted'?'var(--gn)':p.status==='rejected'?'var(--rd)':'var(--yl)';
+    const statusText=p.status==='accepted'?'Принято':p.status==='rejected'?'Отклонено':'Новое';
+    return `<div style="border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:8px">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+<div><div style="font-size:13px;font-weight:600">${p.contractor_name}</div><div style="font-size:10px;color:var(--tx3)">${p.contractor_email} · ${new Date(p.created_at).toLocaleDateString()}</div></div>
+<span style="font-size:10px;padding:3px 8px;border-radius:5px;background:${statusColor}22;color:${statusColor};font-weight:600">${statusText}</span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px">${p.items.map(i=>`<span style="font-size:10px;padding:3px 8px;border:1px solid var(--bd);border-radius:5px">${i.name}: ${i.price.toLocaleString()} PLN</span>`).join('')}</div>
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div style="font-size:14px;font-weight:700">${p.total.toLocaleString()} PLN</div>
+<div style="display:flex;gap:4px">
+${p.status==='sent'?`<button class="btn sm gn" onclick="respondProposal('${p.id}','accepted')">Принять</button><button class="btn sm" onclick="respondProposal('${p.id}','rejected')">Отклонить</button>`:''}
+</div></div></div>`;
+  }).join('');
+}
+
+async function respondProposal(id,status){
+  const p=DB.proposals.find(x=>x.id===id);
+  if(p)p.status=status;
+  if(sb)await sb.from('proposals').update({status}).eq('id',id);
+  renderOwnerProposals();
 }
 
 function renderRooms(){
@@ -2035,6 +2446,94 @@ function renderRooms(){
   c.innerHTML=DB.rooms.map(r=>{
     const picked=!!DB.pickedRooms[r.id];
     return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}"><div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:var(--acbg);color:var(--ac2)">${r.type}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Ширина</div><div class="db-card-val">${r.w} м</div></div><div class="db-card-field"><div class="db-card-label">Длина</div><div class="db-card-val">${r.l} м</div></div><div class="db-card-field"><div class="db-card-label">Высота</div><div class="db-card-val">${r.h} м</div></div><div class="db-card-field"><div class="db-card-label">Площадь</div><div class="db-card-val">${r.area} м²</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePick('pickedRooms','${r.id}','rooms')">${picked?'✓ В проекте':'+ Помещение → Таб 1'}</button><button class="btn sm" onclick="delItem('rooms','${r.id}')">Удалить</button></div></div>`;
+  }).join('');
+}
+
+/* ── Contractor: view available works and create proposals ── */
+if(!DB.proposals)DB.proposals=[];
+let contractorSelected={};
+
+function renderContractorWorks(){
+  const c=document.getElementById('contractorWorksList');if(!c)return;
+  // Show all renovation items that owners have picked
+  const allRens=DB.renovations;
+  const cats={};
+  allRens.forEach(r=>{if(!cats[r.cat])cats[r.cat]=[];cats[r.cat].push(r)});
+  const catKeys=Object.keys(cats).sort();
+  if(!catKeys.length){c.innerHTML='<div class="c"><div class="cb" style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Нет доступных работ</div></div>';return}
+
+  let html='';
+  catKeys.forEach(cat=>{
+    html+=`<div class="c" style="margin-bottom:12px"><div class="ch"><h3>${cat}</h3><span style="font-size:10px;color:var(--tx3)">${cats[cat].length} работ</span></div><div class="cb">`;
+    cats[cat].forEach(r=>{
+      const sel=!!contractorSelected[r.id];
+      const unit=r.unit?` (${r.baseVal||''} ${r.unit})`:'';
+      html+=`<div class="db-card" style="${sel?'border-color:var(--gn);background:rgba(34,197,94,.04)':''}">
+<div class="db-card-head"><span class="db-card-name">${r.name}${unit}</span></div>
+<div class="db-card-grid">
+<div class="db-card-field"><div class="db-card-label">Категория</div><div class="db-card-val">${r.cat}</div></div>
+<div class="db-card-field"><div class="db-card-label">Базовая цена</div><div class="db-card-val">${r.price.toLocaleString()} PLN</div></div>
+${sel?`<div class="db-card-field" style="grid-column:1/3"><div class="db-card-label">Ваша цена (PLN)</div><input type="number" value="${contractorSelected[r.id].price||r.price}" onchange="contractorSelected['${r.id}'].price=+this.value" style="width:100%;padding:6px 8px;font-size:12px;border:1px solid var(--bd);border-radius:6px;background:var(--sf2);color:var(--tx);font-family:var(--f)"></div>
+<div class="db-card-field" style="grid-column:1/3"><div class="db-card-label">Комментарий</div><input type="text" placeholder="Сроки, условия..." value="${contractorSelected[r.id].note||''}" onchange="contractorSelected['${r.id}'].note=this.value" style="width:100%;padding:6px 8px;font-size:12px;border:1px solid var(--bd);border-radius:6px;background:var(--sf2);color:var(--tx);font-family:var(--f)"></div>`:''}
+</div>
+<div class="db-card-actions"><button class="btn sm ${sel?'gn':'pr'}" onclick="toggleContractorWork('${r.id}',${r.price})">${sel?'&#10003; Выбрано':'+ Я делаю это'}</button></div>
+</div>`;
+    });
+    html+='</div></div>';
+  });
+
+  const selCount=Object.keys(contractorSelected).length;
+  if(selCount){
+    html+=`<div style="position:sticky;bottom:0;padding:16px;background:var(--sf);border-top:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+<div><strong>${selCount}</strong> работ выбрано · <strong>${Object.values(contractorSelected).reduce((s,v)=>s+(v.price||0),0).toLocaleString()} PLN</strong></div>
+<button class="btn pr" onclick="sendProposal()" style="padding:10px 24px">&#128196; Отправить КП</button>
+</div>`;
+  }
+  c.innerHTML=html;
+}
+
+function toggleContractorWork(id,basePrice){
+  if(contractorSelected[id])delete contractorSelected[id];
+  else contractorSelected[id]={price:basePrice,note:''};
+  renderContractorWorks();
+}
+
+async function sendProposal(){
+  const items=Object.entries(contractorSelected).map(([id,v])=>{
+    const r=DB.renovations.find(x=>x.id===id);
+    return{id,name:r?r.name:id,cat:r?r.cat:'',price:v.price,note:v.note};
+  });
+  if(!items.length)return;
+  const total=items.reduce((s,i)=>s+i.price,0);
+  const proposal={
+    id:'prop_'+Date.now(),
+    contractor_email:currentUser?.email||'',
+    contractor_name:currentUser?.name||'',
+    items,total,
+    status:'sent',
+    created_at:new Date().toISOString()
+  };
+  DB.proposals.push(proposal);
+  if(sb){
+    await sb.from('proposals').upsert(proposal).then(()=>{});
+  }
+  contractorSelected={};
+  renderContractorWorks();
+  alert('Коммерческое предложение отправлено! Сумма: '+total.toLocaleString()+' PLN');
+  nav('contractor-proposals');
+}
+
+function renderContractorProposals(){
+  const c=document.getElementById('contractorProposalsList');if(!c)return;
+  const mine=DB.proposals.filter(p=>p.contractor_email===currentUser?.email);
+  if(!mine.length){c.innerHTML='<div class="c"><div class="cb" style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Вы ещё не отправляли предложений</div></div>';return}
+  c.innerHTML=mine.map(p=>{
+    const statusColor=p.status==='accepted'?'var(--gn)':p.status==='rejected'?'var(--rd)':'var(--or)';
+    const statusText=p.status==='accepted'?'Принято':p.status==='rejected'?'Отклонено':'На рассмотрении';
+    return `<div class="c" style="margin-bottom:12px"><div class="ch"><h3>КП от ${new Date(p.created_at).toLocaleDateString()}</h3><span style="font-size:10px;padding:3px 8px;border-radius:5px;background:${statusColor}22;color:${statusColor};font-weight:600">${statusText}</span></div>
+<div class="cb" style="padding:12px"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+${p.items.map(i=>`<div style="padding:8px 10px;border:1px solid var(--bd);border-radius:6px;font-size:11px"><div style="font-weight:600">${i.name}</div><div style="color:var(--tx3);margin-top:2px">${i.cat} · ${i.price.toLocaleString()} PLN</div>${i.note?`<div style="color:var(--tx2);margin-top:2px;font-style:italic">${i.note}</div>`:''}</div>`).join('')}
+</div><div style="text-align:right;font-size:14px;font-weight:700">Итого: ${p.total.toLocaleString()} PLN</div></div></div>`;
   }).join('');
 }
 
@@ -2077,6 +2576,27 @@ function togglePickEquip(id){
 }
 
 // ═══════════════ RENOVATIONS (Tab 2) ═══════════════
+function toggleCustomRenForm(){
+  const f=document.getElementById('customRenForm');
+  f.style.display=f.style.display==='none'?'block':'none';
+}
+function addCustomRen(){
+  const name=document.getElementById('crName').value.trim();
+  if(!name)return;
+  const cat=document.getElementById('crCat').value||'Другое';
+  const price=Math.max(0,parseFloat(document.getElementById('crPrice').value)||0);
+  const val=parseFloat(document.getElementById('crVal').value)||0;
+  const unit=document.getElementById('crUnit').value.trim();
+  const id='custom_'+Date.now();
+  DB.renovations.push({id,name,cat,price,unit:unit||'',baseVal:val||0,custom:true});
+  DB.pickedRenovations[id]={qty:1,done:false};
+  document.getElementById('crName').value='';
+  document.getElementById('crPrice').value='';
+  document.getElementById('crVal').value='';
+  document.getElementById('crUnit').value='';
+  document.getElementById('customRenForm').style.display='none';
+  renderRenovationsCatalog();renderSelectedRenovations();recalc();
+}
 function togglePickRenovation(id){
   if(DB.pickedRenovations[id]){delete DB.pickedRenovations[id]}else{DB.pickedRenovations[id]={qty:1,done:false}}
   renderRenovationsCatalog();renderSelectedRenovations();recalc();
@@ -2112,7 +2632,8 @@ function renderRenovationsCatalog(){
     html+=`<div id="renCatDBBody${ci}" style="display:none;border-top:1px solid var(--bd)">`;
     items.forEach(r=>{
       const picked=!!DB.pickedRenovations[r.id];
-      html+=`<div class="ci" style="padding:8px 12px;display:flex;align-items:center;gap:8px;${picked?'background:var(--acbg)':''}"><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:${picked?'600':'400'}">${r.name}</div><div style="font-size:10px;color:var(--ac2)">${r.price.toLocaleString('ru')} PLN</div></div><button class="btn sm ${picked?'gn':'pr'}" style="flex-shrink:0;padding:3px 10px;font-size:10px" onclick="togglePickRenovation('${r.id}')">${picked?'&#10003;':'+'}</button></div>`;
+      const valLabel=r.baseVal&&r.unit?` · ${r.baseVal} ${r.unit}`:'';
+      html+=`<div class="ci" style="padding:8px 12px;display:flex;align-items:center;gap:8px;${picked?'background:var(--acbg)':''}"><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:${picked?'600':'400'}">${r.name}${valLabel}</div><div style="font-size:10px;color:var(--ac2)">${r.price.toLocaleString('ru')} PLN</div></div><button class="btn sm ${picked?'gn':'pr'}" style="flex-shrink:0;padding:3px 10px;font-size:10px" onclick="togglePickRenovation('${r.id}')">${picked?'&#10003;':'+'}</button></div>`;
     });
     html+='</div></div>';
   });
@@ -2126,6 +2647,16 @@ function toggleRenCatDB(i){
   const open=b.style.display!=='none';
   b.style.display=open?'none':'block';
   if(a)a.style.transform=open?'rotate(0deg)':'rotate(90deg)';
+}
+function getRenDisplayName(r,p){
+  const val=p&&p.customVal!=null?p.customVal:(r.baseVal||'');
+  const unit=r.unit||'';
+  return val?r.name+' — '+val+' '+unit:r.name;
+}
+function setRenVal(id,val){
+  if(!DB.pickedRenovations[id])return;
+  DB.pickedRenovations[id].customVal=Math.max(0,parseFloat(val)||0);
+  renderSelectedRenovations();recalc();
 }
 function renderSelectedRenovations(){
   const c=document.getElementById('selectedRenCards');
@@ -2146,7 +2677,8 @@ function renderSelectedRenovations(){
     const unitPrice=p.customPrice!=null?p.customPrice:r.price;
     totalCost+=unitPrice*qty;
     if(done)doneCount++;
-    groups[cat].push({...r,qty,done,unitPrice,isCustom:p.customPrice!=null});
+    const curVal=p.customVal!=null?p.customVal:(r.baseVal||'');
+    groups[cat].push({...r,qty,done,unitPrice,isCustom:p.customPrice!=null,curVal});
   });
   let html='';
   Object.keys(groups).forEach(cat=>{
@@ -2154,7 +2686,8 @@ function renderSelectedRenovations(){
     const catTotal=items.reduce((s,r)=>s+r.unitPrice*r.qty,0);
     html+=`<div class="c"><div class="ch"><h3 style="font-size:12px">${cat}</h3><span style="font-size:10px;color:var(--gn);font-weight:600">${items.length} работ · ${catTotal.toLocaleString('ru')} PLN</span></div><div class="cb" style="padding:8px 12px">`;
     items.forEach(r=>{
-      html+=`<div class="ci cost-row" style="flex-wrap:nowrap;padding:6px 0;${r.done?'opacity:0.5':''}"><label style="display:flex;align-items:center;cursor:pointer;flex-shrink:0"><input type="checkbox" ${r.done?'checked':''} onchange="toggleRenDone('${r.id}')" style="margin-right:8px"></label><div class="ct" style="flex:1;min-width:0;font-size:11px;${r.done?'text-decoration:line-through':''}">${r.name}</div><div class="sel-qty" style="margin:0 4px"><button onclick="renSelQty('${r.id}',-1)">−</button><span>${r.qty}</span><button onclick="renSelQty('${r.id}',1)">+</button></div><div style="display:flex;align-items:center;gap:2px;min-width:90px;justify-content:flex-end"><input type="number" value="${r.unitPrice}" onchange="setCustomPrice('ren','${r.id}',this.value)" style="width:55px;font-size:11px;font-weight:700;color:${r.isCustom?'var(--or)':'var(--ac2)'};text-align:right;border:1px solid var(--bd);border-radius:4px;padding:2px 4px;background:var(--sf)"><span style="font-size:9px;color:var(--tx3)">PLN</span></div><button class="btn sm" style="color:var(--rd);padding:2px 6px;margin-left:4px" onclick="togglePickRenovation('${r.id}')">&#10005;</button></div>`;
+      const valInput=r.unit?`<div style="display:flex;align-items:center;gap:2px;flex-shrink:0"><input type="number" value="${r.curVal}" onchange="setRenVal('${r.id}',this.value)" style="width:45px;font-size:10px;font-weight:600;color:${r.curVal!=r.baseVal?'var(--or)':'var(--tx)'};text-align:center;border:1px solid var(--bd);border-radius:4px;padding:2px 3px;background:var(--sf)"><span style="font-size:9px;color:var(--tx3);white-space:nowrap">${r.unit}</span></div>`:'';
+      html+=`<div class="ci cost-row" style="flex-wrap:nowrap;padding:6px 0;${r.done?'opacity:0.5':''}"><label style="display:flex;align-items:center;cursor:pointer;flex-shrink:0"><input type="checkbox" ${r.done?'checked':''} onchange="toggleRenDone('${r.id}')" style="margin-right:8px"></label><div class="ct" style="flex:1;min-width:0;font-size:11px;${r.done?'text-decoration:line-through':''}">${r.name}</div>${valInput}<div class="sel-qty" style="margin:0 4px"><button onclick="renSelQty('${r.id}',-1)">−</button><span>${r.qty}</span><button onclick="renSelQty('${r.id}',1)">+</button></div><div style="display:flex;align-items:center;gap:2px;min-width:90px;justify-content:flex-end"><input type="number" value="${r.unitPrice}" onchange="setCustomPrice('ren','${r.id}',this.value)" style="width:55px;font-size:11px;font-weight:700;color:${r.isCustom?'var(--or)':'var(--ac2)'};text-align:right;border:1px solid var(--bd);border-radius:4px;padding:2px 4px;background:var(--sf)"><span style="font-size:9px;color:var(--tx3)">PLN</span></div><button class="btn sm" style="color:var(--rd);padding:2px 6px;margin-left:4px" onclick="togglePickRenovation('${r.id}')">&#10005;</button></div>`;
     });
     html+='</div></div>';
   });
@@ -2311,7 +2844,32 @@ function eqSelQty(id,d){
   renderSelectedEquip();recalc();renderCabinetTypes();
 }
 function getPickedRoomsList(){
-  return Object.keys(DB.pickedRooms).map(id=>DB.rooms.find(r=>r.id==id)).filter(Boolean);
+  // Из каталога БД
+  const fromDB=Object.keys(DB.pickedRooms).map(id=>DB.rooms.find(r=>r.id==id)).filter(Boolean);
+  // Из конструктора планировки
+  const fromFP=(FP&&FP.rooms||[]).map((r,i)=>{
+    const bb=fpPolyBBox(r.pts);
+    const w=+(bb.x2-bb.x1).toFixed(1),h=+(bb.y2-bb.y1).toFixed(1);
+    return{id:'fp_'+i,name:r.name||'Комната '+(i+1),type:r.type||'Без типа',area:+(w*h).toFixed(1),w,h,source:'constructor'};
+  });
+  // Объединяем, убирая дубли по имени
+  const dbNames=new Set(fromDB.map(r=>r.name));
+  const unique=fromFP.filter(r=>!dbNames.has(r.name));
+  return [...fromDB,...unique];
+}
+function addCabinetFromList(){
+  const fpRooms=(FP&&FP.rooms||[]);
+  if(!fpRooms.length){alert('Сначала добавьте комнаты в конструкторе планировки (Таб 1)');return}
+  let html='<div style="font-size:12px;color:var(--tx2);margin-bottom:8px">Комнаты из конструктора планировки автоматически отображаются в стоимости кабинетов.</div>';
+  html+='<div style="font-size:11px;color:var(--tx3);margin-bottom:12px">Всего в конструкторе: <strong>'+fpRooms.length+'</strong> комнат</div>';
+  fpRooms.forEach((r,i)=>{
+    const bb=fpPolyBBox(r.pts);const w=+(bb.x2-bb.x1).toFixed(1),h=+(bb.y2-bb.y1).toFixed(1);
+    html+=`<div style="display:flex;align-items:center;gap:8px;padding:8px;border-bottom:1px solid var(--bd)"><div style="flex:1"><div style="font-weight:600;font-size:12px">${r.name||'Комната '+(i+1)}</div><div style="font-size:10px;color:var(--tx3)">${r.type||'Без типа'} · ${(w*h).toFixed(1)} м²</div></div><span style="font-size:10px;color:var(--gn)">✓ В кабинетах</span></div>`;
+  });
+  document.getElementById('modalTitle').textContent='Комнаты конструктора';
+  document.getElementById('modalFields').innerHTML=html;
+  document.getElementById('modalSave').style.display='none';
+  document.getElementById('modalBg').classList.add('vis');
 }
 function assignEquipRoom(equipId,roomId){
   if(!DB.pickedEquip[equipId])return;
@@ -3742,7 +4300,7 @@ function deleteStaff(id){
   renderStaff();buildSidebar();recalc();
 }
 
-// DB catalog of all services (sidebar БД Услуг)
+// DB catalog of all services (sidebar БД Процедур)
 function renderServices(){
   const c=document.getElementById('dbServiceCards');
   if(!c)return;
@@ -3753,10 +4311,10 @@ function renderServices(){
     groups[cat].items.push(s);
   });
   const catKeys=Object.keys(groups);
-  if(!catKeys.length){c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Загрузка услуг из базы данных...</div>';return}
+  if(!catKeys.length){c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Загрузка процедур из базы данных...</div>';return}
 
   const picked=DB.pickedServices||{};
-  let html=`<div style="padding:8px 16px;font-size:11px;color:var(--tx2);border-bottom:1px solid var(--bd)">Каталог: <strong>${DB.services.length}</strong> услуг в <strong>${catKeys.length}</strong> категориях · Выбрано: <strong>${Object.keys(picked).length}</strong></div>`;
+  let html=`<div style="padding:8px 16px;font-size:11px;color:var(--tx2);border-bottom:1px solid var(--bd)">Каталог: <strong>${DB.services.length}</strong> процедур в <strong>${catKeys.length}</strong> категориях · Выбрано: <strong>${Object.keys(picked).length}</strong></div>`;
   catKeys.forEach(cat=>{
     const g=groups[cat];
     const subs={};
@@ -3775,7 +4333,7 @@ function renderServices(){
   c.innerHTML=html;
 }
 
-// Selected services in tab 4 — show ALL categories, picked items inside
+// Selected services in tab 5 (Прайс-лист) — show ALL categories, picked items inside
 function renderSelectedServices(){
   const c=document.getElementById('serviceCards');
   const picked=DB.pickedServices||{};
@@ -3805,7 +4363,7 @@ function renderSelectedServices(){
       ?`<span style="font-size:10px;color:var(--gn);font-weight:600">${cnt} / ${g.total} выбрано · ${catTotal.toLocaleString('ru')} PLN</span>`
       :`<span style="font-size:10px;color:var(--tx3)">0 / ${g.total} — не выбрано</span>`;
 
-    html+=`<div class="c" style="${cnt?'':'opacity:0.7'}"><div class="ch"><h3>${g.icon} ${cat}</h3><div style="display:flex;align-items:center;gap:8px">${statusTag}<button class="btn sm pr" onclick="nav('db-renovations')" style="font-size:9px">+ Добавить</button></div></div>`;
+    html+=`<div class="c" style="${cnt?'':'opacity:0.7'}"><div class="ch"><h3>${g.icon} ${cat}</h3><div style="display:flex;align-items:center;gap:8px">${statusTag}<button class="btn sm pr" onclick="nav('db-services')" style="font-size:9px">+ Добавить</button></div></div>`;
 
     if(cnt){
       html+='<div class="cb">';
@@ -3872,37 +4430,55 @@ function renderUsers(){
   if(!c)return;
   const roleColors={admin:'var(--ac2)',owner:'var(--gn)',contractor:'var(--or)',supplier:'#8b5cf6',employee:'#06b6d4'};
   const roleIcons={admin:'👑',owner:'🏠',contractor:'🔧',supplier:'📦',employee:'🧑'};
-  let html='';
+  const roleNames={admin:'Администратор',owner:'Владелец',contractor:'Подрядчик',supplier:'Поставщик',employee:'Сотрудник'};
+  let html='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px">';
   DB.users.forEach(u=>{
     const rc=roleColors[u.role]||'var(--tx3)';
-    const planBadge=u.role==='admin'?'<span style="font-size:10px;padding:2px 8px;border-radius:6px;background:rgba(59,130,246,.1);color:var(--ac2);font-weight:700">FULL</span>'
-      :`<select onchange="changeUserPlan('${u.id}',this.value)" style="font-size:10px;padding:2px 6px;border:1px solid var(--bd);border-radius:6px;background:var(--sf);color:var(--tx);cursor:pointer">
-<option value="trial" ${u.plan==='trial'?'selected':''}>Триал</option>
-<option value="paid" ${u.plan==='paid'?'selected':''}>PRO</option>
-</select>`;
-    html+=`<div class="c" style="padding:16px;display:flex;align-items:center;gap:12px">
-<div style="width:36px;height:36px;border-radius:10px;background:${rc}15;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">${roleIcons[u.role]||'👤'}</div>
+    const initials=(u.name||'').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const planLabel=u.role==='admin'?'FULL':u.plan==='paid'?'PRO':'Триал';
+    const planColor=u.role==='admin'?'var(--ac2)':u.plan==='paid'?'var(--ac2)':'var(--yl)';
+    const planBg=u.role==='admin'?'rgba(59,130,246,.1)':u.plan==='paid'?'rgba(59,130,246,.1)':'rgba(234,179,8,.1)';
+    const statusDot=u.status==='Активен'?'var(--gn)':'var(--tx3)';
+    html+=`<div class="c" style="padding:0;overflow:hidden">
+<div style="padding:16px;display:flex;gap:12px;align-items:flex-start">
+<div style="width:48px;height:48px;border-radius:14px;background:${rc};display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:700;flex-shrink:0;letter-spacing:1px">${initials||'?'}</div>
 <div style="flex:1;min-width:0">
-<div style="font-weight:600;font-size:13px">${u.name}</div>
-<div style="font-size:11px;color:var(--tx2)">${u.email}</div>
+<div style="display:flex;align-items:center;gap:6px"><div style="font-weight:700;font-size:14px">${u.name}</div><span style="width:8px;height:8px;border-radius:50%;background:${statusDot};flex-shrink:0" title="${u.status}"></span></div>
+<div style="font-size:11px;color:var(--tx2);margin-top:2px">${u.email}</div>
+${u.phone?`<div style="font-size:11px;color:var(--tx3);margin-top:1px">${u.phone}</div>`:''}
+${u.position?`<div style="font-size:10px;color:var(--tx2);margin-top:3px;font-weight:500">${u.position}</div>`:''}
 </div>
-<div style="flex-shrink:0;display:flex;align-items:center;gap:8px">
-<select onchange="changeUserRole('${u.id}',this.value)" style="font-size:11px;padding:4px 8px;border:1px solid var(--bd);border-radius:8px;background:var(--sf);color:var(--tx);cursor:pointer">
-<option value="admin" ${u.role==='admin'?'selected':''}>Администратор</option>
+</div>
+<div style="padding:0 16px 12px;display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+<span style="font-size:10px;padding:3px 10px;border-radius:6px;background:${rc}15;color:${rc};font-weight:700">${roleIcons[u.role]||'👤'} ${roleNames[u.role]||u.role}</span>
+<span style="font-size:10px;padding:3px 10px;border-radius:6px;background:${planBg};color:${planColor};font-weight:700">${planLabel}</span>
+<span style="font-size:10px;padding:3px 10px;border-radius:6px;background:${u.status==='Активен'?'rgba(22,163,74,.08)':'rgba(136,136,136,.08)'};color:${u.status==='Активен'?'var(--gn)':'var(--tx3)'};font-weight:600">${u.status}</span>
+</div>
+${u.notes?`<div style="padding:0 16px 12px;font-size:10px;color:var(--tx3);line-height:1.4">${u.notes}</div>`:''}
+<div style="border-top:1px solid var(--bd);padding:10px 16px;display:flex;gap:6px;justify-content:space-between;align-items:center;background:var(--sf)">
+<div style="display:flex;gap:4px">
+<select onchange="changeUserRole('${u.id}',this.value)" style="font-size:10px;padding:3px 6px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--tx);cursor:pointer;font-family:var(--f)">
+<option value="admin" ${u.role==='admin'?'selected':''}>Админ</option>
 <option value="owner" ${u.role==='owner'?'selected':''}>Владелец</option>
 <option value="contractor" ${u.role==='contractor'?'selected':''}>Подрядчик</option>
 <option value="supplier" ${u.role==='supplier'?'selected':''}>Поставщик</option>
 <option value="employee" ${u.role==='employee'?'selected':''}>Сотрудник</option>
 </select>
-${planBadge}
-<span style="font-size:10px;padding:2px 8px;border-radius:6px;background:${u.status==='Активен'?'rgba(22,163,74,.1)':'rgba(136,136,136,.1)'};color:${u.status==='Активен'?'var(--gn)':'var(--tx3)'};font-weight:600">${u.status}</span>
-<button class="btn sm" onclick="editUser('${u.id}')" style="font-size:10px;padding:4px 8px">✏️</button>
+${u.role!=='admin'?`<select onchange="changeUserPlan('${u.id}',this.value)" style="font-size:10px;padding:3px 6px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--tx);cursor:pointer;font-family:var(--f)">
+<option value="trial" ${u.plan==='trial'?'selected':''}>Триал</option>
+<option value="paid" ${u.plan==='paid'?'selected':''}>PRO</option>
+</select>`:''}
+</div>
+<div style="display:flex;gap:4px">
+<button class="btn sm" onclick="editUser('${u.id}')" style="font-size:10px;padding:4px 10px">✏️ Редактировать</button>
 <button class="btn sm" onclick="deleteUser('${u.id}')" style="font-size:10px;padding:4px 8px;color:var(--rd)">✕</button>
-</div></div>`;
+</div>
+</div>
+</div>`;
   });
+  html+='</div>';
   c.innerHTML=html;
   renderRoleCabinets();
-  // Stats
   document.getElementById('usersTotal').textContent=DB.users.length;
   document.getElementById('usersAdmins').textContent=DB.users.filter(u=>u.role==='admin').length;
   document.getElementById('usersOwners').textContent=DB.users.filter(u=>u.role==='owner').length;
@@ -4167,8 +4743,8 @@ const MODAL_FIELDS={
   employee:[{k:'name',l:'Должность',ph:'Стоматолог'},{k:'spec',l:'Специализация',ph:'Терапия'},{k:'salary',l:'ФОТ/мес (PLN)',ph:'0',t:'number'},{k:'status',l:'Статус',ph:'Вакансия'}],
   equip:[{k:'name',l:'Название',ph:'Оборудование'},{k:'category',l:'Категория',ph:'Категория'},{k:'price',l:'Цена (PLN)',ph:'0',t:'number'},{k:'supplier',l:'Поставщик',ph:'Компания'},{k:'warranty',l:'Гарантия',ph:'24 мес'}],
   staff:[{k:'name',l:'Должность',ph:'Должность'},{k:'spec',l:'Описание',ph:'Полная ставка'},{k:'salary',l:'ФОТ/мес (PLN)',ph:'0',t:'number'},{k:'status',l:'Статус',ph:'Вакансия'}],
-  service:[{k:'name',l:'Услуга',ph:'Название'},{k:'time',l:'Время',ph:'30 мин'},{k:'price',l:'Цена (PLN)',ph:'0',t:'number'}],
-  user:[{k:'name',l:'Имя',ph:'Иван Иванов'},{k:'email',l:'Email',ph:'user@clinic.com'},{k:'role',l:'Роль',ph:'owner'},{k:'status',l:'Статус',ph:'Активен'}],
+  service:[{k:'name',l:'Процедура',ph:'Название'},{k:'time',l:'Время',ph:'30 мин'},{k:'price',l:'Цена (PLN)',ph:'0',t:'number'}],
+  user:[{k:'name',l:'Имя',ph:'Иван Иванов'},{k:'email',l:'Email',ph:'user@clinic.com'},{k:'phone',l:'Телефон',ph:'+48 500 000 000'},{k:'position',l:'Должность',ph:'Врач-стоматолог'},{k:'role',l:'Роль',ph:'owner'},{k:'status',l:'Статус',ph:'Активен'},{k:'notes',l:'Заметки',ph:'Доп. информация'}],
   cabinetType:[{k:'name',l:'Название типа',ph:'Стоматологический'},{k:'icon',l:'Иконка',ph:'🦷'},{k:'desc',l:'Описание',ph:'Стандартный кабинет'},{k:'minArea',l:'Мин. площадь (м²)',ph:'12',t:'number'}],
   renovation:[{k:'name',l:'Название работы',ph:'Монтаж перегородок'},{k:'cat',l:'Категория',ph:'Отделка и строительные работы'},{k:'price',l:'Стоимость (PLN)',ph:'10000',t:'number'}]
 };
@@ -4176,7 +4752,7 @@ const MODAL_FIELDS={
 function openModal(mode){
   modalMode=mode;
   editingId=null;
-  const titles={property:'Карточка помещения',room:'Добавить комнату',contractor:'Заявка подрядчика',supplier:'Добавить товар',employee:'Добавить сотрудника',equip:'Добавить оборудование',staff:'Добавить должность',service:'Добавить услугу',user:'Пригласить пользователя',cabinetType:'Добавить тип кабинета'};
+  const titles={property:'Карточка помещения',room:'Добавить комнату',contractor:'Заявка подрядчика',supplier:'Добавить товар',employee:'Добавить сотрудника',equip:'Добавить оборудование',staff:'Добавить должность',service:'Добавить процедуру',user:'Пригласить пользователя',cabinetType:'Добавить тип кабинета'};
   document.getElementById('modalTitle').textContent=titles[mode]||'Добавить';
   const fields=MODAL_FIELDS[mode]||[];
   document.getElementById('modalFields').innerHTML=fields.map(f=>{
@@ -4186,7 +4762,7 @@ function openModal(mode){
   document.getElementById('modalBg').classList.add('vis');
 }
 
-function closeModal(){document.getElementById('modalBg').classList.remove('vis')}
+function closeModal(){document.getElementById('modalBg').classList.remove('vis');const ms=document.getElementById('modalSave');if(ms){ms.style.display='';ms.textContent='Сохранить';ms.onclick=saveModal}}
 
 function saveModal(){
   const fields=MODAL_FIELDS[modalMode]||[];
@@ -4299,20 +4875,12 @@ function updateTabCosts(t){
   // Tab 1: Помещение — аренда + депозит
   const tc1=document.getElementById('tabCost1');
   if(tc1)tc1.textContent=t.rent>0?t.rent.toLocaleString('ru')+' PLN':'';
-  // Tab 2: Модернизация — работы
+  // Tab 2: Модернизация — только ремонт
   const tc2=document.getElementById('tabCost2');
   if(tc2)tc2.textContent=t.renovation>0?t.renovation.toLocaleString('ru')+' PLN':'';
   // Tab 3: Оснащение — оборудование
   const tc3=document.getElementById('tabCost3');
   if(tc3)tc3.textContent=t.equip>0?t.equip.toLocaleString('ru')+' PLN':'';
-  // Tab 2 now combines renovation + services
-  let svcTotal=0;
-  Object.entries(DB.pickedServices||{}).forEach(([id,p])=>{
-    const s=DB.services.find(x=>x.id==id);
-    if(s)svcTotal+=(p.customPrice!=null?p.customPrice:s.price)*(p.qty||1);
-  });
-  const combined=t.renovation+svcTotal;
-  if(tc2)tc2.textContent=combined>0?combined.toLocaleString('ru')+' PLN':'';
   // Tab 4: Персонал — ФОТ/мес
   let fot=0;
   Object.entries(DB.pickedStaff||{}).forEach(([id,p])=>{
@@ -4321,21 +4889,43 @@ function updateTabCosts(t){
   });
   const tc4=document.getElementById('tabCost4');
   if(tc4)tc4.textContent=fot>0?fot.toLocaleString('ru')+'/мес':'';
-  // Tab 5: Концепция — документация
+  // Tab 5: Прайс-лист — процедуры/услуги для клиентов
+  let svcTotal=0;
+  const svcPicked=DB.pickedServices||{};
+  Object.entries(svcPicked).forEach(([id,p])=>{
+    const s=DB.services.find(x=>x.id==id);
+    if(s)svcTotal+=(p.customPrice!=null?p.customPrice:s.price)*(p.qty||1);
+  });
   const tc5=document.getElementById('tabCost5');
-  if(tc5)tc5.textContent=t.docs>0?t.docs.toLocaleString('ru')+' PLN':'';
+  if(tc5)tc5.textContent=svcTotal>0?svcTotal.toLocaleString('ru')+' PLN':'';
+  // Tab 5 stats
+  const svcCountEl=document.getElementById('svcCount');
+  const svcCatsEl=document.getElementById('svcCats');
+  const svcAvgEl=document.getElementById('svcAvgPrice');
+  const svcRevEl=document.getElementById('svcRevenue');
+  const svcPickedCount=Object.keys(svcPicked).length;
+  if(svcCountEl)svcCountEl.textContent=svcPickedCount;
+  if(svcCatsEl){const cats=new Set();Object.keys(svcPicked).forEach(id=>{const s=DB.services.find(x=>x.id==id);if(s)cats.add(s.category_id)});svcCatsEl.textContent=cats.size}
+  if(svcAvgEl)svcAvgEl.textContent=svcPickedCount>0?Math.round(svcTotal/svcPickedCount).toLocaleString('ru'):'0';
+  if(svcRevEl){const chairs=parseInt(document.getElementById('chairsCount')?.value||7);const ppd=parseInt(document.getElementById('patientsPerChair')?.value||6);const wd=parseInt(document.getElementById('workDays')?.value||22);const avgP=svcPickedCount>0?svcTotal/svcPickedCount:0;svcRevEl.textContent=Math.round(avgP*chairs*ppd*wd).toLocaleString('ru')}
+  const s5t=document.getElementById('s5Total');
+  if(s5t)s5t.textContent=(svcPickedCount>0?Math.round(svcTotal/svcPickedCount).toLocaleString('ru'):'0')+' PLN';
+  // Tab 6: Концепция — документация
+  const tc6=document.getElementById('tabCost6');
+  if(tc6)tc6.textContent=t.docs>0?t.docs.toLocaleString('ru')+' PLN':'';
   // Tab status: red (0) → orange (wip) → green (ok)
   const tabs=document.querySelectorAll('#tabBar .tab');
   const renP=Object.keys(DB.pickedRenovations||{}).length;
-  const svcP=Object.keys(DB.pickedServices||{}).length;
+  const svcP=svcPickedCount;
   const eqP=Object.keys(DB.pickedEquip||{}).length;
   const stP=Object.keys(DB.pickedStaff||{}).length;
   // progress: 0=none, 1=started, 2=complete
   const progress=[
     t.rent>0&&activeProperty?(activeProperty.area>0&&FP&&FP.rooms&&FP.rooms.length>=2?2:1):0,
-    renP+svcP>=10?2:(renP+svcP>0?1:0),
+    renP>=10?2:(renP>0?1:0),
     eqP>=10?2:(eqP>0?1:0),
     stP>=3?2:(stP>0?1:0),
+    svcP>=5?2:(svcP>0?1:0),
     t.docs>0?2:0
   ];
   tabs.forEach((tab,i)=>{
@@ -4357,11 +4947,10 @@ function updateOverviewStats(){
   const s1full=Math.min(100,s1prog+(s1rooms>0?50:0));
   updateStage(stages[0],s1full,activeProperty?activeProperty.area+' м²':'—');
 
-  // S2: Услуги (модернизация + стоматология)
+  // S2: Модернизация (только ремонт)
   const renPicked=Object.keys(DB.pickedRenovations||{}).length;
-  const svcPicked=Object.keys(DB.pickedServices||{}).length;
-  const s2prog=renPicked+svcPicked>0?Math.min(100,Math.round((renPicked+svcPicked)/10*100)):0;
-  updateStage(stages[1],s2prog,(renPicked+svcPicked)+' позиций');
+  const s2prog=renPicked>0?Math.min(100,Math.round(renPicked/10*100)):0;
+  updateStage(stages[1],s2prog,renPicked+' работ');
 
   // S3: Оснащение — equipment from Supabase
   const eqPicked=Object.keys(DB.pickedEquip||{}).length;
@@ -4373,24 +4962,29 @@ function updateOverviewStats(){
   const s4prog=staffPicked>0?Math.min(100,Math.round(staffPicked/5*100)):0;
   updateStage(stages[3],s4prog,staffPicked+' сотр.');
 
-  // S5: Концепция — docs checked
+  // S5: Прайс-лист — процедуры
+  const svcPicked=Object.keys(DB.pickedServices||{}).length;
+  const s5prog=svcPicked>0?Math.min(100,Math.round(svcPicked/10*100)):0;
+  updateStage(stages[4],s5prog,svcPicked+' процедур');
+
+  // S6: Концепция — docs checked
   const docsTotal=document.querySelectorAll('[data-cost^="doc_"]').length;
   let docsChecked=0;
   document.querySelectorAll('[data-cost^="doc_"]').forEach(el=>{const ci=el.closest('.ci');if(ci&&ci.querySelector('.cx.ok'))docsChecked++});
-  const s5prog=docsTotal?Math.round(docsChecked/docsTotal*100):0;
-  updateStage(stages[4],s5prog,docsChecked+'/'+docsTotal+' док.');
+  const s6prog=docsTotal?Math.round(docsChecked/docsTotal*100):0;
+  if(stages[5])updateStage(stages[5],s6prog,docsChecked+'/'+docsTotal+' док.');
 
   // Overall progress
-  const overall=Math.round((s1full+s2prog+s3prog+s4prog+s5prog)/5);
+  const overall=Math.round((s1full+s2prog+s3prog+s4prog+s5prog+s6prog)/6);
   document.getElementById('ovProgress').innerHTML=overall+'<span style="font-size:14px;color:var(--tx2)">%</span>';
   const pb=document.getElementById('ovProgressBar');
   if(pb)pb.style.width=overall+'%';
 
   // Current stage
-  const progs=[s1full,s2prog,s3prog,s4prog,s5prog];
+  const progs=[s1full,s2prog,s3prog,s4prog,s5prog,s6prog];
   let curStage=1;
-  for(let i=0;i<progs.length;i++){if(progs[i]<100){curStage=i+1;break}if(i===4)curStage=5}
-  document.getElementById('ovStage').textContent='Этап '+curStage+' из 5';
+  for(let i=0;i<progs.length;i++){if(progs[i]<100){curStage=i+1;break}if(i===5)curStage=6}
+  document.getElementById('ovStage').textContent='Этап '+curStage+' из 6';
 }
 
 function updateStage(el,pct,meta){
@@ -4422,7 +5016,7 @@ const ACHIEVEMENTS=[
   {id:'ren10',icon:'&#127959;',name:'Полный ремонт',desc:'10+ работ в модернизации',check:()=>Object.keys(DB.pickedRenovations||{}).length>=10},
   {id:'eq5',icon:'&#129656;',name:'Первое оснащение',desc:'5+ единиц оборудования',check:()=>Object.keys(DB.pickedEquip||{}).length>=5},
   {id:'eq20',icon:'&#128230;',name:'Полная комплектация',desc:'20+ единиц оборудования',check:()=>Object.keys(DB.pickedEquip||{}).length>=20},
-  {id:'svc5',icon:'&#129657;',name:'Прайс-лист',desc:'5+ услуг добавлено',check:()=>Object.keys(DB.pickedServices||{}).length>=5},
+  {id:'svc5',icon:'&#129657;',name:'Прайс-лист',desc:'5+ процедур добавлено',check:()=>Object.keys(DB.pickedServices||{}).length>=5},
   {id:'staff3',icon:'&#129489;',name:'Команда',desc:'3+ сотрудника',check:()=>Object.keys(DB.pickedStaff||{}).length>=3},
   {id:'budget',icon:'&#128176;',name:'Бюджет',desc:'Общий бюджет > 100K',check:()=>{const t=calcTotals();return t.grand>100000}},
   {id:'profit',icon:'&#128200;',name:'Рентабельность',desc:'Доход превышает расход',check:()=>{const t=calcTotals();return t.revenue>t.expenses&&t.revenue>0}},
@@ -4533,7 +5127,7 @@ function updateRightPanel(){
     <div class="rp-stat"><span class="rp-stat-label">Подрядчиков</span><span class="rp-stat-val">${DB.contractors.length}</span></div>
     <div class="rp-stat"><span class="rp-stat-label">Комнат</span><span class="rp-stat-val">${DB.rooms.length}</span></div>
     <div class="rp-stat"><span class="rp-stat-label">Персонал</span><span class="rp-stat-val">${DB.employees.length}</span></div>
-    <div class="rp-stat"><span class="rp-stat-label">Услуг</span><span class="rp-stat-val">${DB.services.length}</span></div>
+    <div class="rp-stat"><span class="rp-stat-label">Процедур</span><span class="rp-stat-val">${DB.services.length}</span></div>
     </div>`;
   }
 
@@ -4589,14 +5183,6 @@ function updateRightPanel(){
   }
 
   if(cur==='s4'){
-    document.getElementById('rpTitle').textContent='Услуги';
-    html+=`<div class="rp-sec"><div class="rp-sec-title">Прайс-лист</div>
-    <div class="rp-stat"><span class="rp-stat-label">Услуг</span><span class="rp-stat-val">${DB.services.length}</span></div>
-    <div class="rp-stat"><span class="rp-stat-label">Средний чек</span><span class="rp-stat-val ac">${t.avgCheck} PLN</span></div>
-    </div>`;
-  }
-
-  if(cur==='s5'){
     document.getElementById('rpTitle').textContent='Персонал';
     const totalSalary=DB.employees.reduce((s,e)=>s+e.salary,0);
     html+=`<div class="rp-sec"><div class="rp-sec-title">ФОТ</div>
@@ -4607,6 +5193,23 @@ function updateRightPanel(){
     </div>`;
   }
 
+  if(cur==='s5'){
+    document.getElementById('rpTitle').textContent='Прайс-лист';
+    const picked=DB.pickedServices||{};
+    const pIds=Object.keys(picked);
+    let total=0;
+    pIds.forEach(id=>{const s=DB.services.find(x=>x.id==id);if(s)total+=(picked[id].customPrice!=null?picked[id].customPrice:s.price)*(picked[id].qty||1)});
+    const avgP=pIds.length?Math.round(total/pIds.length):0;
+    html+=`<div class="rp-sec"><div class="rp-sec-title">Ценообразование</div>
+    <div class="rp-stat"><span class="rp-stat-label">Процедур</span><span class="rp-stat-val">${pIds.length}</span></div>
+    <div class="rp-stat"><span class="rp-stat-label">Из каталога</span><span class="rp-stat-val">${DB.services.length}</span></div>
+    <div class="rp-mini"><div class="rp-mini-label">Средний чек</div><div class="rp-mini-val" style="color:var(--ac2)">${avgP.toLocaleString('ru')} PLN</div></div>
+    </div>`;
+  }
+
+  if(cur==='s6'){
+    document.getElementById('rpTitle').textContent='Концепция';
+  }
 
   rp.innerHTML=html;
 }
