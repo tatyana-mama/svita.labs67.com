@@ -1990,7 +1990,10 @@ function loadPicked(){
   // Always reset first to prevent data bleed between accounts
   PICKED_KEYS.forEach(k=>{DB[k]={}});
   try{
-    const raw=uGet('svita_picked');if(!raw)return;
+    let raw=uGet('svita_picked');
+    // Fallback: try legacy key without userId (migration from pre-isolation)
+    if(!raw){raw=localStorage.getItem('svita_picked');if(raw){uSet('svita_picked',raw);localStorage.removeItem('svita_picked')}}
+    if(!raw)return;
     const obj=JSON.parse(raw);
     PICKED_KEYS.forEach(k=>{if(obj[k])DB[k]=obj[k]});
   }catch(e){}
@@ -2007,7 +2010,8 @@ function saveBusinessModel(){
 const BM_DEFAULTS={cType:'Стоматологическая клиника',cBrand:'Свитлица',cCity:'Быдгощ, Польша',cDate:'Сентябрь 2026',cFormat:'Премиум-сегмент',cAudience:'Средний+ класс, 25-55 лет',cUsp:'AI-клиника нового поколения',cTech:'ŠČYRA.AI + Jetson Edge'};
 function loadBusinessModel(){
   try{
-    const raw=uGet('svita_bm');
+    let raw=uGet('svita_bm');
+    if(!raw){raw=localStorage.getItem('svita_bm');if(raw){uSet('svita_bm',raw);localStorage.removeItem('svita_bm')}}
     if(!raw){
       const vals=currentRole==='admin'?BM_DEFAULTS:{};
       BM_FIELDS.forEach(k=>{const el=document.getElementById(k);if(el)el.value=vals[k]||''});
@@ -2403,8 +2407,9 @@ function enterApp(){
       DB.users.push({id:currentUser.id||++nextId,name:currentUser.name,email:currentUser.email,role:currentRole,plan:'trial',status:'Активен'});
     }
   }
-  // Restore property card state (per-user)
-  const savedProp=uGet('svita_property');
+  // Restore property card state (per-user) with legacy migration
+  let savedProp=uGet('svita_property');
+  if(!savedProp){savedProp=localStorage.getItem('svita_property');if(savedProp){uSet('svita_property',savedProp);localStorage.removeItem('svita_property')}}
   if(savedProp){try{activeProperty=JSON.parse(savedProp)}catch(e){activeProperty=null}}
   else{activeProperty=currentRole==='admin'?{...DEFAULT_PROPERTY}:null}
   loadPicked();loadBusinessModel();loadDocItems();
@@ -3513,7 +3518,8 @@ const ADMIN_DOC_ITEMS=[
 function saveDocItems(){uSet('svita_docs',JSON.stringify(DB.docItems))}
 function loadDocItems(){
   DB.docItems=[];
-  try{const raw=uGet('svita_docs');
+  try{let raw=uGet('svita_docs');
+    if(!raw){raw=localStorage.getItem('svita_docs');if(raw){uSet('svita_docs',raw);localStorage.removeItem('svita_docs')}}
     if(raw){DB.docItems=JSON.parse(raw);return}
     if(currentRole==='admin')DB.docItems=ADMIN_DOC_ITEMS.map((d,i)=>({id:'doc_'+i,...d,done:false}));
   }catch(e){DB.docItems=[]}
@@ -4006,7 +4012,8 @@ function fpInit(){
       }
     }
   });
-  const saved=uGet('svita_floorplan');
+  let saved=uGet('svita_floorplan');
+  if(!saved){saved=localStorage.getItem('svita_floorplan');if(saved){uSet('svita_floorplan',saved);localStorage.removeItem('svita_floorplan')}}
   if(saved){try{const d=JSON.parse(saved);FP.rooms=(d.rooms||[]).map(r=>fpEnsurePoly(r));FP.elements=d.elements||[];FP.scale=d.scale||20;FP.ox=d.ox||40;FP.oy=d.oy||40;
     console.log('[SVITA] Loaded: '+FP.rooms.length+' rooms, '+FP.elements.length+' elements');
   }catch(e){console.error('[SVITA] Failed to load saved data:',e)}}
