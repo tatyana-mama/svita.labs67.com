@@ -2011,6 +2011,21 @@ function restoreProperty(p){
   }
   renderProperty();recalc();
 }
+// ═══ PERSIST PICKED DATA ═══
+const PICKED_KEYS=['pickedEquip','pickedRenovations','pickedStaff','pickedServices','pickedRooms','pickedContractors'];
+function savePicked(){
+  const obj={};
+  PICKED_KEYS.forEach(k=>{obj[k]=DB[k]||{}});
+  localStorage.setItem('svita_picked',JSON.stringify(obj));
+}
+function loadPicked(){
+  try{
+    const raw=localStorage.getItem('svita_picked');if(!raw)return;
+    const obj=JSON.parse(raw);
+    PICKED_KEYS.forEach(k=>{if(obj[k])DB[k]=obj[k]});
+  }catch(e){}
+}
+
 const BM_FIELDS=['cType','cBrand','cCity','cDate','cFormat','cAudience','cUsp','cTech'];
 function saveBusinessModel(){
   const bm={};
@@ -2416,6 +2431,7 @@ function enterApp(){
   // Restore property card state
   const savedProp=localStorage.getItem('svita_property');
   if(savedProp){try{activeProperty=JSON.parse(savedProp)}catch(e){}}
+  loadPicked();loadBusinessModel();
   buildSidebar();
   renderAll();
   loadBusinessModel();
@@ -3172,13 +3188,13 @@ function renderEmployees(){
 // Universal pick toggle for DB → Tab
 function togglePick(store,id,renderTable){
   if(DB[store][id]){delete DB[store][id]}else{DB[store][id]={qty:1}}
-  renderAll();renderPickedRooms();renderPickedContractors();recalc();
+  savePicked();renderAll();renderPickedRooms();renderPickedContractors();recalc();
 }
 
 // Equipment pick — also syncs with tab 3 visual state
 function togglePickEquip(id){
   if(DB.pickedEquip[id]){delete DB.pickedEquip[id]}else{DB.pickedEquip[id]={qty:1}}
-  renderEquip();renderSelectedEquip();renderCabinetTypes();recalc();
+  savePicked();renderEquip();renderSelectedEquip();renderCabinetTypes();recalc();
 }
 
 // ═══════════════ RENOVATIONS (Tab 2) ═══════════════
@@ -3205,17 +3221,17 @@ function addCustomRen(){
 }
 function togglePickRenovation(id){
   if(DB.pickedRenovations[id]){delete DB.pickedRenovations[id]}else{DB.pickedRenovations[id]={qty:1,done:false}}
-  renderRenovationsCatalog();renderSelectedRenovations();recalc();
+  savePicked();renderRenovationsCatalog();renderSelectedRenovations();recalc();
 }
 function renSelQty(id,d){
   if(!DB.pickedRenovations[id])return;
   DB.pickedRenovations[id].qty=Math.max(1,(DB.pickedRenovations[id].qty||1)+d);
-  renderSelectedRenovations();recalc();
+  savePicked();renderSelectedRenovations();recalc();
 }
 function toggleRenDone(id){
   if(!DB.pickedRenovations[id])return;
   DB.pickedRenovations[id].done=!DB.pickedRenovations[id].done;
-  renderSelectedRenovations();recalc();
+  savePicked();renderSelectedRenovations();recalc();
 }
 function renderRenovationsCatalog(){
   const c=document.getElementById('renCatalogCards');
@@ -3474,7 +3490,7 @@ function eqSelQty(id,d){
   DB.pickedEquip[id].qty=Math.max(1,(DB.pickedEquip[id].qty||1)+d);
   const sp=document.getElementById('eq_'+id);
   if(sp)sp.textContent=DB.pickedEquip[id].qty;
-  renderSelectedEquip();recalc();renderCabinetTypes();
+  savePicked();renderSelectedEquip();recalc();renderCabinetTypes();
 }
 function getPickedRoomsList(){
   // Из каталога БД
@@ -3507,14 +3523,14 @@ function addCabinetFromList(){
 function assignEquipRoom(equipId,roomId){
   if(!DB.pickedEquip[equipId])return;
   DB.pickedEquip[equipId].room=roomId||null;
-  renderCabinetTypes();
+  savePicked();renderCabinetTypes();
 }
 function setCustomPrice(type,id,val){
   const v=Math.max(0,parseFloat(val)||0);
   if(type==='equip'){if(DB.pickedEquip[id])DB.pickedEquip[id].customPrice=v;renderSelectedEquip();}
   else if(type==='ren'){if(DB.pickedRenovations[id])DB.pickedRenovations[id].customPrice=v;renderSelectedRenovations();}
   else if(type==='svc'){if(DB.pickedServices[id])DB.pickedServices[id].customPrice=v;renderSelectedServices();}
-  recalc();
+  savePicked();recalc();
 }
 
 function toggleZone(zi){
@@ -5017,18 +5033,18 @@ function toggleSvcPick(id){
   if(!DB.pickedServices)DB.pickedServices={};
   if(DB.pickedServices[id]){delete DB.pickedServices[id]}
   else{DB.pickedServices[id]={qty:1}}
-  renderServices();renderSelectedServices();recalc();
+  savePicked();renderServices();renderSelectedServices();recalc();
 }
 function removeSvcPick(id){
   if(DB.pickedServices)delete DB.pickedServices[id];
-  renderServices();renderSelectedServices();recalc();
+  savePicked();renderServices();renderSelectedServices();recalc();
 }
 function svcSelQty(id,d){
   if(!DB.pickedServices||!DB.pickedServices[id])return;
   DB.pickedServices[id].qty=Math.max(1,(DB.pickedServices[id].qty||1)+d);
   const sp=document.getElementById('sq_'+id);
   if(sp)sp.textContent=DB.pickedServices[id].qty;
-  recalc();
+  savePicked();recalc();
 }
 
 function toggleEquip(el){
@@ -5055,7 +5071,7 @@ function delItem(table,id){
   if(table==='rooms')delete DB.pickedRooms[id];
   if(table==='contractors')delete DB.pickedContractors[id];
   if(table==='employees')delete DB.pickedStaff[id];
-  renderAll();buildSidebar();recalc();
+  savePicked();renderAll();buildSidebar();recalc();
 }
 
 // ═══════════════ USERS ═══════════════
