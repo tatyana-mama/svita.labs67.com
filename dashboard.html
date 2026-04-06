@@ -3719,18 +3719,21 @@ function getDocTotalCost(){
 }
 function renderDocCatalog(){
   const c=document.getElementById('docCatalogCards');if(!c)return;
+  // Save open category state before re-render
+  const openCats=new Set();
+  c.querySelectorAll('[id^="docCatDBBody"]').forEach(el=>{if(el.style.display!=='none')openCats.add(el.id.replace('docCatDBBody',''))});
   const groups={};
   ADMIN_DOC_ITEMS.forEach((d,i)=>{if(!groups[d.cat])groups[d.cat]=[];groups[d.cat].push({...d,idx:i})});
-  // Also show custom docs that aren't from catalog
   let html='';
   const catKeys=Object.keys(groups);
   html+='<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">';
   catKeys.forEach((cat,ci)=>{
     const items=groups[cat];
     const pickedCnt=items.filter(d=>!!DB.pickedDocs['doc_'+d.idx]).length;
+    const isOpen=openCats.has(String(ci));
     html+=`<div class="c" style="margin:0">`;
-    html+=`<div class="ch" style="cursor:pointer;user-select:none" onclick="toggleDocCatDB(${ci})"><div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0"><span style="font-size:16px">&#128203;</span><div style="min-width:0"><h3 style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(cat)}</h3><div style="font-size:10px;color:${pickedCnt?'var(--gn)':'var(--tx3)'};font-weight:600">${pickedCnt} / ${items.length} добавлено</div></div></div><span id="docCatDBArrow${ci}" style="font-size:10px;color:var(--tx3);transition:transform .2s;transform:rotate(0deg)">&#9654;</span></div>`;
-    html+=`<div id="docCatDBBody${ci}" style="display:none;border-top:1px solid var(--bd)">`;
+    html+=`<div class="ch" style="cursor:pointer;user-select:none" onclick="toggleDocCatDB(${ci})"><div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0"><span style="font-size:16px">&#128203;</span><div style="min-width:0"><h3 style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(cat)}</h3><div style="font-size:10px;color:${pickedCnt?'var(--gn)':'var(--tx3)'};font-weight:600">${pickedCnt} / ${items.length} добавлено</div></div></div><span id="docCatDBArrow${ci}" style="font-size:10px;color:var(--tx3);transition:transform .2s;transform:rotate(${isOpen?'90':'0'}deg)">&#9654;</span></div>`;
+    html+=`<div id="docCatDBBody${ci}" style="display:${isOpen?'block':'none'};border-top:1px solid var(--bd)">`;
     items.forEach(d=>{
       const picked=!!DB.pickedDocs['doc_'+d.idx];
       html+=`<div class="ci" style="padding:8px 12px;display:flex;align-items:center;gap:8px;${picked?'background:var(--acbg)':''}"><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:${picked?'600':'400'}">${esc(d.name)}${d.required?'<span style="color:var(--rd);font-size:9px"> *</span>':''}</div><div style="font-size:10px;color:var(--tx3)">${esc(d.desc||'')}</div><div style="font-size:10px;color:var(--ac2)">${d.price.toLocaleString('ru')} PLN</div></div><button class="btn sm ${picked?'gn':'pr'}" style="flex-shrink:0;min-width:100px;font-size:10px" onclick="togglePickDoc(${d.idx})">${picked?'✓ Добавлено':'+ В документы'}</button></div>`;
