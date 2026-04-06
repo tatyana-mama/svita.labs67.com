@@ -476,10 +476,6 @@ Apple</button>
 <aside class="side" id="sidebar">
 <div class="side-head"><div class="side-logo"><span class="d"></span>SVITA</div><div class="side-tag">Конструктор клиники</div></div>
 <nav class="side-nav" id="sideNav"></nav>
-<div class="side-ft" onclick="logout()">
-<div class="side-av" id="sideAvatar">АВ</div>
-<div><div style="font-size:12px;font-weight:600" id="sideName">Артём Веелко</div><div style="font-size:10px;color:var(--tx3)" id="sideRole">Админ</div></div>
-</div>
 </aside>
 
 <!-- MAIN -->
@@ -2360,10 +2356,10 @@ function enterApp(){
   if(!currentRole||!currentUser)return;
   document.getElementById('loginScreen').classList.add('hidden');
   document.getElementById('appContainer').style.display='flex';
-  document.getElementById('sideAvatar').style.background=ROLE_COLORS[currentRole];
-  document.getElementById('sideAvatar').textContent=currentUser.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
-  document.getElementById('sideName').textContent=currentUser.name;
-  document.getElementById('sideRole').textContent=ROLE_NAMES[currentRole];
+  const _sa=document.getElementById('sideAvatar'),_sn=document.getElementById('sideName'),_sr=document.getElementById('sideRole');
+  if(_sa){_sa.style.background=ROLE_COLORS[currentRole];_sa.textContent=currentUser.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase()}
+  if(_sn)_sn.textContent=currentUser.name;
+  if(_sr)_sr.textContent=ROLE_NAMES[currentRole];
   document.getElementById('roleLabel').textContent=ROLE_NAMES[currentRole];
   document.getElementById('roleLabel').style.background=currentRole==='admin'?'rgba(59,130,246,.1)':currentRole==='contractor'?'rgba(249,115,22,.1)':currentRole==='supplier'?'rgba(139,92,246,.1)':currentRole==='employee'?'rgba(6,182,212,.1)':'rgba(34,197,94,.1)';
   document.getElementById('roleLabel').style.color=currentRole==='admin'?'var(--ac2)':currentRole==='contractor'?'var(--or)':currentRole==='supplier'?'#d946ef':currentRole==='employee'?'#06b6d4':'var(--gn)';
@@ -2441,8 +2437,8 @@ function showProfileModal(){
       currentUser.phone=phone;
       currentUser.company=company;
       updateTopUser();
-      document.getElementById('sideAvatar').textContent=newName.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
-      document.getElementById('sideName').textContent=newName;
+      const _sa2=document.getElementById('sideAvatar');if(_sa2)_sa2.textContent=newName.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+      const _sn2=document.getElementById('sideName');if(_sn2)_sn2.textContent=newName;
       if(sb)sb.from('profiles').upsert({email:currentUser.email,display_name:newName,phone,company},{onConflict:'email'}).then(()=>{});
     }
     closeModal();
@@ -2759,8 +2755,8 @@ async function saveAccountProfile(){
   await sb.from('profiles').upsert({email:currentUser.email,display_name:name,phone,company,city,last_login:new Date().toISOString()},{onConflict:'email'});
   await sb.auth.updateUser({data:{name}});
   updateTopUser();
-  document.getElementById('sideAvatar').textContent=name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
-  document.getElementById('sideName').textContent=name;
+  const _sa3=document.getElementById('sideAvatar');if(_sa3)_sa3.textContent=name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+  const _sn3=document.getElementById('sideName');if(_sn3)_sn3.textContent=name;
   logAction('profile_update','profile',null,{name,phone,company,city});
   // Visual feedback
   const btn=document.querySelector('#sec-account .ch .btn.gn');
