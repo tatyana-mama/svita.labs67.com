@@ -882,7 +882,7 @@ Apple</button>
 
 <!-- ═══ S3: ОСНАЩЕНИЕ ═══ -->
 <div class="sec" id="sec-s3">
-<div class="ph"><div><h2>03 &middot; Оснащение</h2><div class="ph-s">Выбранное оборудование для проекта</div></div><button class="btn sm pr" onclick="nav('db-suppliers')">Каталог оборудования →</button></div>
+<div class="ph"><div><h2>03 &middot; Оснащение</h2><div class="ph-s">Выбранное оборудование для проекта</div></div><button class="btn sm pr" onclick="navToEquip(null)">Каталог оборудования →</button></div>
 <div class="sts" id="eqStats" style="grid-template-columns:repeat(4,1fr)">
 <div class="st"><div class="st-l">Позиций</div><div class="st-v" id="eqCount">0</div><div class="st-s">выбрано</div></div>
 <div class="st"><div class="st-l">Общая стоимость</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="eqTotal">0</div><div class="st-s">PLN</div></div>
@@ -1115,6 +1115,7 @@ Apple</button>
 <div class="sec" id="sec-db-suppliers">
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
 <div class="ph"><div><h2>&#128230; БД Оборудования</h2><div class="ph-s">Каталог оборудования — добавляйте в проект</div></div><button class="btn sm or" onclick="openModal('supplier')">+ Новый товар</button></div>
+<div id="equipFilterBar" style="display:flex;gap:6px;flex-wrap:wrap;padding:8px 0"></div>
 <div id="equipCards"></div>
 </div>
 
@@ -3304,18 +3305,43 @@ const ZONE_ICONS={
   'Помещения / Недвижимость':'&#127970;'
 };
 
+let equipFilter=null;
+function setEquipFilter(cat){
+  equipFilter=cat||null;
+  renderEquip();
+}
+function navToEquip(cat){
+  equipFilter=cat||null;
+  nav('db-suppliers');
+  renderEquip();
+}
 function renderEquip(){
   const c=document.getElementById('equipCards');
   if(!c)return;
   if(!DB.suppliers.length){c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Загрузка оборудования из базы данных...</div>';return}
 
-  const groups={};
-  DB.suppliers.forEach(r=>{const cat=r.category||'Другое';if(!groups[cat])groups[cat]=[];groups[cat].push(r)});
-  const catKeys=Object.keys(groups).sort((a,b)=>groups[b].length-groups[a].length);
+  const allGroups={};
+  DB.suppliers.forEach(r=>{const cat=r.category||'Другое';if(!allGroups[cat])allGroups[cat]=[];allGroups[cat].push(r)});
+  const allCatKeys=Object.keys(allGroups).sort((a,b)=>allGroups[b].length-allGroups[a].length);
+
+  // Filter bar
+  const fb=document.getElementById('equipFilterBar');
+  if(fb){
+    let fhtml=`<button class="btn sm ${!equipFilter?'pr':''}" onclick="setEquipFilter(null)" style="font-size:10px;padding:4px 10px">Все (${DB.suppliers.length})</button>`;
+    allCatKeys.forEach(cat=>{
+      const active=equipFilter===cat;
+      fhtml+=`<button class="btn sm ${active?'pr':''}" onclick="setEquipFilter('${esc(cat).replace(/'/g,"\\'")}')" style="font-size:10px;padding:4px 10px">${esc(cat)} (${allGroups[cat].length})</button>`;
+    });
+    fb.innerHTML=fhtml;
+  }
+
+  const groups=equipFilter?{[equipFilter]:allGroups[equipFilter]||[]}:allGroups;
+  const catKeys=Object.keys(groups).sort((a,b)=>(groups[b]||[]).length-(groups[a]||[]).length);
   const picked=DB.pickedEquip||{};
   const pickedCount=Object.keys(picked).length;
+  const shown=catKeys.reduce((s,k)=>s+(groups[k]||[]).length,0);
 
-  let html=`<div style="padding:8px 16px;font-size:11px;color:var(--tx2);border-bottom:1px solid var(--bd)">Каталог: <strong>${DB.suppliers.length}</strong> позиций в <strong>${catKeys.length}</strong> категориях · Добавлено в оснащение: <strong>${pickedCount}</strong></div>`;
+  let html=`<div style="padding:8px 16px;font-size:11px;color:var(--tx2);border-bottom:1px solid var(--bd)">${equipFilter?'Фильтр: <strong>'+esc(equipFilter)+'</strong> · ':''}<strong>${shown}</strong> позиций в <strong>${catKeys.length}</strong> категориях · Добавлено в оснащение: <strong>${pickedCount}</strong></div>`;
 
   catKeys.forEach((cat,zi)=>{
     const items=groups[cat];
@@ -3340,6 +3366,8 @@ function renderEquip(){
   });
 
   c.innerHTML=html;
+  // Auto-expand when filtered to single category
+  if(equipFilter&&catKeys.length===1){const b=document.getElementById('zoneBody0');const a=document.getElementById('zoneArrow0');if(b&&!b.classList.contains('open')){b.classList.add('open');if(a)a.classList.add('open')}}
 }
 
 // Tab 3: show only picked equipment, grouped by category
@@ -3371,7 +3399,7 @@ function renderSelectedEquip(){
       ?`<span style="font-size:10px;color:var(--gn);font-weight:600">${cnt} / ${g.total} выбрано · ${catTotal.toLocaleString('ru')} PLN</span>`
       :`<span style="font-size:10px;color:var(--tx3)">0 / ${g.total} — не выбрано</span>`;
 
-    html+=`<div class="c" style="${cnt?'':'opacity:0.7'}"><div class="ch"><h3>${cat}</h3><div style="display:flex;align-items:center;gap:8px">${statusTag}<button class="btn sm pr" onclick="nav('db-suppliers')" style="font-size:9px">+ Добавить</button></div></div>`;
+    html+=`<div class="c" style="${cnt?'':'opacity:0.7'}"><div class="ch"><h3>${cat}</h3><div style="display:flex;align-items:center;gap:8px">${statusTag}<button class="btn sm pr" onclick="navToEquip('${esc(cat).replace(/'/g,"\\'")}')" style="font-size:9px">+ Добавить</button></div></div>`;
     if(cnt){
       html+='<div class="cb">';
       g.picked.forEach(r=>{
