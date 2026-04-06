@@ -1918,14 +1918,9 @@ async function loadSupabaseData(){
 }
 
 // ═══════════════ PROPERTY (S1) ═══════════════
-let activeProperty={
-  id:1,name:'ул. Гданьская 15',city:'Быдгощ',
-  area:180,floor:1,floors_total:3,
-  length:18.5,width:9.7,height:2.9,
-  type:'Коммерческое',purpose:'Стоматология',
-  price_m2:67,source:'OLX'
-};
+let activeProperty=null;
 // Property loaded per-user in enterApp()
+const DEFAULT_PROPERTY={id:1,name:'ул. Гданьская 15',city:'Быдгощ',area:180,floor:1,floors_total:3,length:18.5,width:9.7,height:2.9,type:'Коммерческое',purpose:'Стоматология',price_m2:67,source:'OLX'};
 
 function renderProperty(){
   const wrap=document.getElementById('propertyCardWrap');
@@ -2042,9 +2037,12 @@ function saveBusinessModel(){
 function loadBusinessModel(){
   try{
     const raw=uGet('svita_bm');
-    if(!raw)return;
+    if(!raw){
+      if(currentRole!=='admin')BM_FIELDS.forEach(k=>{const el=document.getElementById(k);if(el)el.value=''});
+      return;
+    }
     const bm=JSON.parse(raw);
-    BM_FIELDS.forEach(k=>{const el=document.getElementById(k);if(el&&bm[k])el.value=bm[k]});
+    BM_FIELDS.forEach(k=>{const el=document.getElementById(k);if(el)el.value=bm[k]||''});
   }catch(e){}
 }
 
@@ -2433,9 +2431,10 @@ function enterApp(){
       DB.users.push({id:currentUser.id||++nextId,name:currentUser.name,email:currentUser.email,role:currentRole,plan:'trial',status:'Активен'});
     }
   }
-  // Restore property card state
+  // Restore property card state (per-user)
   const savedProp=uGet('svita_property');
-  if(savedProp){try{activeProperty=JSON.parse(savedProp)}catch(e){}}
+  if(savedProp){try{activeProperty=JSON.parse(savedProp)}catch(e){activeProperty=null}}
+  else{activeProperty=currentRole==='admin'?{...DEFAULT_PROPERTY}:null}
   loadPicked();loadBusinessModel();
   achUnlocked=new Set(JSON.parse(uGet('svita_ach')||'[]'));
   try{itemImages=JSON.parse(uGet('svita_images')||'{}')}catch(e){itemImages={}}
@@ -2579,7 +2578,7 @@ function buildSidebar(){
     html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
     const canContractors=currentRole==='admin'||userSubscription.contractors_access;
     html+='<div class="si'+(canContractors?'':' locked')+'" data-nav="'+(canContractors?'db-contractors':'upgrade-gate')+'"><span class="ico">&#128736;</span><span class="sl">Подрядчики</span>'+(canContractors?'<span class="sb wip">'+DB.contractors.length+'</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; Unlimited</span>')+'</div>';
-    html+='<div class="si" data-nav="db-vendor-companies"><span class="ico">&#127970;</span><span class="sl">Поставщики</span><span class="sb wip">'+(DB.vendorCompanies||[]).length+'</span></div>';
+    html+='<div class="si'+(canContractors?'':' locked')+'" data-nav="'+(canContractors?'db-vendor-companies':'upgrade-gate')+'"><span class="ico">&#127970;</span><span class="sl">Поставщики</span>'+(canContractors?'<span class="sb wip">'+(DB.vendorCompanies||[]).length+'</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; Unlimited</span>')+'</div>';
   }
   if(currentRole==='admin'){
     html+='<div class="side-sec">Администрирование</div>';
