@@ -12,9 +12,9 @@
 .app{display:flex;min-height:100vh}
 
 /* LOGIN */
-.login-bg{position:fixed;inset:0;background:var(--bg);z-index:500;display:flex;align-items:center;justify-content:center}
+.login-bg{position:fixed;inset:0;background:var(--bg);z-index:500;display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;padding:40px 0}
 .login-bg.hidden{display:none}
-.login-box{background:var(--sf);border:1px solid var(--bd2);border-radius:16px;padding:40px;width:440px;max-width:95vw;text-align:center}
+.login-box{background:var(--sf);border:1px solid var(--bd2);border-radius:16px;padding:40px;width:440px;max-width:95vw;text-align:center;margin:auto}
 .login-box h1{font-size:24px;font-weight:800;margin-bottom:4px}
 .login-box .sub{font-size:12px;color:var(--tx3);margin-bottom:28px}
 .login-box input::placeholder{font-size:14px;font-weight:600;color:var(--tx3);opacity:.7}
@@ -446,27 +446,13 @@ Apple</button>
 <button class="btn pr" style="width:100%;padding:10px;font-size:12px" onclick="showLogin()">Войти</button>
 </div>
 
-<!-- STEP 3: ONBOARDING — complete profile after OAuth/register -->
+<!-- STEP 3: ONBOARDING — role selection only, rest in profile -->
 <div id="loginOnboard" style="display:none">
 <div style="font-size:20px;margin-bottom:4px">&#128075;</div>
-<div style="font-size:14px;font-weight:700;margin-bottom:4px">Добро пожаловать!</div>
-<div style="font-size:11px;color:var(--tx3);margin-bottom:20px">Заполните профиль для начала работы</div>
+<div style="font-size:14px;font-weight:700;margin-bottom:4px">Выберите роль</div>
+<div style="font-size:11px;color:var(--tx3);margin-bottom:16px">Остальное можно заполнить в профиле</div>
 
-<div class="modal-field" style="text-align:left;margin-bottom:12px">
-<label>Имя и фамилия</label>
-<input id="obName" type="text" placeholder="Иван Петров" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
-</div>
-<div class="modal-field" style="text-align:left;margin-bottom:12px">
-<label>Телефон</label>
-<input id="obPhone" type="tel" placeholder="+48 500 000 000" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
-</div>
-<div class="modal-field" style="text-align:left;margin-bottom:12px">
-<label>Компания / Клиника</label>
-<input id="obCompany" type="text" placeholder="Название клиники или компании" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
-</div>
-
-<div style="text-align:left;margin-bottom:8px"><label style="font-size:11px;font-weight:600;color:var(--tx2)">Ваша роль <span style="font-size:9px;color:var(--tx3);font-weight:400">(нельзя изменить позже)</span></label></div>
-<div class="login-roles" id="obRoles" style="margin-bottom:6px">
+<div class="login-roles" id="obRoles" style="margin-bottom:8px">
 <div class="login-role" data-role="owner" onclick="selectObRole(this)">
 <div class="lr-icon" style="background:linear-gradient(135deg,var(--gn),#059669)">&#127970;</div>
 <div><div class="lr-name">Владелец / Заказчик</div><div class="lr-desc">Конструктор клиники: этапы, бюджет</div></div></div>
@@ -853,7 +839,7 @@ Apple</button>
 </div></div>
 
 <!-- Комнаты проекта из БД -->
-<div class="c"><div class="ch"><h3>🚪 Комнаты проекта</h3><button class="btn sm pr" onclick="nav('db-rooms')">Каталог помещений →</button></div>
+<div class="c"><div class="ch"><h3>🚪 Комнаты проекта</h3><button class="btn sm pr" onclick="nav('db-premises')">Каталог помещений →</button></div>
 <div class="cb" id="pickedRoomsCards"><div style="padding:12px;text-align:center;font-size:11px;color:var(--tx3)">Добавьте комнаты из БД Помещений</div></div>
 </div>
 
@@ -1090,10 +1076,10 @@ Apple</button>
 </div>
 
 <!-- ═══ DATABASES (ADMIN) ═══ -->
-<div class="sec" id="sec-db-rooms">
+<div class="sec" id="sec-db-premises">
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
-<div class="ph"><div><h2>&#127970; БД Помещений</h2><div class="ph-s">Все комнаты объекта с параметрами</div></div><button class="btn sm pr" onclick="openModal('room')">+ Добавить</button></div>
-<div id="roomCards"></div>
+<div class="ph"><div><h2>&#127970; БД Помещений</h2><div class="ph-s">Объекты недвижимости с адресами и характеристиками</div></div><button class="btn sm pr" onclick="openModal('premise')">+ Добавить</button></div>
+<div id="premiseCards"></div>
 </div>
 
 <div class="sec" id="sec-db-renovations">
@@ -1368,21 +1354,25 @@ const DB={
     ]
   },
   rolePlans:{
-    owner:{icon:'🏠',name:'Владелец / Заказчик',
+    owner:{icon:'🏠',name:'Владелец / Заказчик',currency:'PLN',
       trial:{price:0,days:14,label:'Триал 14 дней',features:['1 проект','Обзор этапов','Базовый бюджет','Экспорт PDF (водяной знак)']},
-      paid:{price:299,period:'мес',label:'PRO',features:['Безлимит проектов','Все 5 этапов','Бюджет + рентабельность','Типы кабинетов / зоны','Экспорт без ограничений','Приоритетная поддержка']}
+      paid:{price:299,period:'мес',label:'PRO',features:['До 5 проектов','Все 6 этапов','Бюджет + рентабельность','Типы кабинетов / зоны','Экспорт без ограничений','Приоритетная поддержка']},
+      unlimited:{price:599,period:'мес',label:'UNLIMITED',features:['Безлимит проектов','Все функции PRO','Подрядчики и КП','Мультипользователи','API доступ','Персональный менеджер']}
     },
-    contractor:{icon:'🔧',name:'Подрядчик',
+    contractor:{icon:'🔧',name:'Подрядчик',currency:'$',
       trial:{price:0,days:14,label:'Триал 14 дней',features:['1 профиль компании','До 5 заявок','1 концепция']},
-      paid:{price:199,period:'мес',label:'PRO',features:['Безлимит заявок','Рейтинг и отзывы','Уведомления о тендерах','Портфолио проектов','Аналитика конверсий']}
+      paid:{price:49,period:'мес',label:'PRO',features:['Безлимит заявок','Рейтинг и отзывы','Уведомления о тендерах','Портфолио проектов','Аналитика конверсий']},
+      unlimited:{price:99,period:'мес',label:'UNLIMITED',features:['Все функции PRO','Приоритет в тендерах','Верифицированный бейдж','Мульти-филиалы','CRM интеграция','Выделенный аккаунт-менеджер']}
     },
-    supplier:{icon:'📦',name:'Поставщик',
+    supplier:{icon:'📦',name:'Поставщик',currency:'$',
       trial:{price:0,days:14,label:'Триал 14 дней',features:['До 10 товаров','Базовый каталог','1 категория']},
-      paid:{price:249,period:'мес',label:'PRO',features:['Безлимит товаров','Все категории','Интеграция со складом','Тендерные уведомления','Аналитика спроса']}
+      paid:{price:59,period:'мес',label:'PRO',features:['Безлимит товаров','Все категории','Интеграция со складом','Тендерные уведомления','Аналитика спроса']},
+      unlimited:{price:119,period:'мес',label:'UNLIMITED',features:['Все функции PRO','Premium размещение','API каталога','Автоматические тендеры','Мульти-склад','Персональный менеджер']}
     },
-    employee:{icon:'🧑',name:'Сотрудник',
+    employee:{icon:'🧑',name:'Сотрудник',currency:'PLN',
       trial:{price:0,days:7,label:'Триал 7 дней',features:['Базовый профиль','Просмотр расписания']},
-      paid:{price:49,period:'мес',label:'PRO',features:['Полный профиль','Сертификаты и документы','Расписание + уведомления','Личная статистика','Обучение / курсы']}
+      paid:{price:49,period:'мес',label:'PRO',features:['Полный профиль','Сертификаты и документы','Расписание + уведомления','Личная статистика','Обучение / курсы']},
+      unlimited:{price:99,period:'мес',label:'UNLIMITED',features:['Все функции PRO','Персональный dashboard','Карьерный трек','Менторство','Доступ к курсам','Приоритетная поддержка']}
     }
   },
   users:[
@@ -1732,6 +1722,8 @@ const SB_URL='https://ctdleobjnzniqkqomlrq.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZGxlb2JqbnpuaXFrcW9tbHJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMzE4MTEsImV4cCI6MjA4NzgwNzgxMX0.AMHtY7zGPemKYCxMy2bqRTOEAp8trA_Slor9wmg7C38';
 const sb=(typeof supabase!=='undefined')?supabase.createClient(SB_URL,SB_KEY):null;
 const ADMIN_EMAILS=['scyraai@proton.me','artem@labs67.com'];
+// Helper: escape HTML for safe attribute/content injection
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
 // Helper: extract ru name from multilingual JSON or string
 function i18n(v){
   if(!v)return'—';
@@ -1767,18 +1759,31 @@ const EQUIP_CAT_RU={
 };
 
 // ═══════════════ SUPABASE DATA SYNC ═══════════════
+let _loadingData=false;
 async function loadSupabaseData(){
   try{
-    if(!sb)return;
+    if(!sb||_loadingData)return;
+    _loadingData=true;
 
-    // 1. Equipment categories (multilingual names)
-    const{data:eqCats}=await sb.from('equipment_categories').select('id,name,slug');
+    // 1. Categories first (needed for mapping), then everything else in parallel
+    const[{data:eqCats},{data:svcCats},{data:svcSubs}]=await Promise.all([
+      sb.from('equipment_categories').select('id,name,slug'),
+      sb.from('service_categories').select('id,slug,name,icon,sort_order').order('sort_order'),
+      sb.from('service_subcategories').select('id,category_id,slug,name').order('sort_order')
+    ]);
     const catMap={},catSlugMap={};
     if(eqCats)eqCats.forEach(c=>{catMap[c.id]=i18n(c.name);catSlugMap[c.slug]=i18n(c.name)});
     const premisesCatId=eqCats?.find(c=>c.slug==='premises')?.id;
 
-    // 2. Equipment → DB.suppliers (exclude premises/real estate)
-    const{data:equip}=await sb.from('equipment').select('id,name,brand,model,category,category_id,price_pln,supplier_name,status,notes,images,specs').order('name');
+    // 2. All data in parallel
+    const[{data:equip},{data:svc},{data:conceptItems},{data:contactCats},{data:profiles},{data:proposals}]=await Promise.all([
+      sb.from('equipment').select('id,name,brand,model,category,category_id,price_pln,supplier_name,status,notes,images,specs,source_url').order('name'),
+      sb.from('services').select('id,name,description,category_id,subcategory_id,price_per_unit,price_min,price_max,price_unit,measurement_type,difficulty,estimated_hours,status').order('name'),
+      sb.from('concept_items').select('*').order('sort_order'),
+      sb.from('clinic_contact_categories').select('*').order('sort_order'),
+      sb.from('profiles').select('*').order('created_at'),
+      sb.from('proposals').select('*').order('created_at',{ascending:false})
+    ]);
     if(equip&&equip.length){
       DB.suppliers=equip
         .filter(e=>e.category_id!==premisesCatId&&e.category!=='premises')
@@ -1794,15 +1799,12 @@ async function loadSupabaseData(){
         }));
     }
 
-    // 3. Service categories + subcategories
-    const{data:svcCats}=await sb.from('service_categories').select('id,slug,name,icon,sort_order').order('sort_order');
-    const{data:svcSubs}=await sb.from('service_subcategories').select('id,category_id,slug,name').order('sort_order');
+    // 3. Map service categories + subcategories (already loaded above)
     const svcCatMap={},svcSubMap={};
     if(svcCats)svcCats.forEach(c=>{svcCatMap[c.id]={name:i18n(c.name),icon:c.icon,slug:c.slug}});
     if(svcSubs)svcSubs.forEach(s=>{svcSubMap[s.id]={name:i18n(s.name),catId:s.category_id}});
 
-    // 4. Services → DB.services (renovation/construction work)
-    const{data:svc}=await sb.from('services').select('id,name,description,category_id,subcategory_id,price_per_unit,price_min,price_max,price_unit,measurement_type,difficulty,estimated_hours,status').order('name');
+    // 4. Services → DB.services
     if(svc&&svc.length){
       DB.services=svc.map(s=>{
         const cat=svcCatMap[s.category_id];
@@ -1825,8 +1827,7 @@ async function loadSupabaseData(){
       });
     }
 
-    // 5. Concept items (selected works for the project)
-    const{data:conceptItems}=await sb.from('concept_items').select('*').order('sort_order');
+    // 5. Concept items (already loaded in Promise.all)
     if(conceptItems&&conceptItems.length){
       DB.conceptItems=conceptItems.map(ci=>({
         id:ci.id,
@@ -1842,13 +1843,12 @@ async function loadSupabaseData(){
       }));
     }
 
-    // 6. Contact categories
-    const{data:contactCats}=await sb.from('clinic_contact_categories').select('*').order('sort_order');
+    // 6. Contact categories (already loaded in Promise.all)
     DB._contactCats=contactCats||[];
 
-    // 7. Premises (real estate from equipment table)
-    const{data:premises}=await sb.from('equipment').select('id,name,price_pln,status,notes,images,specs,source_url').eq('category_id',premisesCatId).order('name');
-    DB.premises=(premises||[]).map(p=>({
+    // 7. Premises (filtered from equipment already loaded in Promise.all)
+    const premisesArr=equip?equip.filter(e=>e.category_id===premisesCatId):[];
+    DB.premises=premisesArr.map(p=>({
       id:p.id,name:p.name,price:p.price_pln||0,status:p.status||'candidate',
       notes:p.notes||'',img:p.images&&p.images.length?p.images[0]:null,
       source:p.source_url||'',specs:p.specs||{}
@@ -1859,8 +1859,7 @@ async function loadSupabaseData(){
     DB._svcCats=svcCats||[];
     DB._svcSubs=svcSubs||[];
 
-    // 8. Users from profiles table
-    const{data:profiles}=await sb.from('profiles').select('*').order('created_at');
+    // 8. Users from profiles (already loaded in Promise.all)
     if(profiles&&profiles.length){
       const existingEmails=new Set(DB.users.map(u=>u.email));
       profiles.forEach(p=>{
@@ -1890,8 +1889,7 @@ async function loadSupabaseData(){
       });
     }
 
-    // 9. Proposals
-    const{data:proposals}=await sb.from('proposals').select('*').order('created_at',{ascending:false});
+    // 9. Proposals (already loaded in Promise.all)
     if(proposals)DB.proposals=proposals;
 
     console.log('Supabase: loaded',DB.suppliers.length,'equipment,',DB.services.length,'services,',
@@ -1899,7 +1897,7 @@ async function loadSupabaseData(){
 
     // Re-render
     if(document.getElementById('appContainer').style.display!=='none'){buildSidebar();renderAll();renderEquip();recalc()}
-  }catch(e){console.warn('Supabase sync failed, using local DB:',e.message)}
+  }catch(e){console.warn('Supabase sync failed, using local DB:',e.message)}finally{_loadingData=false}
 }
 
 // ═══════════════ PROPERTY (S1) ═══════════════
@@ -1910,7 +1908,7 @@ let activeProperty={
   type:'Коммерческое',purpose:'Стоматология',
   price_m2:67,source:'OLX'
 };
-try{const _sp=localStorage.getItem('svita_property');if(_sp){activeProperty=JSON.parse(_sp)}}catch(e){}
+try{const _sp=localStorage.getItem('svita_property');if(_sp&&_sp!=='null'){activeProperty=JSON.parse(_sp)}else{activeProperty=null}}catch(e){activeProperty=null}
 
 function renderProperty(){
   const wrap=document.getElementById('propertyCardWrap');
@@ -1928,7 +1926,7 @@ function renderProperty(){
   wrap.style.display='';
   const addBtn=document.getElementById('addPropertyBtn');if(addBtn)addBtn.style.display='none';
   const p=activeProperty;
-  const propInp=(k,v,t,sfx)=>`<input class="prop-edit" data-prop="${k}" type="${t||'text'}" value="${v||''}" onchange="fpPropEdit('${k}',this.value)" style="width:100%;background:transparent;border:1px solid transparent;border-radius:4px;padding:2px 4px;font-size:12px;color:var(--tx);font-family:var(--f);outline:none" onfocus="this.style.borderColor='var(--ac)';this.style.background='var(--sf)'" onblur="this.style.borderColor='transparent';this.style.background='transparent'">${sfx||''}`;
+  const propInp=(k,v,t,sfx)=>`<input class="prop-edit" data-prop="${k}" type="${t||'text'}" value="${esc(v)}" onchange="fpPropEdit('${k}',this.value)" style="width:100%;background:transparent;border:1px solid transparent;border-radius:4px;padding:2px 4px;font-size:12px;color:var(--tx);font-family:var(--f);outline:none" onfocus="this.style.borderColor='var(--ac)';this.style.background='var(--sf)'" onblur="this.style.borderColor='transparent';this.style.background='transparent'">${sfx||''}`;
   b.innerHTML=`<div class="db-card" style="margin:0;border:none;padding:0"><div class="db-card-head" style="margin-bottom:12px"><span class="db-card-name" style="font-size:16px">${propInp('name',p.name)}</span><span class="db-card-role" style="background:var(--gnbg);color:var(--gn)">${propInp('type',p.type)}</span></div><div class="db-card-grid" style="grid-template-columns:repeat(3,1fr);gap:12px"><div class="db-card-field"><div class="db-card-label">Город</div><div class="db-card-val">${propInp('city',p.city)}</div></div><div class="db-card-field"><div class="db-card-label">Площадь</div><div class="db-card-val">${propInp('area',p.area,'number',' м²')}</div></div><div class="db-card-field"><div class="db-card-label">Этаж</div><div class="db-card-val" style="display:flex;gap:2px;align-items:center">${propInp('floor',p.floor,'number')} / ${propInp('floors_total',p.floors_total,'number')}</div></div><div class="db-card-field"><div class="db-card-label">Длина</div><div class="db-card-val">${propInp('length',p.length,'number',' м')}</div></div><div class="db-card-field"><div class="db-card-label">Ширина</div><div class="db-card-val">${propInp('width',p.width,'number',' м')}</div></div><div class="db-card-field"><div class="db-card-label">Высота</div><div class="db-card-val">${propInp('height',p.height,'number',' м')}</div></div><div class="db-card-field"><div class="db-card-label">Назначение</div><div class="db-card-val">${propInp('purpose',p.purpose)}</div></div><div class="db-card-field"><div class="db-card-label">Цена/м²</div><div class="db-card-val" style="color:var(--ac2)">${propInp('price_m2',p.price_m2,'number',' PLN')}</div></div><div class="db-card-field"><div class="db-card-label">Источник</div><div class="db-card-val">${propInp('source',p.source||'')}</div></div></div></div>`;
   // Update area block
   const usable=Math.round(p.area*0.85);
@@ -1966,7 +1964,7 @@ function fpPropEdit(key,val){
 function clearProperty(){
   if(!confirm('Удалить помещение? Все привязанные данные (планировка, комнаты, оборудование по комнатам, работы по модернизации) будут сброшены.'))return;
   activeProperty=null;
-  localStorage.setItem('svita_property','null');
+  localStorage.removeItem('svita_property');
   // Каскадное обнуление — источник правды = помещение
   // 1. Планировка
   if(FP){FP.rooms=[];FP.elements=[];fpSave();fpDraw();fpUpdateList()}
@@ -2188,7 +2186,7 @@ async function oauthLogin(provider){
   if(error)document.getElementById('loginError').textContent=error.message;
 }
 
-// ═══ RATE LIMITING ═══
+// ═══ RATE LIMITING (client-side UX only — Supabase Auth handles server-side) ═══
 const _rl={};
 function rateLimit(key,maxAttempts,windowMs){
   const now=Date.now();
@@ -2291,9 +2289,6 @@ function hideAllLoginSteps(){
 function showOnboarding(){
   hideAllLoginSteps();
   document.getElementById('loginOnboard').style.display='block';
-  // Pre-fill from OAuth metadata
-  const nameEl=document.getElementById('obName');
-  if(currentUser.name&&currentUser.name!==currentUser.email?.split('@')[0])nameEl.value=currentUser.name;
   document.getElementById('obError').textContent='';
 }
 
@@ -2305,28 +2300,19 @@ function selectObRole(el){
 }
 
 async function completeOnboarding(){
-  const name=document.getElementById('obName').value.trim();
-  const phone=document.getElementById('obPhone').value.trim();
-  const company=document.getElementById('obCompany').value.trim();
-  if(!name){document.getElementById('obError').textContent='Укажите имя';return}
   if(!obSelectedRole){document.getElementById('obError').textContent='Выберите роль';return}
   document.getElementById('obError').textContent='Сохраняем...';
-  currentUser.name=name;
-  currentUser.phone=phone;
-  currentUser.company=company;
+  const name=currentUser.name||currentUser.email.split('@')[0];
   currentRole=obSelectedRole;
-  // Save to Supabase profiles (role is permanent)
+  // Save to Supabase profiles (role is permanent, rest filled in profile)
   if(sb){
     await sb.from('profiles').upsert({
       email:currentUser.email,
       display_name:name,
-      phone:phone,
-      company:company,
       role:currentRole,
       profile_complete:true,
       last_login:new Date().toISOString()
     },{onConflict:'email'});
-    // Update auth user metadata
     await sb.auth.updateUser({data:{name,role:currentRole,profile_complete:true}});
   }
   localStorage.setItem('svita_role',currentRole);
@@ -2428,9 +2414,9 @@ function showProfileModal(){
       document.getElementById('sideName').textContent=newName;
       if(sb)sb.from('profiles').upsert({email:currentUser.email,display_name:newName,phone,company},{onConflict:'email'}).then(()=>{});
     }
-    document.getElementById('modal').style.display='none';
+    closeModal();
   };
-  document.getElementById('modal').style.display='flex';
+  document.getElementById('modalBg').classList.add('vis');
 }
 
 document.addEventListener('click',function(e){
@@ -2499,7 +2485,7 @@ function buildSidebar(){
 
   if(currentRole==='admin'){
     html+='<div class="side-sec">Базы данных</div>';
-    html+='<div class="si" data-nav="db-rooms"><span class="ico">&#127970;</span><span class="sl">Помещения</span><span class="sb wip">'+DB.rooms.length+'</span></div>';
+    html+='<div class="si" data-nav="db-premises"><span class="ico">&#127970;</span><span class="sl">Помещения</span><span class="sb wip">'+DB.premises.length+'</span></div>';
     html+='<div class="si" data-nav="db-renovations"><span class="ico">&#128736;</span><span class="sl">Модернизация</span><span class="sb wip">'+DB.renovations.length+'</span></div>';
     html+='<div class="si" data-nav="db-services"><span class="ico">&#129657;</span><span class="sl">Процедуры</span><span class="sb wip">'+DB.services.length+'</span></div>';
     html+='<div class="si" data-nav="db-suppliers"><span class="ico">&#128230;</span><span class="sl">Поставщики</span><span class="sb wip">'+DB.suppliers.length+'</span></div>';
@@ -2524,10 +2510,6 @@ function buildSidebar(){
     html+='<div class="si" data-nav="db-employees"><span class="ico">&#129489;</span><span class="sl">Мои данные</span></div>';
   }
 
-  // Личный кабинет — для всех ролей
-  html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
-  html+='<div class="si" data-nav="account"><span class="ico">&#128100;</span><span class="sl">Личный кабинет</span></div>';
-
   n.innerHTML=html;
   n.querySelectorAll('[data-nav]').forEach(el=>{el.addEventListener('click',()=>nav(el.dataset.nav))});
   // Show/hide tab bar
@@ -2535,7 +2517,7 @@ function buildSidebar(){
 }
 
 // ═══════════════ NAVIGATION ═══════════════
-const secNames={overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:'Прайс-лист',s6:'Концепция',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны','db-rooms':'БД Помещений','db-renovations':'Каталог модернизации','db-services':'Каталог процедур','db-contractors':'БД Подрядчиков','db-suppliers':'БД Поставщиков','db-employees':'БД Сотрудников',users:'Пользователи','cabinet-types':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения'};
+const secNames={overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:'Прайс-лист',s6:'Концепция',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны','db-premises':'БД Помещений','db-renovations':'Каталог модернизации','db-services':'Каталог процедур','db-contractors':'БД Подрядчиков','db-suppliers':'БД Поставщиков','db-employees':'БД Сотрудников',users:'Пользователи','cabinet-types':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения'};
 const stageOrder=['s1','s2','s3','s4','s5','s6'];
 let cur='overview';
 
@@ -2654,7 +2636,7 @@ function renderConceptsList(){
 <div style="display:flex;gap:4px;flex-shrink:0">
 <button class="btn sm pr" onclick="loadConceptById('${cp.id}')">Открыть</button>
 <button class="btn sm" onclick="duplicateConcept('${cp.id}')">&#128203;</button>
-<button class="btn sm" style="color:var(--rd)" onclick="deleteConcept('${cp.id}','${sanitize(cp.name)}')">✕</button>
+<button class="btn sm" style="color:var(--rd)" onclick="deleteConcept('${cp.id}','${sanitize(cp.name).replace(/'/g,"\\'")}')">✕</button>
 </div>
 </div>`;
   });
@@ -2807,7 +2789,8 @@ async function loadAuditLog(){
 }
 
 // Auto-save concept every 2 minutes
-setInterval(()=>{if(window._currentConceptId&&document.getElementById('appContainer').style.display!=='none')saveCurrentConcept()},120000);
+if(window._conceptAutoSaveId)clearInterval(window._conceptAutoSaveId);
+window._conceptAutoSaveId=setInterval(()=>{if(window._currentConceptId&&document.getElementById('appContainer').style.display!=='none')saveCurrentConcept()},120000);
 
 function showUpgradeModal(){
   document.getElementById('topUser').classList.remove('open');
@@ -2816,20 +2799,23 @@ function showUpgradeModal(){
 <div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:4px">Тарифные планы SVITA</div>
 <div style="font-size:11px;color:var(--tx3);margin-bottom:16px">Выберите подходящий план для вашего проекта</div>
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:left">
-<div style="padding:12px;border:1px solid var(--bd);border-radius:10px;background:var(--sf2)">
+<div style="padding:12px;border:1px solid var(--bd);border-radius:10px;background:var(--sf2);display:flex;flex-direction:column">
 <div style="font-size:11px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">Trial</div>
 <div style="font-size:18px;font-weight:800;color:var(--tx);margin:4px 0">Бесплатно</div>
-<div style="font-size:10px;color:var(--tx3);line-height:1.5">1 концепция<br>Базовые функции<br>Без подрядчиков</div>
+<div style="font-size:10px;color:var(--tx3);line-height:1.5;flex:1">1 концепция<br>Базовые функции<br>Без подрядчиков</div>
+<button onclick="selectPlan('trial')" style="margin-top:10px;width:100%;padding:8px;border-radius:8px;border:1px solid var(--bd);background:var(--sf);color:var(--tx2);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--f);transition:all .15s" onmouseover="this.style.background='var(--sf2)'" onmouseout="this.style.background='var(--sf)'">${userSubscription.plan==='trial'?'✓ Текущий':'Выбрать'}</button>
 </div>
-<div style="padding:12px;border:2px solid var(--ac);border-radius:10px;background:var(--acbg)">
+<div style="padding:12px;border:2px solid var(--ac);border-radius:10px;background:var(--acbg);display:flex;flex-direction:column">
 <div style="font-size:11px;font-weight:700;color:var(--ac2);text-transform:uppercase;letter-spacing:.5px">Pro</div>
 <div style="font-size:18px;font-weight:800;color:var(--tx);margin:4px 0">99 PLN<span style="font-size:10px;color:var(--tx3)">/мес</span></div>
-<div style="font-size:10px;color:var(--tx3);line-height:1.5">5 концепций<br>Полный прайс-лист<br>Без подрядчиков</div>
+<div style="font-size:10px;color:var(--tx3);line-height:1.5;flex:1">5 концепций<br>Полный прайс-лист<br>Без подрядчиков</div>
+<button onclick="selectPlan('pro')" style="margin-top:10px;width:100%;padding:8px;border-radius:8px;border:none;background:var(--ac);color:#fff;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--f);transition:all .15s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='none'">${userSubscription.plan==='pro'?'✓ Текущий':'Перейти на Pro'}</button>
 </div>
-<div style="padding:12px;border:2px solid #c9a96e;border-radius:10px;background:rgba(201,169,110,.08)">
+<div style="padding:12px;border:2px solid #c9a96e;border-radius:10px;background:rgba(201,169,110,.08);display:flex;flex-direction:column">
 <div style="font-size:11px;font-weight:700;color:#c9a96e;text-transform:uppercase;letter-spacing:.5px">Unlimited</div>
 <div style="font-size:18px;font-weight:800;color:var(--tx);margin:4px 0">299 PLN<span style="font-size:10px;color:var(--tx3)">/мес</span></div>
-<div style="font-size:10px;color:var(--tx3);line-height:1.5">∞ концепций<br>Все функции<br>Подрядчики и КП</div>
+<div style="font-size:10px;color:var(--tx3);line-height:1.5;flex:1">∞ концепций<br>Все функции<br>Подрядчики и КП</div>
+<button onclick="selectPlan('unlimited')" style="margin-top:10px;width:100%;padding:8px;border-radius:8px;border:none;background:linear-gradient(135deg,#c9a96e,#e8c97a);color:#000;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--f);transition:all .15s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='none'">${userSubscription.plan==='unlimited'?'✓ Текущий':'Перейти на Unlimited'}</button>
 </div>
 </div>
 </div>`;
@@ -2837,6 +2823,25 @@ function showUpgradeModal(){
   document.getElementById('modalFields').innerHTML=html;
   document.getElementById('modalSave').style.display='none';
   document.getElementById('modalBg').classList.add('vis');
+}
+
+async function selectPlan(plan){
+  const planLimits={trial:{concepts_limit:1,contractors_access:false},pro:{concepts_limit:5,contractors_access:false},unlimited:{concepts_limit:999,contractors_access:true}};
+  const planNames={trial:'Trial',pro:'Pro',unlimited:'Unlimited'};
+  if(plan===userSubscription.plan){closeModal();return}
+  if(plan!=='trial'&&!confirm('Перейти на тариф '+planNames[plan]+'? Оплата будет подключена позже.')){return}
+  userSubscription.plan=plan;
+  userSubscription.concepts_limit=planLimits[plan].concepts_limit;
+  userSubscription.contractors_access=planLimits[plan].contractors_access;
+  if(sb&&currentUser){
+    await sb.from('subscriptions').upsert({user_id:currentUser.id,plan,concepts_limit:planLimits[plan].concepts_limit,contractors_access:planLimits[plan].contractors_access,status:'active'},{onConflict:'user_id'});
+    await sb.from('profiles').update({plan}).eq('user_id',currentUser.id);
+    logAction('plan_changed','subscription',null,{plan});
+  }
+  closeModal();
+  if(typeof renderAccount==='function')renderAccount();
+  if(typeof renderPlanDetails==='function')renderPlanDetails();
+  buildSidebar();
 }
 
 // ═══════════════ UI HELPERS ═══════════════
@@ -2854,7 +2859,7 @@ function toggleCheck(el){
 
 // ═══════════════ RENDER DB CARDS ═══════════════
 function renderAll(){
-  renderProperty();renderRooms();renderContractors();renderEmployees();renderEquip();renderSelectedEquip();renderRenovationsCatalog();renderSelectedRenovations();renderStaff();renderServices();renderSelectedServices();renderUsers();renderCabinetTypes();renderPickedRooms();renderPickedContractors();renderZones();loadPropertyParams();updateRightPanel();renderOwnerProposals();
+  renderProperty();renderPremises();renderContractors();renderEmployees();renderEquip();renderSelectedEquip();renderRenovationsCatalog();renderSelectedRenovations();renderStaff();renderServices();renderSelectedServices();renderUsers();renderCabinetTypes();renderPickedRooms();renderPickedContractors();renderZones();loadPropertyParams();updateRightPanel();renderOwnerProposals();
 }
 
 function renderOwnerProposals(){
@@ -2886,12 +2891,90 @@ async function respondProposal(id,status){
   renderOwnerProposals();
 }
 
-function renderRooms(){
-  const c=document.getElementById('roomCards');
-  c.innerHTML=DB.rooms.map(r=>{
-    const picked=!!DB.pickedRooms[r.id];
-    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}"><div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:var(--acbg);color:var(--ac2)">${r.type}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Ширина</div><div class="db-card-val">${r.w} м</div></div><div class="db-card-field"><div class="db-card-label">Длина</div><div class="db-card-val">${r.l} м</div></div><div class="db-card-field"><div class="db-card-label">Высота</div><div class="db-card-val">${r.h} м</div></div><div class="db-card-field"><div class="db-card-label">Площадь</div><div class="db-card-val">${r.area} м²</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePick('pickedRooms','${r.id}','rooms')">${picked?'✓ В проекте':'+ Помещение → Таб 1'}</button><button class="btn sm" onclick="delItem('rooms','${r.id}')">Удалить</button></div></div>`;
+function renderPremises(){
+  const c=document.getElementById('premiseCards');if(!c)return;
+  if(!DB.premises.length){c.innerHTML='<div style="padding:32px;text-align:center;color:var(--tx3);font-size:13px">Нет объектов. Добавьте помещение вручную или загрузите из каталога.</div>';return}
+  c.innerHTML=DB.premises.map(p=>{
+    const sp=p.specs||{};
+    const addr=esc(sp.address||p.name||'—');
+    const district=esc(sp.district||'');
+    const city=sp.city?esc(sp.city)+(district?', '+district:''):'';
+    const owner=esc(sp.owner_name||'');
+    const phone=esc(sp.owner_phone||'');
+    const area=sp.area||0;
+    const floors=sp.floors||'';
+    const floor=sp.floor!=null?sp.floor:'';
+    const priceM2=sp.price_m2?sp.price_m2+' PLN/м²':'';
+    const priceTotal=p.price?p.price.toLocaleString('ru')+' PLN/мес':'—';
+    const condition=esc(sp.condition||'');
+    const purpose=esc(sp.purpose||'');
+    const height=sp.height||'';
+    const rooms=sp.rooms||'';
+    const status=p.status||'candidate';
+    const statusColors={candidate:'#eab308',shortlist:'#3b82f6',ordered:'#8b5cf6',delivered:'#22c55e',rejected:'#ef4444'};
+    const statusLabels={candidate:'Кандидат',shortlist:'В шортлисте',ordered:'Забронировано',delivered:'Получено',rejected:'Отклонён'};
+    // Communications badges
+    const comms=[];
+    if(sp.has_water)comms.push('💧');
+    if(sp.has_sewage)comms.push('🚿');
+    if(sp.has_ventilation)comms.push('🌀');
+    if(sp.has_heating)comms.push('🔥');
+    if(sp.has_ac)comms.push('❄️');
+    if(sp.has_parking)comms.push('🅿️');
+    if(sp.has_elevator)comms.push('🛗');
+    if(sp.has_display_window)comms.push('🪟');
+    const pid=p.id;
+    return `<div class="db-card" style="overflow:hidden">
+${p.img?`<div style="background-image:url(${p.img});background-size:cover;background-position:center;min-height:140px;border-radius:8px 8px 0 0;position:relative"><div style="position:absolute;top:8px;right:8px;padding:3px 8px;border-radius:6px;font-size:9px;font-weight:700;color:#fff;background:${statusColors[status]||'#eab308'}">${statusLabels[status]||status}</div></div>`:`<div class="db-card-head" style="flex-wrap:wrap;gap:6px"><span class="db-card-name" style="font-size:14px">${addr}</span><span class="db-card-role" style="background:${statusColors[status]||'#eab308'};color:#fff;font-size:9px">${statusLabels[status]||status}</span></div>`}
+<div style="padding:10px 16px 0">
+${p.img?`<div style="font-size:14px;font-weight:600;color:var(--tx);margin-bottom:2px">${addr}</div>`:''}
+${city?`<div style="font-size:11px;color:var(--tx3);margin-bottom:6px">${city}</div>`:''}
+</div>
+<div class="db-card-grid" style="grid-template-columns:repeat(3,1fr)">
+<div class="db-card-field"><div class="db-card-label">Цена/мес</div><div class="db-card-val" style="color:var(--ac);font-weight:700">${priceTotal}</div></div>
+<div class="db-card-field"><div class="db-card-label">Площадь</div><div class="db-card-val">${area} м²</div></div>
+<div class="db-card-field"><div class="db-card-label">Этаж</div><div class="db-card-val">${floor!=''?floor+'/'+(floors||'?'):'—'}</div></div>
+${priceM2?`<div class="db-card-field"><div class="db-card-label">Цена/м²</div><div class="db-card-val">${priceM2}</div></div>`:''}
+${height?`<div class="db-card-field"><div class="db-card-label">Высота</div><div class="db-card-val">${height} м</div></div>`:''}
+${rooms?`<div class="db-card-field"><div class="db-card-label">Комнат</div><div class="db-card-val">${rooms}</div></div>`:''}
+</div>
+${condition||purpose?`<div style="padding:2px 16px;display:flex;gap:6px;flex-wrap:wrap">${condition?`<span style="font-size:9px;padding:2px 8px;border-radius:4px;background:var(--sf2);color:var(--tx2)">${condition}</span>`:''}${purpose?`<span style="font-size:9px;padding:2px 8px;border-radius:4px;background:var(--acbg);color:var(--ac2)">${purpose}</span>`:''}</div>`:''}
+${comms.length?`<div style="padding:4px 16px;font-size:12px;letter-spacing:2px" title="Коммуникации">${comms.join('')}</div>`:''}
+${owner||phone?`<div style="padding:4px 16px;display:flex;gap:12px;font-size:10px;color:var(--tx3)">${owner?`<span>👤 ${owner}</span>`:''}${phone?`<span>📞 ${phone}</span>`:''}</div>`:''}
+${p.notes?`<div style="padding:4px 16px 8px;font-size:10px;color:var(--tx3);line-height:1.4">${esc(p.notes)}</div>`:''}
+<div class="db-card-actions">
+<button class="btn sm pr" onclick="selectPremiseAsProperty('${pid}')">Выбрать → Таб 1</button>
+${p.source?`<a href="${esc(p.source)}" target="_blank" rel="noopener" class="btn sm" style="text-decoration:none;text-align:center">Источник</a>`:''}
+<button class="btn sm" onclick="editPremise('${pid}')">Ред.</button>
+<button class="btn sm" onclick="delPremise('${pid}')">Удалить</button>
+</div></div>`;
   }).join('');
+}
+
+function selectPremiseAsProperty(id){
+  const p=DB.premises.find(x=>x.id==id);if(!p)return;
+  const sp=p.specs||{};
+  const area=sp.area||0;
+  const side=Math.round(Math.sqrt(area)*10)/10;
+  activeProperty={id:p.id,name:sp.address||p.name,city:sp.city+(sp.district?', '+sp.district:''),area:area,floor:sp.floor||0,floors_total:sp.floors||1,length:side,width:area?Math.round(area/side*10)/10:0,height:sp.height||2.9,type:sp.type||'Коммерческое',purpose:sp.purpose||'usługowy',price_m2:sp.price_m2||(area?Math.round(p.price/area):0),source:p.source||''};
+  localStorage.setItem('svita_property',JSON.stringify(activeProperty));
+  renderProperty();buildSidebar();recalc();nav('s1');
+}
+
+function editPremise(id){
+  const p=DB.premises.find(x=>x.id==id);if(!p)return;
+  openModal('premise');
+  editingId=id;
+  const sp=p.specs||{};
+  const vals={name:sp.address||p.name,city:sp.city||'',area:sp.area||'',owner_name:sp.owner_name||'',owner_phone:sp.owner_phone||'',floors:sp.floors||'',price:sp.price_m2||'',notes:p.notes||'',source:p.source||''};
+  Object.keys(vals).forEach(k=>{const el=document.getElementById('mf_'+k);if(el)el.value=vals[k]});
+}
+
+function delPremise(id){
+  if(!confirm('Удалить это помещение из базы?'))return;
+  DB.premises=DB.premises.filter(x=>x.id!=id);
+  if(sb)sb.from('equipment').delete().eq('id',id).then(()=>{});
+  renderPremises();buildSidebar();
 }
 
 /* ── Contractor: view available works and create proposals ── */
@@ -3535,7 +3618,8 @@ function fpInit(){
     console.log('[SVITA] Loaded: '+FP.rooms.length+' rooms, '+FP.elements.length+' elements');
   }catch(e){console.error('[SVITA] Failed to load saved data:',e)}}
   // Auto-save every 30 seconds
-  setInterval(()=>{if(FP.rooms.length||FP.elements.length)fpSave()},30000);
+  if(window._fpAutoSaveId)clearInterval(window._fpAutoSaveId);
+  window._fpAutoSaveId=setInterval(()=>{if(FP.rooms.length||FP.elements.length)fpSave()},30000);
   fpDraw();fpUpdateList();
 }
 
@@ -4912,6 +4996,7 @@ ${u.notes?`<div style="padding:0 16px 12px;font-size:10px;color:var(--tx3);line-
 ${u.role!=='admin'?`<select onchange="changeUserPlan('${u.id}',this.value)" style="font-size:10px;padding:3px 6px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--tx);cursor:pointer;font-family:var(--f)">
 <option value="trial" ${u.plan==='trial'?'selected':''}>Триал</option>
 <option value="paid" ${u.plan==='paid'?'selected':''}>PRO</option>
+<option value="unlimited" ${u.plan==='unlimited'?'selected':''}>Unlimited</option>
 </select>`:''}
 </div>
 <div style="display:flex;gap:4px">
@@ -4934,31 +5019,40 @@ function renderRoleCabinets(){
   if(!c)return;
   let html='';
   Object.entries(DB.rolePlans).forEach(([role,p])=>{
+    const cur=p.currency||'PLN';
     const usersInRole=DB.users.filter(u=>u.role===role);
     const trialCount=usersInRole.filter(u=>u.plan==='trial').length;
-    const paidCount=usersInRole.filter(u=>u.plan==='paid').length;
+    const paidCount=usersInRole.filter(u=>u.plan==='paid'||u.plan==='unlimited').length;
     html+=`<div class="c" style="padding:0;overflow:hidden;margin-bottom:16px">
 <div style="padding:16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--bd)">
 <div style="font-size:24px">${p.icon}</div>
 <div style="flex:1"><div style="font-weight:700;font-size:14px">${p.name}</div>
-<div style="font-size:11px;color:var(--tx2)">${usersInRole.length} ��ользователей · ${trialCount} триа�� · ${paidCount} PRO</div></div>
+<div style="font-size:11px;color:var(--tx2)">${usersInRole.length} пользователей \u00b7 ${trialCount} триал \u00b7 ${paidCount} PRO</div></div>
 </div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0">
 <div style="padding:16px;border-right:1px solid var(--bd)">
 <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
 <span style="font-size:10px;padding:2px 8px;border-radius:6px;background:var(--ylbg);color:var(--yl);font-weight:700">ТРИАЛ</span>
 <span style="font-size:11px;color:var(--tx2)">${p.trial.label}</span></div>
 <div style="font-size:22px;font-weight:800;color:var(--tx)">Бесплатно</div>
 <div style="font-size:10px;color:var(--tx3);margin-bottom:10px">${p.trial.days} дней</div>
-<div style="display:flex;flex-direction:column;gap:4px">${p.trial.features.map(f=>`<div style="font-size:11px;color:var(--tx2)">✓ ${f}</div>`).join('')}</div>
+<div style="display:flex;flex-direction:column;gap:4px">${p.trial.features.map(f=>`<div style="font-size:11px;color:var(--tx2)">\u2713 ${f}</div>`).join('')}</div>
 </div>
-<div style="padding:16px;background:rgba(59,130,246,.02)">
+<div style="padding:16px;border-right:1px solid var(--bd);background:rgba(59,130,246,.02)">
 <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
 <span style="font-size:10px;padding:2px 8px;border-radius:6px;background:var(--acbg);color:var(--ac2);font-weight:700">PRO</span>
 <span style="font-size:11px;color:var(--tx2)">${p.paid.label}</span></div>
-<div style="font-size:22px;font-weight:800;color:var(--ac2)">${p.paid.price} PLN<span style="font-size:12px;font-weight:400;color:var(--tx3)">/${p.paid.period}</span></div>
+<div style="font-size:22px;font-weight:800;color:var(--ac2)">${p.paid.price} ${cur}<span style="font-size:12px;font-weight:400;color:var(--tx3)">/${p.paid.period}</span></div>
 <div style="font-size:10px;color:var(--tx3);margin-bottom:10px">полный доступ</div>
-<div style="display:flex;flex-direction:column;gap:4px">${p.paid.features.map(f=>`<div style="font-size:11px;color:var(--ac2)">✓ ${f}</div>`).join('')}</div>
+<div style="display:flex;flex-direction:column;gap:4px">${p.paid.features.map(f=>`<div style="font-size:11px;color:var(--ac2)">\u2713 ${f}</div>`).join('')}</div>
+</div>
+<div style="padding:16px;background:rgba(201,169,110,.04)">
+<div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
+<span style="font-size:10px;padding:2px 8px;border-radius:6px;background:linear-gradient(135deg,#c9a96e,#e8c97a);color:#000;font-weight:700">UNLIMITED</span>
+<span style="font-size:11px;color:var(--tx2)">${p.unlimited.label}</span></div>
+<div style="font-size:22px;font-weight:800;color:#c9a96e">${p.unlimited.price} ${cur}<span style="font-size:12px;font-weight:400;color:var(--tx3)">/${p.unlimited.period}</span></div>
+<div style="font-size:10px;color:var(--tx3);margin-bottom:10px">максимум возможностей</div>
+<div style="display:flex;flex-direction:column;gap:4px">${p.unlimited.features.map(f=>`<div style="font-size:11px;color:#c9a96e">\u2713 ${f}</div>`).join('')}</div>
 </div>
 </div></div>`;
   });
@@ -5191,13 +5285,14 @@ const MODAL_FIELDS={
   service:[{k:'name',l:'Процедура',ph:'Название'},{k:'time',l:'Время',ph:'30 мин'},{k:'price',l:'Цена (PLN)',ph:'0',t:'number'}],
   user:[{k:'name',l:'Имя',ph:'Иван Иванов'},{k:'email',l:'Email',ph:'user@clinic.com'},{k:'phone',l:'Телефон',ph:'+48 500 000 000'},{k:'position',l:'Должность',ph:'Врач-стоматолог'},{k:'role',l:'Роль',ph:'owner'},{k:'status',l:'Статус',ph:'Активен'},{k:'notes',l:'Заметки',ph:'Доп. информация'}],
   cabinetType:[{k:'name',l:'Название типа',ph:'Стоматологический'},{k:'icon',l:'Иконка',ph:'🦷'},{k:'desc',l:'Описание',ph:'Стандартный кабинет'},{k:'minArea',l:'Мин. площадь (м²)',ph:'12',t:'number'}],
-  renovation:[{k:'name',l:'Название работы',ph:'Монтаж перегородок'},{k:'cat',l:'Категория',ph:'Отделка и строительные работы'},{k:'price',l:'Стоимость (PLN)',ph:'10000',t:'number'}]
+  renovation:[{k:'name',l:'Название работы',ph:'Монтаж перегородок'},{k:'cat',l:'Категория',ph:'Отделка и строительные работы'},{k:'price',l:'Стоимость (PLN)',ph:'10000',t:'number'}],
+  premise:[{k:'name',l:'Адрес / Название',ph:'ул. Гданьская 15'},{k:'city',l:'Город',ph:'Быдгощ'},{k:'area',l:'Площадь (м²)',ph:'180',t:'number'},{k:'floors',l:'Этажей',ph:'3',t:'number'},{k:'price',l:'Цена за м²/мес (PLN)',ph:'67',t:'number'},{k:'owner_name',l:'Владелец',ph:'Иван Иванов'},{k:'owner_phone',l:'Телефон владельца',ph:'+48 500 000 000'},{k:'notes',l:'Описание',ph:'Угловое помещение, витринные окна'},{k:'source',l:'Источник (URL)',ph:'https://otodom.pl/...'}]
 };
 
 function openModal(mode){
   modalMode=mode;
   editingId=null;
-  const titles={property:'Карточка помещения',room:'Добавить комнату',contractor:'Заявка подрядчика',supplier:'Добавить товар',employee:'Добавить сотрудника',equip:'Добавить оборудование',staff:'Добавить должность',service:'Добавить процедуру',user:'Пригласить пользователя',cabinetType:'Добавить тип кабинета'};
+  const titles={property:'Карточка помещения',premise:'Добавить помещение',room:'Добавить комнату',contractor:'Заявка подрядчика',supplier:'Добавить товар',employee:'Добавить сотрудника',equip:'Добавить оборудование',staff:'Добавить должность',service:'Добавить процедуру',user:'Пригласить пользователя',cabinetType:'Добавить тип кабинета'};
   document.getElementById('modalTitle').textContent=titles[mode]||'Добавить';
   const fields=MODAL_FIELDS[mode]||[];
   document.getElementById('modalFields').innerHTML=fields.map(f=>{
@@ -5224,6 +5319,30 @@ function saveModal(){
     activeProperty=obj;
     closeModal();
     renderProperty();
+    return;
+  }
+
+  // Premise — full property object for DB
+  if(modalMode==='premise'){
+    const premiseObj={id:editingId||++nextId,name:obj.name,price:obj.price||0,status:'candidate',notes:obj.notes||'',img:null,source:obj.source||'',specs:{address:obj.name,city:obj.city||'',area:obj.area||0,floors:obj.floors||0,owner_name:obj.owner_name||'',owner_phone:obj.owner_phone||''}};
+    if(editingId){
+      const idx=DB.premises.findIndex(x=>x.id===editingId);
+      if(idx!==-1)Object.assign(DB.premises[idx],premiseObj);
+    }else{
+      DB.premises.push(premiseObj);
+    }
+    // Sync to Supabase equipment table
+    if(sb){
+      const premisesCatId=DB._eqCats?.find(c=>c.slug==='premises')?.id;
+      if(premisesCatId){
+        const row={name:obj.name,price_pln:obj.price||0,status:'candidate',notes:obj.notes||'',source_url:obj.source||'',specs:premiseObj.specs,category_id:premisesCatId};
+        if(editingId)sb.from('equipment').update(row).eq('id',editingId).then(()=>{});
+        else sb.from('equipment').insert(row).then(()=>{});
+      }
+    }
+    editingId=null;
+    closeModal();
+    renderPremises();buildSidebar();
     return;
   }
 
@@ -5283,7 +5402,7 @@ function calcTotals(){
   const avgCheck=getVal('avgCheck');
   const ppc=getVal('patientsPerChair');
   const wd=getVal('workDays');
-  const chairs=7;
+  const chairs=parseInt(document.getElementById('chairsCount')?.value)||7;
   const revenue=chairs*ppc*wd*avgCheck;
   const expenses=staff+rentMonth+getVal('prUtils')+getVal('prMaterials')+getVal('prMarketing')+getVal('prOther');
   const grand=rent+eng+equip+docs;
@@ -5299,7 +5418,12 @@ function getVal2(costKey){
   return parseInt(el?.value)||0;
 }
 
+let _recalcTimer;
 function recalc(){
+  clearTimeout(_recalcTimer);
+  _recalcTimer=setTimeout(_recalcNow,50);
+}
+function _recalcNow(){
   const t=calcTotals();
   // s2Total removed — renTotal is updated by renderSelectedRenovations()
   document.getElementById('s4Total').textContent=t.staff.toLocaleString('ru')+' PLN';
