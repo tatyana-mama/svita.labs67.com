@@ -937,10 +937,15 @@ Apple</button>
 </div>
 </div>
 
-<!-- ═══ CABINET TYPES ═══ -->
+<!-- ═══ CABINET COSTS ═══ -->
 <div class="sec" id="sec-cabinet-types">
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
-<div class="ph"><div><h2>🏥 Типы кабинетов</h2><div class="ph-s">Шаблоны помещений: требования, оборудование, нормативы</div></div><button class="btn sm pr" onclick="openModal('cabinetType')">+ Добавить тип</button></div>
+<div class="ph"><div><h2>🏥 Стоимость по помещениям</h2><div class="ph-s">Итоговая стоимость оснащения каждого помещения проекта</div></div></div>
+<div class="sts" id="cabTotals" style="grid-template-columns:repeat(3,1fr)">
+<div class="st"><div class="st-n" id="cabRoomCnt">0</div><div class="st-l">Помещений</div></div>
+<div class="st"><div class="st-n" id="cabAssigned">0</div><div class="st-l">Оборудования назначено</div></div>
+<div class="st"><div class="st-n" id="cabTotalCost">0</div><div class="st-l">Итого PLN</div></div>
+</div>
 <div id="cabinetTypeCards"></div>
 </div>
 
@@ -1806,7 +1811,7 @@ function buildSidebar(){
     html+='<div class="si" data-nav="budget"><span class="ico">&#128176;</span><span class="sl">Бюджет</span></div>';
     html+='<div class="si" data-nav="profit"><span class="ico">&#128200;</span><span class="sl">Рентабельность</span></div>';
     html+='<div class="si" data-nav="zones"><span class="ico">&#127968;</span><span class="sl">Зоны</span></div>';
-    html+='<div class="si" data-nav="cabinet-types"><span class="ico">🏥</span><span class="sl">Типы кабинетов</span><span class="sb wip">'+DB.cabinetTypes.length+'</span></div>';
+    html+='<div class="si" data-nav="cabinet-types"><span class="ico">🏥</span><span class="sl">Стоимость помещений</span><span class="sb wip">'+Object.keys(DB.pickedRooms).length+'</span></div>';
   }
 
   if(currentRole==='admin'){
@@ -2056,7 +2061,9 @@ function renderSelectedEquip(){
     if(cnt){
       html+='<div class="cb">';
       g.picked.forEach(r=>{
-        html+=`<div class="ci cost-row" style="flex-wrap:nowrap"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.supplier}</div></div><div class="sel-qty" style="margin:0 4px"><button onclick="eqSelQty('${r.id}',-1)">−</button><span id="eq_${r.id}">${r.qty}</span><button onclick="eqSelQty('${r.id}',1)">+</button></div><div class="cost-val" style="min-width:80px;justify-content:flex-end"><strong style="color:var(--ac2)">${(r.price*r.qty).toLocaleString('ru')}</strong> PLN</div><button class="btn sm" style="color:var(--rd);flex-shrink:0" onclick="togglePickEquip('${r.id}')">✕</button></div>`;
+        const roomId=picked[r.id].room||'';
+        const roomOpts=getPickedRoomsList().map(rm=>`<option value="${rm.id}" ${rm.id==roomId?'selected':''}>${rm.name}</option>`).join('');
+        html+=`<div class="ci cost-row" style="flex-wrap:nowrap"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.supplier}</div></div><select onchange="assignEquipRoom('${r.id}',this.value)" style="font-size:10px;padding:3px 6px;border:1px solid var(--bd);border-radius:6px;background:var(--sf);color:var(--tx);max-width:130px;flex-shrink:0"><option value="">— комната</option>${roomOpts}</select><div class="sel-qty" style="margin:0 4px"><button onclick="eqSelQty('${r.id}',-1)">−</button><span id="eq_${r.id}">${r.qty}</span><button onclick="eqSelQty('${r.id}',1)">+</button></div><div class="cost-val" style="min-width:80px;justify-content:flex-end"><strong style="color:var(--ac2)">${(r.price*r.qty).toLocaleString('ru')}</strong> PLN</div><button class="btn sm" style="color:var(--rd);flex-shrink:0" onclick="togglePickEquip('${r.id}')">✕</button></div>`;
       });
       html+='</div>';
     }
@@ -2078,6 +2085,14 @@ function eqSelQty(id,d){
   const sp=document.getElementById('eq_'+id);
   if(sp)sp.textContent=DB.pickedEquip[id].qty;
   renderSelectedEquip();recalc();renderCabinetTypes();
+}
+function getPickedRoomsList(){
+  return Object.keys(DB.pickedRooms).map(id=>DB.rooms.find(r=>r.id==id)).filter(Boolean);
+}
+function assignEquipRoom(equipId,roomId){
+  if(!DB.pickedEquip[equipId])return;
+  DB.pickedEquip[equipId].room=roomId||null;
+  renderCabinetTypes();
 }
 
 function toggleZone(zi){
@@ -3718,136 +3733,109 @@ function deleteUser(id){
   renderUsers();buildSidebar();
 }
 
-// ═══════════════ CABINET TYPES ═══════════════
-function getPickedEquipByCat(){
-  const result={};
-  const picked=DB.pickedEquip||{};
-  Object.entries(picked).forEach(([id,p])=>{
-    const item=DB.suppliers.find(s=>s.id==id);
-    if(!item)return;
-    const cat=item.category;
-    const qty=p.qty||1;
-    if(!result[cat])result[cat]={items:[],totalPrice:0,pickedCount:0};
-    result[cat].items.push({...item,qty});
-    result[cat].totalPrice+=item.price*qty;
-    result[cat].pickedCount++;
-  });
-  return result;
-}
-function getEquipCats(){
-  const cats={};
-  DB.suppliers.forEach(s=>{
-    if(!cats[s.category])cats[s.category]={count:0,totalPrice:0};
-    cats[s.category].count++;
-    cats[s.category].totalPrice+=s.price;
-  });
-  return cats;
-}
+// ═══════════════ CABINET COSTS (per room) ═══════════════
 function renderCabinetTypes(){
   const c=document.getElementById('cabinetTypeCards');
   if(!c)return;
-  const allCats=getEquipCats();
-  const allCatNames=Object.keys(allCats).sort();
-  const pickedByCat=getPickedEquipByCat();
+  const rooms=getPickedRoomsList();
+  const picked=DB.pickedEquip||{};
+
+  // Group equipment by assigned room
+  const byRoom={};  // roomId -> [{item, qty, cost}]
+  const unassigned=[];
+  let totalAssigned=0,grandTotal=0;
+
+  Object.entries(picked).forEach(([id,p])=>{
+    const item=DB.suppliers.find(s=>s.id==id);
+    if(!item)return;
+    const qty=p.qty||1;
+    const cost=item.price*qty;
+    grandTotal+=cost;
+    const entry={...item,qty,cost};
+    if(p.room){
+      if(!byRoom[p.room])byRoom[p.room]=[];
+      byRoom[p.room].push(entry);
+      totalAssigned++;
+    }else{
+      unassigned.push(entry);
+    }
+  });
+
+  // Stats
+  const cntEl=document.getElementById('cabRoomCnt');
+  const assEl=document.getElementById('cabAssigned');
+  const totEl=document.getElementById('cabTotalCost');
+  if(cntEl)cntEl.textContent=rooms.length;
+  if(assEl)assEl.textContent=totalAssigned+' / '+Object.keys(picked).length;
+  if(totEl)totEl.textContent=grandTotal.toLocaleString('ru');
+
+  if(!rooms.length&&!unassigned.length){
+    c.innerHTML='<div style="padding:40px;text-align:center;color:var(--tx3);font-size:12px">Добавьте помещения и оборудование, чтобы увидеть стоимость по комнатам</div>';
+    return;
+  }
 
   let html='';
-  DB.cabinetTypes.forEach(ct=>{
-    const assigned=ct.equipCats||[];
-    const assignedRooms=DB.rooms.filter(r=>r.type===ct.name).length;
-    const available=allCatNames.filter(cat=>!assigned.includes(cat));
 
-    // Calculate cost of 1 cabinet from PICKED equipment in Оснащение
-    let cabCost=0;
-    let pickedTotal=0;
-    let catTotal=0;
-    assigned.forEach(cat=>{
-      catTotal+=(allCats[cat]||{}).count||0;
-      if(pickedByCat[cat]){
-        cabCost+=pickedByCat[cat].totalPrice;
-        pickedTotal+=pickedByCat[cat].pickedCount;
-      }
-    });
+  // Each room card
+  rooms.forEach(rm=>{
+    const items=byRoom[rm.id]||[];
+    const roomCost=items.reduce((s,e)=>s+e.cost,0);
+    const costColor=roomCost>0?'var(--gn)':'var(--tx3)';
 
-    const costColor=cabCost>0?'var(--gn)':'var(--tx3)';
-
-    html+=`<div class="c" style="padding:0;overflow:hidden;margin-bottom:16px">
-<div style="padding:16px;display:flex;align-items:center;gap:12px">
-<div style="font-size:24px">${ct.icon}</div>
+    html+=`<div class="c" style="padding:0;overflow:hidden;margin-bottom:12px">
+<div style="padding:14px 16px;display:flex;align-items:center;gap:12px">
 <div style="flex:1">
-<div style="font-weight:700;font-size:14px">${ct.name}</div>
-<div style="font-size:11px;color:var(--tx2);margin-top:2px">${ct.desc}</div>
+<div style="font-weight:700;font-size:14px">${rm.name}</div>
+<div style="font-size:11px;color:var(--tx2);margin-top:2px">${rm.type} · ${rm.area} м²</div>
 </div>
-<div style="display:flex;gap:6px;align-items:center;flex-shrink:0">
-<div style="font-size:10px;padding:4px 10px;border-radius:8px;background:var(--acbg);color:var(--ac2);font-weight:600">мин. ${ct.minArea} м²</div>
-<div style="font-size:10px;padding:4px 10px;border-radius:8px;background:var(--gnbg);color:var(--gn);font-weight:600">${assignedRooms} комнат</div>
-<button class="btn sm" onclick="editCabinetType('${ct.id}')" style="font-size:10px;padding:4px 8px">✏️</button>
-<button class="btn sm" onclick="deleteCabinetType('${ct.id}')" style="font-size:10px;padding:4px 8px;color:var(--rd)">✕</button>
+<div style="text-align:right">
+<div style="font-size:20px;font-weight:800;color:${costColor}">${roomCost>0?roomCost.toLocaleString('ru')+' PLN':'—'}</div>
+<div style="font-size:10px;color:var(--tx3)">${items.length} позиций</div>
 </div>
-</div>
-
-<div style="padding:12px 16px;background:${cabCost>0?'rgba(22,163,74,.04)':'var(--sf2)'};border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
-<div><div style="font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;font-weight:600">Стоимость 1 кабинета</div>
-<div style="font-size:10px;color:var(--tx3);margin-top:2px">${pickedTotal} из ${catTotal} позиций выбрано в Оснащении</div></div>
-<div style="font-size:24px;font-weight:800;color:${costColor}">${cabCost>0?cabCost.toLocaleString('ru')+' PLN':'— не собран'}</div>
-</div>
-
-<div style="padding:0 16px 12px">
-<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0 8px">
-<div style="font-size:12px;font-weight:700">Типы оборудования <span style="color:var(--tx3);font-weight:400">(${assigned.length} типов)</span></div>
-${available.length?`<div style="display:flex;gap:6px;align-items:center">
-<select id="eqCatSel_${ct.id}" style="font-size:10px;padding:4px 8px;border:1px solid var(--bd);border-radius:8px;background:var(--sf);color:var(--tx);max-width:240px">
-${available.map(cat=>`<option value="${cat}">${cat} (${allCats[cat].count} шт.)</option>`).join('')}
-</select>
-<button class="btn sm pr" onclick="addCatToCab('${ct.id}')" style="font-size:10px;padding:4px 10px">+ Тип</button>
-</div>`:''}
 </div>`;
-    if(assigned.length){
-      assigned.forEach(cat=>{
-        const info=allCats[cat]||{count:0};
-        const picked=pickedByCat[cat];
-        const pCnt=picked?picked.pickedCount:0;
-        const pCost=picked?picked.totalPrice:0;
-        html+=`<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--bd)">
-<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600">${cat}</div><div style="font-size:10px;color:var(--tx3)">${pCnt} / ${info.count} выбрано в Оснащении</div></div>
-<div style="font-size:12px;font-weight:700;color:${pCost>0?'var(--ac2)':'var(--tx3)'};flex-shrink:0">${pCost>0?pCost.toLocaleString('ru')+' PLN':'—'}</div>
-<button class="btn sm" onclick="removeCatFromCab('${ct.id}','${cat.replace(/'/g,"\\'")}')" style="font-size:10px;padding:2px 6px;color:var(--rd)">✕</button>
+
+    if(items.length){
+      html+='<div style="border-top:1px solid var(--bd)">';
+      items.forEach(e=>{
+        html+=`<div style="display:flex;align-items:center;gap:8px;padding:8px 16px;border-bottom:1px solid var(--bd)">
+<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:500">${e.name}</div><div style="font-size:10px;color:var(--tx3)">${e.category}</div></div>
+<div style="font-size:10px;color:var(--tx2);flex-shrink:0">×${e.qty}</div>
+<div style="font-size:12px;font-weight:700;color:var(--ac2);flex-shrink:0">${e.cost.toLocaleString('ru')} PLN</div>
 </div>`;
       });
-    } else {
-      html+=`<div style="padding:12px 0;text-align:center;font-size:11px;color:var(--tx3)">Нет назначенных типов — добавьте из каталога</div>`;
+      html+='</div>';
+    }else{
+      html+='<div style="padding:16px;text-align:center;font-size:11px;color:var(--tx3);border-top:1px solid var(--bd)">Назначьте оборудование из Оснащения</div>';
     }
-    html+=`</div></div>`;
+    html+='</div>';
   });
+
+  // Unassigned equipment
+  if(unassigned.length){
+    const unCost=unassigned.reduce((s,e)=>s+e.cost,0);
+    html+=`<div class="c" style="padding:0;overflow:hidden;margin-bottom:12px;border-color:var(--ylbg)">
+<div style="padding:14px 16px;display:flex;align-items:center;gap:12px;background:var(--ylbg)">
+<div style="flex:1">
+<div style="font-weight:700;font-size:14px;color:var(--yl)">⚠ Не назначено</div>
+<div style="font-size:11px;color:var(--tx2);margin-top:2px">Оборудование без привязки к помещению</div>
+</div>
+<div style="text-align:right">
+<div style="font-size:20px;font-weight:800;color:var(--yl)">${unCost.toLocaleString('ru')} PLN</div>
+<div style="font-size:10px;color:var(--tx3)">${unassigned.length} позиций</div>
+</div>
+</div>
+<div style="border-top:1px solid var(--bd)">`;
+    unassigned.forEach(e=>{
+      html+=`<div style="display:flex;align-items:center;gap:8px;padding:8px 16px;border-bottom:1px solid var(--bd)">
+<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:500">${e.name}</div><div style="font-size:10px;color:var(--tx3)">${e.category}</div></div>
+<div style="font-size:10px;color:var(--tx2)">×${e.qty}</div>
+<div style="font-size:12px;font-weight:700;color:var(--yl)">${e.cost.toLocaleString('ru')} PLN</div>
+</div>`;
+    });
+    html+='</div></div>';
+  }
+
   c.innerHTML=html;
-}
-function addCatToCab(ctId){
-  const sel=document.getElementById('eqCatSel_'+ctId);
-  if(!sel||!sel.value)return;
-  const ct=DB.cabinetTypes.find(x=>x.id==ctId);
-  if(!ct)return;
-  if(!ct.equipCats)ct.equipCats=[];
-  if(!ct.equipCats.includes(sel.value))ct.equipCats.push(sel.value);
-  renderCabinetTypes();
-}
-function removeCatFromCab(ctId,cat){
-  const ct=DB.cabinetTypes.find(x=>x.id==ctId);
-  if(!ct)return;
-  ct.equipCats=(ct.equipCats||[]).filter(c=>c!==cat);
-  renderCabinetTypes();
-}
-function editCabinetType(id){
-  const item=DB.cabinetTypes.find(e=>e.id==id);
-  if(!item)return;
-  editingId=id;
-  modalMode='cabinetType';
-  document.getElementById('modalTitle').textContent='Редактировать: '+item.name;
-  const fields=MODAL_FIELDS.cabinetType;
-  document.getElementById('modalFields').innerHTML=fields.map(f=>`<div class="modal-field"><label>${f.l}</label><input id="mf_${f.k}" type="${f.t||'text'}" placeholder="${f.ph||''}" value="${item[f.k]||''}"></div>`).join('');
-  document.getElementById('modalBg').classList.add('vis');
-}
-function deleteCabinetType(id){
-  DB.cabinetTypes=DB.cabinetTypes.filter(e=>e.id!=id);
-  renderCabinetTypes();buildSidebar();
 }
 
 // ═══════════════ MODAL ═══════════════
