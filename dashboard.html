@@ -1146,6 +1146,16 @@ Apple</button>
 <div style="font-size:11px;font-weight:700;color:var(--rd);text-transform:uppercase;letter-spacing:1px">&#128178; Расходы / мес.</div>
 <div style="font-size:20px;font-weight:800;color:var(--rd)" id="fmExpensesTotal">0 PLN</div>
 </div>
+<!-- Детализация расходов -->
+<div style="display:grid;grid-template-columns:1fr auto;gap:4px 12px;font-size:11px;margin-bottom:10px;padding:0 2px">
+<span style="color:var(--tx2)">Аренда</span><span style="color:var(--rd);font-weight:600;text-align:right" id="fmExpRent">0 PLN</span>
+<span style="color:var(--tx2);font-weight:700">&#129489; ЗП сотрудников (ФОТ)</span><span style="color:var(--rd);font-weight:700;text-align:right" id="fmExpStaff">0 PLN</span>
+<span style="color:var(--tx2)">Коммунальные</span><span style="color:var(--rd);font-weight:600;text-align:right" id="fmExpUtils">0 PLN</span>
+<span style="color:var(--tx2)">Материалы</span><span style="color:var(--rd);font-weight:600;text-align:right" id="fmExpMat">0 PLN</span>
+<span style="color:var(--tx2)">Маркетинг</span><span style="color:var(--rd);font-weight:600;text-align:right" id="fmExpMkt">0 PLN</span>
+<span style="color:var(--tx2)">Прочие</span><span style="color:var(--rd);font-weight:600;text-align:right" id="fmExpOther">0 PLN</span>
+<span style="color:var(--tx);font-weight:800;border-top:1px solid rgba(239,68,68,0.2);padding-top:4px;margin-top:2px">ИТОГО</span><span style="color:var(--rd);font-weight:800;text-align:right;border-top:1px solid rgba(239,68,68,0.2);padding-top:4px;margin-top:2px" id="fmExpTotal2">0 PLN</span>
+</div>
 <div style="background:var(--bg);border-radius:8px;padding:10px;font-family:'SF Mono',Monaco,Consolas,monospace">
 <div style="font-size:10px;color:var(--tx3);margin-bottom:4px">ФОРМУЛА:</div>
 <div style="font-size:12px;color:var(--tx);font-weight:600">Аренда + ФОТ + Коммун. + Материалы + Маркетинг + Прочие</div>
@@ -6656,8 +6666,15 @@ function updateFormulaDisplay(){
   const el=id=>document.getElementById(id);
   if(el('fmRevenueCalc'))el('fmRevenueCalc').textContent=chairs+' × '+ppc+' × '+wd+' × '+fmt(avg)+' = '+fmt(revenue)+' PLN';
   if(el('s6Revenue'))el('s6Revenue').textContent=fmt(revenue)+' PLN';
-  // Expenses
+  // Expenses — total + breakdown
   if(el('fmExpensesTotal'))el('fmExpensesTotal').textContent=fmt(expenses)+' PLN';
+  if(el('fmExpRent'))el('fmExpRent').textContent=fmt(rentM)+' PLN';
+  if(el('fmExpStaff'))el('fmExpStaff').textContent=fmt(staff)+' PLN';
+  if(el('fmExpUtils'))el('fmExpUtils').textContent=fmt(utils)+' PLN';
+  if(el('fmExpMat'))el('fmExpMat').textContent=fmt(mat)+' PLN';
+  if(el('fmExpMkt'))el('fmExpMkt').textContent=fmt(mkt)+' PLN';
+  if(el('fmExpOther'))el('fmExpOther').textContent=fmt(oth)+' PLN';
+  if(el('fmExpTotal2'))el('fmExpTotal2').textContent=fmt(expenses)+' PLN';
   if(el('fmExpensesCalc'))el('fmExpensesCalc').textContent=fmt(rentM)+' + '+fmt(staff)+' + '+fmt(utils)+' + '+fmt(mat)+' + '+fmt(mkt)+' + '+fmt(oth)+' = '+fmt(expenses)+' PLN';
   // Profit
   const pEl=el('fmProfitTotal');
