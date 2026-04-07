@@ -2762,8 +2762,9 @@ function applyBizData(type){
   DB.pickedContractors={};DB.pickedRenovations={};DB.pickedDocs={};
 }
 
-// ═══════════════ AI CONCEPT GENERATOR (Llama 70B on Jetson via Edge Function) ═══════════════
+// ═══════════════ AI (Jetson AGX Orin — Ollama qwen2.5:32b via Edge Function) ═══════════════
 const AI_URL='https://scyraai-desktop.tail2060da.ts.net/functions/v1/ai-concept';
+const AI_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzc1NTA4NjM0LCJleHAiOjE5MzMxODg2MzR9.4l7IBV5SjC8qZ4iJ-oMdLHP-sPP3O7Ab7eWS3PGkKi8';
 
 let _aiGenTimer=null;
 async function generateAIConcept(){
@@ -2819,7 +2820,7 @@ async function generateAIConcept(){
   try{
     const res=await fetch(AI_URL,{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+AI_KEY},
       body:JSON.stringify({prompt,mode:'generate'})
     });
     const data=await res.json();
