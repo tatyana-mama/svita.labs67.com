@@ -331,6 +331,141 @@
 .c{margin:0 0 8px}
 .modal-box{width:95%!important;max-height:90vh;overflow-y:auto}
 }
+
+/* ═══════════════ RESPONSIVE ADDITIONS ═══════════════ */
+
+/* ── 1024px: Hide right panel ── */
+@media(max-width:1024px){
+  .rpanel{display:none!important}
+  .main{margin-right:0!important}
+}
+
+/* ── 840px: Hide sidebar, show burger, full-width main ── */
+@media(max-width:840px){
+  .side{transform:translateX(-100%);transition:transform .25s ease}
+  .side.mob-open{transform:translateX(0)!important;display:flex!important}
+  .mob-burger{display:block!important}
+  .main{margin-left:0!important;margin-right:0!important}
+  .tab-bar{-webkit-overflow-scrolling:touch;scrollbar-width:none;-ms-overflow-style:none}
+  .tab-bar::-webkit-scrollbar{display:none}
+  .tab{padding:8px 10px;font-size:10px;min-width:0;flex-shrink:0}
+  #fpCanvas{height:auto!important;max-height:60vw;min-height:200px}
+  .login-bg{padding:20px 0}
+  .login-box{width:92%;padding:28px 20px}
+  .login-box h1{font-size:20px}
+  .login-roles{gap:6px}
+  .login-role{padding:10px 12px;gap:10px}
+  .lr-icon{width:34px;height:34px;font-size:16px}
+}
+
+/* ── 640px: Single-column grids, compact ── */
+@media(max-width:640px){
+  .g2{grid-template-columns:1fr!important}
+  .g3{grid-template-columns:1fr!important}
+  .sts{grid-template-columns:1fr!important}
+  .sec{padding:12px 14px}
+  .ph h2{font-size:16px}
+  .ph-s{font-size:11px}
+  .st-v{font-size:20px}
+  .st{padding:12px}
+  .stg{padding:14px}
+  .stg-n{font-size:22px}
+  .stg-t{font-size:12px}
+  .stg-d{font-size:10px}
+  .c{margin-bottom:10px}
+  .ch{padding:10px 12px}
+  .ch h3{font-size:12px}
+  .cb{padding:12px}
+  .db-card{padding:12px}
+  .db-card-name{font-size:12px}
+  .db-card-grid{grid-template-columns:1fr}
+  .zone-head{padding:12px 14px;gap:10px}
+  .zone-icon{width:36px;height:36px;font-size:16px;border-radius:10px}
+  .zone-name{font-size:13px}
+  .zone-desc{font-size:10px}
+  .zone-cost{font-size:12px}
+  .zone-subcat{padding:6px 14px 4px}
+  .zone-items{padding:4px 8px 8px}
+  .sel{padding:8px 10px;gap:8px}
+  .sel-name{font-size:11px}
+  .modal-bg{align-items:flex-end}
+  .modal{width:100%!important;max-width:100vw!important;max-height:92vh;border-radius:16px 16px 0 0;margin:0}
+  .modal-box{width:100%!important;max-width:100vw!important;max-height:92vh!important;border-radius:16px 16px 0 0!important;margin:0!important}
+  .modal h3{font-size:14px;margin-bottom:12px}
+  .modal-field label{font-size:9px}
+  .modal-field input,.modal-field select,.modal-field textarea{font-size:12px;padding:8px}
+  #fpCanvas{min-height:180px;max-height:55vw}
+  .fp-tb{width:30px;height:28px;font-size:10px}
+  .fp-tb svg{width:14px;height:14px}
+  .top{padding:6px 12px}
+  .top-p{font-size:12px}
+  .top-upgrade{font-size:9px;padding:4px 10px}
+  .top-umenu{min-width:240px}
+  .login-box{padding:24px 16px}
+  .login-box h1{font-size:18px}
+  .login-role{padding:10px;gap:8px}
+  .lr-icon{width:32px;height:32px;font-size:14px;border-radius:8px}
+  .lr-name{font-size:12px}
+  .lr-desc{font-size:9px}
+  .param-chip{font-size:9px;padding:3px 8px}
+  .price-edit{font-size:11px;width:70px}
+  .lightbox img{max-width:95vw;max-height:80vh;border-radius:8px}
+  .lightbox-close{top:12px;right:12px;width:32px;height:32px;font-size:20px}
+}
+
+/* ── 480px: Extra compact ── */
+@media(max-width:480px){
+  .sec{padding:8px 10px}
+  .ph{gap:4px}
+  .ph h2{font-size:14px}
+  .st{padding:10px}
+  .st-l{font-size:9px;margin-bottom:4px}
+  .st-v{font-size:18px}
+  .st-s{font-size:10px}
+  .stg{padding:12px}
+  .stg-n{font-size:18px}
+  .stg-t{font-size:11px;margin:6px 0 3px}
+  .stg-d{font-size:9px;margin-bottom:8px}
+  .c{margin-bottom:8px}
+  .ch{padding:8px 10px}
+  .cb{padding:10px}
+  .tab{padding:6px 8px;font-size:9px}
+  .tab .tab-num{width:16px;height:16px;font-size:8px}
+  .tab-bar{padding:4px 8px 0}
+  .top{padding:4px 8px}
+  .top-r{gap:2px}
+  .top-gear{width:28px;height:28px;font-size:12px}
+  .top-uav{width:26px;height:26px;font-size:9px}
+  .modal{padding:16px;border-radius:14px 14px 0 0}
+  .modal h3{font-size:13px}
+  .modal-actions{flex-direction:column}
+  .modal-actions .btn{width:100%;justify-content:center;text-align:center}
+  .btn{padding:5px 10px;font-size:10px}
+  #fpCanvas{min-height:150px;max-height:50vw}
+  .db-card{padding:10px}
+  .db-card-name{font-size:11px}
+  .zone-head{padding:10px 12px;gap:8px}
+  .zone-icon{width:32px;height:32px;font-size:14px}
+  .zone-name{font-size:12px}
+  .zone-cost{font-size:11px}
+  .sel{padding:6px 8px;gap:6px;margin-bottom:6px}
+  .sel-check{width:16px;height:16px}
+  .sel-name{font-size:10px}
+  .sel-desc{font-size:9px}
+  .sel-qty button{width:20px;height:20px;font-size:11px}
+  .login-bg{padding:10px 0}
+  .login-box{padding:20px 14px;border-radius:12px}
+  .login-box h1{font-size:16px}
+  .login-box .sub{font-size:10px;margin-bottom:20px}
+  .login-role{padding:8px;gap:6px;border-radius:8px}
+  .lr-icon{width:28px;height:28px;font-size:12px;border-radius:6px}
+  .lr-name{font-size:11px}
+  .lr-desc{font-size:8px}
+  .proc{margin-left:4px;padding-left:10px}
+  .ci{gap:6px;padding:5px 0;font-size:11px}
+  .cx{width:16px;height:16px;font-size:9px}
+  .lightbox img{border-radius:4px}
+}
 </style>
 </head>
 <body>
@@ -2610,6 +2745,11 @@ function enterApp(){
   else{activeProperty=currentRole==='admin'?{...DEFAULT_PROPERTY}:null}
   migrateLocalStorageKeys(currentUser.id);
   loadPicked();loadBusinessModel();
+  // Auto-pick all default employees if pickedStaff is empty (first launch)
+  if(!Object.keys(DB.pickedStaff||{}).length&&currentRole==='admin'){
+    DB.employees.forEach(e=>{DB.pickedStaff[String(e.id)]={qty:1}});
+    savePicked();
+  }
   // Apply saved staff edits from pickedStaff onto DB.employees
   Object.entries(DB.pickedStaff||{}).forEach(([id,over])=>{
     if(over.name||over.salary||over.spec||over.status){
