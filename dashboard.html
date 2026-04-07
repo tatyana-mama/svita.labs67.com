@@ -950,7 +950,7 @@ Apple</button>
 <div class="ph"><div><h2>06 &middot; Концепция</h2><div class="ph-s">Бизнес-модель, рентабельность, документация</div></div><span class="tag t-wip">В работе</span></div>
 
 <!-- Бизнес-модель -->
-<div class="c"><div class="ch"><h3>&#127973; Бизнес-модель</h3><button class="btn sm gn" onclick="saveBusinessModel()">Сохранить</button></div>
+<div class="c"><div class="ch"><h3>&#127973; Бизнес-модель</h3><button class="btn sm gn" id="bmSaveBtn" onclick="saveBusinessModel()">Сохранить</button></div>
 <div class="cb">
 <div class="g2">
 <div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">BUSINESS TYPE</div><input class="price-edit" id="cType" placeholder="e.g. Dental clinic, Veterinary, Beauty salon..." style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
@@ -975,19 +975,19 @@ Apple</button>
 <div class="g2" style="gap:8px">
 <div style="background:var(--sf2);border-radius:10px;padding:12px;display:flex;align-items:center;justify-content:space-between">
 <div><div style="font-size:10px;color:var(--tx3);text-transform:uppercase;font-weight:600">Кресел</div><div style="font-size:9px;color:var(--tx3);margin-top:2px">стоматологических установок</div></div>
-<input class="price-edit" id="chairsCount" value="7" onchange="recalc();updateFormulaDisplay()" style="width:50px;text-align:center;font-size:16px;font-weight:800">
+<input class="price-edit" id="chairsCount" value="7" oninput="recalc();updateFormulaDisplay()" style="width:50px;text-align:center;font-size:16px;font-weight:800">
 </div>
 <div style="background:var(--sf2);border-radius:10px;padding:12px;display:flex;align-items:center;justify-content:space-between">
 <div><div style="font-size:10px;color:var(--tx3);text-transform:uppercase;font-weight:600">Пациентов/день/кресло</div><div style="font-size:9px;color:var(--tx3);margin-top:2px">средняя загрузка</div></div>
-<input class="price-edit" id="patientsPerChair" value="6" onchange="recalc();updateFormulaDisplay()" style="width:50px;text-align:center;font-size:16px;font-weight:800">
+<input class="price-edit" id="patientsPerChair" value="6" oninput="recalc();updateFormulaDisplay()" style="width:50px;text-align:center;font-size:16px;font-weight:800">
 </div>
 <div style="background:var(--sf2);border-radius:10px;padding:12px;display:flex;align-items:center;justify-content:space-between">
 <div><div style="font-size:10px;color:var(--tx3);text-transform:uppercase;font-weight:600">Рабочих дней/мес.</div><div style="font-size:9px;color:var(--tx3);margin-top:2px">без выходных и праздников</div></div>
-<input class="price-edit" id="workDays" value="22" onchange="recalc();updateFormulaDisplay()" style="width:50px;text-align:center;font-size:16px;font-weight:800">
+<input class="price-edit" id="workDays" value="22" oninput="recalc();updateFormulaDisplay()" style="width:50px;text-align:center;font-size:16px;font-weight:800">
 </div>
 <div style="background:var(--sf2);border-radius:10px;padding:12px;display:flex;align-items:center;justify-content:space-between">
 <div><div style="font-size:10px;color:var(--tx3);text-transform:uppercase;font-weight:600">Средний чек</div><div style="font-size:9px;color:var(--tx3);margin-top:2px">PLN за приём</div></div>
-<input class="price-edit" id="avgCheck" value="650" onchange="recalc();updateFormulaDisplay()" style="width:70px;text-align:center;font-size:16px;font-weight:800">
+<input class="price-edit" id="avgCheck" value="650" oninput="recalc();updateFormulaDisplay()" style="width:70px;text-align:center;font-size:16px;font-weight:800">
 </div>
 </div>
 </div>
@@ -1022,7 +1022,7 @@ Apple</button>
 <div style="background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(99,102,241,0.02));border:1px solid rgba(99,102,241,0.2);border-radius:12px;padding:16px;margin-bottom:12px">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
 <div style="font-size:11px;font-weight:700;color:var(--ac2);text-transform:uppercase;letter-spacing:1px">&#128200; Чистая прибыль / мес.</div>
-<div style="font-size:20px;font-weight:800" id="fmProfitTotal" style="color:var(--ac2)">0 PLN</div>
+<div style="font-size:20px;font-weight:800;color:var(--ac2)" id="fmProfitTotal">0 PLN</div>
 </div>
 <div style="background:var(--bg);border-radius:8px;padding:10px;font-family:'SF Mono',Monaco,Consolas,monospace">
 <div style="font-size:10px;color:var(--tx3);margin-bottom:4px">ФОРМУЛА:</div>
@@ -1291,10 +1291,10 @@ Apple</button>
 <div class="c"><div class="ch"><h3>Расходы / мес.</h3></div><div class="cb">
 <div class="metric-row"><span class="metric-label">Аренда</span><span class="metric-val neg" id="prRent">0</span></div>
 <div class="metric-row"><span class="metric-label">ФОТ</span><span class="metric-val neg" id="prStaff">0</span></div>
-<div class="metric-row"><span class="metric-label">Коммунальные</span><span class="metric-val neg"><input class="price-edit" id="prUtils" value="3000" onchange="recalc()" style="color:var(--rd)"> PLN</span></div>
-<div class="metric-row"><span class="metric-label">Материалы</span><span class="metric-val neg"><input class="price-edit" id="prMaterials" value="15000" onchange="recalc()" style="color:var(--rd)"> PLN</span></div>
-<div class="metric-row"><span class="metric-label">Маркетинг</span><span class="metric-val neg"><input class="price-edit" id="prMarketing" value="5000" onchange="recalc()" style="color:var(--rd)"> PLN</span></div>
-<div class="metric-row"><span class="metric-label">Прочие</span><span class="metric-val neg"><input class="price-edit" id="prOther" value="3000" onchange="recalc()" style="color:var(--rd)"> PLN</span></div>
+<div class="metric-row"><span class="metric-label">Коммунальные</span><span class="metric-val neg"><input class="price-edit" id="prUtils" value="3000" onchange="recalc();saveLoadParams()" style="color:var(--rd)"> PLN</span></div>
+<div class="metric-row"><span class="metric-label">Материалы</span><span class="metric-val neg"><input class="price-edit" id="prMaterials" value="15000" onchange="recalc();saveLoadParams()" style="color:var(--rd)"> PLN</span></div>
+<div class="metric-row"><span class="metric-label">Маркетинг</span><span class="metric-val neg"><input class="price-edit" id="prMarketing" value="5000" onchange="recalc();saveLoadParams()" style="color:var(--rd)"> PLN</span></div>
+<div class="metric-row"><span class="metric-label">Прочие</span><span class="metric-val neg"><input class="price-edit" id="prOther" value="3000" onchange="recalc();saveLoadParams()" style="color:var(--rd)"> PLN</span></div>
 <div class="metric-row" style="border-top:2px solid var(--bd)"><span class="metric-label" style="font-weight:700">Итого расходов</span><span class="metric-val neg" id="prExpenses" style="font-size:16px">0</span></div>
 </div></div>
 <div class="c"><div class="ch"><h3>Итоговые показатели</h3></div><div class="cb">
@@ -2213,11 +2213,17 @@ function loadPicked(){
 }
 
 const BM_FIELDS=['cType','cBrand','cCity','cDate','cFormat','cAudience','cUsp','cTech'];
+const LOAD_PARAMS=['chairsCount','patientsPerChair','workDays','avgCheck','prUtils','prMaterials','prMarketing','prOther'];
+function saveLoadParams(){
+  try{const raw=uGet('svita_bm');const bm=raw?JSON.parse(raw):{};LOAD_PARAMS.forEach(k=>{const el=document.getElementById(k);if(el)bm[k]=el.value});uSet('svita_bm',JSON.stringify(bm))}catch(e){}
+}
 function saveBusinessModel(){
   const bm={};
   BM_FIELDS.forEach(k=>{const el=document.getElementById(k);if(el)bm[k]=el.value});
+  // Save load parameters alongside business model
+  LOAD_PARAMS.forEach(k=>{const el=document.getElementById(k);if(el)bm[k]=el.value});
   uSet('svita_bm',JSON.stringify(bm));
-  const btn=document.querySelector('.ch .gn');
+  const btn=document.getElementById('bmSaveBtn');
   if(btn){const old=btn.textContent;btn.textContent='✓ Сохранено';setTimeout(()=>btn.textContent=old,1500)}
 }
 const BM_DEFAULTS={cType:'Стоматологическая клиника',cBrand:'Свитлица',cCity:'Быдгощ, Польша',cDate:'Сентябрь 2026',cFormat:'Премиум-сегмент',cAudience:'Средний+ класс, 25-55 лет',cUsp:'AI-клиника нового поколения',cTech:'ŠČYRA.AI + Jetson Edge'};
@@ -2226,10 +2232,7 @@ function loadBusinessModel(){
     let raw=uGet('svita_bm');
     if(!raw||raw==='{}'){const oldKey=uKeyOld('svita_bm');raw=localStorage.getItem(oldKey);if(raw&&raw!=='{}'){uSet('svita_bm',raw)}}
     if(!raw||raw==='{}'){raw=localStorage.getItem('svita_bm');if(raw&&raw!=='{}'){uSet('svita_bm',raw)}}
-    if(!raw||raw==='{}'){
-      const best=Object.keys(localStorage).filter(k=>k.startsWith('svita_bm_')&&k!==uKey('svita_bm')).map(k=>({k,v:localStorage.getItem(k)})).filter(x=>x.v&&x.v!=='{}'&&x.v.length>5).sort((a,b)=>b.v.length-a.v.length)[0];
-      if(best){raw=best.v;uSet('svita_bm',raw)}
-    }
+    // Cross-user fallback removed — security: never load another user's data
     if(!raw||raw==='{}'){
       const vals=currentRole==='admin'?BM_DEFAULTS:{};
       BM_FIELDS.forEach(k=>{const el=document.getElementById(k);if(el)el.value=vals[k]||''});
@@ -2237,6 +2240,8 @@ function loadBusinessModel(){
     }
     const bm=JSON.parse(raw);
     BM_FIELDS.forEach(k=>{const el=document.getElementById(k);if(el)el.value=bm[k]||''});
+    // Restore load parameters (chairsCount, patientsPerChair, workDays, avgCheck)
+    LOAD_PARAMS.forEach(k=>{const el=document.getElementById(k);if(el&&bm[k])el.value=bm[k]});
   }catch(e){}
 }
 
@@ -2600,10 +2605,7 @@ function enterApp(){
   let savedProp=uGet('svita_property');
   if(!savedProp){const oldKey=uKeyOld('svita_property');savedProp=localStorage.getItem(oldKey);if(savedProp){uSet('svita_property',savedProp)}}
   if(!savedProp){savedProp=localStorage.getItem('svita_property');if(savedProp){uSet('svita_property',savedProp)}}
-  if(!savedProp){
-    const best=Object.keys(localStorage).filter(k=>k.startsWith('svita_property_')&&k!==uKey('svita_property')).map(k=>({k,v:localStorage.getItem(k)})).filter(x=>x.v&&x.v.length>5).sort((a,b)=>b.v.length-a.v.length)[0];
-    if(best){savedProp=best.v;uSet('svita_property',savedProp);console.log('[SVITA] Restored property from',best.k)}
-  }
+  // Cross-user property fallback removed — security
   if(savedProp){try{activeProperty=JSON.parse(savedProp)}catch(e){activeProperty=null}}
   else{activeProperty=currentRole==='admin'?{...DEFAULT_PROPERTY}:null}
   migrateLocalStorageKeys(currentUser.id);
