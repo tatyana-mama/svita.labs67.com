@@ -2827,7 +2827,7 @@ async function generateAIConcept(){
 
 let _aiConcept=null;
 
-function applyAIConcept(){
+async function applyAIConcept(){
   if(!_aiConcept)return;
   // Apply to DB
   if(_aiConcept.employees)DB.employees=_aiConcept.employees;
@@ -2843,16 +2843,13 @@ function applyAIConcept(){
   // Auto-pick all employees
   DB.employees.forEach(e=>{DB.pickedStaff[String(e.id)]={qty:1}});
   savePicked();
-  // Update sidebar tag
-  const tag=document.getElementById('sideTag');
-  if(tag)tag.textContent='✨ '+(_aiConcept.name||'AI концепция');
-  const sn=document.getElementById('sideBizName');
-  if(sn)sn.textContent=_aiConcept.name||'AI концепция';
-  const si=document.getElementById('sideBizIcon');
-  if(si)si.textContent='✨';
+  // Save to Supabase
+  const cname=_aiConcept.name||'AI концепция';
+  await createConcept(cname,'ai');
+  // Update sidebar
+  updateBizUI();
   closeModal();
   buildSidebar();renderAll();recalc();
-  toast('Концепция применена: '+(_aiConcept.name||'AI'),'gn');
 }
 
 // Show biz type selector (modal from within app)
@@ -2872,8 +2869,27 @@ function showBizSelector(){
   html+='<button id="aiApplyBtn" class="btn" style="display:none;width:100%;margin-top:8px;padding:10px;font-size:12px;background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;border:none;font-weight:700" onclick="applyAIConcept()">Применить AI концепцию</button>';
   html+='</div>';
 
+  // Saved concepts from Supabase
+  if(userConcepts&&userConcepts.length){
+    html+='<div style="font-size:11px;font-weight:600;color:var(--tx3);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Мои концепции:</div>';
+    html+='<div style="margin-bottom:16px;max-height:160px;overflow-y:auto">';
+    userConcepts.forEach(cp=>{
+      const d=cp.data||{};
+      const bizIcon=d.bizType&&BIZ_TYPES[d.bizType]?BIZ_TYPES[d.bizType].icon:'📝';
+      const date=new Date(cp.updated_at||cp.created_at).toLocaleDateString('ru');
+      const isCurrent=window._currentConceptId===cp.id;
+      html+=`<div onclick="closeModal();loadConceptById('${cp.id}')" style="display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;border:1px solid ${isCurrent?'var(--ac)':'var(--bd)'};border-radius:10px;background:${isCurrent?'var(--acbg)':'var(--sf2)'};margin-bottom:4px;transition:all .2s">
+<div style="font-size:20px">${bizIcon}</div>
+<div style="flex:1;min-width:0">
+<div style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--tx)">${esc(cp.name)}${isCurrent?' <span style="color:var(--gn);font-size:9px">● АКТИВНАЯ</span>':''}</div>
+<div style="font-size:10px;color:var(--tx3)">${d.employees?.length||0} сотр. · ${d.services?.length||0} услуг · ${date}</div>
+</div></div>`;
+    });
+    html+='</div>';
+  }
+
   // Ready templates
-  html+='<div style="font-size:11px;font-weight:600;color:var(--tx3);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Или выберите шаблон:</div>';
+  html+='<div style="font-size:11px;font-weight:600;color:var(--tx3);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">Новая из шаблона:</div>';
   html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">';
   Object.entries(BIZ_TYPES).forEach(([key,bt])=>{
     const sel=currentBizType===key;
@@ -2935,7 +2951,7 @@ function pickBizSub(id){
   });
 }
 
-function confirmBizChange(){
+async function confirmBizChange(){
   if(!_pendingBizType)return;
   const changed=_pendingBizType!==currentBizType;
   currentBizType=_pendingBizType;
@@ -2947,14 +2963,19 @@ function confirmBizChange(){
     if(currentBizType!=='dental'&&BIZ_DATA[currentBizType]){
       applyBizData(currentBizType);
     }else if(currentBizType==='dental'){
-      // Reload page to restore default dental data
       location.reload();return;
     }
+    // Auto-pick employees
+    DB.employees.forEach(e=>{DB.pickedStaff[String(e.id)]={qty:1}});
+    savePicked();
+    // Save to Supabase
+    const bt=BIZ_TYPES[currentBizType];
+    const sub=currentBizSubtype?bt.subtypes.find(s=>s.id===currentBizSubtype):null;
+    const cname=sub?sub.name:bt.name;
+    await createConcept(cname,'template');
   }
-  // Update sidebar
   updateBizUI();
   closeModal();
-  // Re-render everything
   buildSidebar();renderAll();recalc();
 }
 
@@ -3584,99 +3605,117 @@ function renderPlanDetails(){
   const pe=document.getElementById('accPlanExpiry');if(pe)pe.textContent=s.current_period_end?new Date(s.current_period_end).toLocaleDateString('ru'):'∞';
 }
 
+// ═══════════════ CONCEPTS (Supabase) ═══════════════
+function serializeWorkspace(){
+  return{
+    employees:DB.employees,services:DB.services,rooms:DB.rooms,
+    suppliers:DB.suppliers,renovations:DB.renovations,
+    cabinetTypes:DB.cabinetTypes,zones:DB.zones,
+    vendorCompanies:DB.vendorCompanies,
+    pickedRooms:DB.pickedRooms||{},pickedRenovations:DB.pickedRenovations||{},
+    pickedServices:DB.pickedServices||{},pickedEquip:DB.pickedEquip||{},
+    pickedStaff:DB.pickedStaff||{},pickedDocs:DB.pickedDocs||{},
+    property:activeProperty,bizType:currentBizType,bizSubtype:currentBizSubtype,
+    floorPlan:typeof FP!=='undefined'&&FP?{rooms:FP.rooms,elements:FP.elements,scale:FP.scale}:null
+  };
+}
+
+function hydrateWorkspace(d){
+  if(d.employees)DB.employees=d.employees;
+  if(d.services)DB.services=d.services;
+  if(d.rooms)DB.rooms=d.rooms;
+  if(d.suppliers)DB.suppliers=d.suppliers;
+  if(d.renovations)DB.renovations=d.renovations;
+  if(d.cabinetTypes)DB.cabinetTypes=d.cabinetTypes;
+  if(d.zones)DB.zones=d.zones;
+  if(d.vendorCompanies)DB.vendorCompanies=d.vendorCompanies;
+  DB.pickedRooms=d.pickedRooms||{};DB.pickedRenovations=d.pickedRenovations||{};
+  DB.pickedServices=d.pickedServices||{};DB.pickedEquip=d.pickedEquip||{};
+  DB.pickedStaff=d.pickedStaff||{};DB.pickedDocs=d.pickedDocs||{};
+  if(d.property&&typeof restoreProperty==='function')restoreProperty(d.property);
+  if(d.bizType){currentBizType=d.bizType;localStorage.setItem('svita_biz_type',d.bizType)}
+  if(d.bizSubtype){currentBizSubtype=d.bizSubtype;localStorage.setItem('svita_biz_subtype',d.bizSubtype)}
+  if(d.floorPlan&&typeof FP!=='undefined'&&FP){FP.rooms=d.floorPlan.rooms||[];FP.elements=d.floorPlan.elements||[];FP.scale=d.floorPlan.scale||20;if(typeof fpDraw==='function')fpDraw();if(typeof fpUpdateList==='function')fpUpdateList()}
+}
+
 async function loadConcepts(){
-  if(!sb||!currentUser)return;
-  const{data}=await sb.from('concepts').select('id,name,stage,status,updated_at,created_at').eq('user_id',currentUser.id).order('updated_at',{ascending:false});
-  userConcepts=data||[];
+  if(!sb||!currentUser){userConcepts=[];renderConceptsList();return}
+  try{
+    // Query by user_id (try UUID, fallback to selecting all user's concepts)
+    const uid=currentUser.id;
+    const{data,error}=await sb.from('concepts').select('id,name,status,stage,data,created_at,updated_at').eq('user_id',uid).order('updated_at',{ascending:false});
+    if(error)throw error;
+    userConcepts=data||[];
+  }catch(e){console.error('[concepts]',e);userConcepts=[]}
   const cc=document.getElementById('conceptsCount');
-  if(cc)cc.textContent=userConcepts.length+' / '+(userSubscription.concepts_limit||1);
+  if(cc)cc.textContent=userConcepts.length+' концепций';
   renderConceptsList();
 }
 
 function renderConceptsList(){
   const c=document.getElementById('conceptsList');if(!c)return;
-  if(userSubscription.plan==='trial'){
-    c.innerHTML='<div style="text-align:center;padding:24px"><div style="font-size:32px;margin-bottom:8px">&#128274;</div><div style="font-size:12px;color:var(--tx3);margin-bottom:12px">Сохранение концепций доступно с PRO</div><button class="btn pr" onclick="showUpgradeModal()">Улучшить план</button></div>';
-    return;
-  }
   if(!userConcepts.length){
-    c.innerHTML='<div style="text-align:center;padding:24px"><div style="font-size:32px;margin-bottom:8px">&#128209;</div><div style="font-size:12px;color:var(--tx3);margin-bottom:12px">У вас пока нет концепций</div><button class="btn pr" onclick="createConcept()">Создать первую</button></div>';
+    c.innerHTML='<div style="text-align:center;padding:24px"><div style="font-size:32px;margin-bottom:8px">&#128209;</div><div style="font-size:12px;color:var(--tx3);margin-bottom:12px">У вас пока нет сохранённых концепций</div><div style="font-size:10px;color:var(--tx3)">Создайте через AI-генератор или выберите шаблон</div></div>';
     return;
   }
   let html='';
   userConcepts.forEach(cp=>{
     const date=new Date(cp.updated_at||cp.created_at).toLocaleDateString('ru');
-    const statusMap={draft:'Черновик',active:'Активная',completed:'Завершена',archived:'Архив'};
-    const statusColor={draft:'var(--tx3)',active:'var(--gn)',completed:'var(--ac2)',archived:'var(--tx3)'};
-    html+=`<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd)">
+    const isCurrent=window._currentConceptId===cp.id;
+    const d=cp.data||{};
+    const empCount=d.employees?.length||0;
+    const svcCount=d.services?.length||0;
+    const bizIcon=d.bizType&&BIZ_TYPES[d.bizType]?BIZ_TYPES[d.bizType].icon:'📝';
+    html+=`<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd);${isCurrent?'background:var(--acbg);margin:0 -12px;padding:10px 12px;border-radius:8px':''}">
 <div style="flex:1;min-width:0">
-<div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${sanitize(cp.name)}</div>
-<div style="font-size:10px;color:var(--tx3)">Этап ${cp.stage}/6 · ${date}</div>
+<div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${bizIcon} ${esc(cp.name)}${isCurrent?' <span style="font-size:9px;color:var(--gn);font-weight:700">● АКТИВНАЯ</span>':''}</div>
+<div style="font-size:10px;color:var(--tx3)">${empCount} сотр. · ${svcCount} услуг · ${date}</div>
 </div>
-<span style="font-size:9px;font-weight:600;color:${statusColor[cp.status]||'var(--tx3)'};padding:2px 8px;border-radius:4px;background:var(--sf2)">${statusMap[cp.status]||cp.status}</span>
 <div style="display:flex;gap:4px;flex-shrink:0">
-<button class="btn sm pr" onclick="loadConceptById('${cp.id}')">Открыть</button>
+<button class="btn sm pr" onclick="loadConceptById('${cp.id}')">${isCurrent?'Обновить':'Открыть'}</button>
 <button class="btn sm" onclick="duplicateConcept('${cp.id}')">&#128203;</button>
-<button class="btn sm" style="color:var(--rd)" onclick="deleteConcept('${cp.id}','${sanitize(cp.name).replace(/'/g,"\\'")}')">✕</button>
+<button class="btn sm" style="color:var(--rd)" onclick="deleteConcept('${cp.id}')">✕</button>
 </div>
 </div>`;
   });
   c.innerHTML=html;
 }
 
-async function createConcept(){
-  if(!sb||!currentUser)return;
-  if(userSubscription.plan==='trial'){showUpgradeModal();return}
-  // Gatekeeping: check plan limit
-  const limit=userSubscription.concepts_limit||1;
-  if(userConcepts.length>=limit){
-    showUpgradeModal();
-    return;
-  }
-  const name=prompt('Название концепции:','Моя клиника');
-  if(!name)return;
-  // Serialize current workspace
-  const conceptData={
-    pickedRooms:DB.pickedRooms||{},pickedRenovations:DB.pickedRenovations||{},
-    pickedServices:DB.pickedServices||{},pickedEquip:DB.pickedEquip||{},
-    pickedStaff:DB.pickedStaff||{},property:activeProperty,
-    floorPlan:FP?{rooms:FP.rooms,elements:FP.elements,scale:FP.scale}:null
-  };
-  const{data,error}=await sb.from('concepts').insert({user_id:currentUser.id,name,data:conceptData,stage:stageOrder.indexOf(cur)+1||1}).select().single();
-  if(error){alert('Ошибка: '+error.message);return}
-  logAction('concept_create','concept',data.id,{name});
-  loadConcepts();
+async function createConcept(name,source){
+  if(!sb||!currentUser){toast('Нет подключения к БД','rd');return null}
+  if(!name){name=prompt('Название концепции:','Моя концепция');if(!name)return null}
+  const conceptData=serializeWorkspace();
+  const{data,error}=await sb.from('concepts').insert({
+    user_id:currentUser.id,name,data:conceptData,
+    stage:stageOrder.indexOf(cur)+1||1,status:source==='ai'?'active':'draft'
+  }).select().single();
+  if(error){toast('Ошибка: '+error.message,'rd');return null}
+  window._currentConceptId=data.id;
+  window._currentConceptName=name;
+  logAction('concept_create','concept',data.id,{name,source});
+  await loadConcepts();
+  toast('Концепция «'+name+'» сохранена в БД','gn');
+  return data.id;
 }
 
 async function loadConceptById(id){
-  if(userSubscription.plan==='trial'){showUpgradeModal();return}
-  if(!sb)return;
+  if(!sb){toast('Нет подключения к БД','rd');return}
   const{data,error}=await sb.from('concepts').select('*').eq('id',id).single();
-  if(error||!data){alert('Ошибка загрузки');return}
-  // Hydrate workspace from concept data
-  const d=data.data||{};
-  DB.pickedRooms=d.pickedRooms||{};DB.pickedRenovations=d.pickedRenovations||{};
-  DB.pickedServices=d.pickedServices||{};DB.pickedEquip=d.pickedEquip||{};
-  DB.pickedStaff=d.pickedStaff||{};
-  if(d.property)restoreProperty(d.property);
-  if(d.floorPlan&&FP){FP.rooms=d.floorPlan.rooms||[];FP.elements=d.floorPlan.elements||[];FP.scale=d.floorPlan.scale||20;fpDraw();fpUpdateList()}
+  if(error||!data){toast('Концепция не найдена','rd');return}
+  hydrateWorkspace(data.data||{});
   window._currentConceptId=id;
   window._currentConceptName=data.name;
+  updateBizUI();
   logAction('concept_load','concept',id,{name:data.name});
   nav('overview');
   buildSidebar();renderAll();recalc();
+  toast('Загружена: '+data.name,'gn');
 }
 
 async function saveCurrentConcept(){
   const id=window._currentConceptId;
   if(!id||!sb||!currentUser)return;
-  if(userSubscription.plan==='trial')return;
-  const conceptData={
-    pickedRooms:DB.pickedRooms||{},pickedRenovations:DB.pickedRenovations||{},
-    pickedServices:DB.pickedServices||{},pickedEquip:DB.pickedEquip||{},
-    pickedStaff:DB.pickedStaff||{},property:activeProperty,
-    floorPlan:FP?{rooms:FP.rooms,elements:FP.elements,scale:FP.scale}:null
-  };
+  const conceptData=serializeWorkspace();
   const si=stageOrder.indexOf(cur);
   await sb.from('concepts').update({data:conceptData,stage:si>=0?si+1:1,updated_at:new Date().toISOString()}).eq('id',id);
   logAction('concept_save','concept',id);
@@ -3684,21 +3723,23 @@ async function saveCurrentConcept(){
 
 async function duplicateConcept(id){
   if(!sb||!currentUser)return;
-  const limit=userSubscription.concepts_limit||1;
-  if(userConcepts.length>=limit){showUpgradeModal();return}
   const{data:orig}=await sb.from('concepts').select('name,data,stage').eq('id',id).single();
   if(!orig)return;
   await sb.from('concepts').insert({user_id:currentUser.id,name:orig.name+' (копия)',data:orig.data,stage:orig.stage});
   logAction('concept_duplicate','concept',id);
-  loadConcepts();
+  await loadConcepts();
+  toast('Копия создана','gn');
 }
 
-async function deleteConcept(id,name){
-  if(!confirm('Удалить концепцию «'+name+'»? Это действие нельзя отменить.'))return;
+async function deleteConcept(id){
+  const cp=userConcepts.find(c=>c.id===id);
+  if(!cp)return;
+  if(!confirm('Удалить концепцию «'+cp.name+'»?'))return;
   await sb.from('concepts').delete().eq('id',id);
   if(window._currentConceptId===id){window._currentConceptId=null;window._currentConceptName=null}
-  logAction('concept_delete','concept',id,{name});
-  loadConcepts();
+  logAction('concept_delete','concept',id,{name:cp.name});
+  await loadConcepts();
+  toast('Удалена','rd');
 }
 
 async function saveAccountProfile(){
