@@ -3397,22 +3397,25 @@ function toggleRenDone(id){
 function renderRenovationsCatalog(){
   const c=document.getElementById('renCatalogCards');
   if(!c)return;
+  const openCats=new Set();
+  c.querySelectorAll('[id^="renCatDBBody"]').forEach(el=>{if(el.style.display!=='none')openCats.add(el.id.replace('renCatDBBody',''))});
   const cats={};
   DB.renovations.forEach(r=>{
     const cat=r.cat||'Другое';
     if(!cats[cat])cats[cat]=[];
     cats[cat].push(r);
   });
-  const catIcons={'Электрика':'&#9889;','Водоснабжение и кана��изация':'&#128167;','Вентиляция и кондиционирование':'&#127744;','Видеонаблюдение и безопасность':'&#128249;','Отде��ка и строительные работы':'&#127959;','Двери, окна, фасад':'&#128682;','IT-инфраструктура':'&#128421;','Медицинские коммуникации':'&#127973;','Мебель и встроенные конструкции':'&#129681;','Уборка и санитария':'&#129529;','Вывеска и навигация':'&#128276;','Доступность':'&#9855;','Противопожарная безопасность':'&#128293;'};
+  const catIcons={'Электрика':'&#9889;','Водоснабжение и канализация':'&#128167;','Вентиляция и кондиционирование':'&#127744;','Видеонаблюдение и безопасность':'&#128249;','Отделка и строительные работы':'&#127959;','Двери, окна, фасад':'&#128682;','IT-инфраструктура':'&#128421;','Медицинские коммуникации':'&#127973;','Мебель и встроенные конструкции':'&#129681;','Уборка и санитария':'&#129529;','Вывеска и навигация':'&#128276;','Доступность':'&#9855;','Противопожарная безопасность':'&#128293;'};
   const catKeys=Object.keys(cats);
   let html='<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">';
   catKeys.forEach((cat,ci)=>{
     const items=cats[cat];
     const pickedCnt=items.filter(r=>!!DB.pickedRenovations[r.id]).length;
     const icon=catIcons[cat]||'&#128736;';
+    const isOpen=openCats.has(String(ci));
     html+=`<div class="c" style="margin:0">`;
-    html+=`<div class="ch" style="cursor:pointer;user-select:none" onclick="toggleRenCatDB(${ci})"><div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0"><span style="font-size:16px">${icon}</span><div style="min-width:0"><h3 style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${cat}</h3><div style="font-size:10px;color:${pickedCnt?'var(--gn)':'var(--tx3)'};font-weight:600">${pickedCnt} / ${items.length} добавлено</div></div></div><span id="renCatDBArrow${ci}" style="font-size:10px;color:var(--tx3);transition:transform .2s;transform:rotate(0deg)">&#9654;</span></div>`;
-    html+=`<div id="renCatDBBody${ci}" style="display:none;border-top:1px solid var(--bd)">`;
+    html+=`<div class="ch" style="cursor:pointer;user-select:none" onclick="toggleRenCatDB(${ci})"><div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0"><span style="font-size:16px">${icon}</span><div style="min-width:0"><h3 style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${cat}</h3><div style="font-size:10px;color:${pickedCnt?'var(--gn)':'var(--tx3)'};font-weight:600">${pickedCnt} / ${items.length} добавлено</div></div></div><span id="renCatDBArrow${ci}" style="font-size:10px;color:var(--tx3);transition:transform .2s;transform:rotate(${isOpen?'90':'0'}deg)">&#9654;</span></div>`;
+    html+=`<div id="renCatDBBody${ci}" style="display:${isOpen?'block':'none'};border-top:1px solid var(--bd)">`;
     items.forEach(r=>{
       const picked=!!DB.pickedRenovations[r.id];
       html+=`<div class="ci" style="padding:8px 12px;display:flex;align-items:center;gap:8px;${picked?'background:var(--acbg)':''}"><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:${picked?'600':'400'}">${r.name}</div><div style="font-size:10px;color:var(--ac2)">${r.price.toLocaleString('ru')} PLN</div></div><button class="btn sm ${picked?'gn':'pr'}" style="flex-shrink:0;min-width:100px;font-size:10px" onclick="togglePickRenovation('${r.id}')">${picked?'✓ Добавлено':'+ В модернизацию'}</button></div>`;
@@ -3425,6 +3428,8 @@ function renderRenovationsCatalog(){
 function renderRenServices(){
   const c=document.getElementById('renServiceCards');
   if(!c)return;
+  const openCats=new Set();
+  c.querySelectorAll('[id^="renSvcBody"]').forEach(el=>{if(el.style.display!=='none')openCats.add(el.id.replace('renSvcBody',''))});
   const groups={};
   DB.services.forEach(s=>{const cat=s.category||'Другое';if(!groups[cat])groups[cat]=[];groups[cat].push(s)});
   const catKeys=Object.keys(groups);
@@ -3433,8 +3438,9 @@ function renderRenServices(){
   catKeys.forEach((cat,ci)=>{
     const items=groups[cat];
     const pickedCnt=items.filter(s=>!!DB.pickedServices[s.id]).length;
-    html+=`<div class="c" style="margin:0"><div class="ch" style="cursor:pointer;user-select:none" onclick="toggleRenSvcCat(${ci})"><div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0"><span style="font-size:16px">&#129657;</span><div style="min-width:0"><h3 style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(cat)}</h3><div style="font-size:10px;color:${pickedCnt?'var(--gn)':'var(--tx3)'};font-weight:600">${pickedCnt} / ${items.length}</div></div></div><span id="renSvcArrow${ci}" style="font-size:10px;color:var(--tx3);transition:transform .2s;transform:rotate(0deg)">&#9654;</span></div>`;
-    html+=`<div id="renSvcBody${ci}" style="display:none;border-top:1px solid var(--bd)">`;
+    const isOpen=openCats.has(String(ci));
+    html+=`<div class="c" style="margin:0"><div class="ch" style="cursor:pointer;user-select:none" onclick="toggleRenSvcCat(${ci})"><div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0"><span style="font-size:16px">&#129657;</span><div style="min-width:0"><h3 style="font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(cat)}</h3><div style="font-size:10px;color:${pickedCnt?'var(--gn)':'var(--tx3)'};font-weight:600">${pickedCnt} / ${items.length}</div></div></div><span id="renSvcArrow${ci}" style="font-size:10px;color:var(--tx3);transition:transform .2s;transform:rotate(${isOpen?'90':'0'}deg)">&#9654;</span></div>`;
+    html+=`<div id="renSvcBody${ci}" style="display:${isOpen?'block':'none'};border-top:1px solid var(--bd)">`;
     items.forEach(s=>{
       const picked=!!DB.pickedServices[s.id];
       html+=`<div class="ci" style="padding:8px 12px;display:flex;align-items:center;gap:8px;${picked?'background:var(--acbg)':''}"><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:${picked?'600':'400'}">${esc(s.name)}</div><div style="font-size:10px;color:var(--ac2)">${(s.price||0).toLocaleString('ru')} PLN · ${s.time||''}</div></div><button class="btn sm ${picked?'gn':'pr'}" style="flex-shrink:0;min-width:100px;font-size:10px" onclick="togglePickSvc('${s.id}')">${picked?'✓ Добавлено':'+ В перечень'}</button></div>`;
@@ -3882,7 +3888,8 @@ function renderEquip(){
   const c=document.getElementById('equipCards');
   if(!c)return;
   if(!DB.suppliers.length){c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Загрузка оборудования из базы данных...</div>';return}
-
+  const openZones=new Set();
+  c.querySelectorAll('[id^="zoneBody"]').forEach(el=>{if(el.classList.contains('open'))openZones.add(el.id.replace('zoneBody',''))});
   const allGroups={};
   DB.suppliers.forEach(r=>{const cat=r.category||'Другое';if(!allGroups[cat])allGroups[cat]=[];allGroups[cat].push(r)});
   const allCatKeys=Object.keys(allGroups).sort((a,b)=>allGroups[b].length-allGroups[a].length);
@@ -3911,16 +3918,17 @@ function renderEquip(){
     const zc=ZONE_COLORS[zi%ZONE_COLORS.length];
     const icon=ZONE_ICONS[cat]||'&#128230;';
     const catPicked=items.filter(r=>!!picked[r.id]).length;
+    const zOpen=openZones.has(String(zi));
 
     html+=`<div class="zone-card" id="zone-${zi}">`;
     html+=`<div class="zone-head" onclick="toggleZone(${zi})">`;
     html+=`<div class="zone-icon" style="background:${zc.bg};color:${zc.color}">${icon}</div>`;
     html+=`<div class="zone-info"><div class="zone-name">${cat}</div><div class="zone-desc">${items.length} позиций</div></div>`;
     html+=`<div class="zone-meta"><div class="zone-count">${catPicked} / ${items.length} добавлено</div></div>`;
-    html+=`<span class="zone-arrow" id="zoneArrow${zi}">&#9654;</span>`;
+    html+=`<span class="zone-arrow${zOpen?' open':''}" id="zoneArrow${zi}">&#9654;</span>`;
     html+=`</div>`;
     html+=`<div class="zone-bar"><div class="zone-bar-fill" id="zoneBar${zi}" style="width:${items.length?Math.round(catPicked/items.length*100):0}%;background:${zc.color}"></div></div>`;
-    html+=`<div class="zone-body" id="zoneBody${zi}"><div class="zone-items">`;
+    html+=`<div class="zone-body${zOpen?' open':''}" id="zoneBody${zi}"><div class="zone-items">`;
     items.forEach(r=>{
       const added=!!picked[r.id];
       html+=`<div class="ci cost-row" style="padding:8px 0"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.supplier} · ${r.warranty}</div></div><div class="cost-val" style="flex-shrink:0">${r.price.toLocaleString('ru')} PLN</div><button class="btn sm ${added?'gn':'pr'}" onclick="togglePickEquip('${r.id}')" style="flex-shrink:0;min-width:90px">${added?'✓ Добавлено':'+ В оснащение'}</button></div>`;
