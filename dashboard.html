@@ -1756,6 +1756,18 @@ function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').
 // Per-user localStorage helpers
 function uKey(k){const uid=currentUser&&currentUser.id?currentUser.id:'anon';const r=currentRole||'';return k+'_'+uid+(r?'_'+r:'')}
 function uKeyOld(k){const uid=currentUser&&currentUser.id?currentUser.id:'anon';return k+'_'+uid}
+function migrateLocalStorageKeys(newId){
+  const suffix='_'+newId;
+  const keys=Object.keys(localStorage);
+  const found=keys.some(k=>k.endsWith(suffix));
+  if(found)return;
+  const oldIds=new Set();
+  keys.forEach(k=>{const m=k.match(/_([a-f0-9-]{36})(?:_|$)/);if(m&&m[1]!==newId)oldIds.add(m[1])});
+  if(!oldIds.size)return;
+  const oldId=[...oldIds][0];
+  keys.forEach(k=>{if(k.includes('_'+oldId)){const nk=k.replace('_'+oldId,'_'+newId);if(!localStorage.getItem(nk))localStorage.setItem(nk,localStorage.getItem(k))}});
+  console.log('[SVITA] Migrated localStorage from',oldId,'to',newId);
+}
 function uSet(k,v){localStorage.setItem(uKey(k),v)}
 function uGet(k){return localStorage.getItem(uKey(k))}
 function uRemove(k){localStorage.removeItem(uKey(k))}
@@ -2238,6 +2250,7 @@ async function loginCheck(){
   if(!data||!data.ok){document.getElementById('loginError').textContent='Неверный email или пароль';return}
   const isAdmin=ADMIN_EMAILS.includes(data.email)||data.role==='superadmin'||data.role==='admin';
   currentUser={email:data.email,name:data.name||data.email.split('@')[0],isAdmin,emailConfirmed:true,id:data.id};
+  migrateLocalStorageKeys(data.id);
   proceedToRoleSelect();
 }
 
