@@ -2064,18 +2064,26 @@ function savePicked(){
   uSet('svita_picked',JSON.stringify(obj));
 }
 function loadPicked(){
-  // Always reset first to prevent data bleed between accounts
   PICKED_KEYS.forEach(k=>{DB[k]={}});
   try{
     let raw=uGet('svita_picked');
-    // Fallback: try old key format (userId without role)
-    if(!raw){const oldKey=uKeyOld('svita_picked');raw=localStorage.getItem(oldKey);if(raw){uSet('svita_picked',raw)}}
-    // Fallback: try legacy key without userId at all
-    if(!raw){raw=localStorage.getItem('svita_picked');if(raw){uSet('svita_picked',raw);localStorage.removeItem('svita_picked')}}
-    if(!raw)return;
+    // Fallback 1: key without role suffix
+    if(!raw||raw==='{}'){const oldKey=uKeyOld('svita_picked');raw=localStorage.getItem(oldKey);if(raw&&raw!=='{}'){uSet('svita_picked',raw)}}
+    // Fallback 2: legacy key without userId
+    if(!raw||raw==='{}'){raw=localStorage.getItem('svita_picked');if(raw&&raw!=='{}'){uSet('svita_picked',raw)}}
+    // Fallback 3: search ANY svita_picked_* key with data
+    if(!raw||raw==='{}'){
+      const best=Object.keys(localStorage)
+        .filter(k=>k.startsWith('svita_picked_')&&k!==uKey('svita_picked'))
+        .map(k=>({k,v:localStorage.getItem(k)}))
+        .filter(x=>x.v&&x.v!=='{}'&&x.v.length>10)
+        .sort((a,b)=>b.v.length-a.v.length)[0];
+      if(best){raw=best.v;uSet('svita_picked',raw);console.log('[SVITA] Restored picked from',best.k,'('+best.v.length+' bytes)')}
+    }
+    if(!raw||raw==='{}')return;
     const obj=JSON.parse(raw);
     PICKED_KEYS.forEach(k=>{if(obj[k])DB[k]=obj[k]});
-  }catch(e){}
+  }catch(e){console.error('[SVITA] loadPicked error',e)}
 }
 
 const BM_FIELDS=['cType','cBrand','cCity','cDate','cFormat','cAudience','cUsp','cTech'];
@@ -2090,11 +2098,13 @@ const BM_DEFAULTS={cType:'Стоматологическая клиника',cBr
 function loadBusinessModel(){
   try{
     let raw=uGet('svita_bm');
-    // Fallback: old key format (userId without role)
-    if(!raw){const oldKey=uKeyOld('svita_bm');raw=localStorage.getItem(oldKey);if(raw){uSet('svita_bm',raw)}}
-    // Fallback: legacy key without userId
-    if(!raw){raw=localStorage.getItem('svita_bm');if(raw){uSet('svita_bm',raw);localStorage.removeItem('svita_bm')}}
-    if(!raw){
+    if(!raw||raw==='{}'){const oldKey=uKeyOld('svita_bm');raw=localStorage.getItem(oldKey);if(raw&&raw!=='{}'){uSet('svita_bm',raw)}}
+    if(!raw||raw==='{}'){raw=localStorage.getItem('svita_bm');if(raw&&raw!=='{}'){uSet('svita_bm',raw)}}
+    if(!raw||raw==='{}'){
+      const best=Object.keys(localStorage).filter(k=>k.startsWith('svita_bm_')&&k!==uKey('svita_bm')).map(k=>({k,v:localStorage.getItem(k)})).filter(x=>x.v&&x.v!=='{}'&&x.v.length>5).sort((a,b)=>b.v.length-a.v.length)[0];
+      if(best){raw=best.v;uSet('svita_bm',raw)}
+    }
+    if(!raw||raw==='{}'){
       const vals=currentRole==='admin'?BM_DEFAULTS:{};
       BM_FIELDS.forEach(k=>{const el=document.getElementById(k);if(el)el.value=vals[k]||''});
       return;
@@ -2453,7 +2463,7 @@ function enterApp(){
   // Track session + update profile + sync to DB.users
   if(sb&&currentUser.email){
     sb.from('user_sessions').insert({email:currentUser.email,user_agent:navigator.userAgent}).then(()=>{});
-    sb.from('profiles').upsert({email:currentUser.email,display_name:currentUser.name,role:currentRole,last_login:new Date().toISOString()},{onConflict:'email'}).then(()=>{});
+    sb.from('profiles').upsert({email:currentUser.email,display_name:currentUser.name,role:currentRole,last_login:new Date().toISOString()},{onConflict:'email'}).then(()=>{}).catch(()=>{});
     sb.from('page_views').insert({page:'/dashboard',user_agent:navigator.userAgent,referrer:document.referrer||null}).then(()=>{});
     // Ensure current user is in DB.users
     if(!DB.users.find(u=>u.email===currentUser.email)){
@@ -2462,10 +2472,12 @@ function enterApp(){
   }
   // Restore property card state (per-user) with legacy migration
   let savedProp=uGet('svita_property');
-  // Fallback: old key format (userId without role)
   if(!savedProp){const oldKey=uKeyOld('svita_property');savedProp=localStorage.getItem(oldKey);if(savedProp){uSet('svita_property',savedProp)}}
-  // Fallback: legacy key without userId
-  if(!savedProp){savedProp=localStorage.getItem('svita_property');if(savedProp){uSet('svita_property',savedProp);localStorage.removeItem('svita_property')}}
+  if(!savedProp){savedProp=localStorage.getItem('svita_property');if(savedProp){uSet('svita_property',savedProp)}}
+  if(!savedProp){
+    const best=Object.keys(localStorage).filter(k=>k.startsWith('svita_property_')&&k!==uKey('svita_property')).map(k=>({k,v:localStorage.getItem(k)})).filter(x=>x.v&&x.v.length>5).sort((a,b)=>b.v.length-a.v.length)[0];
+    if(best){savedProp=best.v;uSet('svita_property',savedProp);console.log('[SVITA] Restored property from',best.k)}
+  }
   if(savedProp){try{activeProperty=JSON.parse(savedProp)}catch(e){activeProperty=null}}
   else{activeProperty=currentRole==='admin'?{...DEFAULT_PROPERTY}:null}
   migrateLocalStorageKeys(currentUser.id);
