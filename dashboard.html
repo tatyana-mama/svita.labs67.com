@@ -2063,24 +2063,25 @@ function savePicked(){
   PICKED_KEYS.forEach(k=>{obj[k]=DB[k]||{}});
   uSet('svita_picked',JSON.stringify(obj));
 }
+function isPickedEmpty(raw){
+  if(!raw||raw==='{}'||raw==='null')return true;
+  try{const o=JSON.parse(raw);return!Object.values(o).some(v=>v&&typeof v==='object'&&Object.keys(v).length>0)}catch(e){return true}
+}
 function loadPicked(){
   PICKED_KEYS.forEach(k=>{DB[k]={}});
   try{
     let raw=uGet('svita_picked');
-    // Fallback 1: key without role suffix
-    if(!raw||raw==='{}'){const oldKey=uKeyOld('svita_picked');raw=localStorage.getItem(oldKey);if(raw&&raw!=='{}'){uSet('svita_picked',raw)}}
-    // Fallback 2: legacy key without userId
-    if(!raw||raw==='{}'){raw=localStorage.getItem('svita_picked');if(raw&&raw!=='{}'){uSet('svita_picked',raw)}}
-    // Fallback 3: search ANY svita_picked_* key with data
-    if(!raw||raw==='{}'){
+    if(isPickedEmpty(raw)){const oldKey=uKeyOld('svita_picked');const v=localStorage.getItem(oldKey);if(!isPickedEmpty(v)){raw=v;uSet('svita_picked',raw)}}
+    if(isPickedEmpty(raw)){const v=localStorage.getItem('svita_picked');if(!isPickedEmpty(v)){raw=v;uSet('svita_picked',raw)}}
+    if(isPickedEmpty(raw)){
       const best=Object.keys(localStorage)
-        .filter(k=>k.startsWith('svita_picked_')&&k!==uKey('svita_picked'))
+        .filter(k=>k.startsWith('svita_picked_')&&k!==uKey('svita_picked')&&k!==uKeyOld('svita_picked'))
         .map(k=>({k,v:localStorage.getItem(k)}))
-        .filter(x=>x.v&&x.v!=='{}'&&x.v.length>10)
+        .filter(x=>!isPickedEmpty(x.v))
         .sort((a,b)=>b.v.length-a.v.length)[0];
       if(best){raw=best.v;uSet('svita_picked',raw);console.log('[SVITA] Restored picked from',best.k,'('+best.v.length+' bytes)')}
     }
-    if(!raw||raw==='{}')return;
+    if(isPickedEmpty(raw)){console.log('[SVITA] No picked data found. Keys:',Object.keys(localStorage).filter(k=>k.includes('svita_picked')));return}
     const obj=JSON.parse(raw);
     PICKED_KEYS.forEach(k=>{if(obj[k])DB[k]=obj[k]});
   }catch(e){console.error('[SVITA] loadPicked error',e)}
