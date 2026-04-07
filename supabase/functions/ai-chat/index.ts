@@ -6,17 +6,13 @@ const CORS = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 }
 
+// Jetson SVITA AI proxy (Tailscale internal network)
+const JETSON_URL = "http://100.88.58.120:8810"
+const JETSON_TIMEOUT = 90_000
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: CORS })
-  }
-
-  const apiKey = Deno.env.get("ANTHROPIC_API_KEY")
-  if (!apiKey) {
-    return new Response(JSON.stringify({ reply: "AI сервис не настроен" }), {
-      status: 500,
-      headers: { ...CORS, "Content-Type": "application/json" },
-    })
   }
 
   try {
@@ -29,6 +25,74 @@ Deno.serve(async (req) => {
       })
     }
 
+    // Try Jetson first (svita model on Ollama)
+    const jetsonReply = await tryJetson(message, context, history)
+    if (jetsonReply) {
+      return new Response(JSON.stringify({ reply: jetsonReply, source: "jetson" }), {
+        headers: { ...CORS, "Content-Type": "application/json" },
+      })
+    }
+
+    // Fallback to Claude Haiku
+    const claudeReply = await tryClaude(message, context, history)
+    if (claudeReply) {
+      return new Response(JSON.stringify({ reply: claudeReply, source: "claude" }), {
+        headers: { ...CORS, "Content-Type": "application/json" },
+      })
+    }
+
+    return new Response(JSON.stringify({ reply: "AI сервис временно недоступен" }), {
+      status: 502,
+      headers: { ...CORS, "Content-Type": "application/json" },
+    })
+  } catch (e) {
+    console.error("Function error:", e)
+    return new Response(JSON.stringify({ reply: "Внутренняя ошибка" }), {
+      status: 500,
+      headers: { ...CORS, "Content-Type": "application/json" },
+    })
+  }
+})
+
+async function tryJetson(
+  message: string,
+  context: Record<string, unknown> | undefined,
+  history: ChatMessage[] | undefined
+): Promise<string | null> {
+  try {
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), JETSON_TIMEOUT)
+
+    const res = await fetch(JETSON_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message, context, history }),
+      signal: controller.signal,
+    })
+
+    clearTimeout(timeout)
+
+    if (res.ok) {
+      const data = await res.json()
+      return data.reply || null
+    }
+    console.error("Jetson error:", res.status)
+    return null
+  } catch (e) {
+    console.error("Jetson unreachable:", e)
+    return null
+  }
+}
+
+async function tryClaude(
+  message: string,
+  context: Record<string, unknown> | undefined,
+  history: ChatMessage[] | undefined
+): Promise<string | null> {
+  const apiKey = Deno.env.get("ANTHROPIC_API_KEY")
+  if (!apiKey) return null
+
+  try {
     const systemPrompt = buildSystemPrompt(context)
     const messages = buildMessages(history, message)
 
@@ -48,28 +112,17 @@ Deno.serve(async (req) => {
     })
 
     if (!res.ok) {
-      const err = await res.text()
-      console.error("Anthropic API error:", res.status, err)
-      return new Response(JSON.stringify({ reply: "Ошибка AI сервиса" }), {
-        status: 502,
-        headers: { ...CORS, "Content-Type": "application/json" },
-      })
+      console.error("Claude error:", res.status, await res.text())
+      return null
     }
 
     const data = await res.json()
-    const reply = data.content?.[0]?.text || "Нет ответа"
-
-    return new Response(JSON.stringify({ reply }), {
-      headers: { ...CORS, "Content-Type": "application/json" },
-    })
+    return data.content?.[0]?.text || null
   } catch (e) {
-    console.error("Function error:", e)
-    return new Response(JSON.stringify({ reply: "Внутренняя ошибка" }), {
-      status: 500,
-      headers: { ...CORS, "Content-Type": "application/json" },
-    })
+    console.error("Claude error:", e)
+    return null
   }
-})
+}
 
 function buildSystemPrompt(ctx: Record<string, unknown> | undefined): string {
   const base = `Ты — SVITA AI, интеллектуальный ассистент для конструктора бизнес-концепций стоматологических клиник в Польше.

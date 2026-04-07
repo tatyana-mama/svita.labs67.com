@@ -290,11 +290,11 @@ function aiGetContext(){
     concept:window._currentConceptName||null,bizType:currentBizType||'dental'};
 }
 
-function aiAddMessage(text,role){
+function aiAddMessage(text,role,source){
   const el=document.getElementById('aiMessages');
   const msg=document.createElement('div');
   msg.className='ai-msg '+(role==='user'?'user':'bot');
-  if(role!=='user')msg.innerHTML='<div class="ai-label">SVITA AI</div>'+esc(text).replace(/\n/g,'<br>');
+  if(role!=='user'){const lbl=source==='jetson'?'SVITA AI \u00b7 Jetson':source==='claude'?'SVITA AI \u00b7 Claude':'SVITA AI';msg.innerHTML='<div class="ai-label">'+lbl+'</div>'+esc(text).replace(/\n/g,'<br>')}
   else msg.textContent=text;
   el.appendChild(msg);el.scrollTop=el.scrollHeight;
   _aiChatHistory.push({role,content:text});
@@ -321,7 +321,7 @@ async function aiChatSend(){
   try{
     const res=await fetch(AI_CHAT_URL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_KEY},body:JSON.stringify({message:text,context:ctx,history:_aiChatHistory.slice(-10)})});
     aiHideTyping();
-    if(res.ok){const data=await res.json();aiAddMessage(data.reply||data.message||'Ошибка ответа','bot')}
+    if(res.ok){const data=await res.json();aiAddMessage(data.reply||data.message||'Ошибка ответа','bot',data.source)}
     else aiAddMessage(aiLocalReply(text,ctx),'bot');
   }catch(e){aiHideTyping();aiAddMessage(aiLocalReply(text,ctx),'bot')}
   document.getElementById('aiChatSendBtn').disabled=false;
