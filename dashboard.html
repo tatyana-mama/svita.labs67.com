@@ -2250,6 +2250,7 @@ async function loginCheck(){
   if(!data||!data.ok){document.getElementById('loginError').textContent='Неверный email или пароль';return}
   const isAdmin=ADMIN_EMAILS.includes(data.email)||data.role==='superadmin'||data.role==='admin';
   currentUser={email:data.email,name:data.name||data.email.split('@')[0],isAdmin,emailConfirmed:true,id:data.id};
+  localStorage.setItem('svita_session',JSON.stringify(currentUser));
   migrateLocalStorageKeys(data.id);
   proceedToRoleSelect();
 }
@@ -2491,7 +2492,7 @@ async function logout(){
   achUnlocked=new Set();itemImages={};
   window._currentConceptId=null;window._currentConceptName=null;
   localStorage.removeItem('svita_role');
-  if(sb)await sb.auth.signOut();
+  localStorage.removeItem('svita_session');
   document.getElementById('loginScreen').classList.remove('hidden');
   document.getElementById('appContainer').style.display='none';
   showLogin();
@@ -2551,51 +2552,26 @@ document.addEventListener('click',function(e){
   if(tu&&!tu.contains(e.target))tu.classList.remove('open');
 });
 
-// Auto-restore session from Supabase Auth
-(async function restoreSession(){
+// Auto-restore session from localStorage
+(function restoreSession(){
   try{
-    if(!sb)return;
-    const{data:{session}}=await sb.auth.getSession();
-    if(!session||!session.user)return;
-    const user=session.user;
-    const isAdmin=ADMIN_EMAILS.includes(user.email);
-    currentUser={email:user.email,name:user.user_metadata?.full_name||user.user_metadata?.name||user.email.split('@')[0],isAdmin,emailConfirmed:!!user.email_confirmed_at,id:user.id};
-
-    // Check profile completeness from Supabase
-    const{data:prof}=await sb.from('profiles').select('role,profile_complete,phone,company,display_name').eq('email',user.email).single();
-    if(prof&&prof.profile_complete&&prof.role){
-      // Profile complete — restore and enter app
-      currentRole=prof.role;
-      if(prof.display_name)currentUser.name=prof.display_name;
-      currentUser.phone=prof.phone||'';
-      currentUser.company=prof.company||'';
-      localStorage.setItem('svita_role',currentRole);
+    const saved=localStorage.getItem('svita_session');
+    if(!saved)return;
+    const u=JSON.parse(saved);
+    if(!u||!u.email||!u.id)return;
+    currentUser=u;
+    const role=localStorage.getItem('svita_role');
+    if(role){
+      currentRole=role;
       setTimeout(()=>{enterApp()},50);
-    }else if(isAdmin){
-      // Admin without profile — auto-complete
-      currentRole=localStorage.getItem('svita_role')||'admin';
+    }else if(u.isAdmin){
+      currentRole='admin';
+      localStorage.setItem('svita_role','admin');
       setTimeout(()=>{enterApp()},50);
     }else{
-      // Incomplete profile — show onboarding
       setTimeout(()=>{showOnboarding()},50);
     }
   }catch(e){}
-
-  // Listen for OAuth callback and password recovery
-  sb.auth.onAuthStateChange((event,session)=>{
-    if(event==='PASSWORD_RECOVERY'){
-      // User clicked password reset link — show reset form
-      hideAllLoginSteps();
-      document.getElementById('loginReset').style.display='block';
-      return;
-    }
-    if(event==='SIGNED_IN'&&session&&!currentUser){
-      const user=session.user;
-      const isAdmin=ADMIN_EMAILS.includes(user.email);
-      currentUser={email:user.email,name:user.user_metadata?.full_name||user.user_metadata?.name||user.email.split('@')[0],isAdmin,emailConfirmed:!!user.email_confirmed_at,id:user.id};
-      proceedToRoleSelect();
-    }
-  });
 })();
 
 function toggleMobileSidebar(){
