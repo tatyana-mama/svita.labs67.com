@@ -3383,8 +3383,7 @@ function renderRenovationsCatalog(){
     html+=`<div id="renCatDBBody${ci}" style="display:none;border-top:1px solid var(--bd)">`;
     items.forEach(r=>{
       const picked=!!DB.pickedRenovations[r.id];
-      const valLabel=r.baseVal&&r.unit?` · ${r.baseVal} ${r.unit}`:'';
-      html+=`<div class="ci" style="padding:8px 12px;display:flex;align-items:center;gap:8px;${picked?'background:var(--acbg)':''}"><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:${picked?'600':'400'}">${r.name}${valLabel}</div><div style="font-size:10px;color:var(--ac2)">${r.price.toLocaleString('ru')} PLN</div></div><button class="btn sm ${picked?'gn':'pr'}" style="flex-shrink:0;min-width:100px;font-size:10px" onclick="togglePickRenovation('${r.id}')">${picked?'✓ Добавлено':'+ В модернизацию'}</button></div>`;
+      html+=`<div class="ci" style="padding:8px 12px;display:flex;align-items:center;gap:8px;${picked?'background:var(--acbg)':''}"><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:${picked?'600':'400'}">${r.name}</div><div style="font-size:10px;color:var(--ac2)">${r.price.toLocaleString('ru')} PLN</div></div><button class="btn sm ${picked?'gn':'pr'}" style="flex-shrink:0;min-width:100px;font-size:10px" onclick="togglePickRenovation('${r.id}')">${picked?'✓ Добавлено':'+ В модернизацию'}</button></div>`;
     });
     html+='</div></div>';
   });
