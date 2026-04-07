@@ -2760,9 +2760,8 @@ function applyBizData(type){
   DB.pickedContractors={};DB.pickedRenovations={};DB.pickedDocs={};
 }
 
-// ═══════════════ AI CONCEPT GENERATOR (Gemini) ═══════════════
-const GEMINI_KEY='AIzaSyC68GsXP-LbEwJPMEsKd_jMyklEd9ek8RU';
-const GEMINI_URL='https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+GEMINI_KEY;
+// ═══════════════ AI CONCEPT GENERATOR (Llama 70B on Jetson via Edge Function) ═══════════════
+const AI_URL=SB_URL+'/functions/v1/ai-concept';
 
 async function generateAIConcept(){
   const inp=document.getElementById('aiConceptInput');
@@ -2770,7 +2769,7 @@ async function generateAIConcept(){
   const status=document.getElementById('aiGenStatus');
   const desc=inp?.value?.trim();
   if(!desc){status.textContent='Опишите концепцию';status.style.color='var(--rd)';return}
-  btn.disabled=true;btn.textContent='⏳ Генерирую...';status.textContent='';
+  btn.disabled=true;btn.textContent='⏳ Генерирую (Llama 70B)...';status.textContent='Запрос отправлен на Jetson...';status.style.color='var(--tx3)';
   const prompt=`Ты — эксперт по открытию бизнеса в Польше. Пользователь описал концепцию: "${desc}"
 
 Сгенерируй полную структуру для конструктора бизнеса. Ответ СТРОГО в JSON (без markdown, без \`\`\`):
@@ -2789,27 +2788,29 @@ async function generateAIConcept(){
 - Цены в PLN, реалистичные для Польши 2026
 - employees: 5-15 человек, реальные зарплаты
 - services/меню: 15-50 позиций с ценами
-- rooms: 8-15 помещений с реальными размерами (м²)
+- rooms: 8-15 помещений с реальными размерами
 - suppliers/оборудование: 20-60 позиций, реальные бренды и цены
-- renovations: 15-30 работ по категориям (электрика, водоснабжение, вентиляция, отделка, безопасность)
+- renovations: 15-30 работ по категориям
 - cabinetTypes: 5-10 типов помещений
 - zones: 3-5 функциональных зон
 
 ТОЛЬКО JSON, ничего больше.`;
 
   try{
-    const res=await fetch(GEMINI_URL,{
+    const res=await fetch(AI_URL,{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.7,maxOutputTokens:8192}})
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_KEY},
+      body:JSON.stringify({prompt,model:'qwen2.5:32b'})
     });
     const data=await res.json();
-    const text=data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    if(data.error)throw new Error(data.error);
+    const text=data.text;
     if(!text)throw new Error('Пустой ответ от AI');
-    // Parse JSON (strip markdown fences if any)
-    const clean=text.replace(/```json?\n?/g,'').replace(/```/g,'').trim();
+    // Extract JSON from response (LLM may add text around it)
+    const jsonMatch=text.match(/\{[\s\S]*\}/);
+    if(!jsonMatch)throw new Error('AI не вернул JSON');
+    const clean=jsonMatch[0].replace(/```json?\n?/g,'').replace(/```/g,'').trim();
     const concept=JSON.parse(clean);
-    // Apply concept
     _aiConcept=concept;
     status.innerHTML='<span style="color:var(--gn)">✓ Концепция готова: <b>'+esc(concept.name||desc)+'</b></span>';
     status.innerHTML+='<div style="margin-top:6px;font-size:10px;color:var(--tx3)">'+
@@ -2818,7 +2819,6 @@ async function generateAIConcept(){
       (concept.rooms?.length||0)+' помещений · '+
       (concept.suppliers?.length||0)+' оборудования · '+
       (concept.renovations?.length||0)+' работ</div>';
-    // Show apply button
     const applyBtn=document.getElementById('aiApplyBtn');
     if(applyBtn)applyBtn.style.display='block';
   }catch(e){
@@ -3720,20 +3720,38 @@ function renderConceptsList(){
 }
 
 async function createConcept(name,source){
-  if(!sb||!currentUser){toast('Нет подключения к БД','rd');return null}
   if(!name){name=prompt('Название концепции:','Моя концепция');if(!name)return null}
   const conceptData=serializeWorkspace();
-  const{data,error}=await sb.from('concepts').insert({
-    user_id:currentUser.id,name,data:conceptData,
-    stage:stageOrder.indexOf(cur)+1||1,status:source==='ai'?'active':'draft'
-  }).select().single();
-  if(error){toast('Ошибка: '+error.message,'rd');return null}
-  window._currentConceptId=data.id;
+  const uid=currentUser?String(currentUser.id||currentUser.email||'anon'):'anon';
+  // Try Supabase first
+  if(sb){
+    try{
+      const{data,error}=await sb.from('concepts').insert({
+        user_id:uid,name,data:conceptData,
+        stage:stageOrder.indexOf(cur)+1||1,status:source==='ai'?'active':'draft'
+      }).select().single();
+      if(error)throw error;
+      window._currentConceptId=data.id;
+      window._currentConceptName=name;
+      logAction('concept_create','concept',data.id,{name,source});
+      await loadConcepts();
+      toast('✓ «'+name+'» сохранена','gn');
+      return data.id;
+    }catch(e){
+      console.error('[concept save]',e);
+      toast('Ошибка БД: '+e.message,'rd');
+    }
+  }
+  // Fallback: localStorage
+  const id='local_'+Date.now();
+  const concepts=JSON.parse(localStorage.getItem('svita_concepts_fallback')||'[]');
+  concepts.unshift({id,user_id:uid,name,data:conceptData,status:'draft',stage:1,created_at:new Date().toISOString(),updated_at:new Date().toISOString()});
+  localStorage.setItem('svita_concepts_fallback',JSON.stringify(concepts));
+  window._currentConceptId=id;
   window._currentConceptName=name;
-  logAction('concept_create','concept',data.id,{name,source});
+  toast('✓ «'+name+'» сохранена (локально)','gn');
   await loadConcepts();
-  toast('Концепция «'+name+'» сохранена в БД','gn');
-  return data.id;
+  return id;
 }
 
 async function loadConceptById(id){
