@@ -2777,16 +2777,13 @@ function showBizSelector(){
   html+='<button class="btn pr" style="flex:1;padding:10px" onclick="confirmBizChange()">Применить</button>';
   html+='</div></div>';
   // Reuse existing modal system
-  const overlay=document.getElementById('modalOverlay');
-  const modal=document.getElementById('modal');
-  if(overlay&&modal){
-    document.getElementById('modalTitle').textContent='Концепция';
-    document.getElementById('modalBody').innerHTML=html;
-    document.getElementById('modalFooter').innerHTML='';
-    overlay.classList.add('vis');modal.classList.add('vis');
-    // If type already selected, show subtypes
-    if(currentBizType)pickBizType(currentBizType);
-  }
+  document.getElementById('modalTitle').textContent='Концепция';
+  document.getElementById('modalFields').innerHTML=html;
+  const ms=document.getElementById('modalSave');
+  if(ms)ms.style.display='none'; // hide default save button
+  document.getElementById('modalBg').classList.add('vis');
+  // If type already selected, show subtypes
+  if(currentBizType)pickBizType(currentBizType);
 }
 
 let _pendingBizType=null,_pendingBizSub=null;
