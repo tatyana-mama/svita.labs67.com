@@ -3,6 +3,9 @@ const SB_URL='https://ctdleobjnzniqkqomlrq.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZGxlb2JqbnpuaXFrcW9tbHJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMzE4MTEsImV4cCI6MjA4NzgwNzgxMX0.AMHtY7zGPemKYCxMy2bqRTOEAp8trA_Slor9wmg7C38';
 const sb=(typeof supabase!=='undefined')?supabase.createClient(SB_URL,SB_KEY):null;
 // Admin check moved to server-side (verify_password RPC returns role)
+function genId(){return crypto.randomUUID()}
+function toast(msg,type){const t=document.createElement('div');t.textContent=msg;t.style.cssText='position:fixed;top:20px;right:20px;z-index:9999;padding:12px 20px;border-radius:10px;font-size:12px;font-weight:600;font-family:var(--f);color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.15);transition:opacity .3s;max-width:360px';t.style.background=type==='gn'||type==='ok'?'var(--gn)':type==='rd'||type==='error'?'var(--rd)':'var(--ac2)';document.body.appendChild(t);setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),300)},3500)}
+async function sbOp(promise,okMsg){try{const r=await promise;if(r.error)throw r.error;if(okMsg)toast(okMsg,'gn');return r}catch(e){toast(e.message||'Ошибка','rd');console.error('[sbOp]',e);return{error:e}}}
 // Helper: escape HTML for safe attribute/content injection
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
 function safeHref(url){const s=String(url||'').trim().toLowerCase();if(s.startsWith('javascript:')||s.startsWith('data:'))return '#';return esc(url)}
