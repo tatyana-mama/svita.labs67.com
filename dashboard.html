@@ -6191,7 +6191,12 @@ function calcTotals(){
     if(item)equip+=(p.customPrice!=null?p.customPrice:item.price)*(p.qty||1);
   });
   const docs=getDocTotalCost();
-  const staff=getAllCosts('st_');
+  // ФОТ из DB.pickedStaff (не из DOM — DOM может быть скрыт)
+  let staff=0;
+  Object.entries(DB.pickedStaff||{}).forEach(([id,p])=>{
+    const e=DB.employees.find(x=>x.id==id);
+    if(e)staff+=(e.salary||0)*(p.qty||1);
+  });
   const avgCheck=getVal('avgCheck');
   const ppc=getVal('patientsPerChair');
   const wd=getVal('workDays');
