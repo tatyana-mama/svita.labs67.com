@@ -1758,27 +1758,23 @@ function uKey(k){const uid=currentUser&&currentUser.id?currentUser.id:'anon';con
 function uKeyOld(k){const uid=currentUser&&currentUser.id?currentUser.id:'anon';return k+'_'+uid}
 function migrateLocalStorageKeys(newId){
   const keys=Object.keys(localStorage);
-  const dataKeys=['svita_picked','svita_bm','svita_prop','svita_prop_params','svita_fp'];
+  const dataKeys=['svita_picked','svita_bm','svita_prop','svita_prop_params','svita_fp','svita_property','svita_ach','svita_images'];
+  const role=currentRole||localStorage.getItem('svita_role')||'admin';
+  const newSuffix='_'+newId+'_'+role;
   let migrated=0;
   dataKeys.forEach(base=>{
-    // Find any existing key that starts with base and has data
-    const candidates=keys.filter(k=>k.startsWith(base+'_')&&k!==base+'_'+newId&&!k.startsWith(base+'_'+newId+'_'));
-    candidates.forEach(oldKey=>{
-      const oldVal=localStorage.getItem(oldKey);
-      if(!oldVal||oldVal==='{}'||oldVal==='null')return;
-      // Try with current role suffix
-      const role=localStorage.getItem('svita_role')||'admin';
-      const newKey=base+'_'+newId+'_'+role;
-      const newKeyNoRole=base+'_'+newId;
-      if(!localStorage.getItem(newKey)||localStorage.getItem(newKey)==='{}'){
-        localStorage.setItem(newKey,oldVal);migrated++;
-      }
-      if(!localStorage.getItem(newKeyNoRole)||localStorage.getItem(newKeyNoRole)==='{}'){
-        localStorage.setItem(newKeyNoRole,oldVal);migrated++;
-      }
-    });
+    const target=base+newSuffix;
+    const existing=localStorage.getItem(target);
+    if(existing&&existing!=='{}'&&existing!=='[]'&&existing!=='null')return;
+    // Search all keys for this base with ANY other suffix that has real data
+    const best=keys
+      .filter(k=>k.startsWith(base+'_')&&k!==target)
+      .map(k=>({k,v:localStorage.getItem(k)}))
+      .filter(x=>x.v&&x.v!=='{}'&&x.v!=='[]'&&x.v!=='null'&&x.v.length>2)
+      .sort((a,b)=>b.v.length-a.v.length)[0];
+    if(best){localStorage.setItem(target,best.v);migrated++;console.log('[SVITA] Migrate:',best.k,'→',target,'('+best.v.length+' bytes)')}
   });
-  if(migrated)console.log('[SVITA] Migrated',migrated,'keys to',newId);
+  if(migrated)console.log('[SVITA] Total migrated:',migrated,'keys');
 }
 function uSet(k,v){localStorage.setItem(uKey(k),v)}
 function uGet(k){return localStorage.getItem(uKey(k))}
@@ -2263,7 +2259,6 @@ async function loginCheck(){
   const isAdmin=ADMIN_EMAILS.includes(data.email)||data.role==='superadmin'||data.role==='admin';
   currentUser={email:data.email,name:data.name||data.email.split('@')[0],isAdmin,emailConfirmed:true,id:data.id};
   localStorage.setItem('svita_session',JSON.stringify(currentUser));
-  migrateLocalStorageKeys(data.id);
   proceedToRoleSelect();
 }
 
@@ -2473,6 +2468,7 @@ function enterApp(){
   if(!savedProp){savedProp=localStorage.getItem('svita_property');if(savedProp){uSet('svita_property',savedProp);localStorage.removeItem('svita_property')}}
   if(savedProp){try{activeProperty=JSON.parse(savedProp)}catch(e){activeProperty=null}}
   else{activeProperty=currentRole==='admin'?{...DEFAULT_PROPERTY}:null}
+  migrateLocalStorageKeys(currentUser.id);
   loadPicked();loadBusinessModel();
   // Apply saved staff edits from pickedStaff onto DB.employees
   Object.entries(DB.pickedStaff||{}).forEach(([id,over])=>{
