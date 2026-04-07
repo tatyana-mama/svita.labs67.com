@@ -1357,7 +1357,14 @@ Apple</button>
 
 <div class="sec" id="sec-db-services">
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
-<div class="ph"><div><h2>&#128203; Перечень услуг</h2><div class="ph-s">Услуги и цены текущей концепции</div></div><button class="btn sm pr" onclick="openModal('service')">+ Услуга</button></div>
+<div class="ph"><div><h2>&#128203; Перечень услуг</h2><div class="ph-s">Услуги и цены текущей концепции</div></div><div style="display:flex;gap:6px"><button class="btn sm pr" onclick="openModal('service')">+ Услуга</button><button class="btn sm" onclick="addServiceCategory()">+ Категория</button></div></div>
+<div class="sts" id="svcStats" style="grid-template-columns:repeat(4,1fr)">
+<div class="st"><div class="st-l">Всего</div><div class="st-v" id="svcTotalCount">0</div></div>
+<div class="st"><div class="st-l">Категорий</div><div class="st-v" id="svcCatCount">0</div></div>
+<div class="st"><div class="st-l">Ср. цена</div><div class="st-v" id="svcAvgPriceDb">0</div></div>
+<div class="st"><div class="st-l">Диапазон</div><div class="st-v" id="svcRangeDb" style="font-size:12px">—</div></div>
+</div>
+<div id="svcCatFilter" style="display:flex;gap:6px;flex-wrap:wrap;padding:8px 0"></div>
 <div id="dbServiceCards"></div>
 </div>
 
@@ -7864,50 +7871,67 @@ async function sendAiChat(){
   _aiChatAppend('user',text);
   _aiChatHistory.push({role:'user',content:text});
 
-  // Build context from current project
-  const ctx=[];
-  if(currentBizType)ctx.push('Тип бизнеса: '+(BIZ_TYPES[currentBizType]?.name||currentBizType));
-  if(activeProperty)ctx.push('Помещение: '+activeProperty.name+', '+activeProperty.city+', '+(activeProperty.area||'?')+'м²');
-  ctx.push('Сотрудников: '+DB.employees.length+', Оборудования: '+DB.suppliers.length+', Помещений: '+DB.premises.length);
+  // Build context for Edge Function
+  const context={
+    bizType:currentBizType||'dental',
+    section:cur,
+    concept:document.getElementById('cBrand')?.value||'',
+    rooms:Object.keys(DB.pickedRooms||{}).length,
+    equipment:Object.keys(DB.pickedEquip||{}).length,
+    staff:Object.keys(DB.pickedStaff||{}).length,
+    services:(DB.services||[]).length,
+    renovations:Object.keys(DB.pickedRenovations||{}).length,
+    docs:Object.keys(DB.pickedDocs||{}).length
+  };
+  if(activeProperty)context.property={name:activeProperty.name,area:activeProperty.area,city:activeProperty.city};
 
-  const systemPrompt='Ты — AI-ассистент платформы SVITA (конструктор бизнес-концепций). Отвечай кратко и по делу. Контекст проекта пользователя: '+ctx.join('. ')+'. Отвечай на русском.';
-
-  const messages=_aiChatHistory.slice(-10);
-  const fullPrompt=systemPrompt+'\n\n'+messages.map(m=>m.role==='user'?'Пользователь: '+m.content:'Ассистент: '+m.content).join('\n')+'\nАссистент:';
-
-  const aiEl=_aiChatAppend('ai','...');
+  const aiEl=_aiChatAppend('ai','AI думает...');
   _aiChatStreaming=true;
   document.getElementById('aiChatSendBtn').style.opacity='0.5';
 
+  // Use cloud Supabase Edge Function (proxies to Jetson, Claude fallback)
+  const CHAT_URL=SB_URL+'/functions/v1/ai-chat';
   try{
-    const res=await fetch(AI_URL,{
+    const res=await fetch(CHAT_URL,{
       method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+AI_KEY},
-      body:JSON.stringify({prompt:fullPrompt,mode:'chat',category:currentBizType||'dental',country:activeProperty?.city||''})
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_KEY},
+      body:JSON.stringify({message:text,context,history:_aiChatHistory.slice(-8)})
     });
     if(!res.ok)throw new Error('HTTP '+res.status);
-    let result='';
-    const reader=res.body.getReader();
-    const decoder=new TextDecoder();
-    while(true){
-      const{value,done}=await reader.read();
-      if(done)break;
-      const chunk=decoder.decode(value,{stream:true});
-      for(const line of chunk.split('\n')){
-        if(!line.startsWith('data: '))continue;
-        try{
-          const obj=JSON.parse(line.slice(6));
-          if(obj.token){result+=obj.token;aiEl.textContent=result}
-          if(obj.done&&obj.text){result=obj.text;aiEl.textContent=result}
-        }catch{}
-      }
-      document.getElementById('aiChatMessages').scrollTop=document.getElementById('aiChatMessages').scrollHeight;
-    }
-    if(!result)throw new Error('Пустой ответ');
-    _aiChatHistory.push({role:'assistant',content:result});
+    const data=await res.json();
+    if(!data.reply)throw new Error('Пустой ответ');
+    aiEl.textContent=data.reply;
+    const src=data.source==='jetson'?' [Jetson]':data.source==='claude'?' [Claude]':'';
+    if(src){const tag=document.createElement('span');tag.style.cssText='font-size:9px;color:var(--tx3);margin-left:4px';tag.textContent=src;aiEl.appendChild(tag)}
+    _aiChatHistory.push({role:'assistant',content:data.reply});
   }catch(e){
-    aiEl.textContent='Ошибка: '+e.message+'. Jetson может быть недоступен.';
-    aiEl.style.color='var(--rd)';
+    // Fallback: try Jetson directly (works from same network)
+    try{
+      const res2=await fetch(AI_URL,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+AI_KEY},
+        body:JSON.stringify({prompt:text,mode:'chat',category:currentBizType||'dental'})
+      });
+      if(!res2.ok)throw new Error('HTTP '+res2.status);
+      let result='';
+      const reader=res2.body.getReader();
+      const decoder=new TextDecoder();
+      while(true){
+        const{value,done}=await reader.read();
+        if(done)break;
+        const chunk=decoder.decode(value,{stream:true});
+        for(const line of chunk.split('\n')){
+          if(!line.startsWith('data: '))continue;
+          try{const obj=JSON.parse(line.slice(6));if(obj.token){result+=obj.token;aiEl.textContent=result}if(obj.done&&obj.text){result=obj.text;aiEl.textContent=result}}catch{}
+        }
+        document.getElementById('aiChatMessages').scrollTop=document.getElementById('aiChatMessages').scrollHeight;
+      }
+      if(result)_aiChatHistory.push({role:'assistant',content:result});
+      else throw new Error('empty');
+    }catch(e2){
+      aiEl.textContent='AI временно недоступен. Попробуйте позже.';
+      aiEl.style.color='var(--rd)';
+    }
   }finally{
     _aiChatStreaming=false;
     document.getElementById('aiChatSendBtn').style.opacity='1';
@@ -7954,7 +7978,7 @@ enterApp=function(){
 <style>@keyframes obSlide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}</style>
 
 <!-- AI Chat -->
-<div id="aiChatBtn" onclick="toggleAiChat()" style="display:none;position:fixed;bottom:24px;right:24px;z-index:8000;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(139,92,246,.4);font-size:22px;display:flex;align-items:center;justify-content:center;transition:transform .2s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+<div id="aiChatBtn" onclick="toggleAiChat()" style="display:none;position:fixed;bottom:24px;right:24px;z-index:8000;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(139,92,246,.4);font-size:22px;align-items:center;justify-content:center;transition:transform .2s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
 <span id="aiChatBtnIco">&#10024;</span>
 </div>
 <div id="aiChatPanel" style="display:none;position:fixed;bottom:88px;right:24px;z-index:8001;width:400px;max-width:calc(100vw - 48px);height:520px;max-height:calc(100vh - 120px);background:var(--sf);border:1px solid var(--bd2);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.12);flex-direction:column;overflow:hidden">
