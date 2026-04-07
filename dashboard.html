@@ -2879,14 +2879,23 @@ async function generateAIConcept(){
 
 ТОЛЬКО JSON, ничего больше.`;
 
+  // Update status: AI думает
+  const _updateMsg=(m)=>{const el=document.getElementById('aiMsg');if(el)el.textContent=m};
+  _updateMsg('AI думает...');
+
+  let concept=null;
   try{
+    const _ctrl=new AbortController();
+    const _timeout=setTimeout(()=>_ctrl.abort(),15000);
     const res=await fetch(AI_URL,{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+AI_KEY},
-      body:JSON.stringify({prompt,mode:'generate',category:_aiCat,country:_aiCountry})
+      body:JSON.stringify({prompt,mode:'generate',category:_aiCat,country:_aiCountry}),
+      signal:_ctrl.signal
     });
+    clearTimeout(_timeout);
     if(!res.ok)throw new Error('HTTP '+res.status);
-    // SSE streaming response
+    _updateMsg('AI генерирует...');
     let text='';
     const reader=res.body.getReader();
     const decoder=new TextDecoder();
@@ -2903,11 +2912,17 @@ async function generateAIConcept(){
         }catch{}
       }
     }
-    if(!text)throw new Error('Пустой ответ от AI');
+    if(!text)throw new Error('empty');
     const jsonMatch=text.match(/\{[\s\S]*\}/);
-    if(!jsonMatch)throw new Error('AI не вернул JSON');
-    const clean=jsonMatch[0].replace(/```json?\n?/g,'').replace(/```/g,'').trim();
-    const concept=JSON.parse(clean);
+    if(!jsonMatch)throw new Error('no json');
+    concept=JSON.parse(jsonMatch[0].replace(/```json?\n?/g,'').replace(/```/g,'').trim());
+  }catch(e){
+    console.warn('[AI] Jetson unavailable, using DEMO:',e.message);
+    _updateMsg('AI думает [DEMO]...');
+    await new Promise(r=>setTimeout(r,2000));
+    concept=_getDemoConcept(_aiCat,desc);
+  }
+  try{
     _aiConcept=concept;
     clearInterval(_aiGenTimer);
     const bar=document.getElementById('aiBar');if(bar)bar.style.width='100%';
@@ -2955,10 +2970,97 @@ async function generateAIConcept(){
     if(applyBtn)applyBtn.style.display='block';
   }catch(e){
     clearInterval(_aiGenTimer);
-    console.error('[AI]',e);
-    status.innerHTML='<span style="color:var(--rd)">✗ Ошибка: '+esc(e.message||'не удалось разобрать ответ')+'</span>';
+    console.error('[AI] preview:',e);
+    status.innerHTML='<span style="color:var(--rd)">✗ Ошибка: '+esc(e.message)+'</span>';
   }
   btn.disabled=false;btn.textContent='✨ Сгенерировать';
+}
+
+function _getDemoConcept(cat,desc){
+  const isDental=cat==='dental';
+  return{
+    name:desc||'Демо-концепция',bizType:cat,bizSubtype:'standard',
+    employees:isDental?[
+      {id:1,name:'Стоматолог-терапевт',spec:'Общая стоматология',salary:12000,status:'Вакансия',country:'Polska'},
+      {id:2,name:'Стоматолог-ортопед',spec:'Протезирование',salary:14000,status:'Вакансия',country:'Polska'},
+      {id:3,name:'Стоматолог-хирург',spec:'Имплантация',salary:15000,status:'Вакансия',country:'Polska'},
+      {id:4,name:'Гигиенист',spec:'Профилактика',salary:7000,status:'Вакансия',country:'Polska'},
+      {id:5,name:'Ассистент стоматолога',spec:'Помощь врачу',salary:5500,status:'Вакансия',country:'Polska'},
+      {id:6,name:'Администратор',spec:'Ресепшен, запись',salary:5000,status:'Вакансия',country:'Polska'},
+      {id:7,name:'Менеджер клиники',spec:'Управление',salary:9000,status:'Вакансия',country:'Polska'}
+    ]:[
+      {id:1,name:'Бариста',spec:'Приготовление напитков',salary:4500,status:'Вакансия',country:'Polska'},
+      {id:2,name:'Повар',spec:'Кухня',salary:6000,status:'Вакансия',country:'Polska'},
+      {id:3,name:'Администратор',spec:'Управление залом',salary:5000,status:'Вакансия',country:'Polska'},
+      {id:4,name:'Официант',spec:'Обслуживание',salary:4000,status:'Вакансия',country:'Polska'}
+    ],
+    services:isDental?[
+      {id:1,name:'Консультация',category:'Диагностика',time:'30 мин',price:150},
+      {id:2,name:'Профессиональная чистка',category:'Гигиена',time:'60 мин',price:400},
+      {id:3,name:'Пломба композитная',category:'Терапия',time:'45 мин',price:500},
+      {id:4,name:'Удаление зуба',category:'Хирургия',time:'30 мин',price:350},
+      {id:5,name:'Имплант Nobel Biocare',category:'Имплантация',time:'90 мин',price:5500},
+      {id:6,name:'Коронка циркониевая',category:'Ортопедия',time:'2 визита',price:3200},
+      {id:7,name:'Виниры E.max',category:'Эстетика',time:'2 визита',price:4000},
+      {id:8,name:'Отбеливание ZOOM',category:'Эстетика',time:'60 мин',price:1800},
+      {id:9,name:'Рентген ОПТГ',category:'Диагностика',time:'5 мин',price:100},
+      {id:10,name:'КТ 3D CBCT',category:'Диагностика',time:'10 мин',price:300}
+    ]:[
+      {id:1,name:'Эспрессо',category:'Кофе',time:'3 мин',price:12},
+      {id:2,name:'Капучино',category:'Кофе',time:'4 мин',price:16},
+      {id:3,name:'Латте',category:'Кофе',time:'4 мин',price:18},
+      {id:4,name:'Круассан',category:'Выпечка',time:'—',price:14},
+      {id:5,name:'Сэндвич',category:'Еда',time:'5 мин',price:25}
+    ],
+    rooms:isDental?[
+      {id:1,name:'Кабинет 1',type:'Терапия',w:4,h:3.5,l:3,area:14},
+      {id:2,name:'Кабинет 2',type:'Хирургия',w:4.5,h:4,l:3,area:18},
+      {id:3,name:'Кабинет 3',type:'Ортопедия',w:4,h:3.5,l:3,area:14},
+      {id:4,name:'Ресепшен',type:'Зона приёма',w:5,h:4,l:3,area:20},
+      {id:5,name:'Стерилизаторная',type:'Служебная',w:3,h:2.5,l:3,area:7.5},
+      {id:6,name:'Рентген',type:'Диагностика',w:3,h:3,l:3,area:9},
+      {id:7,name:'Зал ожидания',type:'Общая зона',w:5,h:3,l:3,area:15},
+      {id:8,name:'Серверная/IT',type:'Техническая',w:2,h:2,l:3,area:4}
+    ]:[
+      {id:1,name:'Зал',type:'Гостевая зона',w:8,h:6,l:3,area:48},
+      {id:2,name:'Кухня',type:'Производство',w:4,h:3,l:3,area:12},
+      {id:3,name:'Бар',type:'Рабочая зона',w:3,h:2,l:3,area:6},
+      {id:4,name:'Склад',type:'Служебная',w:2,h:2,l:3,area:4}
+    ],
+    suppliers:isDental?[
+      {id:1,name:'Стоматологическая установка A-dec 500',category:'Установки',price:85000,supplier:'A-dec',warranty:'5 лет'},
+      {id:2,name:'Автоклав Melag 23VS+',category:'Стерилизация',price:18000,supplier:'Melag',warranty:'2 года'},
+      {id:3,name:'КЛКТ Planmeca ProMax 3D',category:'Рентген',price:120000,supplier:'Planmeca',warranty:'3 года'},
+      {id:4,name:'Компрессор Dürr Tornado 2',category:'Компрессоры',price:12000,supplier:'Dürr Dental',warranty:'2 года'},
+      {id:5,name:'Кресло пациента',category:'Мебель',price:3500,supplier:'ЛДСП',warranty:'1 год'}
+    ]:[
+      {id:1,name:'Кофемашина La Marzocco Linea PB',category:'Оборудование',price:45000,supplier:'La Marzocco',warranty:'2 года'},
+      {id:2,name:'Кофемолка Mahlkönig E65S',category:'Оборудование',price:8000,supplier:'Mahlkönig',warranty:'1 год'},
+      {id:3,name:'Холодильная витрина',category:'Холод',price:12000,supplier:'Liebherr',warranty:'2 года'}
+    ],
+    renovations:[
+      {id:'r1',name:'Демонтаж',cat:'Подготовка',price:8000},
+      {id:'r2',name:'Электромонтаж',cat:'Инженерные сети',price:25000},
+      {id:'r3',name:'Сантехника',cat:'Инженерные сети',price:18000},
+      {id:'r4',name:'Вентиляция',cat:'Инженерные сети',price:22000},
+      {id:'r5',name:'Чистовая отделка',cat:'Отделка',price:35000},
+      {id:'r6',name:'Потолки Armstrong',cat:'Отделка',price:12000}
+    ],
+    cabinetTypes:isDental?[
+      {id:1,name:'Терапевтический',icon:'🦷',desc:'Общая стоматология',minArea:12,equipCats:['Установки']},
+      {id:2,name:'Хирургический',icon:'🔪',desc:'Операционная',minArea:16,equipCats:['Установки','Хирургия']},
+      {id:3,name:'Рентген-кабинет',icon:'📡',desc:'КЛКТ, ОПТГ',minArea:8,equipCats:['Рентген']}
+    ]:[
+      {id:1,name:'Гостевая зона',icon:'☕',desc:'Основной зал',minArea:30,equipCats:['Мебель']},
+      {id:2,name:'Кухня',icon:'🍳',desc:'Производство',minArea:10,equipCats:['Оборудование']}
+    ],
+    zones:[
+      {id:'z1',name:'Клиническая',color:'#3b82f6',icon:'🏥'},
+      {id:'z2',name:'Административная',color:'#8b5cf6',icon:'📋'},
+      {id:'z3',name:'Техническая',color:'#f59e0b',icon:'⚙️'},
+      {id:'z4',name:'Общественная',color:'#22c55e',icon:'👥'}
+    ]
+  };
 }
 
 let _aiConcept=null;
@@ -7720,6 +7822,104 @@ function lbDelete(){
 // Focus email field on load
 document.getElementById('loginEmail').focus();
 updateRightPanel();
+
+// ═══════════════ AI CHAT ═══════════════
+let _aiChatHistory=[];
+let _aiChatStreaming=false;
+
+function toggleAiChat(){
+  const p=document.getElementById('aiChatPanel');
+  const isOpen=p.style.display==='flex';
+  p.style.display=isOpen?'none':'flex';
+  document.getElementById('aiChatBtnIco').innerHTML=isOpen?'&#10024;':'&#10006;';
+  if(!isOpen)document.getElementById('aiChatInput').focus();
+}
+
+function clearAiChat(){
+  _aiChatHistory=[];
+  const m=document.getElementById('aiChatMessages');
+  m.innerHTML='<div style="background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(59,130,246,0.08));border-radius:12px;padding:12px;font-size:11px;color:var(--tx2);line-height:1.5">&#128075; Привет! Я AI-ассистент SVITA. Спроси меня о чём угодно: бизнес-план, оборудование, помещения, персонал, юридические вопросы, маркетинг...</div>';
+}
+
+function _aiChatAppend(role,text){
+  const m=document.getElementById('aiChatMessages');
+  const d=document.createElement('div');
+  d.style.cssText=role==='user'
+    ?'align-self:flex-end;background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;border-radius:12px 12px 2px 12px;padding:10px 14px;font-size:12px;line-height:1.5;max-width:85%;word-break:break-word'
+    :'align-self:flex-start;background:var(--sf2);color:var(--tx);border-radius:12px 12px 12px 2px;padding:10px 14px;font-size:12px;line-height:1.5;max-width:85%;word-break:break-word';
+  d.textContent=text;
+  if(role==='ai')d.id='aiChatLast';
+  m.appendChild(d);
+  m.scrollTop=m.scrollHeight;
+  return d;
+}
+
+async function sendAiChat(){
+  if(_aiChatStreaming)return;
+  const inp=document.getElementById('aiChatInput');
+  const text=inp.value.trim();
+  if(!text)return;
+  inp.value='';inp.style.height='auto';
+
+  _aiChatAppend('user',text);
+  _aiChatHistory.push({role:'user',content:text});
+
+  // Build context from current project
+  const ctx=[];
+  if(currentBizType)ctx.push('Тип бизнеса: '+(BIZ_TYPES[currentBizType]?.name||currentBizType));
+  if(activeProperty)ctx.push('Помещение: '+activeProperty.name+', '+activeProperty.city+', '+(activeProperty.area||'?')+'м²');
+  ctx.push('Сотрудников: '+DB.employees.length+', Оборудования: '+DB.suppliers.length+', Помещений: '+DB.premises.length);
+
+  const systemPrompt='Ты — AI-ассистент платформы SVITA (конструктор бизнес-концепций). Отвечай кратко и по делу. Контекст проекта пользователя: '+ctx.join('. ')+'. Отвечай на русском.';
+
+  const messages=_aiChatHistory.slice(-10);
+  const fullPrompt=systemPrompt+'\n\n'+messages.map(m=>m.role==='user'?'Пользователь: '+m.content:'Ассистент: '+m.content).join('\n')+'\nАссистент:';
+
+  const aiEl=_aiChatAppend('ai','...');
+  _aiChatStreaming=true;
+  document.getElementById('aiChatSendBtn').style.opacity='0.5';
+
+  try{
+    const res=await fetch(AI_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+AI_KEY},
+      body:JSON.stringify({prompt:fullPrompt,mode:'chat',category:currentBizType||'dental',country:activeProperty?.city||''})
+    });
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    let result='';
+    const reader=res.body.getReader();
+    const decoder=new TextDecoder();
+    while(true){
+      const{value,done}=await reader.read();
+      if(done)break;
+      const chunk=decoder.decode(value,{stream:true});
+      for(const line of chunk.split('\n')){
+        if(!line.startsWith('data: '))continue;
+        try{
+          const obj=JSON.parse(line.slice(6));
+          if(obj.token){result+=obj.token;aiEl.textContent=result}
+          if(obj.done&&obj.text){result=obj.text;aiEl.textContent=result}
+        }catch{}
+      }
+      document.getElementById('aiChatMessages').scrollTop=document.getElementById('aiChatMessages').scrollHeight;
+    }
+    if(!result)throw new Error('Пустой ответ');
+    _aiChatHistory.push({role:'assistant',content:result});
+  }catch(e){
+    aiEl.textContent='Ошибка: '+e.message+'. Jetson может быть недоступен.';
+    aiEl.style.color='var(--rd)';
+  }finally{
+    _aiChatStreaming=false;
+    document.getElementById('aiChatSendBtn').style.opacity='1';
+  }
+}
+
+// Show chat button after login
+const _origEnterApp=enterApp;
+enterApp=function(){
+  _origEnterApp.apply(this,arguments);
+  document.getElementById('aiChatBtn').style.display='flex';
+};
 </script>
 
 <!-- LIGHTBOX -->
@@ -7752,6 +7952,27 @@ updateRightPanel();
 <!-- Tour highlight ring -->
 <div id="tourHighlight" style="display:none;position:fixed;z-index:7999;border:2px solid var(--ac);border-radius:8px;box-shadow:0 0 0 4000px rgba(0,0,0,.08);pointer-events:none;transition:all .3s ease"></div>
 <style>@keyframes obSlide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}</style>
+
+<!-- AI Chat -->
+<div id="aiChatBtn" onclick="toggleAiChat()" style="display:none;position:fixed;bottom:24px;right:24px;z-index:8000;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(139,92,246,.4);font-size:22px;display:flex;align-items:center;justify-content:center;transition:transform .2s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+<span id="aiChatBtnIco">&#10024;</span>
+</div>
+<div id="aiChatPanel" style="display:none;position:fixed;bottom:88px;right:24px;z-index:8001;width:400px;max-width:calc(100vw - 48px);height:520px;max-height:calc(100vh - 120px);background:var(--sf);border:1px solid var(--bd2);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.12);flex-direction:column;overflow:hidden">
+<div style="padding:14px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(139,92,246,0.06),rgba(59,130,246,0.06))">
+<div><div style="font-size:13px;font-weight:700">&#10024; SVITA AI</div><div style="font-size:9px;color:var(--tx3)">Jetson AGX Orin · qwen2.5:32b</div></div>
+<div style="display:flex;gap:6px">
+<button onclick="clearAiChat()" style="background:none;border:1px solid var(--bd);border-radius:6px;padding:3px 8px;font-size:9px;color:var(--tx3);cursor:pointer" title="Очистить">&#128465;</button>
+<button onclick="toggleAiChat()" style="background:none;border:none;font-size:18px;color:var(--tx3);cursor:pointer;padding:0 4px">&times;</button>
+</div>
+</div>
+<div id="aiChatMessages" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px">
+<div style="background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(59,130,246,0.08));border-radius:12px;padding:12px;font-size:11px;color:var(--tx2);line-height:1.5">&#128075; Привет! Я AI-ассистент SVITA. Спроси меня о чём угодно: бизнес-план, оборудование, помещения, персонал, юридические вопросы, маркетинг...</div>
+</div>
+<div style="padding:10px 12px;border-top:1px solid var(--bd);display:flex;gap:8px;align-items:end">
+<textarea id="aiChatInput" placeholder="Напишите сообщение..." rows="1" style="flex:1;border:1px solid var(--bd);border-radius:10px;padding:8px 12px;font-size:12px;font-family:var(--f);color:var(--tx);background:var(--sf2);resize:none;max-height:80px;outline:none" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAiChat()}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"></textarea>
+<button onclick="sendAiChat()" id="aiChatSendBtn" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;border:none;cursor:pointer;font-size:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center" title="Отправить">&#9654;</button>
+</div>
+</div>
 
 <!-- Cookie Consent -->
 <div id="cookieConsent" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,.08);padding:14px 24px;font-family:var(--f)">
