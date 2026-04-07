@@ -2061,7 +2061,11 @@ const PICKED_KEYS=['pickedEquip','pickedRenovations','pickedStaff','pickedServic
 function savePicked(){
   const obj={};
   PICKED_KEYS.forEach(k=>{obj[k]=DB[k]||{}});
-  uSet('svita_picked',JSON.stringify(obj));
+  const json=JSON.stringify(obj);
+  const hasData=Object.values(obj).some(v=>Object.keys(v).length>0);
+  const existing=uGet('svita_picked');
+  if(!hasData&&existing&&!isPickedEmpty(existing))return;
+  uSet('svita_picked',json);
 }
 function isPickedEmpty(raw){
   if(!raw||raw==='{}'||raw==='null')return true;
@@ -2448,12 +2452,6 @@ function selectRole(el){
 
 function enterApp(){
   if(!currentRole||!currentUser)return;
-  // DEBUG: dump all svita keys
-  const allKeys=Object.keys(localStorage).filter(k=>k.startsWith('svita_'));
-  console.log('[SVITA-DEBUG] User ID:',currentUser.id,'Role:',currentRole);
-  console.log('[SVITA-DEBUG] uKey:',uKey('svita_picked'));
-  console.log('[SVITA-DEBUG] All svita keys:',allKeys);
-  allKeys.forEach(k=>{const v=localStorage.getItem(k);console.log('[SVITA-DEBUG]',k,'→',v?v.substring(0,80)+'...':'(empty)')});
   document.getElementById('loginScreen').classList.add('hidden');
   document.getElementById('appContainer').style.display='flex';
   const _sa=document.getElementById('sideAvatar'),_sn=document.getElementById('sideName'),_sr=document.getElementById('sideRole');
