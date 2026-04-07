@@ -191,6 +191,7 @@ function _recalcNow(){
   if(cur==='s6')updateFormulaDisplay();
   updateTabCosts(t);
   updateAchievements();
+  if(typeof renderMaturity==='function')renderMaturity();
   updateTopConcept();
 }
 function updateTabCosts(t){

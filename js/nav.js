@@ -100,6 +100,7 @@ function renderPlanDetails(){
 
 // ═══════════════ CONCEPTS (Supabase) ═══════════════
 function serializeWorkspace(){
+  const maturity=typeof conceptMaturity==='function'?conceptMaturity().overall:0;
   return{
     employees:DB.employees,services:DB.services,rooms:DB.rooms,
     suppliers:DB.suppliers,renovations:DB.renovations,
@@ -109,7 +110,8 @@ function serializeWorkspace(){
     pickedServices:DB.pickedServices||{},pickedEquip:DB.pickedEquip||{},
     pickedStaff:DB.pickedStaff||{},pickedDocs:DB.pickedDocs||{},
     property:activeProperty,bizType:currentBizType,bizSubtype:currentBizSubtype,
-    floorPlan:typeof FP!=='undefined'&&FP?{rooms:FP.rooms,elements:FP.elements,scale:FP.scale}:null
+    floorPlan:typeof FP!=='undefined'&&FP?{rooms:FP.rooms,elements:FP.elements,scale:FP.scale}:null,
+    maturity
   };
 }
 
@@ -158,11 +160,14 @@ function renderConceptsList(){
     const d=cp.data||{};
     const empCount=d.employees?.length||0;
     const svcCount=d.services?.length||0;
+    const mat=d.maturity||0;
+    const matClr=mat>=75?'var(--gn)':mat>=40?'var(--yl)':'var(--rd)';
     const bizIcon=d.bizType&&BIZ_TYPES[d.bizType]?BIZ_TYPES[d.bizType].icon:'📝';
     html+=`<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd);${isCurrent?'background:var(--acbg);margin:0 -12px;padding:10px 12px;border-radius:8px':''}">
 <div style="flex:1;min-width:0">
 <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${bizIcon} ${esc(cp.name)}${isCurrent?' <span style="font-size:9px;color:var(--gn);font-weight:700">● АКТИВНАЯ</span>':''}</div>
-<div style="font-size:10px;color:var(--tx3)">${empCount} сотр. · ${svcCount} услуг · ${date}</div>
+<div style="display:flex;align-items:center;gap:8px;margin-top:3px"><div style="font-size:10px;color:var(--tx3)">${empCount} сотр. · ${svcCount} услуг · ${date}</div><span style="font-size:9px;font-weight:700;color:${matClr}">${mat}%</span></div>
+<div style="height:3px;border-radius:2px;background:var(--bd);margin-top:4px;overflow:hidden"><div style="height:100%;width:${mat}%;border-radius:2px;background:${matClr};transition:width .3s"></div></div>
 </div>
 <div style="display:flex;gap:4px;flex-shrink:0">
 <button class="btn sm pr" onclick="loadConceptById('${cp.id}')">${isCurrent?'Обновить':'Открыть'}</button>

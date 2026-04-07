@@ -347,13 +347,85 @@ function aiLocalReply(text,ctx){
   return 'Могу помочь с:\n\u2022 Бюджет и рентабельность\n\u2022 Подбор оборудования\n\u2022 Рекомендации по персоналу\n\u2022 Документы и лицензии\n\u2022 Анализ помещения\n\nЗадайте вопрос!';
 }
 
+// ═══════════════ CONCEPT MATURITY ═══════════════
+const MATURITY_LEVELS=[
+  {id:'L1',name:'Фундамент',color:'#3b82f6',
+    params:[
+      {key:'property',label:'Помещение',check:()=>!!activeProperty,weight:40},
+      {key:'floorplan',label:'Планировка',check:()=>FP&&FP.rooms&&FP.rooms.length>=1,weight:30},
+      {key:'bizType',label:'Тип бизнеса',check:()=>!!currentBizType,weight:20},
+      {key:'concept',label:'Концепция сохранена',check:()=>!!window._currentConceptId,weight:10}
+    ]},
+  {id:'L2',name:'Инфраструктура',color:'#8b5cf6',
+    params:[
+      {key:'renovations',label:'Модернизация',check:()=>Object.keys(DB.pickedRenovations||{}).length>=3,weight:35},
+      {key:'equipment',label:'Оснащение',check:()=>Object.keys(DB.pickedEquip||{}).length>=5,weight:35},
+      {key:'services',label:'Услуги',check:()=>Object.keys(DB.pickedServices||{}).length>=3,weight:30}
+    ]},
+  {id:'L3',name:'Запуск',color:'#16a34a',
+    params:[
+      {key:'staff',label:'Персонал',check:()=>Object.keys(DB.pickedStaff||{}).length>=2,weight:30},
+      {key:'docs',label:'Документы',check:()=>Object.keys(DB.pickedDocs||{}).length>=3,weight:30},
+      {key:'budget',label:'Бюджет > 0',check:()=>{const t=calcTotals();return t.grand>0},weight:20},
+      {key:'profit',label:'Рентабельность',check:()=>{const t=calcTotals();return t.revenue>t.expenses&&t.revenue>0},weight:20}
+    ]}
+];
+
+function conceptMaturity(){
+  const levels=MATURITY_LEVELS.map(lv=>{
+    let score=0,total=0;
+    const items=lv.params.map(p=>{
+      const done=p.check();
+      total+=p.weight;
+      if(done)score+=p.weight;
+      return{key:p.key,label:p.label,done,weight:p.weight};
+    });
+    return{id:lv.id,name:lv.name,color:lv.color,score,total,pct:total?Math.round(score/total*100):0,items};
+  });
+  const overall=levels.reduce((a,l)=>a+l.score,0);
+  const overallTotal=levels.reduce((a,l)=>a+l.total,0);
+  return{levels,overall:overallTotal?Math.round(overall/overallTotal*100):0};
+}
+
+function renderMaturity(){
+  const el=document.getElementById('maturityPanel');if(!el)return;
+  const m=conceptMaturity();
+  let html='<div style="margin-bottom:12px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><span style="font-size:11px;font-weight:700">Зрелость концепции</span><span style="font-size:18px;font-weight:800;color:'+maturityColor(m.overall)+'">'+m.overall+'%</span></div>';
+  html+='<div style="height:6px;border-radius:3px;background:var(--bd);overflow:hidden"><div style="height:100%;width:'+m.overall+'%;border-radius:3px;background:'+maturityColor(m.overall)+';transition:width .4s"></div></div></div>';
+  m.levels.forEach((lv,i)=>{
+    const prev=i>0?m.levels[i-1]:null;
+    const locked=prev&&prev.pct<50;
+    html+='<div style="margin-bottom:10px;opacity:'+(locked?'.4':'1')+'">';
+    html+='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px"><span style="font-size:10px;font-weight:700;color:'+lv.color+'">'+lv.name+(locked?' &#128274;':'')+'</span><span style="font-size:10px;font-weight:700;color:'+lv.color+'">'+lv.pct+'%</span></div>';
+    html+='<div style="height:4px;border-radius:2px;background:var(--bd);overflow:hidden;margin-bottom:6px"><div style="height:100%;width:'+lv.pct+'%;border-radius:2px;background:'+lv.color+';transition:width .4s"></div></div>';
+    lv.items.forEach(it=>{
+      html+='<div style="display:flex;align-items:center;gap:6px;padding:2px 0;font-size:10px;color:'+(it.done?'var(--tx)':'var(--tx3)')+'">';
+      html+='<span style="font-size:11px">'+(it.done?'&#9989;':'&#9898;')+'</span>';
+      html+='<span style="flex:1">'+it.label+'</span>';
+      html+='<span style="font-size:9px;font-weight:600;color:'+(it.done?'var(--gn)':'var(--tx3)')+'">'+it.weight+'pt</span>';
+      html+='</div>';
+    });
+    html+='</div>';
+  });
+  el.innerHTML=html;
+  const sc=document.getElementById('maturityScore');
+  if(sc){sc.textContent=m.overall+'%';sc.style.color=maturityColor(m.overall)}
+}
+
+function maturityColor(pct){
+  if(pct>=75)return'#16a34a';
+  if(pct>=40)return'#ca8a04';
+  return'#dc2626';
+}
+
 // ═══════════════ TOP CONCEPT INDICATOR ═══════════════
 function updateTopConcept(){
   const el=document.getElementById('topConcept');if(!el)return;
   const name=window._currentConceptName;
   if(name){
     const t=calcTotals();
-    el.textContent='\uD83D\uDCCB '+name+' \u00B7 '+t.grand.toLocaleString('ru')+' PLN';
+    const m=conceptMaturity();
+    el.innerHTML='&#128203; '+esc(name)+' &middot; '+t.grand.toLocaleString('ru')+' PLN <span style="margin-left:6px;font-size:10px;font-weight:700;color:'+maturityColor(m.overall)+'">'+m.overall+'%</span>';
     el.style.display='inline-block';
   }else{el.style.display='none'}
 }
