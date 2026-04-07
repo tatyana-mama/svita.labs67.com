@@ -3174,9 +3174,6 @@ function rateLimit(key,maxAttempts,windowMs){
   return true;
 }
 
-// ═══ SANITIZE (XSS) ═══
-function sanitize(str){const d=document.createElement('div');d.textContent=str;return d.innerHTML}
-
 // ═══ AUDIT LOG ═══
 function logAction(action,entityType,entityId,metadata){
   if(!sb||!currentUser)return;
@@ -3568,11 +3565,15 @@ function buildSidebar(){
 
   if(currentRole==='admin'||currentRole==='owner'){
     html+='<div class="side-sec">Базы данных</div>';
+    const _pr=Object.keys(DB.pickedRenovations||{}).length;
+    const _pe=Object.keys(DB.pickedEquip||{}).length;
+    const _ps=Object.keys(DB.pickedStaff||{}).length;
+    const _pd=Object.keys(DB.pickedDocs||{}).length;
     html+='<div class="si si-clr" style="--si-clr:#3b82f6" data-nav="db-premises"><span class="ico">&#127970;</span><span class="sl">Помещения</span><span class="sb wip">'+DB.premises.length+'</span></div>';
-    html+='<div class="si si-clr" style="--si-clr:#f59e0b" data-nav="db-renovations"><span class="ico">&#128736;</span><span class="sl">Модернизация</span><span class="sb wip">'+(DB.renovations.length+DB.services.length)+'</span></div>';
-    html+='<div class="si si-clr" style="--si-clr:#8b5cf6" data-nav="db-suppliers"><span class="ico">&#128230;</span><span class="sl">Оборудование</span><span class="sb wip">'+DB.suppliers.length+'</span></div>';
-    html+='<div class="si si-clr" style="--si-clr:#06b6d4" data-nav="db-employees"><span class="ico">&#129489;</span><span class="sl">Сотрудники</span><span class="sb wip">'+DB.employees.length+'</span></div>';
-    html+='<div class="si si-clr" style="--si-clr:#ef4444" data-nav="db-docs"><span class="ico">&#128203;</span><span class="sl">Документация</span><span class="sb wip">'+ADMIN_DOC_ITEMS.length+'</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#f59e0b" data-nav="db-renovations"><span class="ico">&#128736;</span><span class="sl">Модернизация</span><span class="sb wip">'+(DB.renovations.length+DB.services.length)+'</span>'+(_pr?'<span class="sb ok">&#10003;'+_pr+'</span>':'')+'</div>';
+    html+='<div class="si si-clr" style="--si-clr:#8b5cf6" data-nav="db-suppliers"><span class="ico">&#128230;</span><span class="sl">Оборудование</span><span class="sb wip">'+DB.suppliers.length+'</span>'+(_pe?'<span class="sb ok">&#10003;'+_pe+'</span>':'')+'</div>';
+    html+='<div class="si si-clr" style="--si-clr:#06b6d4" data-nav="db-employees"><span class="ico">&#129489;</span><span class="sl">Сотрудники</span><span class="sb wip">'+DB.employees.length+'</span>'+(_ps?'<span class="sb ok">&#10003;'+_ps+'</span>':'')+'</div>';
+    html+='<div class="si si-clr" style="--si-clr:#ef4444" data-nav="db-docs"><span class="ico">&#128203;</span><span class="sl">Документация</span><span class="sb wip">'+ADMIN_DOC_ITEMS.length+'</span>'+(_pd?'<span class="sb ok">&#10003;'+_pd+'</span>':'')+'</div>';
     html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
     const canContractors=currentRole==='admin'||userSubscription.contractors_access;
     html+='<div class="si'+(canContractors?'':' locked')+'" data-nav="'+(canContractors?'db-contractors':'upgrade-gate')+'"><span class="ico">&#128736;</span><span class="sl">Подрядчики</span>'+(canContractors?'<span class="sb wip">'+DB.contractors.length+'</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; Unlimited</span>')+'</div>';
@@ -3660,7 +3661,7 @@ async function renderAccount(){
   const bg=ROLE_COLORS[currentRole]||'var(--ac)';
   // Profile section
   const av=document.getElementById('accAvatar');if(av){av.style.background=bg;av.textContent=initials}
-  const an=document.getElementById('accName');if(an)an.textContent=sanitize(u.name);
+  const an=document.getElementById('accName');if(an)an.textContent=esc(u.name);
   const ae=document.getElementById('accEmail');if(ae)ae.textContent=u.email;
   const ar=document.getElementById('accRoleBadge');if(ar){ar.textContent=ROLE_NAMES[currentRole]||currentRole;ar.style.background=currentRole==='admin'?'rgba(59,130,246,.1)':'var(--acbg)'}
   // Form fields
@@ -3923,7 +3924,7 @@ async function loadAuditLog(){
   data.forEach(l=>{
     const date=new Date(l.created_at).toLocaleString('ru');
     const name=actionNames[l.action]||l.action;
-    const meta=l.metadata?.name?(' — '+sanitize(l.metadata.name)):'';
+    const meta=l.metadata?.name?(' — '+esc(l.metadata.name)):'';
     html+=`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bd);font-size:11px"><span style="color:var(--tx3);min-width:120px;flex-shrink:0">${date}</span><span style="font-weight:600;color:var(--tx)">${name}</span><span style="color:var(--tx2)">${meta}</span></div>`;
   });
   el.innerHTML=html;
@@ -4129,7 +4130,7 @@ function renderPremisesCompact(c){
 }
 
 function selectPremiseAsProperty(id){
-  const p=DB.premises.find(x=>x.id==id);if(!p)return;
+  const p=DB.premises.find(x=>x.id===id);if(!p)return;
   const sp=p.specs||{};
   const area=sp.area||0;
   const side=Math.round(Math.sqrt(area)*10)/10;
@@ -4139,7 +4140,7 @@ function selectPremiseAsProperty(id){
 }
 
 function editPremise(id){
-  const p=DB.premises.find(x=>x.id==id);if(!p)return;
+  const p=DB.premises.find(x=>x.id===id);if(!p)return;
   openModal('premise');
   editingId=id;
   const sp=p.specs||{};
@@ -4274,7 +4275,7 @@ function renderSuppliers(){
 }
 
 function editEmployee(id){
-  const r=DB.employees.find(x=>x.id==id);if(!r)return;
+  const r=DB.employees.find(x=>x.id===id);if(!r)return;
   modalMode='employee';editingId=r.id;
   document.getElementById('modalTitle').textContent='Редактировать сотрудника';
   const fields=MODAL_FIELDS.employee;
@@ -4454,7 +4455,7 @@ function setRenActionPrice(renId,ai,val){
 function getRenItemCost(id){
   const p=DB.pickedRenovations[id];if(!p)return 0;
   if(p.actions&&p.actions.length)return p.actions.reduce((s,a)=>s+a.price,0);
-  const r=DB.renovations.find(x=>x.id==id);
+  const r=DB.renovations.find(x=>x.id===id);
   return(p.customPrice!=null?p.customPrice:(r?r.price:0))*(p.qty||1);
 }
 function toggleRenExpand(renId){
@@ -4475,7 +4476,7 @@ function renderSelectedRenovations(){
   const groups={};
   let totalCost=0,doneCount=0;
   pickedIds.forEach(id=>{
-    const r=DB.renovations.find(x=>x.id==id);if(!r)return;
+    const r=DB.renovations.find(x=>x.id===id);if(!r)return;
     const cat=r.cat||'Другое';
     if(!groups[cat])groups[cat]=[];
     const p=picked[id];
@@ -4789,7 +4790,7 @@ function renderPickedRooms(){
   if(!ids.length){c.innerHTML='<div style="padding:12px;text-align:center;font-size:11px;color:var(--tx3)">Добавьте комнаты из БД Помещений</div>';return}
   let html='';
   ids.forEach(id=>{
-    const r=DB.rooms.find(x=>x.id==id);
+    const r=DB.rooms.find(x=>x.id===id);
     if(!r)return;
     html+=`<div class="ci cost-row"><div class="ct" style="flex:1">${r.name}<div class="ct-sub">${r.type} · ${r.area} м²</div></div><button class="btn sm" style="color:var(--rd)" onclick="togglePick('pickedRooms','${r.id}','rooms')">✕</button></div>`;
   });
@@ -4802,7 +4803,7 @@ function renderPickedContractors(){
   if(!ids.length){c.innerHTML='<div style="padding:12px;text-align:center;font-size:11px;color:var(--tx3)">Назначьте подрядчиков из БД</div>';return}
   let html='';
   ids.forEach(id=>{
-    const r=DB.contractors.find(x=>x.id==id);
+    const r=DB.contractors.find(x=>x.id===id);
     if(!r)return;
     html+=`<div class="ci cost-row"><div class="ct" style="flex:1">${r.name}<div class="ct-sub">${r.spec} · ${r.city} · ${r.price}</div></div><button class="btn sm" style="color:var(--rd)" onclick="togglePick('pickedContractors','${r.id}','contractors')">✕</button></div>`;
   });
@@ -4941,7 +4942,7 @@ function renderSelectedEquip(){
   c.innerHTML=html;
 
   // Update stats
-  const prices=pickedIds.map(id=>{const s=DB.suppliers.find(x=>x.id==id);const p=picked[id];return p&&p.customPrice!=null?p.customPrice:s?s.price:0});
+  const prices=pickedIds.map(id=>{const s=DB.suppliers.find(x=>x.id===id);const p=picked[id];return p&&p.customPrice!=null?p.customPrice:s?s.price:0});
   document.getElementById('eqCount').textContent=pickedIds.length;
   document.getElementById('eqTotal').textContent=totalCost.toLocaleString('ru');
   document.getElementById('eqCats').textContent=catKeys.filter(cat=>allCats[cat].picked.length>0).length;
@@ -6379,7 +6380,7 @@ function renderStaff(){
   const picked=DB.pickedStaff||{};
   const pickedIds=Object.keys(picked);
   // Show only picked staff in tab 4
-  const items=pickedIds.map(id=>{const e=DB.employees.find(x=>x.id==id);if(!e)return null;const over=picked[id]||{};return {...e,...over,id:e.id}}).filter(Boolean);
+  const items=pickedIds.map(id=>{const e=DB.employees.find(x=>x.id===id);if(!e)return null;const over=picked[id]||{};return {...e,...over,id:e.id}}).filter(Boolean);
   // Stats
   let totalFot=0;
   items.forEach(r=>{totalFot+=(r.salary||0)});
@@ -6684,12 +6685,12 @@ function renderRoleCabinets(){
 }
 
 function changeUserRole(id,role){
-  const u=DB.users.find(x=>x.id==id);
+  const u=DB.users.find(x=>x.id===id);
   if(u){u.role=role;if(role==='admin')u.plan='admin';else if(!u.plan||u.plan==='admin')u.plan='trial';}
   renderUsers();buildSidebar();
 }
 function changeUserPlan(id,plan){
-  const u=DB.users.find(x=>x.id==id);
+  const u=DB.users.find(x=>x.id===id);
   if(u)u.plan=plan;
   renderUsers();
 }
@@ -7055,7 +7056,7 @@ function calcTotals(){
   // ЗП из DB.pickedStaff (не из DOM — DOM может быть скрыт)
   let staff=0;
   Object.entries(DB.pickedStaff||{}).forEach(([id,p])=>{
-    const e=DB.employees.find(x=>x.id==id);
+    const e=DB.employees.find(x=>x.id===id);
     if(e)staff+=(e.salary||0)*(p.qty||1);
   });
   // ФОТ — налоги работодателя (ZUS) поверх ЗП
@@ -7102,6 +7103,7 @@ function _recalcNow(){
   if(cur==='s6')updateFormulaDisplay();
   updateTabCosts(t);
   updateAchievements();
+  updateTopConcept();
 }
 function updateTabCosts(t){
   // Tab 1: Помещение — аренда + депозит
@@ -7116,7 +7118,7 @@ function updateTabCosts(t){
   // Tab 4: Персонал — ФОТ/мес
   let fot=0;
   Object.entries(DB.pickedStaff||{}).forEach(([id,p])=>{
-    const e=DB.employees.find(x=>x.id==id);
+    const e=DB.employees.find(x=>x.id===id);
     if(e)fot+=(e.salary||0)*(p.qty||1);
   });
   const tc4=document.getElementById('tabCost4');
@@ -7125,7 +7127,7 @@ function updateTabCosts(t){
   let svcTotal=0;
   const svcPicked=DB.pickedServices||{};
   Object.entries(svcPicked).forEach(([id,p])=>{
-    const s=DB.services.find(x=>x.id==id);
+    const s=DB.services.find(x=>x.id===id);
     if(s)svcTotal+=(p.customPrice!=null?p.customPrice:s.price)*(p.qty||1);
   });
   const tc5=document.getElementById('tabCost5');
@@ -7137,7 +7139,7 @@ function updateTabCosts(t){
   const svcRevEl=document.getElementById('svcRevenue');
   const svcPickedCount=Object.keys(svcPicked).length;
   if(svcCountEl)svcCountEl.textContent=svcPickedCount;
-  if(svcCatsEl){const cats=new Set();Object.keys(svcPicked).forEach(id=>{const s=DB.services.find(x=>x.id==id);if(s)cats.add(s.category||s.category_id||'Другое')});svcCatsEl.textContent=cats.size}
+  if(svcCatsEl){const cats=new Set();Object.keys(svcPicked).forEach(id=>{const s=DB.services.find(x=>x.id===id);if(s)cats.add(s.category||s.category_id||'Другое')});svcCatsEl.textContent=cats.size}
   if(svcAvgEl)svcAvgEl.textContent=svcPickedCount>0?Math.round(svcTotal/svcPickedCount).toLocaleString('ru'):'0';
   if(svcRevEl){const chairs=parseInt(document.getElementById('chairsCount')?.value||7);const ppd=parseInt(document.getElementById('patientsPerChair')?.value||6);const wd=parseInt(document.getElementById('workDays')?.value||22);const avgP=svcPickedCount>0?svcTotal/svcPickedCount:0;svcRevEl.textContent=Math.round(avgP*chairs*ppd*wd).toLocaleString('ru')}
   const s5t=document.getElementById('s5Total');
@@ -7406,6 +7408,9 @@ function updateFormulaDisplay(){
 }
 // ═══════════════ RIGHT PANEL ═══════════════
 function updateRightPanel(){
+  aiUpdateSuggestions();
+  return;
+  // LEGACY: old stats panel (replaced by AI chat)
   const rp=document.getElementById('rpContent');
   if(!rp)return;
   const t=calcTotals();
@@ -7506,7 +7511,7 @@ function updateRightPanel(){
     const picked=DB.pickedServices||{};
     const pIds=Object.keys(picked);
     let total=0;
-    pIds.forEach(id=>{const s=DB.services.find(x=>x.id==id);if(s)total+=(picked[id].customPrice!=null?picked[id].customPrice:s.price)*(picked[id].qty||1)});
+    pIds.forEach(id=>{const s=DB.services.find(x=>x.id===id);if(s)total+=(picked[id].customPrice!=null?picked[id].customPrice:s.price)*(picked[id].qty||1)});
     const avgP=pIds.length?Math.round(total/pIds.length):0;
     html+=`<div class="rp-sec"><div class="rp-sec-title">Ценообразование</div>
     <div class="rp-stat"><span class="rp-stat-label">Процедур</span><span class="rp-stat-val">${pIds.length}</span></div>
@@ -7520,6 +7525,88 @@ function updateRightPanel(){
   }
 
   rp.innerHTML=html;
+}
+
+// ═══════════════ AI CHAT ═══════════════
+let _aiChatHistory=[];
+const AI_CHAT_URL=SB_URL+'/functions/v1/ai-chat';
+
+function aiGetContext(){
+  const t=calcTotals();
+  return{section:cur,budget:t.grand,revenue:t.revenue,expenses:t.expenses,
+    rooms:Object.keys(DB.pickedRooms||{}).length,equipment:Object.keys(DB.pickedEquip||{}).length,
+    staff:Object.keys(DB.pickedStaff||{}).length,services:Object.keys(DB.pickedServices||{}).length,
+    renovations:Object.keys(DB.pickedRenovations||{}).length,docs:Object.keys(DB.pickedDocs||{}).length,
+    property:activeProperty?{name:activeProperty.name,area:activeProperty.area,city:activeProperty.city}:null,
+    concept:window._currentConceptName||null,bizType:currentBizType||'dental'};
+}
+
+function aiAddMessage(text,role){
+  const el=document.getElementById('aiMessages');
+  const msg=document.createElement('div');
+  msg.className='ai-msg '+(role==='user'?'user':'bot');
+  if(role!=='user')msg.innerHTML='<div class="ai-label">SVITA AI</div>'+esc(text).replace(/\n/g,'<br>');
+  else msg.textContent=text;
+  el.appendChild(msg);el.scrollTop=el.scrollHeight;
+  _aiChatHistory.push({role,content:text});
+}
+
+function aiShowTyping(){const el=document.getElementById('aiMessages');const t=document.createElement('div');t.className='ai-typing';t.id='aiTypingIndicator';t.innerHTML='<span></span><span></span><span></span>';el.appendChild(t);el.scrollTop=el.scrollHeight}
+function aiHideTyping(){const t=document.getElementById('aiTypingIndicator');if(t)t.remove()}
+
+function aiSuggest(el){document.getElementById('aiChatInput').value=el.textContent;aiChatSend()}
+
+function aiUpdateSuggestions(){
+  const sg=document.getElementById('aiSuggestions');if(!sg)return;
+  const m={overview:['Оцени концепцию','Что не хватает?','Сравни с рынком'],s1:['Помещение подходит?','Какой район лучше?','Нормы площади'],s2:['Что ремонтировать?','Сколько стоит ремонт?','Нормы SANEPID'],s3:['Какое оборудование?','Минимальный набор','Лучшие бренды'],s4:['Сколько врачей?','Средние зарплаты','Кого нанять первым?'],s5:['Топ процедуры','Средний чек?','Ценообразование'],s6:['Оцени рентабельность','Когда окупится?','Как повысить доход?'],s7:['Какие документы?','Порядок получения','Стоимость оформления']};
+  const items=m[cur]||m.overview;
+  sg.innerHTML=items.map(s=>'<span class="ai-sug" onclick="aiSuggest(this)">'+esc(s)+'</span>').join('');
+}
+
+async function aiChatSend(){
+  const inp=document.getElementById('aiChatInput');const text=inp.value.trim();if(!text)return;
+  inp.value='';inp.style.height='36px';
+  aiAddMessage(text,'user');aiShowTyping();
+  document.getElementById('aiChatSendBtn').disabled=true;
+  const ctx=aiGetContext();
+  try{
+    const res=await fetch(AI_CHAT_URL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_KEY},body:JSON.stringify({message:text,context:ctx,history:_aiChatHistory.slice(-10)})});
+    aiHideTyping();
+    if(res.ok){const data=await res.json();aiAddMessage(data.reply||data.message||'Ошибка ответа','bot')}
+    else aiAddMessage(aiLocalReply(text,ctx),'bot');
+  }catch(e){aiHideTyping();aiAddMessage(aiLocalReply(text,ctx),'bot')}
+  document.getElementById('aiChatSendBtn').disabled=false;
+  aiUpdateSuggestions();
+}
+
+function aiLocalReply(text,ctx){
+  const q=text.toLowerCase();const t=calcTotals();
+  if(q.includes('бюджет')||q.includes('стоит')||q.includes('оцени'))
+    return 'Бюджет: '+t.grand.toLocaleString('ru')+' PLN\nПомещение: '+t.rent.toLocaleString('ru')+'\nОборудование: '+t.equip.toLocaleString('ru')+'\nИнженерия: '+t.eng.toLocaleString('ru')+'\n\nТипичный бюджет клиники в Варшаве: 800K\u20132M PLN.';
+  if(q.includes('рентаб')||q.includes('окуп')||q.includes('roi'))
+    return 'Выручка: '+t.revenue.toLocaleString('ru')+' PLN/мес\nРасходы: '+t.expenses.toLocaleString('ru')+' PLN/мес\nПрибыль: '+(t.revenue-t.expenses).toLocaleString('ru')+' PLN/мес\nОкупаемость: '+(t.revenue>t.expenses?Math.ceil(t.grand/(t.revenue-t.expenses))+' мес.':'\u2014');
+  if(q.includes('оборудов')||q.includes('минимал'))
+    return 'Минимум для стоматологии:\n\u2022 3\u20135 установок\n\u2022 Автоклав\n\u2022 Рентген (ОПТГ/КЛКТ)\n\u2022 Компрессор + аспиратор\n\u2022 Мебель\n\nВыбрано: '+ctx.equipment+' из '+DB.suppliers.length;
+  if(q.includes('персонал')||q.includes('сотрудник')||q.includes('врач'))
+    return 'Минимальный штат:\n\u2022 2\u20133 стоматолога\n\u2022 1 хирург\n\u2022 1\u20132 ассистента\n\u2022 1 администратор\n\u2022 1 гигиенист\n\nВыбрано: '+ctx.staff+' сотрудников';
+  if(q.includes('помещ')||q.includes('район'))
+    return ctx.property?'Объект: '+ctx.property.name+', '+ctx.property.area+' м\u00B2\n\nДля 5\u20137 кресел: 150\u2013250 м\u00B2\nЛучшие районы: Mokot\u00F3w, Wola, \u015Ar\u00F3dmie\u015Bcie':'Помещение не выбрано. Откройте раздел \u00ABПомещение\u00BB.';
+  if(q.includes('документ')||q.includes('лицензи'))
+    return 'Ключевые документы:\n\u2022 Wpis do RPWDL\n\u2022 SANEPID разрешение\n\u2022 NIP/REGON\n\u2022 Страхование OC\n\u2022 Пожарная безопасность\n\nОформлено: '+ctx.docs+' из 103';
+  if(q.includes('не хватает')||q.includes('что дальше'))
+    return 'Статус:\n'+(ctx.property?'\u2705':'\u274C')+' Помещение\n'+(ctx.renovations>0?'\u2705':'\u274C')+' Модернизация ('+ctx.renovations+')\n'+(ctx.equipment>0?'\u2705':'\u274C')+' Оборудование ('+ctx.equipment+')\n'+(ctx.staff>0?'\u2705':'\u274C')+' Персонал ('+ctx.staff+')\n'+(ctx.services>0?'\u2705':'\u274C')+' Услуги ('+ctx.services+')\n'+(ctx.docs>0?'\u2705':'\u274C')+' Документы ('+ctx.docs+')';
+  return 'Могу помочь с:\n\u2022 Бюджет и рентабельность\n\u2022 Подбор оборудования\n\u2022 Рекомендации по персоналу\n\u2022 Документы и лицензии\n\u2022 Анализ помещения\n\nЗадайте вопрос!';
+}
+
+// ═══════════════ TOP CONCEPT INDICATOR ═══════════════
+function updateTopConcept(){
+  const el=document.getElementById('topConcept');if(!el)return;
+  const name=window._currentConceptName;
+  if(name){
+    const t=calcTotals();
+    el.textContent='\uD83D\uDCCB '+name+' \u00B7 '+t.grand.toLocaleString('ru')+' PLN';
+    el.style.display='inline-block';
+  }else{el.style.display='none'}
 }
 
 // ═══════════════ PHOTO UPLOAD ═══════════════
