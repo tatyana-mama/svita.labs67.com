@@ -648,7 +648,9 @@ Apple</button>
 
 <!-- SIDEBAR -->
 <aside class="side" id="sidebar">
-<div class="side-head"><div class="side-logo"><span class="d"></span>SVITA</div><div class="side-tag" id="sideTag">Конструктор бизнеса</div></div>
+<div class="side-head"><div class="side-logo"><span class="d"></span>SVITA</div><div class="side-tag" id="sideTag">Конструктор бизнеса</div>
+<div id="sideBizBtn" style="display:none;margin-top:6px;cursor:pointer;padding:6px 10px;border-radius:8px;border:1px solid var(--bd);background:var(--sf2);font-size:11px;color:var(--tx2);text-align:center;transition:all .2s" onclick="showBizSelector()"><span id="sideBizIcon"></span> <span id="sideBizName">Выбрать концепцию</span> <span style="font-size:9px;opacity:.5">▼</span></div>
+</div>
 <nav class="side-nav" id="sideNav"></nav>
 </aside>
 <div class="mob-overlay" id="mobOverlay" onclick="toggleMobileSidebar()"></div>
@@ -2754,6 +2756,120 @@ function applyBizData(type){
   DB.pickedContractors={};DB.pickedRenovations={};DB.pickedDocs={};
 }
 
+// Show biz type selector (modal from within app)
+function showBizSelector(){
+  let html='<div style="padding:24px;max-width:520px;margin:auto">';
+  html+='<div style="font-size:16px;font-weight:700;margin-bottom:4px">Выберите концепцию</div>';
+  html+='<div style="font-size:11px;color:var(--tx3);margin-bottom:16px">Данные (помещения, оборудование, персонал, меню) изменятся под выбранный тип</div>';
+  html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px">';
+  Object.entries(BIZ_TYPES).forEach(([key,bt])=>{
+    const sel=currentBizType===key;
+    html+=`<div onclick="pickBizType('${key}')" style="padding:14px;cursor:pointer;border:2px solid ${sel?bt.color:'var(--bd)'};border-radius:12px;background:${sel?bt.color+'15':'var(--sf2)'};text-align:center;transition:all .2s" data-btype="${key}">
+<div style="font-size:32px;margin-bottom:4px">${bt.icon}</div>
+<div style="font-size:13px;font-weight:700;color:${sel?bt.color:'var(--tx)'}">${bt.name}</div>
+<div style="font-size:10px;color:var(--tx3);margin-top:2px">${bt.subtypes.length} форматов</div></div>`;
+  });
+  html+='</div>';
+  // Subtypes
+  html+='<div id="bizModalSubs" style="display:none;margin-bottom:16px"></div>';
+  html+='<div style="display:flex;gap:8px">';
+  html+='<button class="btn" style="flex:1;padding:10px" onclick="closeModal()">Отмена</button>';
+  html+='<button class="btn pr" style="flex:1;padding:10px" onclick="confirmBizChange()">Применить</button>';
+  html+='</div></div>';
+  // Reuse existing modal system
+  const overlay=document.getElementById('modalOverlay');
+  const modal=document.getElementById('modal');
+  if(overlay&&modal){
+    document.getElementById('modalTitle').textContent='Концепция';
+    document.getElementById('modalBody').innerHTML=html;
+    document.getElementById('modalFooter').innerHTML='';
+    overlay.classList.add('vis');modal.classList.add('vis');
+    // If type already selected, show subtypes
+    if(currentBizType)pickBizType(currentBizType);
+  }
+}
+
+let _pendingBizType=null,_pendingBizSub=null;
+
+function pickBizType(key){
+  _pendingBizType=key;
+  _pendingBizSub=null;
+  const bt=BIZ_TYPES[key];
+  // Highlight selected type
+  document.querySelectorAll('[data-btype]').forEach(el=>{
+    const isSel=el.dataset.btype===key;
+    el.style.borderColor=isSel?bt.color:'var(--bd)';
+    el.style.background=isSel?bt.color+'15':'var(--sf2)';
+    el.querySelector('div:nth-child(2)').style.color=isSel?bt.color:'var(--tx)';
+  });
+  // Render subtypes
+  const subs=document.getElementById('bizModalSubs');
+  let h='<div style="font-size:12px;font-weight:600;margin-bottom:8px;color:var(--tx2)">'+bt.name+' — формат:</div>';
+  bt.subtypes.forEach(st=>{
+    const sel=currentBizSubtype===st.id;
+    h+=`<div onclick="pickBizSub('${st.id}')" data-bsub="${st.id}" style="padding:8px 12px;cursor:pointer;border:1px solid ${sel?bt.color:'var(--bd)'};border-radius:8px;background:${sel?bt.color+'12':'var(--sf2)'};margin-bottom:4px;transition:all .2s">
+<div style="font-size:12px;font-weight:600;color:${sel?bt.color:'var(--tx)'}">${st.name}</div>
+<div style="font-size:10px;color:var(--tx3)">${st.desc}</div></div>`;
+  });
+  subs.innerHTML=h;subs.style.display='block';
+}
+
+function pickBizSub(id){
+  _pendingBizSub=id;
+  const bt=BIZ_TYPES[_pendingBizType];
+  document.querySelectorAll('[data-bsub]').forEach(el=>{
+    const isSel=el.dataset.bsub===id;
+    el.style.borderColor=isSel?bt.color:'var(--bd)';
+    el.style.background=isSel?bt.color+'12':'var(--sf2)';
+    el.querySelector('div').style.color=isSel?bt.color:'var(--tx)';
+  });
+}
+
+function confirmBizChange(){
+  if(!_pendingBizType)return;
+  const changed=_pendingBizType!==currentBizType;
+  currentBizType=_pendingBizType;
+  currentBizSubtype=_pendingBizSub;
+  localStorage.setItem('svita_biz_type',currentBizType);
+  if(currentBizSubtype)localStorage.setItem('svita_biz_subtype',currentBizSubtype);
+  // Apply data if changed
+  if(changed){
+    if(currentBizType!=='dental'&&BIZ_DATA[currentBizType]){
+      applyBizData(currentBizType);
+    }else if(currentBizType==='dental'){
+      // Reload page to restore default dental data
+      location.reload();return;
+    }
+  }
+  // Update sidebar
+  updateBizUI();
+  closeModal();
+  // Re-render everything
+  buildSidebar();renderAll();recalc();
+}
+
+function updateBizUI(){
+  const btn=document.getElementById('sideBizBtn');
+  const icon=document.getElementById('sideBizIcon');
+  const name=document.getElementById('sideBizName');
+  const tag=document.getElementById('sideTag');
+  // Only show for admin/owner
+  if(btn&&!['admin','owner'].includes(currentRole)){btn.style.display='none';return}
+  if(currentBizType&&BIZ_TYPES[currentBizType]){
+    const bt=BIZ_TYPES[currentBizType];
+    const sub=currentBizSubtype?bt.subtypes.find(s=>s.id===currentBizSubtype):null;
+    if(btn){btn.style.display='block';btn.style.borderColor=bt.color+'40'}
+    if(icon)icon.textContent=bt.icon;
+    if(name)name.textContent=sub?sub.name:bt.name;
+    if(tag)tag.textContent=bt.icon+' '+(sub?sub.name:bt.name);
+  }else{
+    if(btn)btn.style.display='block';
+    if(icon)icon.textContent='🏢';
+    if(name)name.textContent='Выбрать концепцию';
+    if(tag)tag.textContent='Конструктор бизнеса';
+  }
+}
+
 function showLogin(){
   document.getElementById('loginStep1').style.display='block';
   document.getElementById('loginStep2').style.display='none';
@@ -3047,13 +3163,8 @@ function enterApp(){
   localStorage.setItem('svita_role',currentRole);
   if(currentBizType){localStorage.setItem('svita_biz_type',currentBizType)}
   if(currentBizSubtype){localStorage.setItem('svita_biz_subtype',currentBizSubtype)}
-  // Update sidebar tag with business type
-  const sideTag=document.querySelector('.side-tag');
-  if(sideTag&&currentBizType&&BIZ_TYPES[currentBizType]){
-    const bt=BIZ_TYPES[currentBizType];
-    const sub=currentBizSubtype?bt.subtypes.find(s=>s.id===currentBizSubtype):null;
-    sideTag.textContent=bt.icon+' '+(sub?sub.name:bt.name);
-  }
+  // Update sidebar biz type button and tag
+  updateBizUI();
   // Track session + update profile + sync to DB.users
   if(sb&&currentUser.email){
     sb.from('user_sessions').insert({email:currentUser.email,user_agent:navigator.userAgent}).then(()=>{});
