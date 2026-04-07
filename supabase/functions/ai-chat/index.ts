@@ -6,8 +6,8 @@ const CORS = {
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 }
 
-// Jetson SVITA AI proxy (Tailscale internal network)
-const JETSON_URL = "http://100.88.58.120:8810"
+// Jetson SVITA AI proxy (public Tailscale Funnel)
+const JETSON_URL = "https://scyraai-desktop.tail2060da.ts.net/svita-ai"
 const JETSON_TIMEOUT = 90_000
 
 Deno.serve(async (req) => {
