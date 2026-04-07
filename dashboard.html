@@ -120,6 +120,8 @@
 /* CONTENT */
 .sec{display:none;padding:20px 24px;animation:fi .2s ease}.sec.vis{display:block}
 @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes aiSpin{to{transform:rotate(360deg)}}
+.ai-spin{width:14px;height:14px;border:2px solid var(--bd);border-top-color:#8b5cf6;border-radius:50%;animation:aiSpin .8s linear infinite}
 .bk{font-size:11px;color:var(--tx3);cursor:pointer;margin-bottom:14px;display:inline-flex;align-items:center;gap:4px}.bk:hover{color:var(--ac2)}
 .ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:8px}.ph h2{font-size:20px;font-weight:800}.ph-s{font-size:12px;color:var(--tx2);margin-top:3px}
 .tag{font-size:10px;font-weight:600;padding:3px 9px;border-radius:6px;display:inline-block}
@@ -2763,13 +2765,31 @@ function applyBizData(type){
 // ═══════════════ AI CONCEPT GENERATOR (Llama 70B on Jetson via Edge Function) ═══════════════
 const AI_URL=SB_URL+'/functions/v1/ai-concept';
 
+let _aiGenTimer=null;
 async function generateAIConcept(){
   const inp=document.getElementById('aiConceptInput');
   const btn=document.getElementById('aiGenBtn');
   const status=document.getElementById('aiGenStatus');
+  const preview=document.getElementById('aiPreview');
   const desc=inp?.value?.trim();
   if(!desc){status.textContent='Опишите концепцию';status.style.color='var(--rd)';return}
-  btn.disabled=true;btn.textContent='⏳ Генерирую (Llama 70B)...';status.textContent='Запрос отправлен на Jetson...';status.style.color='var(--tx3)';
+  btn.disabled=true;
+  if(preview)preview.style.display='none';
+  // Animated progress
+  let dots=0;let secs=0;
+  const msgs=['Анализирую концепцию','Подбираю сотрудников','Формирую меню/услуги','Подбираю оборудование','Рассчитываю помещения','Составляю ремонтные работы','Финализирую'];
+  status.innerHTML='<div style="display:flex;align-items:center;gap:8px"><div class="ai-spin"></div><span id="aiMsg">Отправляю на Jetson...</span></div><div style="margin-top:6px"><div style="height:3px;background:var(--bd);border-radius:2px;overflow:hidden"><div id="aiBar" style="height:100%;width:0%;background:linear-gradient(90deg,#8b5cf6,#3b82f6);transition:width 0.5s"></div></div><span id="aiTime" style="font-size:9px;color:var(--tx3)">0 сек</span></div>';
+  _aiGenTimer=setInterval(()=>{
+    secs++;
+    const bar=document.getElementById('aiBar');
+    const msg=document.getElementById('aiMsg');
+    const time=document.getElementById('aiTime');
+    if(time)time.textContent=secs+' сек';
+    const pct=Math.min(95,secs*2.5);
+    if(bar)bar.style.width=pct+'%';
+    if(msg&&secs%5===0){const i=Math.min(Math.floor(secs/5),msgs.length-1);msg.textContent=msgs[i]+'...';}
+  },1000);
+
   const prompt=`Ты — эксперт по открытию бизнеса в Польше. Пользователь описал концепцию: "${desc}"
 
 Сгенерируй полную структуру для конструктора бизнеса. Ответ СТРОГО в JSON (без markdown, без \`\`\`):
@@ -2806,25 +2826,59 @@ async function generateAIConcept(){
     if(data.error)throw new Error(data.error);
     const text=data.text;
     if(!text)throw new Error('Пустой ответ от AI');
-    // Extract JSON from response (LLM may add text around it)
     const jsonMatch=text.match(/\{[\s\S]*\}/);
     if(!jsonMatch)throw new Error('AI не вернул JSON');
     const clean=jsonMatch[0].replace(/```json?\n?/g,'').replace(/```/g,'').trim();
     const concept=JSON.parse(clean);
     _aiConcept=concept;
-    status.innerHTML='<span style="color:var(--gn)">✓ Концепция готова: <b>'+esc(concept.name||desc)+'</b></span>';
-    status.innerHTML+='<div style="margin-top:6px;font-size:10px;color:var(--tx3)">'+
-      (concept.employees?.length||0)+' сотрудников · '+
-      (concept.services?.length||0)+' услуг · '+
-      (concept.rooms?.length||0)+' помещений · '+
-      (concept.suppliers?.length||0)+' оборудования · '+
-      (concept.renovations?.length||0)+' работ</div>';
+    clearInterval(_aiGenTimer);
+    const bar=document.getElementById('aiBar');if(bar)bar.style.width='100%';
+    // Show preview card
+    const empCost=concept.employees?.reduce((s,e)=>s+(e.salary||0),0)||0;
+    const equipCost=concept.suppliers?.reduce((s,e)=>s+(e.price||0),0)||0;
+    const renoCost=concept.renovations?.reduce((s,e)=>s+(e.price||0),0)||0;
+    status.innerHTML='<div style="color:var(--gn);font-weight:600;margin-bottom:8px">✓ Концепция «'+esc(concept.name||desc)+'» готова за '+secs+' сек</div>';
+    if(preview){
+      preview.style.display='block';
+      preview.innerHTML='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px">'+
+        '<div style="background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:10px">'+
+          '<div style="font-weight:600;margin-bottom:4px">👥 Сотрудники</div>'+
+          '<div style="font-size:18px;font-weight:700">'+(concept.employees?.length||0)+'</div>'+
+          '<div style="color:var(--tx3);font-size:10px">ФОТ '+Math.round(empCost/1000)+'k PLN/мес</div>'+
+        '</div>'+
+        '<div style="background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:10px">'+
+          '<div style="font-weight:600;margin-bottom:4px">📋 Услуги/Меню</div>'+
+          '<div style="font-size:18px;font-weight:700">'+(concept.services?.length||0)+'</div>'+
+          '<div style="color:var(--tx3);font-size:10px">позиций</div>'+
+        '</div>'+
+        '<div style="background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:10px">'+
+          '<div style="font-weight:600;margin-bottom:4px">🏗 Помещения</div>'+
+          '<div style="font-size:18px;font-weight:700">'+(concept.rooms?.length||0)+'</div>'+
+          '<div style="color:var(--tx3);font-size:10px">'+(concept.rooms?.reduce((s,r)=>s+(r.area||0),0)||0)+' м²</div>'+
+        '</div>'+
+        '<div style="background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:10px">'+
+          '<div style="font-weight:600;margin-bottom:4px">⚙️ Оборудование</div>'+
+          '<div style="font-size:18px;font-weight:700">'+(concept.suppliers?.length||0)+'</div>'+
+          '<div style="color:var(--tx3);font-size:10px">'+Math.round(equipCost/1000)+'k PLN</div>'+
+        '</div>'+
+        '<div style="background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:10px">'+
+          '<div style="font-weight:600;margin-bottom:4px">🔧 Ремонт</div>'+
+          '<div style="font-size:18px;font-weight:700">'+(concept.renovations?.length||0)+'</div>'+
+          '<div style="color:var(--tx3);font-size:10px">'+Math.round(renoCost/1000)+'k PLN</div>'+
+        '</div>'+
+        '<div style="background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:10px">'+
+          '<div style="font-weight:600;margin-bottom:4px">📊 Итого старт</div>'+
+          '<div style="font-size:18px;font-weight:700">'+Math.round((equipCost+renoCost)/1000)+'k</div>'+
+          '<div style="color:var(--tx3);font-size:10px">PLN инвестиции</div>'+
+        '</div>'+
+      '</div>';
+    }
     const applyBtn=document.getElementById('aiApplyBtn');
     if(applyBtn)applyBtn.style.display='block';
   }catch(e){
+    clearInterval(_aiGenTimer);
     console.error('[AI]',e);
-    status.textContent='Ошибка: '+(e.message||'не удалось разобрать ответ');
-    status.style.color='var(--rd)';
+    status.innerHTML='<span style="color:var(--rd)">✗ Ошибка: '+esc(e.message||'не удалось разобрать ответ')+'</span>';
   }
   btn.disabled=false;btn.textContent='✨ Сгенерировать';
 }
@@ -2833,6 +2887,8 @@ let _aiConcept=null;
 
 async function applyAIConcept(){
   if(!_aiConcept)return;
+  const applyBtn=document.getElementById('aiApplyBtn');
+  if(applyBtn){applyBtn.disabled=true;applyBtn.textContent='Применяю...';}
   // Apply to DB
   if(_aiConcept.employees)DB.employees=_aiConcept.employees;
   if(_aiConcept.services)DB.services=_aiConcept.services;
@@ -2854,6 +2910,8 @@ async function applyAIConcept(){
   updateBizUI();
   closeModal();
   buildSidebar();renderAll();recalc();
+  toast('Концепция «'+(_aiConcept.name||'AI')+'» создана и сохранена','gn');
+  _aiConcept=null;
 }
 
 // Show biz type selector (modal from within app)
@@ -2870,7 +2928,8 @@ function showBizSelector(){
   html+='<button id="aiGenBtn" class="btn pr" style="padding:8px 16px;font-size:11px" onclick="generateAIConcept()">✨ Сгенерировать</button>';
   html+='<div id="aiGenStatus" style="font-size:10px;color:var(--tx3);flex:1"></div>';
   html+='</div>';
-  html+='<button id="aiApplyBtn" class="btn" style="display:none;width:100%;margin-top:8px;padding:10px;font-size:12px;background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;border:none;font-weight:700" onclick="applyAIConcept()">Применить AI концепцию</button>';
+  html+='<div id="aiPreview" style="display:none;margin-top:10px"></div>';
+  html+='<button id="aiApplyBtn" class="btn" style="display:none;width:100%;margin-top:8px;padding:10px;font-size:12px;background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;border:none;font-weight:700;border-radius:8px;cursor:pointer" onclick="applyAIConcept()">🚀 Применить и начать работу</button>';
   html+='</div>';
 
   // Saved concepts from Supabase
