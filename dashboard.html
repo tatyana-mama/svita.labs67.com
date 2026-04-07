@@ -1059,12 +1059,12 @@ Apple</button>
 <div class="ph"><div><h2>04 &middot; Персонал</h2><div class="ph-s">Штатное расписание, ФОТ, отделы</div></div><button class="btn sm pr" onclick="openModal('staff')">+ Добавить</button></div>
 <div class="sts" id="staffStats">
 <div class="st"><div class="st-l">Штат</div><div class="st-v" id="staffCount">0</div><div class="st-s">человек</div></div>
-<div class="st"><div class="st-l">ФОТ / мес.</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="staffFot">0</div><div class="st-s">PLN</div></div>
-<div class="st"><div class="st-l">ФОТ / год</div><div class="st-v" style="font-size:16px;color:var(--yl)" id="staffFotYear">0</div><div class="st-s">PLN</div></div>
+<div class="st"><div class="st-l">ЗП / мес.</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="staffFot">0</div><div class="st-s">PLN</div></div>
+<div class="st"><div class="st-l">ЗП / год</div><div class="st-v" style="font-size:16px;color:var(--yl)" id="staffFotYear">0</div><div class="st-s">PLN</div></div>
 <div class="st"><div class="st-l">Средняя ЗП</div><div class="st-v" style="font-size:16px" id="staffAvg">0</div><div class="st-s">PLN/мес</div></div>
 </div>
 <div id="staffCards"></div>
-<div style="text-align:right;padding:12px 0;border-top:1px solid var(--bd);margin-top:8px"><span style="font-size:12px;color:var(--tx3)">ФОТ / мес.: </span><span style="font-size:18px;font-weight:800;color:var(--ac2)" id="s4Total">0 PLN</span></div>
+<div style="text-align:right;padding:12px 0;border-top:1px solid var(--bd);margin-top:8px"><span style="font-size:12px;color:var(--tx3)">ЗП / мес.: </span><span style="font-size:18px;font-weight:800;color:var(--ac2)" id="s4Total">0 PLN</span></div>
 </div>
 
 <!-- ═══ S5: ПРАЙС-ЛИСТ ═══ -->
@@ -1149,7 +1149,8 @@ Apple</button>
 <!-- Детализация расходов -->
 <div style="display:grid;grid-template-columns:1fr auto;gap:4px 12px;font-size:11px;margin-bottom:10px;padding:0 2px">
 <span style="color:var(--tx2)">Аренда</span><span style="color:var(--rd);font-weight:600;text-align:right" id="fmExpRent">0 PLN</span>
-<span style="color:var(--tx2);font-weight:700">&#129489; ЗП сотрудников (ФОТ)</span><span style="color:var(--rd);font-weight:700;text-align:right" id="fmExpStaff">0 PLN</span>
+<span style="color:var(--tx2);font-weight:700">&#129489; ЗП сотрудников</span><span style="color:var(--rd);font-weight:700;text-align:right" id="fmExpStaff">0 PLN</span>
+<span style="color:var(--tx2);font-weight:600">&#128176; ФОТ (налоги работодателя <input id="fotRateInput" type="number" value="20.48" min="0" max="100" step="0.01" style="width:52px;background:var(--bg);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:10px;padding:1px 4px;text-align:center" oninput="recalc()">%)</span><span style="color:var(--rd);font-weight:600;text-align:right" id="fmExpFot">0 PLN</span>
 <span style="color:var(--tx2)">Коммунальные</span><span style="color:var(--rd);font-weight:600;text-align:right" id="fmExpUtils">0 PLN</span>
 <span style="color:var(--tx2)">Материалы</span><span style="color:var(--rd);font-weight:600;text-align:right" id="fmExpMat">0 PLN</span>
 <span style="color:var(--tx2)">Маркетинг</span><span style="color:var(--rd);font-weight:600;text-align:right" id="fmExpMkt">0 PLN</span>
@@ -1158,7 +1159,7 @@ Apple</button>
 </div>
 <div style="background:var(--bg);border-radius:8px;padding:10px;font-family:'SF Mono',Monaco,Consolas,monospace">
 <div style="font-size:10px;color:var(--tx3);margin-bottom:4px">ФОРМУЛА:</div>
-<div style="font-size:12px;color:var(--tx);font-weight:600">Аренда + ФОТ + Коммун. + Материалы + Маркетинг + Прочие</div>
+<div style="font-size:12px;color:var(--tx);font-weight:600">Аренда + ЗП + ФОТ + Коммун. + Материалы + Маркетинг + Прочие</div>
 <div style="font-size:11px;color:var(--rd);margin-top:4px;font-weight:700" id="fmExpensesCalc">0 + 0 + 0 + 0 + 0 + 0 = 0 PLN</div>
 </div>
 </div>
@@ -1435,7 +1436,8 @@ Apple</button>
 </div></div>
 <div class="c"><div class="ch"><h3>Расходы / мес.</h3></div><div class="cb">
 <div class="metric-row"><span class="metric-label">Аренда</span><span class="metric-val neg" id="prRent">0</span></div>
-<div class="metric-row"><span class="metric-label">ФОТ</span><span class="metric-val neg" id="prStaff">0</span></div>
+<div class="metric-row"><span class="metric-label">ЗП сотрудников</span><span class="metric-val neg" id="prStaff">0</span></div>
+<div class="metric-row"><span class="metric-label">ФОТ (налоги)</span><span class="metric-val neg" id="prFot">0</span></div>
 <div class="metric-row"><span class="metric-label">Коммунальные</span><span class="metric-val neg"><input class="price-edit" id="prUtils" value="3000" onchange="recalc();saveLoadParams()" style="color:var(--rd)"> PLN</span></div>
 <div class="metric-row"><span class="metric-label">Материалы</span><span class="metric-val neg"><input class="price-edit" id="prMaterials" value="15000" onchange="recalc();saveLoadParams()" style="color:var(--rd)"> PLN</span></div>
 <div class="metric-row"><span class="metric-label">Маркетинг</span><span class="metric-val neg"><input class="price-edit" id="prMarketing" value="5000" onchange="recalc();saveLoadParams()" style="color:var(--rd)"> PLN</span></div>
@@ -3584,7 +3586,7 @@ function renderEmployees(){
 <div class="db-card-head"><span class="db-card-name">${esc(r.name)}</span><span class="db-card-role" style="${statusColor}">${esc(r.status)}</span></div>
 <div class="db-card-grid">
 <div class="db-card-field"><div class="db-card-label">Специализация</div><div class="db-card-val">${esc(r.spec)}</div></div>
-<div class="db-card-field"><div class="db-card-label">ФОТ</div><div class="db-card-val" style="color:var(--ac2)">${(r.salary||0).toLocaleString('ru')} PLN/мес</div></div>
+<div class="db-card-field"><div class="db-card-label">ЗП</div><div class="db-card-val" style="color:var(--ac2)">${(r.salary||0).toLocaleString('ru')} PLN/мес</div></div>
 </div>
 <div class="db-card-actions">
 <button class="btn sm ${picked?'gn':'pr'}" onclick="togglePick('pickedStaff','${r.id}','employees')">${picked?'✓ В штате':'+ Сотрудник → Таб 5'}</button>
@@ -5696,7 +5698,7 @@ function renderStaff(){
 </div>
 </div>
 <div style="text-align:right;flex-shrink:0">
-<div style="font-size:11px;color:var(--tx3)">ФОТ/мес</div>
+<div style="font-size:11px;color:var(--tx3)">ЗП/мес</div>
 <div style="font-size:16px;font-weight:700;color:var(--ac2)">${(r.salary||0).toLocaleString('ru')} PLN</div>
 </div>
 <div style="display:flex;gap:4px;flex-shrink:0">
@@ -6210,9 +6212,9 @@ const MODAL_FIELDS={
   room:[{k:'name',l:'Название',ph:'Кабинет 8'},{k:'type',l:'Тип',ph:'Стоматологический'},{k:'w',l:'Ширина (м)',ph:'4.0',t:'number'},{k:'l',l:'Длина (м)',ph:'3.5',t:'number'},{k:'h',l:'Высота (м)',ph:'2.9',t:'number'}],
   contractor:[{k:'name',l:'Компания',ph:'Название'},{k:'spec',l:'Специализация',ph:'Электрика'},{k:'city',l:'Город',ph:'Быдгощ'},{k:'price',l:'Цена',ph:'от 80 PLN/м'},{k:'phone',l:'Телефон',ph:'+48 500 000 000'}],
   supplier:[{k:'name',l:'Товар',ph:'Название'},{k:'category',l:'Категория',ph:'Стом. кресла'},{k:'price',l:'Цена (PLN)',ph:'0',t:'number'},{k:'supplier',l:'Поставщик',ph:'Компания'},{k:'warranty',l:'Гарантия',ph:'24 мес'}],
-  employee:[{k:'name',l:'Должность',ph:'Стоматолог'},{k:'spec',l:'Специализация',ph:'Терапия'},{k:'salary',l:'ФОТ/мес (PLN)',ph:'0',t:'number'},{k:'status',l:'Статус',ph:'Вакансия'}],
+  employee:[{k:'name',l:'Должность',ph:'Стоматолог'},{k:'spec',l:'Специализация',ph:'Терапия'},{k:'salary',l:'ЗП/мес (PLN)',ph:'0',t:'number'},{k:'status',l:'Статус',ph:'Вакансия'}],
   equip:[{k:'name',l:'Название',ph:'Оборудование'},{k:'category',l:'Категория',ph:'Категория'},{k:'price',l:'Цена (PLN)',ph:'0',t:'number'},{k:'supplier',l:'Поставщик',ph:'Компания'},{k:'warranty',l:'Гарантия',ph:'24 мес'}],
-  staff:[{k:'name',l:'Должность',ph:'Должность'},{k:'spec',l:'Описание',ph:'Полная ставка'},{k:'salary',l:'ФОТ/мес (PLN)',ph:'0',t:'number'},{k:'status',l:'Статус',ph:'Вакансия'}],
+  staff:[{k:'name',l:'Должность',ph:'Должность'},{k:'spec',l:'Описание',ph:'Полная ставка'},{k:'salary',l:'ЗП/мес (PLN)',ph:'0',t:'number'},{k:'status',l:'Статус',ph:'Вакансия'}],
   service:[{k:'name',l:'Процедура',ph:'Название'},{k:'time',l:'Время',ph:'30 мин'},{k:'price',l:'Цена (PLN)',ph:'0',t:'number'}],
   user:[{k:'name',l:'Имя',ph:'Иван Иванов'},{k:'email',l:'Email',ph:'user@clinic.com'},{k:'phone',l:'Телефон',ph:'+48 500 000 000'},{k:'position',l:'Должность',ph:'Врач-стоматолог'},{k:'role',l:'Роль',ph:'owner'},{k:'status',l:'Статус',ph:'Активен'},{k:'notes',l:'Заметки',ph:'Доп. информация'}],
   cabinetType:[{k:'name',l:'Название типа',ph:'Стоматологический'},{k:'icon',l:'Иконка',ph:'🦷'},{k:'desc',l:'Описание',ph:'Стандартный кабинет'},{k:'minArea',l:'Мин. площадь (м²)',ph:'12',t:'number'}],
@@ -6345,25 +6347,28 @@ function calcTotals(){
     if(item)equip+=(p.customPrice!=null?p.customPrice:item.price)*(p.qty||1);
   });
   const docs=getDocTotalCost();
-  // ФОТ из DB.pickedStaff (не из DOM — DOM может быть скрыт)
+  // ЗП из DB.pickedStaff (не из DOM — DOM может быть скрыт)
   let staff=0;
   Object.entries(DB.pickedStaff||{}).forEach(([id,p])=>{
     const e=DB.employees.find(x=>x.id==id);
     if(e)staff+=(e.salary||0)*(p.qty||1);
   });
+  // ФОТ — налоги работодателя (ZUS) поверх ЗП
+  const fotRate=(parseFloat(document.getElementById('fotRateInput')?.value)||20.48)/100;
+  const fot=Math.round(staff*fotRate);
   const avgCheck=getVal('avgCheck');
   const ppc=getVal('patientsPerChair');
   const wd=getVal('workDays');
   const chairs=parseInt(document.getElementById('chairsCount')?.value)||7;
   const revenue=chairs*ppc*wd*avgCheck;
-  const expenses=staff+rentMonth+getVal('prUtils')+getVal('prMaterials')+getVal('prMarketing')+getVal('prOther');
+  const expenses=staff+fot+rentMonth+getVal('prUtils')+getVal('prMaterials')+getVal('prMarketing')+getVal('prOther');
   const grand=rent+eng+equip+docs;
   // Update S1 cost total
   const s1el=document.getElementById('s1CostTotal');
   if(s1el)s1el.textContent=rent.toLocaleString('ru')+' PLN';
   const renDisp=document.getElementById('renCostDisplay');
   if(renDisp)renDisp.textContent=renovation.toLocaleString('ru');
-  return{rent,renovation,eng,equip,docs,staff,grand,revenue,expenses,chairs,ppc,wd,avgCheck,rentMonth};
+  return{rent,renovation,eng,equip,docs,staff,fot,grand,revenue,expenses,chairs,ppc,wd,avgCheck,rentMonth};
 }
 function getVal2(costKey){
   const el=document.querySelector('[data-cost="'+costKey+'"]');
@@ -6637,6 +6642,7 @@ function updateProfit(){
   document.getElementById('prRevenue').textContent=t.revenue.toLocaleString('ru')+' PLN';
   document.getElementById('prRent').textContent=t.rentMonth.toLocaleString('ru')+' PLN';
   document.getElementById('prStaff').textContent=t.staff.toLocaleString('ru')+' PLN';
+  document.getElementById('prFot').textContent=t.fot.toLocaleString('ru')+' PLN';
   document.getElementById('prExpenses').textContent=t.expenses.toLocaleString('ru')+' PLN';
   document.getElementById('prProfit').textContent=profit.toLocaleString('ru')+' PLN';
   document.getElementById('prProfit').className='metric-val '+(profit>0?'pos':'neg');
@@ -6655,6 +6661,7 @@ function updateFormulaDisplay(){
   const revenue=t.revenue;
   const rentM=t.rentMonth;
   const staff=t.staff;
+  const fot=t.fot;
   const utils=getVal('prUtils'),mat=getVal('prMaterials'),mkt=getVal('prMarketing'),oth=getVal('prOther');
   const expenses=t.expenses;
   const profit=revenue-expenses;
@@ -6670,12 +6677,13 @@ function updateFormulaDisplay(){
   if(el('fmExpensesTotal'))el('fmExpensesTotal').textContent=fmt(expenses)+' PLN';
   if(el('fmExpRent'))el('fmExpRent').textContent=fmt(rentM)+' PLN';
   if(el('fmExpStaff'))el('fmExpStaff').textContent=fmt(staff)+' PLN';
+  if(el('fmExpFot'))el('fmExpFot').textContent=fmt(fot)+' PLN';
   if(el('fmExpUtils'))el('fmExpUtils').textContent=fmt(utils)+' PLN';
   if(el('fmExpMat'))el('fmExpMat').textContent=fmt(mat)+' PLN';
   if(el('fmExpMkt'))el('fmExpMkt').textContent=fmt(mkt)+' PLN';
   if(el('fmExpOther'))el('fmExpOther').textContent=fmt(oth)+' PLN';
   if(el('fmExpTotal2'))el('fmExpTotal2').textContent=fmt(expenses)+' PLN';
-  if(el('fmExpensesCalc'))el('fmExpensesCalc').textContent=fmt(rentM)+' + '+fmt(staff)+' + '+fmt(utils)+' + '+fmt(mat)+' + '+fmt(mkt)+' + '+fmt(oth)+' = '+fmt(expenses)+' PLN';
+  if(el('fmExpensesCalc'))el('fmExpensesCalc').textContent=fmt(rentM)+' + '+fmt(staff)+' + '+fmt(fot)+' + '+fmt(utils)+' + '+fmt(mat)+' + '+fmt(mkt)+' + '+fmt(oth)+' = '+fmt(expenses)+' PLN';
   // Profit
   const pEl=el('fmProfitTotal');
   if(pEl){pEl.textContent=fmt(profit)+' PLN';pEl.style.color=profit>0?'var(--gn)':'var(--rd)'}
@@ -6777,9 +6785,12 @@ function updateRightPanel(){
   if(cur==='s4'){
     document.getElementById('rpTitle').textContent='Персонал';
     const totalSalary=DB.employees.reduce((s,e)=>s+e.salary,0);
-    html+=`<div class="rp-sec"><div class="rp-sec-title">ФОТ</div>
-    <div class="rp-mini"><div class="rp-mini-label">ФОТ / мес.</div><div class="rp-mini-val" style="color:var(--ac2)">${totalSalary.toLocaleString('ru')} PLN</div></div>
-    <div class="rp-mini"><div class="rp-mini-label">ФОТ / год</div><div class="rp-mini-val" style="color:var(--yl)">${(totalSalary*12).toLocaleString('ru')} PLN</div></div>
+    const fotR=(parseFloat(document.getElementById('fotRateInput')?.value)||20.48)/100;
+    const totalFot=Math.round(totalSalary*fotR);
+    html+=`<div class="rp-sec"><div class="rp-sec-title">Зарплаты и налоги</div>
+    <div class="rp-mini"><div class="rp-mini-label">ЗП / мес.</div><div class="rp-mini-val" style="color:var(--ac2)">${totalSalary.toLocaleString('ru')} PLN</div></div>
+    <div class="rp-mini"><div class="rp-mini-label">ФОТ / мес.</div><div class="rp-mini-val" style="color:var(--yl)">${totalFot.toLocaleString('ru')} PLN</div></div>
+    <div class="rp-mini"><div class="rp-mini-label">Итого / мес.</div><div class="rp-mini-val" style="color:var(--rd)">${(totalSalary+totalFot).toLocaleString('ru')} PLN</div></div>
     <div class="rp-stat"><span class="rp-stat-label">Позиций</span><span class="rp-stat-val">${DB.employees.length}</span></div>
     <div class="rp-stat"><span class="rp-stat-label">Ср. ЗП</span><span class="rp-stat-val">${DB.employees.length?Math.round(totalSalary/DB.employees.length).toLocaleString('ru'):0}</span></div>
     </div>`;
