@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-Frame-Options" content="DENY">
+<meta http-equiv="Content-Security-Policy" content="frame-ancestors 'none'">
 <title>SVITA — Конструктор клиники</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -395,7 +397,7 @@ Apple</button>
 <div style="font-size:11px;color:var(--tx3);margin-bottom:16px">Введите новый пароль для вашего аккаунта</div>
 <div class="modal-field" style="text-align:left;margin-bottom:12px">
 <label>Новый пароль</label>
-<input id="resetPass1" type="password" placeholder="Минимум 6 символов" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
+<input id="resetPass1" type="password" placeholder="Минимум 8 символов" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
 </div>
 <div class="modal-field" style="text-align:left;margin-bottom:12px">
 <label>Повторите пароль</label>
@@ -437,7 +439,7 @@ Apple</button>
 </div>
 <div class="modal-field" style="text-align:left;margin-bottom:12px">
 <label>Пароль</label>
-<input id="regPass" type="password" placeholder="Минимум 6 символов" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
+<input id="regPass" type="password" placeholder="Минимум 8 символов" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
 </div>
 <div id="regError" style="font-size:11px;color:var(--rd);min-height:20px;margin-bottom:10px"></div>
 <button class="btn pr" style="width:100%;padding:12px;font-size:13px" onclick="registerUser()">Зарегистрироваться</button>
@@ -1509,7 +1511,7 @@ const DB={
     }
   },
   users:[
-    {id:'USR-001',name:'Артём Вейалко',email:'artem@labs67.com',role:'admin',plan:'admin',status:'Активен',created:'2026-03-15'},
+    {id:'USR-001',name:'Администратор',email:'admin@svita.app',role:'admin',plan:'admin',status:'Активен',created:'2026-03-15'},
     {id:'USR-002',name:'Демо-пользователь',email:'demo@svita.app',role:'owner',plan:'trial',status:'Активен',created:'2026-04-01'}
   ],
   cabinetTypes:[
@@ -1875,9 +1877,10 @@ let nextId=200;
 const SB_URL='https://scyraai-desktop.tail2060da.ts.net';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzc1NTA4NjM0LCJleHAiOjE5MzMxODg2MzR9.4l7IBV5SjC8qZ4iJ-oMdLHP-sPP3O7Ab7eWS3PGkKi8';
 const sb=(typeof supabase!=='undefined')?supabase.createClient(SB_URL,SB_KEY):null;
-const ADMIN_EMAILS=['scyraai@proton.me','artem@labs67.com'];
+// Admin check moved to server-side (verify_password RPC returns role)
 // Helper: escape HTML for safe attribute/content injection
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
+function safeHref(url){const s=String(url||'').trim().toLowerCase();if(s.startsWith('javascript:')||s.startsWith('data:'))return '#';return esc(url)}
 // Per-user localStorage helpers
 function uKey(k){const uid=currentUser&&currentUser.id?currentUser.id:'anon';const r=currentRole||'';return k+'_'+uid+(r?'_'+r:'')}
 function uKeyOld(k){const uid=currentUser&&currentUser.id?currentUser.id:'anon';return k+'_'+uid}
@@ -2202,14 +2205,7 @@ function loadPicked(){
     let raw=uGet('svita_picked');
     if(isPickedEmpty(raw)){const oldKey=uKeyOld('svita_picked');const v=localStorage.getItem(oldKey);if(!isPickedEmpty(v)){raw=v;uSet('svita_picked',raw)}}
     if(isPickedEmpty(raw)){const v=localStorage.getItem('svita_picked');if(!isPickedEmpty(v)){raw=v;uSet('svita_picked',raw)}}
-    if(isPickedEmpty(raw)){
-      const best=Object.keys(localStorage)
-        .filter(k=>k.startsWith('svita_picked_')&&k!==uKey('svita_picked')&&k!==uKeyOld('svita_picked'))
-        .map(k=>({k,v:localStorage.getItem(k)}))
-        .filter(x=>!isPickedEmpty(x.v))
-        .sort((a,b)=>b.v.length-a.v.length)[0];
-      if(best){raw=best.v;uSet('svita_picked',raw);console.log('[SVITA] Restored picked from',best.k,'('+best.v.length+' bytes)')}
-    }
+    // Cross-user fallback removed — security: never load another user's data
     if(isPickedEmpty(raw)){console.log('[SVITA] No picked data found. Keys:',Object.keys(localStorage).filter(k=>k.includes('svita_picked')));return}
     const obj=JSON.parse(raw);
     PICKED_KEYS.forEach(k=>{if(obj[k])DB[k]=obj[k]});
@@ -2396,7 +2392,7 @@ async function loginCheck(){
   const{data,error}=await sb.rpc('verify_password',{p_email:email,p_password:pass});
   if(error){document.getElementById('loginError').textContent='Ошибка сервера';return}
   if(!data||!data.ok){document.getElementById('loginError').textContent='Неверный email или пароль';return}
-  const isAdmin=ADMIN_EMAILS.includes(data.email)||data.role==='superadmin'||data.role==='admin';
+  const isAdmin=data.role==='superadmin'||data.role==='admin';
   currentUser={email:data.email,name:data.name||data.email.split('@')[0],isAdmin,emailConfirmed:true,id:data.id};
   localStorage.setItem('svita_session',JSON.stringify(currentUser));
   proceedToRoleSelect();
@@ -2407,7 +2403,7 @@ async function registerUser(){
   const pass=document.getElementById('regPass').value;
   const name=email.split('@')[0];
   if(!email||!pass){document.getElementById('regError').textContent='Заполните все поля';return}
-  if(pass.length<6){document.getElementById('regError').textContent='Пароль минимум 6 символов';return}
+  if(pass.length<8){document.getElementById('regError').textContent='Пароль минимум 6 символов';return}
   if(!sb){document.getElementById('regError').textContent='Supabase не загружен';return}
   if(!rateLimit('register',3,600000)){document.getElementById('regError').textContent='Слишком много попыток. Подождите 10 минут.';return}
   document.getElementById('regError').textContent='Регистрируем...';
@@ -2482,7 +2478,7 @@ async function sendResetLink(){
 async function resetPassword(){
   const p1=document.getElementById('resetPass1').value;
   const p2=document.getElementById('resetPass2').value;
-  if(!p1||p1.length<6){document.getElementById('resetError').textContent='Минимум 6 символов';document.getElementById('resetError').style.color='var(--rd)';return}
+  if(!p1||p1.length<8){document.getElementById('resetError').textContent='Минимум 8 символов';document.getElementById('resetError').style.color='var(--rd)';return}
   if(p1!==p2){document.getElementById('resetError').textContent='Пароли не совпадают';document.getElementById('resetError').style.color='var(--rd)';return}
   const btn=document.getElementById('resetBtn');
   btn.textContent='Сохраняем...';btn.disabled=true;
@@ -2702,26 +2698,35 @@ document.addEventListener('click',function(e){
   if(tu&&!tu.contains(e.target))tu.classList.remove('open');
 });
 
-// Auto-restore session from localStorage
-(function restoreSession(){
+// Auto-restore session from localStorage — with server re-validation
+(async function restoreSession(){
   try{
     const saved=localStorage.getItem('svita_session');
     if(!saved)return;
     const u=JSON.parse(saved);
     if(!u||!u.email||!u.id)return;
-    currentUser=u;
+    // Re-validate session against server
+    if(sb){
+      const{data}=await sb.from('profiles').select('id,email,name,role').eq('id',u.id).single();
+      if(!data||data.email!==u.email){localStorage.removeItem('svita_session');localStorage.removeItem('svita_role');return}
+      const isAdmin=data.role==='superadmin'||data.role==='admin';
+      currentUser={email:data.email,name:data.name||data.email.split('@')[0],isAdmin,emailConfirmed:true,id:data.id};
+      localStorage.setItem('svita_session',JSON.stringify(currentUser));
+    }else{
+      currentUser=u;
+    }
     const role=localStorage.getItem('svita_role');
     if(role){
       currentRole=role;
       setTimeout(()=>{enterApp()},50);
-    }else if(u.isAdmin){
+    }else if(currentUser.isAdmin){
       currentRole='admin';
       localStorage.setItem('svita_role','admin');
       setTimeout(()=>{enterApp()},50);
     }else{
       setTimeout(()=>{showOnboarding()},50);
     }
-  }catch(e){}
+  }catch(e){console.error('[SVITA] restoreSession error',e)}
 })();
 
 function toggleMobileSidebar(){
@@ -3013,7 +3018,7 @@ async function saveAccountProfile(){
 
 function showChangePassword(){
   const html=`<div class="modal-field"><label>Текущий пароль</label><input id="mf_curPass" type="password" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
-<div class="modal-field"><label>Новый пароль</label><input id="mf_newPass" type="password" placeholder="Минимум 6 символов" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+<div class="modal-field"><label>Новый пароль</label><input id="mf_newPass" type="password" placeholder="Минимум 8 символов" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
 <div class="modal-field"><label>Повторите новый</label><input id="mf_newPass2" type="password" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>`;
   document.getElementById('modalTitle').textContent='Смена пароля';
   document.getElementById('modalFields').innerHTML=html;
@@ -3022,7 +3027,7 @@ function showChangePassword(){
   document.getElementById('modalSave').onclick=async()=>{
     const np=document.getElementById('mf_newPass').value;
     const np2=document.getElementById('mf_newPass2').value;
-    if(np.length<6){alert('Минимум 6 символов');return}
+    if(np.length<8){alert('Минимум 8 символов');return}
     if(np!==np2){alert('Пароли не совпадают');return}
     const{error}=await sb.auth.updateUser({password:np});
     if(error){alert(error.message);return}
@@ -3101,17 +3106,12 @@ function showUpgradeModal(){
 }
 
 async function selectPlan(plan){
-  const planLimits={trial:{concepts_limit:1,contractors_access:false},pro:{concepts_limit:5,contractors_access:false},unlimited:{concepts_limit:999,contractors_access:true}};
   const planNames={trial:'Trial',pro:'Pro',unlimited:'Unlimited'};
   if(plan===userSubscription.plan){closeModal();return}
-  if(plan!=='trial'&&!confirm('Перейти на тариф '+planNames[plan]+'? Оплата будет подключена позже.')){return}
-  userSubscription.plan=plan;
-  userSubscription.concepts_limit=planLimits[plan].concepts_limit;
-  userSubscription.contractors_access=planLimits[plan].contractors_access;
-  if(sb&&currentUser){
-    await sb.from('subscriptions').upsert({user_id:currentUser.id,plan,concepts_limit:planLimits[plan].concepts_limit,contractors_access:planLimits[plan].contractors_access,status:'active'},{onConflict:'user_id'});
-    await sb.from('profiles').update({plan}).eq('user_id',currentUser.id);
-    logAction('plan_changed','subscription',null,{plan});
+  if(plan!=='trial'){
+    // Платные тарифы заблокированы до подключения оплаты
+    alert('Оплата тарифа '+planNames[plan]+' будет доступна позже. Пока доступен пробный план.');
+    return;
   }
   closeModal();
   if(typeof renderAccount==='function')renderAccount();
@@ -3148,10 +3148,10 @@ function renderOwnerProposals(){
     const statusText=p.status==='accepted'?'Принято':p.status==='rejected'?'Отклонено':'Новое';
     return `<div style="border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:8px">
 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-<div><div style="font-size:13px;font-weight:600">${p.contractor_name}</div><div style="font-size:10px;color:var(--tx3)">${p.contractor_email} · ${new Date(p.created_at).toLocaleDateString()}</div></div>
+<div><div style="font-size:13px;font-weight:600">${esc(p.contractor_name)}</div><div style="font-size:10px;color:var(--tx3)">${esc(p.contractor_email)} · ${new Date(p.created_at).toLocaleDateString()}</div></div>
 <span style="font-size:10px;padding:3px 8px;border-radius:5px;background:${statusColor}22;color:${statusColor};font-weight:600">${statusText}</span>
 </div>
-<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px">${p.items.map(i=>`<span style="font-size:10px;padding:3px 8px;border:1px solid var(--bd);border-radius:5px">${i.name}: ${i.price.toLocaleString()} PLN</span>`).join('')}</div>
+<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px">${p.items.map(i=>`<span style="font-size:10px;padding:3px 8px;border:1px solid var(--bd);border-radius:5px">${esc(i.name)}: ${i.price.toLocaleString()} PLN</span>`).join('')}</div>
 <div style="display:flex;justify-content:space-between;align-items:center">
 <div style="font-size:14px;font-weight:700">${p.total.toLocaleString()} PLN</div>
 <div style="display:flex;gap:4px">
@@ -3234,7 +3234,7 @@ ${owner||phone?`<div style="padding:4px 16px;display:flex;gap:12px;font-size:10p
 ${p.notes?`<div style="padding:4px 16px 8px;font-size:10px;color:var(--tx3);line-height:1.4">${esc(p.notes)}</div>`:''}
 <div class="db-card-actions">
 <button class="btn sm pr" onclick="selectPremiseAsProperty('${pid}')">Выбрать → Таб 1</button>
-${p.source?`<a href="${esc(p.source)}" target="_blank" rel="noopener" class="btn sm" style="text-decoration:none;text-align:center">Источник</a>`:''}
+${p.source?`<a href="${safeHref(p.source)}" target="_blank" rel="noopener" class="btn sm" style="text-decoration:none;text-align:center">Источник</a>`:''}
 <button class="btn sm" onclick="editPremise('${pid}')">Ред.</button>
 <button class="btn sm" onclick="delPremise('${pid}')">Удалить</button>
 </div></div>`;
@@ -3376,7 +3376,7 @@ function renderContractorProposals(){
     const statusText=p.status==='accepted'?'Принято':p.status==='rejected'?'Отклонено':'На рассмотрении';
     return `<div class="c" style="margin-bottom:12px"><div class="ch"><h3>КП от ${new Date(p.created_at).toLocaleDateString()}</h3><span style="font-size:10px;padding:3px 8px;border-radius:5px;background:${statusColor}22;color:${statusColor};font-weight:600">${statusText}</span></div>
 <div class="cb" style="padding:12px"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-${p.items.map(i=>`<div style="padding:8px 10px;border:1px solid var(--bd);border-radius:6px;font-size:11px"><div style="font-weight:600">${i.name}</div><div style="color:var(--tx3);margin-top:2px">${i.cat} · ${i.price.toLocaleString()} PLN</div>${i.note?`<div style="color:var(--tx2);margin-top:2px;font-style:italic">${i.note}</div>`:''}</div>`).join('')}
+${p.items.map(i=>`<div style="padding:8px 10px;border:1px solid var(--bd);border-radius:6px;font-size:11px"><div style="font-weight:600">${esc(i.name)}</div><div style="color:var(--tx3);margin-top:2px">${esc(i.cat)} · ${i.price.toLocaleString()} PLN</div>${i.note?`<div style="color:var(--tx2);margin-top:2px;font-style:italic">${esc(i.note)}</div>`:''}</div>`).join('')}
 </div><div style="text-align:right;font-size:14px;font-weight:700">Итого: ${p.total.toLocaleString()} PLN</div></div></div>`;
   }).join('');
 }
@@ -3393,7 +3393,7 @@ function renderVendors(){
   if(!DB.vendorCompanies.length){c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Нет поставщиков</div>';return}
   c.innerHTML=DB.vendorCompanies.map(v=>{
     const tags=(v.tags||[]).map(t=>`<span style="display:inline-block;font-size:9px;padding:2px 8px;border-radius:4px;background:var(--acbg);color:var(--ac2);margin:2px">${esc(t)}</span>`).join('');
-    return `<div class="db-card"><div class="db-card-head"><span class="db-card-name">${esc(v.name)}</span><span class="db-card-role" style="background:rgba(139,92,246,.1);color:#8b5cf6">${esc(v.city||'')}</span></div><div style="padding:0 16px 8px;font-size:11px;color:var(--tx2);line-height:1.4">${esc(v.desc)}</div>${tags?`<div style="padding:0 16px 8px">${tags}</div>`:''}<div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Телефон</div><div class="db-card-val">${esc(v.phone||'—')}</div></div><div class="db-card-field"><div class="db-card-label">Сайт</div><div class="db-card-val">${v.website?`<a href="https://${esc(v.website)}" target="_blank" rel="noopener" style="color:var(--ac2);text-decoration:none">${esc(v.website)}</a>`:'—'}</div></div></div><div class="db-card-actions"><button class="btn sm" onclick="delVendor('${v.id}')">Удалить</button></div></div>`;
+    return `<div class="db-card"><div class="db-card-head"><span class="db-card-name">${esc(v.name)}</span><span class="db-card-role" style="background:rgba(139,92,246,.1);color:#8b5cf6">${esc(v.city||'')}</span></div><div style="padding:0 16px 8px;font-size:11px;color:var(--tx2);line-height:1.4">${esc(v.desc)}</div>${tags?`<div style="padding:0 16px 8px">${tags}</div>`:''}<div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Телефон</div><div class="db-card-val">${esc(v.phone||'—')}</div></div><div class="db-card-field"><div class="db-card-label">Сайт</div><div class="db-card-val">${v.website?`<a href="${safeHref('https://'+v.website)}" target="_blank" rel="noopener" style="color:var(--ac2);text-decoration:none">${esc(v.website)}</a>`:'—'}</div></div></div><div class="db-card-actions"><button class="btn sm" onclick="delVendor('${v.id}')">Удалить</button></div></div>`;
   }).join('');
 }
 function delVendor(id){
@@ -3408,7 +3408,7 @@ function renderSuppliers(){
     const picked=!!DB.pickedEquip[r.id];
     const img=getItemImg('suppliers',r.id);
     const imgHtml=img?`<img class="db-card-img" src="${img}" onclick="openLightbox('suppliers','${r.id}')">`:`<div class="db-card-img-placeholder" onclick="uploadPhoto('suppliers','${r.id}')"><span>&#128247;</span><span>Добавить фото</span></div>`;
-    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}">${imgHtml}<div class="db-card-head"><span class="db-card-name">${r.name}</span><span class="db-card-role" style="background:rgba(139,92,246,.1);color:#d946ef">${r.category}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Цена</div><div class="db-card-val" style="color:var(--ac2)">${r.price.toLocaleString('ru')} PLN</div></div><div class="db-card-field"><div class="db-card-label">Поставщик</div><div class="db-card-val">${r.supplier}</div></div><div class="db-card-field"><div class="db-card-label">Гарантия</div><div class="db-card-val">${r.warranty}</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePickEquip('${r.id}')">${picked?'✓ В оснащении':'+ Товар → Таб 3'}</button><button class="btn sm" onclick="delItem('suppliers','${r.id}')">Удалить</button></div></div>`;
+    return `<div class="db-card" style="${picked?'border-color:var(--acbd);background:var(--acbg)':''}">${imgHtml}<div class="db-card-head"><span class="db-card-name">${esc(r.name)}</span><span class="db-card-role" style="background:rgba(139,92,246,.1);color:#d946ef">${esc(r.category)}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Цена</div><div class="db-card-val" style="color:var(--ac2)">${r.price.toLocaleString('ru')} PLN</div></div><div class="db-card-field"><div class="db-card-label">Поставщик</div><div class="db-card-val">${esc(r.supplier)}</div></div><div class="db-card-field"><div class="db-card-label">Гарантия</div><div class="db-card-val">${esc(r.warranty)}</div></div></div><div class="db-card-actions"><button class="btn sm ${picked?'gn':'pr'}" onclick="togglePickEquip('${r.id}')">${picked?'✓ В оснащении':'+ Товар → Таб 3'}</button><button class="btn sm" onclick="delItem('suppliers','${r.id}')">Удалить</button></div></div>`;
   }).join('');
 }
 
@@ -3417,7 +3417,7 @@ function editEmployee(id){
   modalMode='employee';editingId=r.id;
   document.getElementById('modalTitle').textContent='Редактировать сотрудника';
   const fields=MODAL_FIELDS.employee;
-  document.getElementById('modalFields').innerHTML=fields.map(f=>`<div class="modal-field"><label>${f.l}</label><input id="mf_${f.k}" type="${f.t||'text'}" placeholder="${f.ph||''}" value="${r[f.k]!=null?r[f.k]:''}"></div>`).join('');
+  document.getElementById('modalFields').innerHTML=fields.map(f=>`<div class="modal-field"><label>${f.l}</label><input id="mf_${f.k}" type="${f.t||'text'}" placeholder="${f.ph||''}" value="${esc(r[f.k]!=null?r[f.k]:'')}"></div>`).join('');
   document.getElementById('modalSave').style.display='';
   document.getElementById('modalBg').classList.add('vis');
 }
@@ -4025,7 +4025,7 @@ function renderEquip(){
     html+=`<div class="zone-body${zOpen?' open':''}" id="zoneBody${zi}"><div class="zone-items">`;
     items.forEach(r=>{
       const added=!!picked[r.id];
-      html+=`<div class="ci cost-row" style="padding:8px 0"><div class="ct" style="flex:1;min-width:0">${r.name}<div class="ct-sub">${r.supplier} · ${r.warranty}</div></div><div class="cost-val" style="flex-shrink:0">${r.price.toLocaleString('ru')} PLN</div><button class="btn sm ${added?'gn':'pr'}" onclick="togglePickEquip('${r.id}')" style="flex-shrink:0;min-width:90px">${added?'✓ Добавлено':'+ В оснащение'}</button></div>`;
+      html+=`<div class="ci cost-row" style="padding:8px 0"><div class="ct" style="flex:1;min-width:0">${esc(r.name)}<div class="ct-sub">${esc(r.supplier)} · ${esc(r.warranty)}</div></div><div class="cost-val" style="flex-shrink:0">${r.price.toLocaleString('ru')} PLN</div><button class="btn sm ${added?'gn':'pr'}" onclick="togglePickEquip('${r.id}')" style="flex-shrink:0;min-width:90px">${added?'✓ Добавлено':'+ В оснащение'}</button></div>`;
     });
     html+=`</div></div></div>`;
   });
@@ -5843,14 +5843,20 @@ function editUser(id){
   document.getElementById('modalBg').classList.add('vis');
 }
 async function changePassword(id,name){
-  const newPass=prompt('Новый пароль для '+name+' (мин. 6 символов):');
-  if(!newPass||newPass.length<6){if(newPass)alert('Пароль минимум 6 символов');return}
+  if(!currentUser||!currentUser.isAdmin){alert('Только администратор может менять пароли');return}
+  const newPass=prompt('Новый пароль для '+esc(name)+' (мин. 8 символов):');
+  if(!newPass||newPass.length<8){if(newPass)alert('Пароль минимум 8 символов');return}
   if(!sb){alert('Supabase не загружен');return}
-  const{data,error}=await sb.rpc('change_user_password',{p_user_id:id,p_new_password:newPass});
+  const{data,error}=await sb.rpc('change_user_password',{p_user_id:id,p_new_password:newPass,p_caller_id:currentUser.id});
   if(error){alert('Ошибка: '+error.message);return}
   if(data&&data.ok){alert('Пароль изменён!')}else{alert('Ошибка: '+(data?.error||'неизвестная'))}
 }
-function deleteUser(id){
+async function deleteUser(id){
+  if(!confirm('Удалить пользователя? Это действие необратимо.'))return;
+  if(sb){
+    const{error}=await sb.from('profiles').delete().eq('id',id);
+    if(error){alert('Ошибка удаления: '+error.message);return}
+  }
   DB.users=DB.users.filter(e=>e.id!=id);
   renderUsers();buildSidebar();
 }
@@ -6655,7 +6661,9 @@ function uploadPhoto(table,id){
 }
 
 function getItemImg(table,id){
-  return itemImages[table+'_'+id]||'';
+  const url=itemImages[table+'_'+id]||'';
+  if(url&&!url.startsWith('https://')&&!url.startsWith('data:image/'))return '';
+  return url;
 }
 
 // ═══════════════ LIGHTBOX ═══════════════
