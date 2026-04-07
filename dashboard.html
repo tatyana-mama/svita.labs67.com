@@ -563,7 +563,19 @@ Apple</button>
 <div class="lr-icon" style="background:linear-gradient(135deg,#06b6d4,var(--ac))">&#129489;</div>
 <div><div class="lr-name">Сотрудник</div><div class="lr-desc">Профиль специалиста</div></div></div>
 </div>
-<button class="btn pr" style="width:100%;padding:12px" onclick="enterApp()">Продолжить</button>
+<button class="btn pr" style="width:100%;padding:12px" onclick="afterRoleSelect()">Продолжить</button>
+</div>
+
+<!-- STEP 2.5: BUSINESS TYPE SELECT (admin/owner only) -->
+<div id="loginStep25" style="display:none">
+<div style="font-size:14px;font-weight:700;margin-bottom:4px">Что открываем?</div>
+<div style="font-size:11px;color:var(--tx3);margin-bottom:14px">Выберите тип бизнеса</div>
+<div id="bizTypeCards" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px"></div>
+<div id="bizSubtypeWrap" style="display:none;margin-bottom:14px">
+<div style="font-size:12px;font-weight:600;margin-bottom:8px;color:var(--tx2)" id="bizSubtypeLabel">Уточните формат</div>
+<div id="bizSubtypeCards" style="display:grid;gap:6px"></div>
+</div>
+<button class="btn pr" style="width:100%;padding:12px" onclick="enterApp()">Начать</button>
 </div>
 
 <!-- REGISTER FORM -->
@@ -636,7 +648,7 @@ Apple</button>
 
 <!-- SIDEBAR -->
 <aside class="side" id="sidebar">
-<div class="side-head"><div class="side-logo"><span class="d"></span>SVITA</div><div class="side-tag">Конструктор клиники</div></div>
+<div class="side-head"><div class="side-logo"><span class="d"></span>SVITA</div><div class="side-tag" id="sideTag">Конструктор бизнеса</div></div>
 <nav class="side-nav" id="sideNav"></nav>
 </aside>
 <div class="mob-overlay" id="mobOverlay" onclick="toggleMobileSidebar()"></div>
@@ -2519,6 +2531,229 @@ let currentUser=null;
 const ROLE_COLORS={admin:'linear-gradient(135deg,var(--ac),#8b5cf6)',owner:'linear-gradient(135deg,var(--gn),#059669)',contractor:'linear-gradient(135deg,var(--or),var(--yl))',supplier:'linear-gradient(135deg,#8b5cf6,#d946ef)',employee:'linear-gradient(135deg,#06b6d4,var(--ac))'};
 const ROLE_NAMES={admin:'Администратор',owner:'Владелец',contractor:'Подрядчик',supplier:'Поставщик',employee:'Сотрудник'};
 
+// ═══════════════ BUSINESS TYPES ═══════════════
+const BIZ_TYPES={
+  dental:{icon:'🦷',name:'Стоматология',color:'#06b6d4',subtypes:[
+    {id:'dental_general',name:'Общая стоматология',desc:'Терапия, хирургия, ортопедия'},
+    {id:'dental_cosmo',name:'Стоматология + Косметология',desc:'Стоматология с кабинетом косметолога'},
+    {id:'dental_kids',name:'Детская стоматология',desc:'Специализация на детях'},
+    {id:'dental_ortho',name:'Ортодонтическая клиника',desc:'Брекеты, элайнеры, исправление прикуса'},
+    {id:'dental_implant',name:'Имплантология',desc:'Имплантация и протезирование'},
+    {id:'dental_premium',name:'Премиум клиника',desc:'VIP-обслуживание, полный спектр'}
+  ]},
+  coffee:{icon:'☕',name:'Кофейня',color:'#92400e',subtypes:[
+    {id:'coffee_classic',name:'Классическая кофейня',desc:'Кофе, напитки, лёгкие снеки'},
+    {id:'coffee_bakery',name:'Кофейня-пекарня',desc:'Свежая выпечка + кофе'},
+    {id:'coffee_confection',name:'Кофейня-кондитерская',desc:'Торты, десерты, кофе'},
+    {id:'coffee_island',name:'Кофе-остров',desc:'Островная стойка в ТЦ'},
+    {id:'coffee_cowork',name:'Кофейня-коворкинг',desc:'Рабочее пространство + кофе'},
+    {id:'coffee_roastery',name:'Кофейня-обжарка',desc:'Своя обжарка, specialty coffee'}
+  ]},
+  beauty:{icon:'💅',name:'Салон красоты',color:'#d946ef',subtypes:[
+    {id:'beauty_general',name:'Универсальный салон',desc:'Парикмахер, маникюр, косметология'},
+    {id:'beauty_barber',name:'Барбершоп',desc:'Мужские стрижки и бритьё'},
+    {id:'beauty_nail',name:'Ногтевая студия',desc:'Маникюр, педикюр, nail-art'},
+    {id:'beauty_cosmo',name:'Косметологическая клиника',desc:'Инъекции, лазер, аппаратная косметология'}
+  ]},
+  fitness:{icon:'💪',name:'Фитнес',color:'#ea580c',subtypes:[
+    {id:'fit_gym',name:'Тренажёрный зал',desc:'Зал со свободными весами и тренажёрами'},
+    {id:'fit_studio',name:'Фитнес-студия',desc:'Групповые занятия, йога, пилатес'},
+    {id:'fit_crossfit',name:'CrossFit бокс',desc:'Функциональный тренинг'},
+    {id:'fit_martial',name:'Зал единоборств',desc:'Бокс, MMA, борьба'}
+  ]},
+  food:{icon:'🍕',name:'Общепит',color:'#dc2626',subtypes:[
+    {id:'food_restaurant',name:'Ресторан',desc:'Полноценная кухня, зал, бар'},
+    {id:'food_fast',name:'Фастфуд',desc:'Быстрая еда, конвейер'},
+    {id:'food_dark',name:'Dark kitchen',desc:'Кухня только на доставку'},
+    {id:'food_bar',name:'Бар',desc:'Напитки, закуски, атмосфера'}
+  ]}
+};
+let currentBizType=null; // e.g. 'dental'
+let currentBizSubtype=null; // e.g. 'dental_general'
+
+// ═══════════════ BIZ-SPECIFIC DATA PRESETS ═══════════════
+const BIZ_DATA={
+  coffee:{
+    employees:[
+      {id:1,name:'Управляющий',spec:'Менеджмент, закупки, персонал',salary:7000,status:'Вакансия'},
+      {id:2,name:'Бариста (старший)',spec:'Полная ставка, обучение',salary:5500,status:'Вакансия'},
+      {id:3,name:'Бариста',spec:'Полная ставка',salary:4500,status:'Вакансия'},
+      {id:4,name:'Бариста',spec:'Полная ставка',salary:4500,status:'Вакансия'},
+      {id:5,name:'Бариста',spec:'Полная ставка',salary:4500,status:'Вакансия'},
+      {id:6,name:'Кондитер',spec:'Десерты, выпечка',salary:5500,status:'Вакансия'},
+      {id:7,name:'Помощник кухни',spec:'Подготовка, мойка',salary:4200,status:'Вакансия'},
+      {id:8,name:'Кассир',spec:'Обслуживание гостей',salary:4200,status:'Вакансия'},
+      {id:9,name:'Уборщик',spec:'Частичная ставка',salary:3000,status:'Вакансия'}
+    ],
+    services:[
+      // Горячие напитки
+      {id:1,name:'Эспрессо',time:'2 мин',price:12},{id:2,name:'Американо',time:'3 мин',price:14},
+      {id:3,name:'Капучино',time:'3 мин',price:16},{id:4,name:'Латте',time:'3 мин',price:18},
+      {id:5,name:'Флэт Уайт',time:'3 мин',price:18},{id:6,name:'Раф',time:'4 мин',price:20},
+      {id:7,name:'Мокко',time:'4 мин',price:20},{id:8,name:'Какао',time:'3 мин',price:16},
+      {id:9,name:'Горячий шоколад',time:'3 мин',price:18},{id:10,name:'Матча латте',time:'3 мин',price:22},
+      {id:11,name:'Чай (заварной)',time:'5 мин',price:14},{id:12,name:'Бамбл (эспрессо+апельсин)',time:'3 мин',price:20},
+      // Холодные напитки
+      {id:20,name:'Айс латте',time:'3 мин',price:20},{id:21,name:'Айс американо',time:'2 мин',price:16},
+      {id:22,name:'Колд брю',time:'2 мин',price:18},{id:23,name:'Фраппе',time:'4 мин',price:22},
+      {id:24,name:'Лимонад',time:'3 мин',price:16},{id:25,name:'Смузи',time:'4 мин',price:22},
+      {id:26,name:'Милкшейк',time:'4 мин',price:24},
+      // Десерты
+      {id:40,name:'Круассан',time:'—',price:14},{id:41,name:'Чизкейк',time:'—',price:20},
+      {id:42,name:'Тирамису',time:'—',price:22},{id:43,name:'Брауни',time:'—',price:16},
+      {id:44,name:'Маффин',time:'—',price:12},{id:45,name:'Булочка с корицей',time:'—',price:14},
+      {id:46,name:'Эклер',time:'—',price:16},{id:47,name:'Панини / сэндвич',time:'5 мин',price:24},
+      {id:48,name:'Тост с авокадо',time:'5 мин',price:26},{id:49,name:'Гранола с йогуртом',time:'—',price:22}
+    ],
+    rooms:[
+      {id:1,name:'Зал для гостей (основной)',type:'Гостевая',w:8.0,h:2.9,l:6.0,area:48.0},
+      {id:2,name:'Барная стойка',type:'Рабочая',w:4.0,h:2.9,l:2.0,area:8.0},
+      {id:3,name:'Кухня / Зона подготовки',type:'Рабочая',w:4.0,h:2.9,l:3.0,area:12.0},
+      {id:4,name:'Кондитерский цех',type:'Рабочая',w:3.5,h:2.9,l:3.0,area:10.5},
+      {id:5,name:'Моечная',type:'Техническая',w:2.5,h:2.9,l:2.0,area:5.0},
+      {id:6,name:'Склад / Хранение',type:'Техническая',w:3.0,h:2.9,l:2.0,area:6.0},
+      {id:7,name:'Холодильная камера',type:'Техническая',w:2.0,h:2.9,l:1.5,area:3.0},
+      {id:8,name:'Санузел (гости)',type:'Общественная',w:2.5,h:2.9,l:1.8,area:4.5},
+      {id:9,name:'Санузел (персонал)',type:'Служебная',w:2.0,h:2.9,l:1.5,area:3.0},
+      {id:10,name:'Раздевалка персонала',type:'Служебная',w:2.5,h:2.9,l:2.0,area:5.0},
+      {id:11,name:'Терраса / Летняя зона',type:'Гостевая',w:6.0,h:0,l:4.0,area:24.0},
+      {id:12,name:'Зона самообслуживания',type:'Гостевая',w:2.0,h:2.9,l:1.5,area:3.0}
+    ],
+    cabinetTypes:[
+      {id:1,name:'Гостевой зал',icon:'☕',desc:'Основная зона обслуживания гостей',minArea:20,equipCats:['Мебель для зала']},
+      {id:2,name:'Барная стойка',icon:'🍵',desc:'Зона приготовления напитков',minArea:6,equipCats:['Кофейное оборудование','Барное оборудование']},
+      {id:3,name:'Кухня',icon:'🍳',desc:'Зона подготовки еды и десертов',minArea:8,equipCats:['Кухонное оборудование']},
+      {id:4,name:'Кондитерский цех',icon:'🧁',desc:'Производство десертов и выпечки',minArea:8,equipCats:['Кондитерское оборудование']},
+      {id:5,name:'Моечная',icon:'🧽',desc:'Мойка посуды',minArea:4,equipCats:['Моечное оборудование']},
+      {id:6,name:'Склад',icon:'📦',desc:'Хранение сырья и расходников',minArea:4,equipCats:[]},
+      {id:7,name:'Санузел',icon:'🚿',desc:'Санузлы для гостей и персонала',minArea:3,equipCats:[]},
+      {id:8,name:'Терраса',icon:'☀️',desc:'Летняя зона обслуживания',minArea:10,equipCats:['Мебель для террасы']}
+    ],
+    zones:[
+      {id:'guest',name:'Гостевая',color:'var(--gn)',icon:'☕'},
+      {id:'work',name:'Рабочая',color:'var(--ac)',icon:'🔧'},
+      {id:'technical',name:'Техническая',color:'var(--yl)',icon:'⚙️'},
+      {id:'service',name:'Служебная',color:'#8b5cf6',icon:'🔒'}
+    ],
+    suppliers:[
+      // Кофейное оборудование
+      {id:1,name:'Кофемашина профессиональная (2 группы)',category:'Кофейное оборудование',price:25000,supplier:'La Marzocco',warranty:'24 мес'},
+      {id:2,name:'Кофемолка (on-demand)',category:'Кофейное оборудование',price:6000,supplier:'Mahlkönig',warranty:'24 мес'},
+      {id:3,name:'Кофемолка для фильтра',category:'Кофейное оборудование',price:4000,supplier:'Mahlkönig',warranty:'24 мес'},
+      {id:4,name:'Пуровер станция (V60 / Chemex)',category:'Кофейное оборудование',price:800,supplier:'Hario',warranty:'12 мес'},
+      {id:5,name:'Колд-брю система',category:'Кофейное оборудование',price:2500,supplier:'Toddy',warranty:'12 мес'},
+      {id:6,name:'Питчер для молока (набор)',category:'Кофейное оборудование',price:400,supplier:'Motta',warranty:'—'},
+      {id:7,name:'Темпер калиброванный',category:'Кофейное оборудование',price:350,supplier:'Pullman',warranty:'—'},
+      {id:8,name:'Весы бариста',category:'Кофейное оборудование',price:500,supplier:'Acaia',warranty:'12 мес'},
+      // Барное оборудование
+      {id:10,name:'Холодильник барный',category:'Барное оборудование',price:4500,supplier:'Liebherr',warranty:'24 мес'},
+      {id:11,name:'Льдогенератор',category:'Барное оборудование',price:5000,supplier:'Brema',warranty:'24 мес'},
+      {id:12,name:'Блендер профессиональный',category:'Барное оборудование',price:3000,supplier:'Vitamix',warranty:'24 мес'},
+      {id:13,name:'Соковыжималка',category:'Барное оборудование',price:2500,supplier:'Santos',warranty:'12 мес'},
+      {id:14,name:'Витрина холодильная (десерты)',category:'Барное оборудование',price:8000,supplier:'ISA',warranty:'24 мес'},
+      {id:15,name:'Сиропница (6 позиций)',category:'Барное оборудование',price:600,supplier:'—',warranty:'—'},
+      {id:16,name:'Чайник электрический с гусиным носом',category:'Барное оборудование',price:500,supplier:'Fellow',warranty:'12 мес'},
+      // Кухонное оборудование
+      {id:20,name:'Духовой шкаф конвекционный',category:'Кухонное оборудование',price:12000,supplier:'Unox',warranty:'24 мес'},
+      {id:21,name:'Расстоечный шкаф',category:'Кухонное оборудование',price:6000,supplier:'—',warranty:'24 мес'},
+      {id:22,name:'Тостер / гриль-пресс',category:'Кухонное оборудование',price:2000,supplier:'—',warranty:'12 мес'},
+      {id:23,name:'Микроволновая печь',category:'Кухонное оборудование',price:1500,supplier:'—',warranty:'12 мес'},
+      {id:24,name:'Стол разделочный нерж.',category:'Кухонное оборудование',price:2500,supplier:'—',warranty:'—'},
+      // Кондитерское оборудование
+      {id:30,name:'Миксер планетарный',category:'Кондитерское оборудование',price:5000,supplier:'KitchenAid',warranty:'24 мес'},
+      {id:31,name:'Шоколадный фонтан / темперирующая машина',category:'Кондитерское оборудование',price:3000,supplier:'—',warranty:'12 мес'},
+      {id:32,name:'Холодильный стол кондитерский',category:'Кондитерское оборудование',price:7000,supplier:'—',warranty:'24 мес'},
+      // Моечное оборудование
+      {id:35,name:'Посудомоечная машина',category:'Моечное оборудование',price:8000,supplier:'Winterhalter',warranty:'24 мес'},
+      {id:36,name:'Мойка 2-секционная нерж.',category:'Моечное оборудование',price:3000,supplier:'—',warranty:'—'},
+      // Мебель для зала
+      {id:40,name:'Столы (комплект 10 шт)',category:'Мебель для зала',price:12000,supplier:'—',warranty:'—'},
+      {id:41,name:'Стулья (комплект 30 шт)',category:'Мебель для зала',price:15000,supplier:'—',warranty:'—'},
+      {id:42,name:'Диваны / банкетки',category:'Мебель для зала',price:10000,supplier:'—',warranty:'—'},
+      {id:43,name:'Барные стулья (8 шт)',category:'Мебель для зала',price:6000,supplier:'—',warranty:'—'},
+      {id:44,name:'Вешалка / гардероб',category:'Мебель для зала',price:2000,supplier:'—',warranty:'—'},
+      // Мебель для террасы
+      {id:50,name:'Столы уличные (6 шт)',category:'Мебель для террасы',price:6000,supplier:'—',warranty:'—'},
+      {id:51,name:'Стулья уличные (18 шт)',category:'Мебель для террасы',price:7200,supplier:'—',warranty:'—'},
+      {id:52,name:'Зонты / маркизы',category:'Мебель для террасы',price:4000,supplier:'—',warranty:'—'},
+      // IT и POS
+      {id:60,name:'POS-терминал + ПО',category:'IT и POS',price:5000,supplier:'—',warranty:'12 мес'},
+      {id:61,name:'Планшет для заказов',category:'IT и POS',price:2000,supplier:'—',warranty:'12 мес'},
+      {id:62,name:'Wi-Fi роутер для гостей',category:'IT и POS',price:800,supplier:'—',warranty:'24 мес'},
+      {id:63,name:'Экран меню (дисплей)',category:'IT и POS',price:3000,supplier:'—',warranty:'24 мес'},
+      {id:64,name:'Аудиосистема (колонки + усилитель)',category:'IT и POS',price:4000,supplier:'—',warranty:'24 мес'}
+    ],
+    renovations:[
+      // Электрика
+      {id:'ce1',name:'Электрощит + автоматы',cat:'Электрика',price:5000},
+      {id:'ce2',name:'Кабельные трассы',cat:'Электрика',price:8000},
+      {id:'ce3',name:'Разводка по зонам (бар, кухня, зал)',cat:'Электрика',price:10000},
+      {id:'ce4',name:'Освещение зала (дизайнерское)',cat:'Электрика',price:12000},
+      {id:'ce5',name:'Освещение рабочих зон',cat:'Электрика',price:5000},
+      {id:'ce6',name:'Вывеска световая',cat:'Электрика',price:4000},
+      // Водоснабжение
+      {id:'cw1',name:'Разводка ХВС/ГВС',cat:'Водоснабжение',price:6000},
+      {id:'cw2',name:'Бойлер',cat:'Водоснабжение',price:4000},
+      {id:'cw3',name:'Фильтрация воды (бар)',cat:'Водоснабжение',price:3000},
+      {id:'cw4',name:'Канализация (кухня + моечная)',cat:'Водоснабжение',price:5000},
+      {id:'cw5',name:'Жироуловитель',cat:'Водоснабжение',price:3500},
+      // Вентиляция
+      {id:'cv1',name:'Проект вентиляции',cat:'Вентиляция',price:4000},
+      {id:'cv2',name:'Приточно-вытяжная установка',cat:'Вентиляция',price:14000},
+      {id:'cv3',name:'Вытяжной зонт (кухня)',cat:'Вентиляция',price:6000},
+      {id:'cv4',name:'Кондиционирование зала',cat:'Вентиляция',price:12000},
+      // Отделка
+      {id:'cf1',name:'Демонтаж старой отделки',cat:'Отделка',price:8000},
+      {id:'cf2',name:'Стяжка пола',cat:'Отделка',price:8000},
+      {id:'cf3',name:'Напольное покрытие (плитка + дерево)',cat:'Отделка',price:18000},
+      {id:'cf4',name:'Штукатурка стен',cat:'Отделка',price:6000},
+      {id:'cf5',name:'Декоративная отделка стен',cat:'Отделка',price:10000},
+      {id:'cf6',name:'Потолки',cat:'Отделка',price:8000},
+      {id:'cf7',name:'Плитка кухня + санузлы',cat:'Отделка',price:8000},
+      // Двери, окна, фасад
+      {id:'cd1',name:'Входная дверь (стеклянная)',cat:'Двери и фасад',price:6000},
+      {id:'cd2',name:'Фасад (витрина, оклейка)',cat:'Двери и фасад',price:8000},
+      {id:'cd3',name:'Вывеска фасадная',cat:'Двери и фасад',price:6000},
+      // Безопасность
+      {id:'cs1',name:'Камеры видеонаблюдения',cat:'Безопасность',price:6000},
+      {id:'cs2',name:'Пожарная сигнализация',cat:'Безопасность',price:4000},
+      {id:'cs3',name:'Охранная сигнализация',cat:'Безопасность',price:3000},
+      // Мебель встроенная
+      {id:'cm1',name:'Барная стойка (изготовление)',cat:'Мебель встроенная',price:15000},
+      {id:'cm2',name:'Стеллажи и полки',cat:'Мебель встроенная',price:5000},
+      {id:'cm3',name:'Зона кассы',cat:'Мебель встроенная',price:4000},
+      // Пожарная безопасность
+      {id:'cfp1',name:'Огнетушители',cat:'Пожарная безопасность',price:1000},
+      {id:'cfp2',name:'План эвакуации',cat:'Пожарная безопасность',price:1200},
+      {id:'cfp3',name:'Система оповещения',cat:'Пожарная безопасность',price:3000}
+    ],
+    vendorCompanies:[
+      {id:'cv1',name:'La Marzocco',desc:'Итальянские эспрессо-машины премиум-класса',city:'Firenze',phone:'—',website:'lamarzocco.com',tags:['Кофемашины']},
+      {id:'cv2',name:'Mahlkönig',desc:'Немецкие профессиональные кофемолки',city:'Hamburg',phone:'—',website:'mahlkoenig.com',tags:['Кофемолки']},
+      {id:'cv3',name:'Winterhalter',desc:'Профессиональные посудомоечные машины',city:'Stuttgart',phone:'—',website:'winterhalter.com',tags:['Моечное']},
+      {id:'cv4',name:'Unox',desc:'Конвекционные печи для выпечки',city:'Padova',phone:'—',website:'unox.com',tags:['Печи','Выпечка']},
+      {id:'cv5',name:'Hario',desc:'Оборудование для альтернативного заваривания',city:'Tokyo',phone:'—',website:'hario.co.jp',tags:['Пуровер','Фильтр']}
+    ]
+  }
+};
+
+// Apply biz-type data to DB
+function applyBizData(type){
+  const data=BIZ_DATA[type];
+  if(!data)return;
+  DB.employees=JSON.parse(JSON.stringify(data.employees||DB.employees));
+  DB.services=JSON.parse(JSON.stringify(data.services||DB.services));
+  DB.rooms=JSON.parse(JSON.stringify(data.rooms||DB.rooms));
+  DB.suppliers=JSON.parse(JSON.stringify(data.suppliers||DB.suppliers));
+  DB.zones=JSON.parse(JSON.stringify(data.zones||DB.zones));
+  DB.cabinetTypes=JSON.parse(JSON.stringify(data.cabinetTypes||DB.cabinetTypes));
+  if(data.renovations)DB.renovations=JSON.parse(JSON.stringify(data.renovations));
+  if(data.vendorCompanies)DB.vendorCompanies=JSON.parse(JSON.stringify(data.vendorCompanies));
+  // Reset picked items (new concept = clean slate)
+  DB.pickedStaff={};DB.pickedEquip={};DB.pickedServices={};DB.pickedRooms={};
+  DB.pickedContractors={};DB.pickedRenovations={};DB.pickedDocs={};
+}
+
 function showLogin(){
   document.getElementById('loginStep1').style.display='block';
   document.getElementById('loginStep2').style.display='none';
@@ -2714,17 +2949,89 @@ async function completeOnboarding(){
     await sb.from('subscriptions').upsert({user_id:currentUser.id},{onConflict:'user_id'});
   }
   localStorage.setItem('svita_role',currentRole);
-  enterApp();
+  // Owner — show biz type selection; others — go straight to app
+  if(currentRole==='owner'){
+    document.getElementById('loginOnboard').style.display='none';
+    document.getElementById('loginStep25').style.display='block';
+    renderBizTypes();
+  }else{
+    enterApp();
+  }
 }
 
 function selectRole(el){
-  document.querySelectorAll('.login-role').forEach(r=>r.classList.remove('sel'));
+  document.querySelectorAll('#loginRoles .login-role').forEach(r=>r.classList.remove('sel'));
   el.classList.add('sel');
   currentRole=el.dataset.role;
 }
 
+function afterRoleSelect(){
+  if(!currentRole||!currentUser)return;
+  // Suppliers, contractors, employees — skip biz type, go straight to app
+  if(['contractor','supplier','employee'].includes(currentRole)){
+    enterApp();return;
+  }
+  // Admin/owner — show business type selection
+  document.getElementById('loginStep2').style.display='none';
+  document.getElementById('loginStep25').style.display='block';
+  renderBizTypes();
+  // Restore saved biz type
+  const saved=localStorage.getItem('svita_biz_type');
+  const savedSub=localStorage.getItem('svita_biz_subtype');
+  if(saved&&BIZ_TYPES[saved]){
+    selectBizType(saved);
+    if(savedSub)selectBizSubtype(savedSub);
+  }
+}
+
+function renderBizTypes(){
+  const c=document.getElementById('bizTypeCards');
+  let html='';
+  Object.entries(BIZ_TYPES).forEach(([key,bt])=>{
+    html+=`<div class="login-role" style="padding:12px;cursor:pointer;border:2px solid ${currentBizType===key?bt.color:'var(--bd)'};border-radius:12px;background:${currentBizType===key?bt.color+'12':'var(--sf2)'};transition:all .2s" onclick="selectBizType('${key}')" data-biz="${key}">
+<div style="font-size:28px;margin-bottom:4px">${bt.icon}</div>
+<div style="font-size:12px;font-weight:700;color:${currentBizType===key?bt.color:'var(--tx)'}">${bt.name}</div>
+</div>`;
+  });
+  c.innerHTML=html;
+}
+
+function selectBizType(key){
+  currentBizType=key;
+  currentBizSubtype=null;
+  renderBizTypes();
+  const bt=BIZ_TYPES[key];
+  const wrap=document.getElementById('bizSubtypeWrap');
+  const cards=document.getElementById('bizSubtypeCards');
+  document.getElementById('bizSubtypeLabel').textContent=bt.name+' — формат';
+  let html='';
+  bt.subtypes.forEach(st=>{
+    html+=`<div class="login-role" style="padding:10px 14px;cursor:pointer;border:1px solid ${currentBizSubtype===st.id?bt.color:'var(--bd)'};border-radius:10px;background:${currentBizSubtype===st.id?bt.color+'12':'var(--sf2)'};display:flex;align-items:center;gap:10px;transition:all .2s" onclick="selectBizSubtype('${st.id}')" data-sub="${st.id}">
+<div><div style="font-size:12px;font-weight:600;color:${currentBizSubtype===st.id?bt.color:'var(--tx)'}">${st.name}</div>
+<div style="font-size:10px;color:var(--tx3)">${st.desc}</div></div></div>`;
+  });
+  cards.innerHTML=html;
+  wrap.style.display='block';
+}
+
+function selectBizSubtype(id){
+  currentBizSubtype=id;
+  const bt=BIZ_TYPES[currentBizType];
+  const cards=document.getElementById('bizSubtypeCards');
+  cards.querySelectorAll('.login-role').forEach(el=>{
+    const isSel=el.dataset.sub===id;
+    el.style.borderColor=isSel?bt.color:'var(--bd)';
+    el.style.background=isSel?bt.color+'12':'var(--sf2)';
+    el.querySelector('div>div').style.color=isSel?bt.color:'var(--tx)';
+  });
+}
+
 function enterApp(){
   if(!currentRole||!currentUser)return;
+  // Apply business-type data if not dental (dental = default DB)
+  if(currentBizType&&currentBizType!=='dental'&&BIZ_DATA[currentBizType]){
+    applyBizData(currentBizType);
+  }
   document.getElementById('loginScreen').classList.add('hidden');
   document.getElementById('appContainer').style.display='flex';
   const _sa=document.getElementById('sideAvatar'),_sn=document.getElementById('sideName'),_sr=document.getElementById('sideRole');
@@ -2736,8 +3043,17 @@ function enterApp(){
   document.getElementById('roleLabel').style.color=currentRole==='admin'?'var(--ac2)':currentRole==='contractor'?'var(--or)':currentRole==='supplier'?'#d946ef':currentRole==='employee'?'#06b6d4':'var(--gn)';
   updateTopUser();
   logAction('login','auth',null,{method:'session',role:currentRole});
-  // Save role in localStorage (Supabase handles session)
+  // Save role + biz type in localStorage
   localStorage.setItem('svita_role',currentRole);
+  if(currentBizType){localStorage.setItem('svita_biz_type',currentBizType)}
+  if(currentBizSubtype){localStorage.setItem('svita_biz_subtype',currentBizSubtype)}
+  // Update sidebar tag with business type
+  const sideTag=document.querySelector('.side-tag');
+  if(sideTag&&currentBizType&&BIZ_TYPES[currentBizType]){
+    const bt=BIZ_TYPES[currentBizType];
+    const sub=currentBizSubtype?bt.subtypes.find(s=>s.id===currentBizSubtype):null;
+    sideTag.textContent=bt.icon+' '+(sub?sub.name:bt.name);
+  }
   // Track session + update profile + sync to DB.users
   if(sb&&currentUser.email){
     sb.from('user_sessions').insert({email:currentUser.email,user_agent:navigator.userAgent}).then(()=>{});
@@ -2871,6 +3187,10 @@ document.addEventListener('click',function(e){
         }
       }catch(e){/* server unreachable — use cached session */}
     }
+    // Restore biz type
+    const sBiz=localStorage.getItem('svita_biz_type');
+    const sBizSub=localStorage.getItem('svita_biz_subtype');
+    if(sBiz&&BIZ_TYPES[sBiz]){currentBizType=sBiz;currentBizSubtype=sBizSub||null}
     const role=localStorage.getItem('svita_role');
     if(role){
       currentRole=role;
@@ -2900,7 +3220,9 @@ function buildSidebar(){
     html+='<div class="si" data-nav="budget"><span class="ico">&#128176;</span><span class="sl">Бюджет</span></div>';
     html+='<div class="si" data-nav="profit"><span class="ico">&#128200;</span><span class="sl">Рентабельность</span></div>';
     html+='<div class="si" data-nav="zones"><span class="ico">&#127968;</span><span class="sl">Зоны</span></div>';
-    html+='<div class="si" data-nav="cabinet-types"><span class="ico">🏥</span><span class="sl">Стоимость кабинетов</span><span class="sb wip">'+getPickedRoomsList().length+'</span></div>';
+    const _ctIcon=currentBizType==='dental'?'🏥':'🏢';
+    const _ctLabel=currentBizType==='dental'?'Стоимость кабинетов':'Стоимость помещений';
+    html+='<div class="si" data-nav="cabinet-types"><span class="ico">'+_ctIcon+'</span><span class="sl">'+_ctLabel+'</span><span class="sb wip">'+getPickedRoomsList().length+'</span></div>';
   }
 
   if(currentRole==='admin'||currentRole==='owner'){
@@ -2941,7 +3263,11 @@ function buildSidebar(){
 }
 
 // ═══════════════ NAVIGATION ═══════════════
-const secNames={overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:'Перечень услуг',s6:'Концепция',s7:'Документация',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны','db-premises':'БД Помещений','db-renovations':'Модернизация и услуги','db-services':'Каталог услуг','db-docs':'Каталог документов','db-contractors':'БД Подрядчиков','db-suppliers':'Каталог оборудования','db-employees':'БД Сотрудников','db-vendor-companies':'Поставщики',users:'Пользователи','cabinet-types':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения'};
+function getSecNames(){
+  const isCoffee=currentBizType&&currentBizType!=='dental';
+  return{overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:isCoffee?'Меню':'Перечень услуг',s6:'Концепция',s7:'Документация',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны','db-premises':'БД Помещений','db-renovations':'Модернизация и услуги','db-services':isCoffee?'Меню':'Каталог услуг','db-docs':'Каталог документов','db-contractors':'БД Подрядчиков','db-suppliers':'Каталог оборудования','db-employees':'БД Сотрудников','db-vendor-companies':'Поставщики',users:'Пользователи','cabinet-types':isCoffee?'Стоимость помещений':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения'};
+}
+const secNames=getSecNames();
 const stageOrder=['s1','s2','s3','s4','s5','s6','s7'];
 let cur='overview';
 
@@ -2964,7 +3290,7 @@ function nav(id){
   if(tab)tab.classList.add('act');
   // If navigating to overview or analytics, deactivate tabs
   if(!id.startsWith('s'))document.querySelectorAll('.tab').forEach(t=>t.classList.remove('act'));
-  document.getElementById('bc').textContent=secNames[id]||id;
+  document.getElementById('bc').textContent=getSecNames()[id]||id;
   window.scrollTo(0,0);
   if(id==='budget')updateBudget();
   if(id==='profit')updateProfit();
