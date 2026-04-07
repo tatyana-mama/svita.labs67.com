@@ -649,7 +649,7 @@ Apple</button>
 <!-- SIDEBAR -->
 <aside class="side" id="sidebar">
 <div class="side-head"><div class="side-logo"><span class="d"></span>SVITA</div><div class="side-tag" id="sideTag">Конструктор бизнеса</div>
-<div id="sideBizBtn" style="display:none;margin-top:6px;cursor:pointer;padding:6px 10px;border-radius:8px;border:1px solid var(--bd);background:var(--sf2);font-size:11px;color:var(--tx2);text-align:center;transition:all .2s" onclick="showBizSelector()"><span id="sideBizIcon"></span> <span id="sideBizName">Выбрать концепцию</span> <span style="font-size:9px;opacity:.5">▼</span></div>
+<div id="sideBizBtn" style="margin-top:6px;cursor:pointer;padding:6px 10px;border-radius:8px;border:1px solid var(--bd);background:var(--sf2);font-size:11px;color:var(--tx2);text-align:center;transition:all .2s;position:relative;z-index:10" onclick="showBizSelector()"><span id="sideBizIcon">🏢</span> <span id="sideBizName">Выбрать концепцию</span> <span style="font-size:9px;opacity:.5">▼</span></div>
 </div>
 <nav class="side-nav" id="sideNav"></nav>
 </aside>
@@ -2851,16 +2851,17 @@ function updateBizUI(){
   const name=document.getElementById('sideBizName');
   const tag=document.getElementById('sideTag');
   // Only show for admin/owner
-  if(btn&&!['admin','owner'].includes(currentRole)){btn.style.display='none';return}
+  if(!btn)return;
+  if(!['admin','owner'].includes(currentRole)){btn.style.display='none';return}
+  btn.style.display='block';
   if(currentBizType&&BIZ_TYPES[currentBizType]){
     const bt=BIZ_TYPES[currentBizType];
     const sub=currentBizSubtype?bt.subtypes.find(s=>s.id===currentBizSubtype):null;
-    if(btn){btn.style.display='block';btn.style.borderColor=bt.color+'40'}
+    btn.style.borderColor=bt.color+'40';
     if(icon)icon.textContent=bt.icon;
     if(name)name.textContent=sub?sub.name:bt.name;
     if(tag)tag.textContent=bt.icon+' '+(sub?sub.name:bt.name);
   }else{
-    if(btn)btn.style.display='block';
     if(icon)icon.textContent='🏢';
     if(name)name.textContent='Выбрать концепцию';
     if(tag)tag.textContent='Конструктор бизнеса';
