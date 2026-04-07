@@ -2707,15 +2707,17 @@ document.addEventListener('click',function(e){
     if(!saved)return;
     const u=JSON.parse(saved);
     if(!u||!u.email||!u.id)return;
-    // Re-validate session against server
+    // Re-validate session against server (non-blocking — if server down, use cached)
+    currentUser=u;
     if(sb){
-      const{data}=await sb.from('profiles').select('id,email,name,role').eq('id',u.id).single();
-      if(!data||data.email!==u.email){localStorage.removeItem('svita_session');localStorage.removeItem('svita_role');return}
-      const isAdmin=data.role==='superadmin'||data.role==='admin';
-      currentUser={email:data.email,name:data.name||data.email.split('@')[0],isAdmin,emailConfirmed:true,id:data.id};
-      localStorage.setItem('svita_session',JSON.stringify(currentUser));
-    }else{
-      currentUser=u;
+      try{
+        const{data}=await sb.from('profiles').select('id,email,name,role').eq('email',u.email).single();
+        if(data){
+          const isAdmin=data.role==='superadmin'||data.role==='admin';
+          currentUser={email:data.email,name:data.name||data.email.split('@')[0],isAdmin,emailConfirmed:true,id:data.id||u.id};
+          localStorage.setItem('svita_session',JSON.stringify(currentUser));
+        }
+      }catch(e){/* server unreachable — use cached session */}
     }
     const role=localStorage.getItem('svita_role');
     if(role){
