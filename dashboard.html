@@ -649,7 +649,11 @@ Apple</button>
 <!-- SIDEBAR -->
 <aside class="side" id="sidebar">
 <div class="side-head"><div class="side-logo"><span class="d"></span>SVITA</div><div class="side-tag" id="sideTag">Конструктор бизнеса</div>
-<div id="sideBizBtn" style="margin-top:6px;cursor:pointer;padding:6px 10px;border-radius:8px;border:1px solid var(--bd);background:var(--sf2);font-size:11px;color:var(--tx2);text-align:center;transition:all .2s;position:relative;z-index:10" onclick="showBizSelector()"><span id="sideBizIcon">🏢</span> <span id="sideBizName">Выбрать концепцию</span> <span style="font-size:9px;opacity:.5">▼</span></div>
+<div style="display:flex;gap:4px;margin-top:6px">
+<div id="sideBizBtn" style="flex:1;cursor:pointer;padding:6px 10px;border-radius:8px;border:1px solid var(--bd);background:var(--sf2);font-size:11px;color:var(--tx2);text-align:center;transition:all .2s;position:relative;z-index:10" onclick="showBizSelector()"><span id="sideBizIcon">🏢</span> <span id="sideBizName">Выбрать</span> <span style="font-size:9px;opacity:.5">▼</span></div>
+<div id="sideSaveBtn" style="cursor:pointer;padding:6px 8px;border-radius:8px;border:1px solid var(--bd);background:var(--sf2);font-size:11px;color:var(--gn);text-align:center;transition:all .2s;position:relative;z-index:10" onclick="saveOrCreateConcept()" title="Сохранить концепцию">💾</div>
+<div style="cursor:pointer;padding:6px 8px;border-radius:8px;border:1px solid var(--bd);background:var(--sf2);font-size:11px;color:var(--ac2);text-align:center;transition:all .2s;position:relative;z-index:10" onclick="newConcept()" title="Новая концепция">＋</div>
+</div>
 </div>
 <nav class="side-nav" id="sideNav"></nav>
 </aside>
@@ -3000,6 +3004,40 @@ function updateBizUI(){
     if(name)name.textContent='Выбрать концепцию';
     if(tag)tag.textContent='Конструктор бизнеса';
   }
+}
+
+// Save current or create new concept
+async function saveOrCreateConcept(){
+  if(window._currentConceptId){
+    // Update existing
+    await saveCurrentConcept();
+    toast('Концепция сохранена','gn');
+    await loadConcepts();
+  }else{
+    // No active concept — create new
+    const name=prompt('Название концепции:','Моя концепция');
+    if(!name)return;
+    await createConcept(name,'manual');
+  }
+}
+
+// Start fresh new concept
+async function newConcept(){
+  // Save current first if exists
+  if(window._currentConceptId){
+    await saveCurrentConcept();
+  }
+  // Ask for name
+  const name=prompt('Название новой концепции:');
+  if(!name)return;
+  // Reset workspace to defaults
+  window._currentConceptId=null;
+  window._currentConceptName=null;
+  currentBizType=null;currentBizSubtype=null;
+  localStorage.removeItem('svita_biz_type');
+  localStorage.removeItem('svita_biz_subtype');
+  // Show biz selector for new concept
+  showBizSelector();
 }
 
 function showLogin(){
