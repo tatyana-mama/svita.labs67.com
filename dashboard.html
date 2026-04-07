@@ -1758,20 +1758,27 @@ function uKey(k){const uid=currentUser&&currentUser.id?currentUser.id:'anon';con
 function uKeyOld(k){const uid=currentUser&&currentUser.id?currentUser.id:'anon';return k+'_'+uid}
 function migrateLocalStorageKeys(newId){
   const keys=Object.keys(localStorage);
-  const oldIds=new Set();
-  keys.forEach(k=>{const m=k.match(/_([a-f0-9-]{36})(?:_|$)/);if(m&&m[1]!==newId)oldIds.add(m[1])});
-  if(!oldIds.size)return;
+  const dataKeys=['svita_picked','svita_bm','svita_prop','svita_prop_params','svita_fp'];
   let migrated=0;
-  oldIds.forEach(oldId=>{
-    keys.forEach(k=>{if(k.includes('_'+oldId)){
-      const nk=k.replace('_'+oldId,'_'+newId);
-      const oldVal=localStorage.getItem(k);
-      const newVal=localStorage.getItem(nk);
-      if(oldVal&&(!newVal||newVal==='{}'))localStorage.setItem(nk,oldVal);
-      migrated++;
-    }});
+  dataKeys.forEach(base=>{
+    // Find any existing key that starts with base and has data
+    const candidates=keys.filter(k=>k.startsWith(base+'_')&&k!==base+'_'+newId&&!k.startsWith(base+'_'+newId+'_'));
+    candidates.forEach(oldKey=>{
+      const oldVal=localStorage.getItem(oldKey);
+      if(!oldVal||oldVal==='{}'||oldVal==='null')return;
+      // Try with current role suffix
+      const role=localStorage.getItem('svita_role')||'admin';
+      const newKey=base+'_'+newId+'_'+role;
+      const newKeyNoRole=base+'_'+newId;
+      if(!localStorage.getItem(newKey)||localStorage.getItem(newKey)==='{}'){
+        localStorage.setItem(newKey,oldVal);migrated++;
+      }
+      if(!localStorage.getItem(newKeyNoRole)||localStorage.getItem(newKeyNoRole)==='{}'){
+        localStorage.setItem(newKeyNoRole,oldVal);migrated++;
+      }
+    });
   });
-  if(migrated)console.log('[SVITA] Migrated',migrated,'keys from',[...oldIds],'to',newId);
+  if(migrated)console.log('[SVITA] Migrated',migrated,'keys to',newId);
 }
 function uSet(k,v){localStorage.setItem(uKey(k),v)}
 function uGet(k){return localStorage.getItem(uKey(k))}
