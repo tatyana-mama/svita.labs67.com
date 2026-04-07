@@ -2448,6 +2448,12 @@ function selectRole(el){
 
 function enterApp(){
   if(!currentRole||!currentUser)return;
+  // DEBUG: dump all svita keys
+  const allKeys=Object.keys(localStorage).filter(k=>k.startsWith('svita_'));
+  console.log('[SVITA-DEBUG] User ID:',currentUser.id,'Role:',currentRole);
+  console.log('[SVITA-DEBUG] uKey:',uKey('svita_picked'));
+  console.log('[SVITA-DEBUG] All svita keys:',allKeys);
+  allKeys.forEach(k=>{const v=localStorage.getItem(k);console.log('[SVITA-DEBUG]',k,'→',v?v.substring(0,80)+'...':'(empty)')});
   document.getElementById('loginScreen').classList.add('hidden');
   document.getElementById('appContainer').style.display='flex';
   const _sa=document.getElementById('sideAvatar'),_sn=document.getElementById('sideName'),_sr=document.getElementById('sideRole');
