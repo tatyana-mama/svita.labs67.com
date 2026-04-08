@@ -13,7 +13,7 @@
 <title>SVITA — Конструктор клиники</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 <style>
 :root{--bg:#f8fafc;--sf:#ffffff;--sf2:#f1f5f9;--sf3:#e2e8f0;--bd:rgba(0,0,0,.06);--bd2:rgba(0,0,0,.10);--tx:#1e293b;--tx2:rgba(30,41,59,.6);--tx3:rgba(30,41,59,.35);--ac:#3b82f6;--ac2:#2563eb;--acbg:rgba(59,130,246,.06);--acbd:rgba(59,130,246,.15);--gn:#16a34a;--gnbg:rgba(22,163,74,.06);--yl:#ca8a04;--ylbg:rgba(202,138,4,.06);--rd:#dc2626;--or:#ea580c;--r:12px;--f:'Inter',system-ui,sans-serif;--shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);--shadow-md:0 4px 6px rgba(0,0,0,.04),0 2px 4px rgba(0,0,0,.03)}
 *{box-sizing:border-box;margin:0;padding:0}body{font-family:var(--f);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}a{color:inherit;text-decoration:none}
@@ -7859,6 +7859,14 @@ function _restoreRpChat(){
 // ═══ EXPORT / IMPORT CONCEPT FILE ═══
 // ═══ PDF EXPORT — План реализации ═══
 function exportPDF(){
+  if(!window.jspdf){
+    toast('Загрузка PDF-модуля...','yl');
+    const s=document.createElement('script');
+    s.src='https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js';
+    s.onload=()=>exportPDF();
+    s.onerror=()=>toast('Не удалось загрузить PDF-модуль','rd');
+    document.head.appendChild(s);return;
+  }
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
   const W=210,H=297,M=18,CW=W-M*2;
