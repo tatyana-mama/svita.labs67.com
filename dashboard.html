@@ -54,10 +54,10 @@
 .role-badge{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600}
 
 /* MAIN — 3 columns */
-.main{flex:1;margin-left:240px;margin-right:150px;min-height:100vh;min-width:0;overflow-x:hidden}
+.main{flex:1;margin-left:240px;margin-right:320px;min-height:100vh;min-width:0;overflow-x:hidden}
 
 /* RIGHT PANEL */
-.rpanel{width:150px;flex-shrink:0;background:var(--sf);border-left:1px solid var(--bd);position:fixed;top:0;right:0;bottom:0;z-index:100;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;word-break:break-word}
+.rpanel{width:320px;flex-shrink:0;background:var(--sf);border-left:1px solid var(--bd);position:fixed;top:0;right:0;bottom:0;z-index:100;display:flex;flex-direction:column;overflow:hidden}
 .rp-head{padding:10px 8px;border-bottom:1px solid var(--bd);font-size:10px;font-weight:700;color:var(--ac2);text-transform:uppercase;letter-spacing:.5px}
 .rp-sec{padding:8px 8px;border-bottom:1px solid var(--bd)}
 .rp-sec-title{font-size:8px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
@@ -309,7 +309,7 @@
 .prop-empty-icon{font-size:40px;opacity:.2;margin-bottom:12px}
 
 /* RESPONSIVE */
-@media(max-width:1400px){.rpanel{width:130px}.main{margin-right:130px}}
+@media(max-width:1400px){.rpanel{width:280px}.main{margin-right:280px}}
 @media(max-width:1100px){.sts{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:1fr}.rpanel{display:none}.main{margin-right:0}}
 /* Mobile burger */
 .mob-burger{display:none;background:none;border:none;font-size:22px;cursor:pointer;padding:4px 8px;color:var(--tx);line-height:1}
@@ -343,8 +343,7 @@
 .side.mob-open{transform:translateX(0)!important}
 .mob-overlay.vis{display:block!important}
 .main{margin-left:0!important}
-#aiChatPanel{width:100vw!important;max-width:100vw!important;right:0!important;left:0!important;bottom:0!important;height:100vh!important;max-height:100vh!important;border-radius:0!important}
-#aiChatBtn{bottom:16px!important;right:16px!important;width:46px!important;height:46px!important;font-size:18px!important}
+.rpanel{display:none!important}
 }
 
 /* ═══════════════ RESPONSIVE ADDITIONS ═══════════════ */
@@ -1510,9 +1509,13 @@ Apple</button>
 
 <!-- RIGHT PANEL -->
 <aside class="rpanel" id="rpanel">
-<div class="rp-head" id="rpTitle">Сводка проекта</div>
-<div id="rpContent">
-<!-- dynamically filled -->
+<div class="rp-head">SVITA AI</div>
+<div id="rpChatMessages" style="flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:8px">
+<div style="background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(59,130,246,0.08));border-radius:10px;padding:10px;font-size:10px;color:var(--tx2);line-height:1.5">Привет! Спроси меня о бизнес-плане, оборудовании, помещениях, персонале...</div>
+</div>
+<div style="padding:8px;border-top:1px solid var(--bd);display:flex;gap:4px;align-items:flex-end">
+<textarea id="rpChatInput" placeholder="Сообщение..." rows="1" style="flex:1;resize:none;border:1px solid var(--bd);border-radius:8px;padding:6px 8px;font-size:11px;font-family:var(--f);background:var(--sf2);color:var(--tx);outline:none;max-height:80px;overflow-y:auto" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendRpChat()}"></textarea>
+<button id="rpChatSendBtn" onclick="sendRpChat()" style="width:30px;height:30px;border-radius:8px;border:none;background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;cursor:pointer;font-size:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center">&uarr;</button>
 </div>
 </aside>
 
@@ -7657,121 +7660,78 @@ function updateFormulaDisplay(){
   if(el('fmMarginCalc'))el('fmMarginCalc').textContent=fmt(profit)+' ÷ '+fmt(revenue)+' × 100 = '+margin+'%';
 }
 // ═══════════════ RIGHT PANEL ═══════════════
-function updateRightPanel(){
-  const rp=document.getElementById('rpContent');
-  if(!rp)return;
-  const t=calcTotals();
-  const profit=t.revenue-t.expenses;
-  let html='';
+function updateRightPanel(){/* chat is in rpanel now */}
 
-  if(cur==='overview'||cur==='s6'){
-    document.getElementById('rpTitle').textContent='Сводка проекта';
-    html+=`<div class="rp-sec"><div class="rp-sec-title">Инвестиции</div>
-    <div class="rp-mini"><div class="rp-mini-label">Общий бюджет</div><div class="rp-mini-val" style="color:var(--ac2)">${t.grand.toLocaleString('ru')} PLN</div></div>
-    <div class="rp-stat"><span class="rp-stat-label">Помещение</span><span class="rp-stat-val ac">${t.rent.toLocaleString('ru')}</span></div>
-    <div class="rp-stat"><span class="rp-stat-label">Инженерия</span><span class="rp-stat-val ac">${t.eng.toLocaleString('ru')}</span></div>
-    <div class="rp-stat"><span class="rp-stat-label">Оборудование</span><span class="rp-stat-val ac">${t.equip.toLocaleString('ru')}</span></div>
-    <div class="rp-stat"><span class="rp-stat-label">Документы</span><span class="rp-stat-val ac">${t.docs.toLocaleString('ru')}</span></div>
-    </div>`;
-    html+=`<div class="rp-sec"><div class="rp-sec-title">Рентабельность</div>
-    <div class="rp-stat"><span class="rp-stat-label">Выручка/мес.</span><span class="rp-stat-val pos">${t.revenue.toLocaleString('ru')}</span></div>
-    <div class="rp-stat"><span class="rp-stat-label">Расходы/мес.</span><span class="rp-stat-val neg">${t.expenses.toLocaleString('ru')}</span></div>
-    <div class="rp-stat"><span class="rp-stat-label">Прибыль/мес.</span><span class="rp-stat-val ${profit>0?'pos':'neg'}">${profit.toLocaleString('ru')}</span></div>
-    <div class="rp-stat"><span class="rp-stat-label">Окупаемость</span><span class="rp-stat-val yl">${profit>0?Math.ceil(t.grand/profit)+' мес.':'--'}</span></div>
-    </div>`;
-    html+=`<div class="rp-sec"><div class="rp-sec-title">Каталог</div>
-    <div class="rp-stat"><span class="rp-stat-label">Всего в каталоге</span><span class="rp-stat-val">${DB.suppliers.length}</span></div>
-    <div class="rp-stat"><span class="rp-stat-label">Подрядчиков</span><span class="rp-stat-val">${DB.contractors.length}</span></div>
-    <div class="rp-stat"><span class="rp-stat-label">Комнат</span><span class="rp-stat-val">${DB.rooms.length}</span></div>
-    <div class="rp-stat"><span class="rp-stat-label">Персонал</span><span class="rp-stat-val">${DB.employees.length}</span></div>
-    <div class="rp-stat"><span class="rp-stat-label">Процедур</span><span class="rp-stat-val">${DB.services.length}</span></div>
-    </div>`;
-  }
+function _rpChatAppend(role,text){
+  const m=document.getElementById('rpChatMessages');
+  const d=document.createElement('div');
+  d.style.cssText=role==='user'
+    ?'align-self:flex-end;background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;border-radius:10px 10px 2px 10px;padding:8px 10px;font-size:11px;line-height:1.4;max-width:90%;word-break:break-word'
+    :'align-self:flex-start;background:var(--sf2);color:var(--tx);border-radius:10px 10px 10px 2px;padding:8px 10px;font-size:11px;line-height:1.4;max-width:90%;word-break:break-word';
+  d.textContent=text;
+  m.appendChild(d);
+  m.scrollTop=m.scrollHeight;
+  return d;
+}
 
-  if(cur==='s1'){
-    document.getElementById('rpTitle').textContent='Помещение';
-    if(activeProperty){
-      html+=`<div class="rp-sec"><div class="rp-sec-title">Объект</div>
-      <div class="rp-mini"><div class="rp-mini-label">Адрес</div><div class="rp-mini-val" style="font-size:14px">${activeProperty.name}</div><div class="rp-mini-sub">${activeProperty.city}</div></div>
-      <div class="rp-stat"><span class="rp-stat-label">Площадь</span><span class="rp-stat-val">${activeProperty.area} м²</span></div>
-      <div class="rp-stat"><span class="rp-stat-label">Этаж</span><span class="rp-stat-val">${activeProperty.floor}/${activeProperty.floors_total}</span></div>
-      <div class="rp-stat"><span class="rp-stat-label">Цена/м²</span><span class="rp-stat-val ac">${activeProperty.price_m2} PLN</span></div>
-      </div>`;
-    }
-    html+=`<div class="rp-sec"><div class="rp-sec-title">Комнаты по типам</div>`;
-    const types={};
-    DB.rooms.forEach(r=>{types[r.type]=(types[r.type]||0)+1});
-    Object.keys(types).forEach(t=>{
-      const colors={'Стоматологический':'var(--gn)','Хирургический':'var(--rd)','Ортодонтический':'var(--ac)','Техническая':'var(--yl)','Рентген':'var(--or)','Общественная':'#8b5cf6','Служебная':'var(--tx3)'};
-      html+=`<div class="rp-list-item"><span class="rp-dot" style="background:${colors[t]||'var(--tx3)'}"></span><span style="flex:1;color:var(--tx2)">${t}</span><span style="font-weight:700">${types[t]}</span></div>`;
+async function sendRpChat(){
+  if(_aiChatStreaming)return;
+  const inp=document.getElementById('rpChatInput');
+  const text=inp.value.trim();
+  if(!text)return;
+  inp.value='';inp.style.height='auto';
+
+  _rpChatAppend('user',text);
+  _aiChatHistory.push({role:'user',content:text});
+  _saveChatHistory();
+
+  const context={
+    bizType:currentBizType||'dental',
+    section:cur,
+    concept:document.getElementById('cBrand')?.value||'',
+    rooms:Object.keys(DB.pickedRooms||{}).length,
+    equipment:Object.keys(DB.pickedEquip||{}).length,
+    staff:Object.keys(DB.pickedStaff||{}).length,
+    services:(DB.services||[]).length,
+    renovations:Object.keys(DB.pickedRenovations||{}).length,
+    docs:Object.keys(DB.pickedDocs||{}).length
+  };
+  if(activeProperty)context.property={name:activeProperty.name,area:activeProperty.area,city:activeProperty.city};
+
+  const aiEl=_rpChatAppend('ai','SVITA AI — мне нужно немного времени для формирования ответа, не перезагружайте страницу...');
+  _aiChatStreaming=true;
+  document.getElementById('rpChatSendBtn').style.opacity='0.5';
+
+  const CHAT_URL=SB_URL+'/functions/v1/ai-chat';
+  try{
+    const res=await fetch(CHAT_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_KEY},
+      body:JSON.stringify({message:text,context,history:_aiChatHistory.slice(-8)})
     });
-    html+=`</div>`;
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    if(!data.reply)throw new Error('Пустой ответ');
+    aiEl.textContent=data.reply;
+    const tag=document.createElement('span');tag.style.cssText='display:block;font-size:9px;color:var(--tx3);margin-top:4px';tag.textContent='SVITA AI';aiEl.appendChild(tag);
+    _aiChatHistory.push({role:'assistant',content:data.reply});
+    _saveChatHistory();
+  }catch(e){
+    aiEl.textContent='AI временно недоступен. Попробуйте позже.';
+    aiEl.style.color='var(--rd)';
+  }finally{
+    _aiChatStreaming=false;
+    document.getElementById('rpChatSendBtn').style.opacity='1';
   }
+}
 
-  if(cur==='s3'){
-    document.getElementById('rpTitle').textContent='Оборудование по статусам';
-    let picked=0,total=0;
-    document.querySelectorAll('#equipCards .sel').forEach(el=>{
-      if(el.classList.contains('picked'))picked++;
-      total++;
-    });
-    html+=`<div class="rp-sec"><div class="rp-sec-title">Статусы</div>
-    <div class="rp-mini"><div class="rp-mini-label">В шорт-листе</div><div class="rp-mini-val">${picked}</div></div>
-    <div class="rp-mini"><div class="rp-mini-label">Всего в каталоге</div><div class="rp-mini-val">${total}</div></div>
-    <div class="rp-progress"><div class="rp-progress-fill" style="width:${total?Math.round(picked/total*100):0}%;background:var(--ac)"></div></div>
-    </div>`;
-    // By category
-    const cats={};
-    DB.suppliers.forEach(s=>{cats[s.category]=(cats[s.category]||0)+1});
-    html+=`<div class="rp-sec"><div class="rp-sec-title">По категориям</div>`;
-    Object.keys(cats).forEach(c=>{
-      html+=`<div class="rp-list-item"><span style="flex:1;color:var(--tx2);font-size:10px">${c}</span><span style="font-weight:700;font-size:11px">${cats[c]}</span></div>`;
-    });
-    html+=`</div>`;
-    html+=`<div class="rp-sec"><div class="rp-sec-title">Стоимость выбранного</div>
-    <div class="rp-mini"><div class="rp-mini-label">Итого оборудование</div><div class="rp-mini-val" style="color:var(--ac2)">${t.equip.toLocaleString('ru')} PLN</div></div></div>`;
+function _restoreRpChat(){
+  if(!_aiChatHistory.length)return;
+  const m=document.getElementById('rpChatMessages');
+  if(m.children.length>1)return;
+  for(const h of _aiChatHistory){
+    _rpChatAppend(h.role==='user'?'user':'ai',h.content);
   }
-
-  if(cur==='s2'){
-    document.getElementById('rpTitle').textContent='Модернизация';
-    html+=`<div class="rp-sec"><div class="rp-sec-title">Инженерные работы</div>
-    <div class="rp-mini"><div class="rp-mini-label">Итого инженерия</div><div class="rp-mini-val" style="color:var(--ac2)">${t.eng.toLocaleString('ru')} PLN</div></div>
-    </div>`;
-  }
-
-  if(cur==='s4'){
-    document.getElementById('rpTitle').textContent='Персонал';
-    const totalSalary=DB.employees.reduce((s,e)=>s+e.salary,0);
-    const fotR=(parseFloat(document.getElementById('fotRateInput')?.value)||20.48)/100;
-    const totalFot=Math.round(totalSalary*fotR);
-    html+=`<div class="rp-sec"><div class="rp-sec-title">Зарплаты и налоги</div>
-    <div class="rp-mini"><div class="rp-mini-label">ЗП / мес.</div><div class="rp-mini-val" style="color:var(--ac2)">${totalSalary.toLocaleString('ru')} PLN</div></div>
-    <div class="rp-mini"><div class="rp-mini-label">ФОТ / мес.</div><div class="rp-mini-val" style="color:var(--yl)">${totalFot.toLocaleString('ru')} PLN</div></div>
-    <div class="rp-mini"><div class="rp-mini-label">Итого / мес.</div><div class="rp-mini-val" style="color:var(--rd)">${(totalSalary+totalFot).toLocaleString('ru')} PLN</div></div>
-    <div class="rp-stat"><span class="rp-stat-label">Позиций</span><span class="rp-stat-val">${DB.employees.length}</span></div>
-    <div class="rp-stat"><span class="rp-stat-label">Ср. ЗП</span><span class="rp-stat-val">${DB.employees.length?Math.round(totalSalary/DB.employees.length).toLocaleString('ru'):0}</span></div>
-    </div>`;
-  }
-
-  if(cur==='s5'){
-    document.getElementById('rpTitle').textContent='Прайс-лист';
-    const picked=DB.pickedServices||{};
-    const pIds=Object.keys(picked);
-    let total=0;
-    pIds.forEach(id=>{const s=DB.services.find(x=>x.id==id);if(s)total+=(picked[id].customPrice!=null?picked[id].customPrice:s.price)*(picked[id].qty||1)});
-    const avgP=pIds.length?Math.round(total/pIds.length):0;
-    html+=`<div class="rp-sec"><div class="rp-sec-title">Ценообразование</div>
-    <div class="rp-stat"><span class="rp-stat-label">Процедур</span><span class="rp-stat-val">${pIds.length}</span></div>
-    <div class="rp-stat"><span class="rp-stat-label">Из каталога</span><span class="rp-stat-val">${DB.services.length}</span></div>
-    <div class="rp-mini"><div class="rp-mini-label">Средний чек</div><div class="rp-mini-val" style="color:var(--ac2)">${avgP.toLocaleString('ru')} PLN</div></div>
-    </div>`;
-  }
-
-  if(cur==='s6'){
-    document.getElementById('rpTitle').textContent='Концепция';
-  }
-
-  rp.innerHTML=html;
 }
 
 // ═══════════════ PHOTO UPLOAD ═══════════════
@@ -7994,8 +7954,7 @@ async function sendAiChat(){
 const _origEnterApp=enterApp;
 enterApp=function(){
   _origEnterApp.apply(this,arguments);
-  document.getElementById('aiChatBtn').style.display='flex';
-  _loadChatSession();
+  _loadChatSession().then(()=>_restoreRpChat());
 };
 </script>
 
@@ -8030,26 +7989,7 @@ enterApp=function(){
 <div id="tourHighlight" style="display:none;position:fixed;z-index:7999;border:2px solid var(--ac);border-radius:8px;box-shadow:0 0 0 4000px rgba(0,0,0,.08);pointer-events:none;transition:all .3s ease"></div>
 <style>@keyframes obSlide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}</style>
 
-<!-- AI Chat -->
-<div id="aiChatBtn" onclick="toggleAiChat()" style="display:none;position:fixed;bottom:24px;right:24px;z-index:8000;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(139,92,246,.4);font-size:22px;align-items:center;justify-content:center;transition:transform .2s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-<span id="aiChatBtnIco">&#10024;</span>
-</div>
-<div id="aiChatPanel" style="display:none;position:fixed;bottom:88px;right:24px;z-index:8001;width:400px;max-width:calc(100vw - 48px);height:520px;max-height:calc(100vh - 120px);background:var(--sf);border:1px solid var(--bd2);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.12);flex-direction:column;overflow:hidden">
-<div style="padding:14px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(139,92,246,0.06),rgba(59,130,246,0.06))">
-<div><div style="font-size:13px;font-weight:700">&#10024; SVITA AI</div><div style="font-size:9px;color:var(--tx3)">Jetson AGX Orin · qwen2.5:32b</div></div>
-<div style="display:flex;gap:6px">
-<button onclick="clearAiChat()" style="background:none;border:1px solid var(--bd);border-radius:6px;padding:3px 8px;font-size:9px;color:var(--tx3);cursor:pointer" title="Очистить">&#128465;</button>
-<button onclick="toggleAiChat()" style="background:none;border:none;font-size:18px;color:var(--tx3);cursor:pointer;padding:0 4px">&times;</button>
-</div>
-</div>
-<div id="aiChatMessages" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px">
-<div style="background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(59,130,246,0.08));border-radius:12px;padding:12px;font-size:11px;color:var(--tx2);line-height:1.5">&#128075; Привет! Я AI-ассистент SVITA. Спроси меня о чём угодно: бизнес-план, оборудование, помещения, персонал, юридические вопросы, маркетинг...</div>
-</div>
-<div style="padding:10px 12px;border-top:1px solid var(--bd);display:flex;gap:8px;align-items:end">
-<textarea id="aiChatInput" placeholder="Напишите сообщение..." rows="1" style="flex:1;border:1px solid var(--bd);border-radius:10px;padding:8px 12px;font-size:12px;font-family:var(--f);color:var(--tx);background:var(--sf2);resize:none;max-height:80px;outline:none" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAiChat()}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"></textarea>
-<button onclick="sendAiChat()" id="aiChatSendBtn" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;border:none;cursor:pointer;font-size:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center" title="Отправить">&#9654;</button>
-</div>
-</div>
+<!-- floating chat removed — AI chat is now in right panel -->
 
 <!-- Cookie Consent -->
 <div id="cookieConsent" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,.08);padding:14px 24px;font-family:var(--f)">
