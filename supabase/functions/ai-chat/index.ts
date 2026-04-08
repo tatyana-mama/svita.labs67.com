@@ -16,11 +16,25 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { message, context, history } = await req.json()
+    const { message, context, history, mode } = await req.json()
 
     if (!message || typeof message !== "string") {
       return new Response(JSON.stringify({ reply: "Пустое сообщение" }), {
         status: 400,
+        headers: { ...CORS, "Content-Type": "application/json" },
+      })
+    }
+
+    // Fill mode — generate structured concept data
+    if (mode === "fill") {
+      const fillReply = await tryFill(message, context, history)
+      if (fillReply) {
+        return new Response(JSON.stringify(fillReply), {
+          headers: { ...CORS, "Content-Type": "application/json" },
+        })
+      }
+      return new Response(JSON.stringify({ reply: "Не удалось сгенерировать концепцию", actions: [] }), {
+        status: 502,
         headers: { ...CORS, "Content-Type": "application/json" },
       })
     }
@@ -120,6 +134,139 @@ async function tryClaude(
     return data.content?.[0]?.text || null
   } catch (e) {
     console.error("Claude error:", e)
+    return null
+  }
+}
+
+async function tryFill(
+  message: string,
+  context: Record<string, unknown> | undefined,
+  history: ChatMessage[] | undefined
+): Promise<{ reply: string; actions: unknown[]; source: string } | null> {
+  const fillPrompt = `Ты — SVITA AI, генератор бизнес-концепций для стоматологических клиник в Польше.
+
+Пользователь просит сгенерировать или заполнить концепцию. На основе его запроса и контекста верни JSON.
+
+ОБЯЗАТЕЛЬНЫЙ ФОРМАТ ОТВЕТА — только валидный JSON, без markdown, без текста до/после:
+{
+  "reply": "Краткое описание что заполнено (1-2 предложения, русский)",
+  "actions": [
+    {
+      "section": "rooms",
+      "data": [
+        {"name": "Кабинет 1", "type": "Стоматологический", "area": 18},
+        {"name": "Рецепция", "type": "Общественная", "area": 15}
+      ]
+    },
+    {
+      "section": "staff",
+      "data": [
+        {"position": "Стоматолог", "salary": 12000, "type": "full"},
+        {"position": "Ассистент", "salary": 5500, "type": "full"}
+      ]
+    },
+    {
+      "section": "equipment",
+      "data": [
+        {"name": "Стоматологическая установка Sirona", "category": "Оборудование кабинета", "price": 35000},
+        {"name": "Автоклав класс B", "category": "Стерилизация", "price": 6000}
+      ]
+    },
+    {
+      "section": "services",
+      "data": [
+        {"name": "Консультация", "category": "Диагностика", "price": 150, "duration": 30},
+        {"name": "Пломба композитная", "category": "Терапия", "price": 350, "duration": 45}
+      ]
+    }
+  ]
+}
+
+Правила генерации:
+- Цены в PLN, реальные для Польши 2025-2026
+- Зарплаты — брутто, месячные, в PLN
+- Комнаты: типы — Стоматологический, Хирургический, Ортодонтический, Рентген, Техническая, Общественная, Служебная
+- Персонал: type — "full" (полная ставка) или "part" (частичная)
+- Генерируй ВСЕ секции если пользователь просит полную концепцию
+- Для 1 кабинета: ~6-8 комнат, 4-6 сотрудников, 15-20 оборудования, 20-30 услуг
+- Для 3 кабинетов: ~15-20 комнат, 10-15 сотрудников, 30-40 оборудования, 40-60 услуг
+- МАКСИМУМ 200 слов в reply
+
+Контекст проекта:
+${context ? JSON.stringify(context) : "не указан"}
+
+ВАЖНО: Верни ТОЛЬКО JSON. Никакого текста до или после JSON.`
+
+  const messages: { role: string; content: string }[] = [
+    { role: "system", content: fillPrompt },
+  ]
+  if (history && Array.isArray(history)) {
+    for (const h of history.slice(-4)) {
+      messages.push({ role: h.role === "user" ? "user" : "assistant", content: h.content })
+    }
+  }
+  messages.push({ role: "user", content: message })
+
+  // Try Jetson first
+  try {
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), JETSON_TIMEOUT)
+    const res = await fetch(JETSON_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message, context: { ...context, _fillMode: true }, history }),
+      signal: controller.signal,
+    })
+    clearTimeout(timeout)
+    if (res.ok) {
+      const data = await res.json()
+      const raw = data.reply || ""
+      const parsed = tryParseJson(raw)
+      if (parsed && parsed.actions) {
+        return { reply: parsed.reply || "Концепция сгенерирована", actions: parsed.actions, source: "jetson" }
+      }
+    }
+  } catch {}
+
+  // Fallback to Claude
+  const apiKey = Deno.env.get("ANTHROPIC_API_KEY")
+  if (!apiKey) return null
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+      },
+      body: JSON.stringify({
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 4096,
+        system: fillPrompt,
+        messages: [{ role: "user", content: message }],
+      }),
+    })
+    if (!res.ok) return null
+    const data = await res.json()
+    const raw = data.content?.[0]?.text || ""
+    const parsed = tryParseJson(raw)
+    if (parsed && parsed.actions) {
+      return { reply: parsed.reply || "Концепция сгенерирована", actions: parsed.actions, source: "claude" }
+    }
+  } catch {}
+  return null
+}
+
+function tryParseJson(raw: string): Record<string, unknown> | null {
+  try {
+    // Try direct parse
+    return JSON.parse(raw)
+  } catch {
+    // Try extracting JSON from text
+    const m = raw.match(/\{[\s\S]*\}/)
+    if (m) {
+      try { return JSON.parse(m[0]) } catch { return null }
+    }
     return null
   }
 }

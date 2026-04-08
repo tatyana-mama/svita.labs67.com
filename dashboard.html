@@ -1509,9 +1509,12 @@ Apple</button>
 
 <!-- RIGHT PANEL -->
 <aside class="rpanel" id="rpanel">
-<div class="rp-head">SVITA AI</div>
+<div class="rp-head" style="display:flex;align-items:center;justify-content:space-between">
+<span>SVITA AI</span>
+<button onclick="generateConcept()" style="font-size:9px;padding:3px 8px;border:1px solid rgba(139,92,246,.3);border-radius:6px;background:rgba(139,92,246,.08);color:#8b5cf6;cursor:pointer;font-family:var(--f);font-weight:600" title="AI заполнит все секции">✨ Концепция</button>
+</div>
 <div id="rpChatMessages" style="flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:8px">
-<div style="background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(59,130,246,0.08));border-radius:10px;padding:10px;font-size:10px;color:var(--tx2);line-height:1.5">Привет! Спроси меня о бизнес-плане, оборудовании, помещениях, персонале...</div>
+<div style="background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(59,130,246,0.08));border-radius:10px;padding:10px;font-size:10px;color:var(--tx2);line-height:1.5">Привет! Спроси меня о бизнес-плане, оборудовании, помещениях, персонале...<br><br>Нажми <b>✨ Концепция</b> — и я заполню все секции автоматически.</div>
 </div>
 <div style="padding:8px;border-top:1px solid var(--bd);display:flex;gap:4px;align-items:flex-end">
 <textarea id="rpChatInput" placeholder="Сообщение..." rows="1" style="flex:1;resize:none;border:1px solid var(--bd);border-radius:8px;padding:6px 8px;font-size:11px;font-family:var(--f);background:var(--sf2);color:var(--tx);outline:none;max-height:80px;overflow-y:auto" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendRpChat()}"></textarea>
@@ -7732,6 +7735,93 @@ function _restoreRpChat(){
   for(const h of _aiChatHistory){
     _rpChatAppend(h.role==='user'?'user':'ai',h.content);
   }
+}
+
+async function generateConcept(){
+  if(_aiChatStreaming)return;
+  const desc=currentBizType||'dental';
+  const city=activeProperty?.city||'Warszawa';
+  const area=activeProperty?.area||200;
+  const msg='Сгенерируй полную концепцию: тип='+desc+', город='+city+', площадь='+area+'м². Заполни все секции: комнаты, персонал, оборудование, услуги.';
+
+  _rpChatAppend('user','🚀 Генерация концепции...');
+  _aiChatHistory.push({role:'user',content:msg});
+
+  const aiEl=_rpChatAppend('ai','SVITA AI — генерирую концепцию, это может занять до минуты...');
+  _aiChatStreaming=true;
+  document.getElementById('rpChatSendBtn').style.opacity='0.5';
+
+  const context={
+    bizType:currentBizType||'dental',
+    section:cur,
+    concept:document.getElementById('cBrand')?.value||'',
+    rooms:Object.keys(DB.pickedRooms||{}).length,
+    equipment:Object.keys(DB.pickedEquip||{}).length,
+    staff:Object.keys(DB.pickedStaff||{}).length,
+    services:(DB.services||[]).length,
+    renovations:Object.keys(DB.pickedRenovations||{}).length,
+    docs:Object.keys(DB.pickedDocs||{}).length
+  };
+  if(activeProperty)context.property={name:activeProperty.name,area:activeProperty.area,city:activeProperty.city};
+
+  const CHAT_URL=SB_URL+'/functions/v1/ai-chat';
+  try{
+    const res=await fetch(CHAT_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_KEY},
+      body:JSON.stringify({message:msg,context,history:_aiChatHistory.slice(-4),mode:'fill'})
+    });
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    if(!data.actions||!data.actions.length)throw new Error('Нет данных');
+
+    applyAiActions(data.actions);
+    aiEl.textContent=data.reply||'Концепция заполнена!';
+    const tag=document.createElement('span');tag.style.cssText='display:block;font-size:9px;color:var(--gn);margin-top:4px;font-weight:600';tag.textContent='✓ Данные применены';aiEl.appendChild(tag);
+    _aiChatHistory.push({role:'assistant',content:data.reply||'Концепция сгенерирована'});
+    _saveChatHistory();
+    toast('AI заполнил концепцию','gn');
+  }catch(e){
+    aiEl.textContent='Не удалось сгенерировать: '+e.message;
+    aiEl.style.color='var(--rd)';
+  }finally{
+    _aiChatStreaming=false;
+    document.getElementById('rpChatSendBtn').style.opacity='1';
+  }
+}
+
+function applyAiActions(actions){
+  let nextId=Date.now();
+  for(const act of actions){
+    if(act.section==='rooms'&&Array.isArray(act.data)){
+      act.data.forEach(r=>{
+        DB.rooms.push({id:nextId++,name:r.name||'Комната',type:r.type||'Общественная',area:r.area||15});
+      });
+    }
+    if(act.section==='staff'&&Array.isArray(act.data)){
+      act.data.forEach(e=>{
+        const id=nextId++;
+        DB.employees.push({id,position:e.position||'Сотрудник',salary:e.salary||5000,type:e.type||'full',name:e.name||e.position||'Сотрудник'});
+        DB.pickedStaff[String(id)]={qty:1};
+      });
+    }
+    if(act.section==='equipment'&&Array.isArray(act.data)){
+      act.data.forEach(eq=>{
+        const id=nextId++;
+        DB.suppliers.push({id,name:eq.name||'Оборудование',category:eq.category||'Общее',price:eq.price||0,country:'PL'});
+        DB.pickedEquip[String(id)]={qty:1};
+      });
+    }
+    if(act.section==='services'&&Array.isArray(act.data)){
+      act.data.forEach(s=>{
+        const id=nextId++;
+        DB.services.push({id,name:s.name||'Услуга',category:s.category||'Общее',price:s.price||0,duration:s.duration||30});
+        DB.pickedServices[String(id)]={qty:1,customPrice:null};
+      });
+    }
+  }
+  savePicked();
+  buildSidebar();renderAll();recalc();
 }
 
 // ═══════════════ PHOTO UPLOAD ═══════════════
