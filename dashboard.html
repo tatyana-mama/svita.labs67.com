@@ -1560,6 +1560,8 @@ Apple</button>
 </div>
 
 <script>
+// ═══ TOAST (global) ═══
+function toast(msg,type){const d=document.createElement('div');d.textContent=msg;Object.assign(d.style,{position:'fixed',top:'20px',right:'20px',padding:'12px 24px',borderRadius:'8px',color:'#fff',fontSize:'14px',zIndex:'99999',background:type==='rd'?'#ef4444':type==='yl'?'#eab308':'#22c55e',boxShadow:'0 4px 12px rgba(0,0,0,.3)',transition:'opacity .3s'});document.body.appendChild(d);setTimeout(()=>{d.style.opacity='0';setTimeout(()=>d.remove(),300)},3000)}
 // ═══════════════ I18N ENGINE ═══════════════
 let _lang=localStorage.getItem('svita_lang')||'ru';
 const I18N={en:{
@@ -7856,8 +7858,6 @@ function _restoreRpChat(){
   }
 }
 
-// ═══ TOAST ═══
-if(typeof toast==='undefined'){window.toast=function(msg,type){const d=document.createElement('div');d.textContent=msg;Object.assign(d.style,{position:'fixed',top:'20px',right:'20px',padding:'12px 24px',borderRadius:'8px',color:'#fff',fontSize:'14px',zIndex:'99999',background:type==='rd'?'#ef4444':type==='yl'?'#eab308':'#22c55e',boxShadow:'0 4px 12px rgba(0,0,0,.3)',transition:'opacity .3s'});document.body.appendChild(d);setTimeout(()=>{d.style.opacity='0';setTimeout(()=>d.remove(),300)},3000)}}
 // ═══ EXPORT / IMPORT CONCEPT FILE ═══
 // ═══ PDF EXPORT — План реализации ═══
 async function exportPDF(){
@@ -8714,9 +8714,23 @@ enterApp=function(){
 </div>
 </div>
 <script>
-if(!localStorage.getItem('svita_cookies')){document.getElementById('cookieConsent').style.display='block'}
-function cookieAccept(){localStorage.setItem('svita_cookies','accepted');document.getElementById('cookieConsent').style.display='none'}
-function cookieDecline(){localStorage.setItem('svita_cookies','declined');document.getElementById('cookieConsent').style.display='none'}
+const _ck=localStorage.getItem('svita_cookies');
+if(!_ck){document.getElementById('cookieConsent').style.display='block'}
+function cookieApply(consent){
+  document.cookie='svita_consent='+consent+';path=/;max-age=31536000;SameSite=Lax';
+  if(consent==='accepted'){
+    document.cookie='svita_lang='+(localStorage.getItem('svita_lang')||'ru')+';path=/;max-age=31536000;SameSite=Lax';
+    document.cookie='svita_theme=light;path=/;max-age=31536000;SameSite=Lax';
+    // Analytics hook — раскомментировать при подключении GA/Plausible:
+    // if(window.gtag)gtag('consent','update',{analytics_storage:'granted'});
+  } else {
+    document.cookie='svita_lang=;path=/;max-age=0';
+    document.cookie='svita_theme=;path=/;max-age=0';
+  }
+}
+function cookieAccept(){localStorage.setItem('svita_cookies','accepted');cookieApply('accepted');document.getElementById('cookieConsent').style.display='none';toast('Cookie приняты','gn')}
+function cookieDecline(){localStorage.setItem('svita_cookies','declined');cookieApply('declined');document.getElementById('cookieConsent').style.display='none';toast('Только необходимые cookie','yl')}
+if(_ck)cookieApply(_ck);
 
 // ═══════════════ GUIDED TOUR ═══════════════
 const TOUR_STEPS=[
