@@ -7830,11 +7830,44 @@ document.getElementById('loginEmail').focus();
 updateRightPanel();
 
 // ═══════════════ AI CHAT ═══════════════
-let _aiChatHistory=JSON.parse(localStorage.getItem('svita_chat_history')||'[]');
+let _aiChatHistory=[];
 let _aiChatStreaming=false;
+let _aiChatSessionId=localStorage.getItem('svita_chat_session_id')||null;
 
-function _saveChatHistory(){
-  try{localStorage.setItem('svita_chat_history',JSON.stringify(_aiChatHistory.slice(-30)))}catch{}
+async function _saveChatHistory(){
+  if(!sb||!currentUser)return;
+  const uid=currentUser.id;
+  const title=_aiChatHistory.length?_aiChatHistory[0].content.slice(0,60):'Новый чат';
+  try{
+    if(_aiChatSessionId){
+      await sb.from('chat_sessions').update({messages:_aiChatHistory.slice(-50),title,updated_at:new Date().toISOString()}).eq('id',_aiChatSessionId);
+    }else{
+      const{data}=await sb.from('chat_sessions').insert({user_id:uid,messages:_aiChatHistory.slice(-50),title}).select('id').single();
+      if(data){_aiChatSessionId=data.id;localStorage.setItem('svita_chat_session_id',data.id)}
+    }
+  }catch(e){console.error('Chat save error:',e)}
+}
+
+async function _loadChatSession(){
+  if(!sb||!currentUser)return;
+  try{
+    // Load last session or specific session
+    const sid=localStorage.getItem('svita_chat_session_id');
+    let row=null;
+    if(sid){
+      const{data}=await sb.from('chat_sessions').select('*').eq('id',sid).single();
+      row=data;
+    }
+    if(!row){
+      const{data}=await sb.from('chat_sessions').select('*').eq('user_id',currentUser.id).order('updated_at',{ascending:false}).limit(1).single();
+      row=data;
+    }
+    if(row&&row.messages&&row.messages.length){
+      _aiChatHistory=row.messages;
+      _aiChatSessionId=row.id;
+      localStorage.setItem('svita_chat_session_id',row.id);
+    }
+  }catch{}
 }
 
 function toggleAiChat(){
@@ -7859,6 +7892,8 @@ function _restoreChatUI(){
 
 function clearAiChat(){
   _aiChatHistory=[];
+  _aiChatSessionId=null;
+  localStorage.removeItem('svita_chat_session_id');
   _saveChatHistory();
   const m=document.getElementById('aiChatMessages');
   m.innerHTML='<div style="background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(59,130,246,0.08));border-radius:12px;padding:12px;font-size:11px;color:var(--tx2);line-height:1.5">&#128075; Привет! Я AI-ассистент SVITA. Спроси меня о чём угодно: бизнес-план, оборудование, помещения, персонал, юридические вопросы, маркетинг...</div>';
@@ -7960,6 +7995,7 @@ const _origEnterApp=enterApp;
 enterApp=function(){
   _origEnterApp.apply(this,arguments);
   document.getElementById('aiChatBtn').style.display='flex';
+  _loadChatSession();
 };
 </script>
 
