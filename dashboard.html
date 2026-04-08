@@ -1509,9 +1509,13 @@ Apple</button>
 
 <!-- RIGHT PANEL -->
 <aside class="rpanel" id="rpanel">
-<div class="rp-head" style="display:flex;align-items:center;justify-content:space-between">
+<div class="rp-head" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px">
 <span>SVITA AI</span>
-<button onclick="generateConcept()" style="font-size:9px;padding:3px 8px;border:1px solid rgba(139,92,246,.3);border-radius:6px;background:rgba(139,92,246,.08);color:#8b5cf6;cursor:pointer;font-family:var(--f);font-weight:600" title="AI заполнит все секции">✨ Концепция</button>
+<div style="display:flex;gap:3px">
+<button onclick="generateConcept()" style="font-size:9px;padding:3px 8px;border:1px solid rgba(139,92,246,.3);border-radius:6px;background:rgba(139,92,246,.08);color:#8b5cf6;cursor:pointer;font-family:var(--f);font-weight:600" title="AI сгенерирует полную концепцию">✨ Генерация</button>
+<button onclick="exportConceptFile()" style="font-size:9px;padding:3px 6px;border:1px solid var(--bd);border-radius:6px;background:var(--sf2);color:var(--tx2);cursor:pointer;font-family:var(--f)" title="Скачать концепцию как файл">⬇</button>
+<button onclick="importConceptFile()" style="font-size:9px;padding:3px 6px;border:1px solid var(--bd);border-radius:6px;background:var(--sf2);color:var(--tx2);cursor:pointer;font-family:var(--f)" title="Загрузить концепцию из файла">⬆</button>
+</div>
 </div>
 <div id="rpChatMessages" style="flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:8px">
 <div style="background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(59,130,246,0.08));border-radius:10px;padding:10px;font-size:10px;color:var(--tx2);line-height:1.5">Привет! Спроси меня о бизнес-плане, оборудовании, помещениях, персонале...<br><br>Нажми <b>✨ Концепция</b> — и я заполню все секции автоматически.</div>
@@ -7779,30 +7783,78 @@ function _restoreRpChat(){
   }
 }
 
+// ═══ EXPORT / IMPORT CONCEPT FILE ═══
+function exportConceptFile(){
+  const data=serializeWorkspace();
+  data._svitaVersion='1.0';
+  data._exportDate=new Date().toISOString();
+  data._name=(document.getElementById('cBrand')?.value||'concept');
+  const json=JSON.stringify(data,null,2);
+  const blob=new Blob([json],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='svita-concept-'+data._name.replace(/\s+/g,'-').toLowerCase()+'.json';
+  a.click();URL.revokeObjectURL(url);
+  toast('Концепция скачана','gn');
+}
+
+function importConceptFile(){
+  const inp=document.createElement('input');inp.type='file';inp.accept='.json';
+  inp.onchange=e=>{
+    const file=e.target.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      try{
+        const data=JSON.parse(ev.target.result);
+        if(!data.employees&&!data.rooms&&!data.suppliers&&!data.services){
+          toast('Файл не содержит данных концепции','rd');return;
+        }
+        hydrateWorkspace(data);
+        savePicked();buildSidebar();renderAll();recalc();
+        // Show summary in chat
+        const counts=[];
+        if(data.rooms?.length)counts.push('Помещения: '+data.rooms.length);
+        if(data.suppliers?.length)counts.push('Оборудование: '+data.suppliers.length);
+        if(data.employees?.length)counts.push('Персонал: '+data.employees.length);
+        if(data.services?.length)counts.push('Услуги: '+data.services.length);
+        if(data.renovations?.length)counts.push('Ремонт: '+data.renovations.length);
+        if(data.pickedDocs&&Object.keys(data.pickedDocs).length)counts.push('Документы: '+Object.keys(data.pickedDocs).length);
+        _rpChatAppend('ai','Концепция загружена из файла!\n\n'+counts.join('\n')+'\n\nВсе секции заполнены.');
+        toast('Концепция загружена','gn');
+      }catch(err){toast('Ошибка чтения файла: '+err.message,'rd')}
+    };
+    reader.readAsText(file);
+  };
+  inp.click();
+}
+
 async function generateConcept(){
   if(_aiChatStreaming)return;
   const desc=currentBizType||'dental';
   const city=activeProperty?.city||'Warszawa';
   const area=activeProperty?.area||200;
 
-  _rpChatAppend('user','Генерация концепции...');
-  const aiEl=_rpChatAppend('ai','SVITA AI — генерирую по секциям, подождите...');
+  _rpChatAppend('user','Сгенерируй полную концепцию стоматологии '+area+' м² в '+city);
+  const aiEl=_rpChatAppend('ai','Генерирую полную концепцию по 7 секциям...\nПомещение считаем полностью голым — с нуля.\n\n⏳ 0/7 секций...');
   _aiChatStreaming=true;
   document.getElementById('rpChatSendBtn').style.opacity='0.5';
 
   const CHAT_URL=SB_URL+'/functions/v1/ai-chat';
+  const preamble='Стоматология ('+desc+') '+area+'м² в '+city+', Польша. Помещение голое — с нуля. Цены PLN 2025. Верни ТОЛЬКО JSON массив без пояснений!';
   const sections=[
-    {key:'rooms',prompt:'Верни JSON массив комнат для стоматологии ('+desc+') '+area+'м² в '+city+'. Формат: [{"name":"Кабинет 1","type":"Стоматологический","area":18}]. Типы: Стоматологический, Хирургический, Ортодонтический, Рентген, Техническая, Общественная, Служебная. 10-15 комнат. Только JSON массив!'},
-    {key:'staff',prompt:'Верни JSON массив персонала для стоматологии '+area+'м² в '+city+'. Формат: [{"position":"Стоматолог","salary":12000,"type":"full"}]. Зарплаты PLN брутто/мес. 8-12 человек. Только JSON массив!'},
-    {key:'equipment',prompt:'Верни JSON массив оборудования для стоматологии '+area+'м². Формат: [{"name":"Установка Sirona","category":"Кабинет","price":35000}]. Цены PLN. 15-25 позиций. Только JSON массив!'},
-    {key:'services',prompt:'Верни JSON массив стоматологических услуг. Формат: [{"name":"Консультация","category":"Диагностика","price":150,"duration":30}]. Цены PLN. 20-35 услуг. Только JSON массив!'}
+    {key:'rooms',prompt:preamble+' Комнаты. Формат: [{"name":"Кабинет 1","type":"Стоматологический","area":18,"zone":"Медицинская"}]. Типы: Стоматологический кабинет, Хирургический кабинет, Рентген, Стерилизационная, Рецепция, Зал ожидания, Туалет, Техническая, Коридор. Зоны: Медицинская, Общественная, Техническая, Служебная. 12-18 комнат, площади пропорционально '+area+'м².'},
+    {key:'staff',prompt:preamble+' Персонал. Формат: [{"position":"Стоматолог","salary":12000,"type":"full","name":"Стоматолог"}]. type: full/part/b2b. 8-14 человек.'},
+    {key:'equipment',prompt:preamble+' Оборудование (полный набор с нуля). Формат: [{"name":"Стоматологическая установка Sirona C5+","category":"Кабинет","price":45000,"supplier":"Sirona/Dentsply","warranty":"2 года"}]. 25-40 позиций. Конкретные модели и производители.'},
+    {key:'services',prompt:preamble+' Услуги (прайс-лист). Формат: [{"name":"Консультация","category":"Диагностика","price":200,"duration":30}]. 25-40 услуг. Категории: Диагностика, Терапия, Хирургия, Ортодонтия, Протезирование, Эстетика, Гигиена.'},
+    {key:'renovations',prompt:preamble+' Ремонтные работы для голого помещения '+area+'м² (всё с нуля). Формат: [{"name":"Демонтаж старой отделки","cat":"Демонтаж","price":15000}]. Включить: демонтаж, электрику 380В, сантехнику (стом. установки), вентиляцию, стяжку, стены, потолки, полы, двери, покраску, мебель. Цены усреднить к '+area+'м². 20-30 позиций.'},
+    {key:'docs',prompt:preamble+' Обязательные документы и регистрации. Формат: [{"name":"Регистрация ООО в KRS","cat":"Регистрация компании","price":1500,"required":true}]. 15-25 самых важных. Категории: Регистрация, RPWDL, Санэпиднадзор, Пожарная безопасность, RODO, Страхование, Персонал.'},
+    {key:'finance',prompt:preamble+' Финансовая сводка. Формат: {"budget":{"rent":8000,"renovation":250000,"equipment":450000,"docs":50000,"staff_month":65000,"marketing":15000,"reserve":50000},"revenue":{"patients_day":15,"avg_check":450,"monthly":202500},"breakeven_months":18}. Один JSON объект (не массив!).'}
   ];
 
   const results={};
   let done=0;
   const total=sections.length;
 
-  // Send all 4 in parallel
   const promises=sections.map(async(s)=>{
     try{
       const res=await fetch(CHAT_URL,{
@@ -7813,47 +7865,119 @@ async function generateConcept(){
       if(!res.ok)return;
       const data=await res.json();
       const raw=data.reply||'';
-      // Try parse JSON array from reply
-      let arr=null;
-      try{arr=JSON.parse(raw)}catch{
-        const m=raw.match(/\[[\s\S]*\]/);
-        if(m)try{arr=JSON.parse(m[0])}catch{}
+      let parsed=null;
+      try{parsed=JSON.parse(raw)}catch{
+        const mArr=raw.match(/\[[\s\S]*\]/);
+        const mObj=raw.match(/\{[\s\S]*\}/);
+        if(mArr)try{parsed=JSON.parse(mArr[0])}catch{}
+        if(!parsed&&mObj)try{parsed=JSON.parse(mObj[0])}catch{}
       }
-      if(Array.isArray(arr)&&arr.length){
-        results[s.key]=arr;
+      if(parsed){
+        results[s.key]=parsed;
         done++;
-        aiEl.textContent='Генерирую... ('+done+'/'+total+' секций)';
+        aiEl.innerHTML=_mdToHtml('Генерирую полную концепцию...\n\n⏳ **'+done+'/'+total+'** секций готово');
       }
-    }catch{}
+    }catch(e){console.error('Concept section error:',s.key,e)}
   });
 
   await Promise.all(promises);
 
-  if(Object.keys(results).length){
-    const actions=[];
+  if(Object.keys(results).length>=2){
+    window._pendingConceptFull=results;
+    const labels={rooms:'Помещения',staff:'Персонал',equipment:'Оборудование',services:'Услуги',renovations:'Ремонт',docs:'Документы',finance:'Финансы'};
+    let preview='<div style="font-weight:700;font-size:12px;margin-bottom:8px">Концепция готова! ('+Object.keys(results).length+'/7 секций)</div>';
     for(const[k,v]of Object.entries(results)){
-      actions.push({section:k,data:v});
+      const lbl=labels[k]||k;
+      if(k==='finance'){
+        preview+=`<div style="margin:3px 0"><b>${lbl}</b>: бюджет сформирован</div>`;
+      }else if(Array.isArray(v)){
+        const names=v.slice(0,4).map(d=>d.name||d.position||'?').join(', ');
+        const more=v.length>4?' +ещё '+(v.length-4):'';
+        preview+=`<div style="margin:3px 0"><b>${lbl}</b> (${v.length}): <span style="color:var(--tx2);font-size:10px">${names}${more}</span></div>`;
+      }
     }
-    // Store pending concept for preview
-    window._pendingConcept=actions;
-    // Build preview
-    const labels={rooms:'Помещения',staff:'Персонал',equipment:'Оборудование',services:'Услуги'};
-    let preview='';
-    actions.forEach(a=>{
-      const lbl=labels[a.section]||a.section;
-      const items=a.data.slice(0,5).map(d=>d.name||d.position||'?').join(', ');
-      const more=a.data.length>5?' и ещё '+(a.data.length-5):'';
-      preview+=`<div style="margin:4px 0"><b>${lbl}</b> (${a.data.length}): <span style="color:var(--tx2)">${items}${more}</span></div>`;
-    });
-    aiEl.innerHTML=`<div style="font-weight:600;margin-bottom:6px">Концепция готова!</div>${preview}<button onclick="applyPendingConcept(this)" style="margin-top:8px;padding:6px 16px;border:none;border-radius:8px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--f)">Применить концепцию</button>`;
-    _aiChatHistory.push({role:'assistant',content:'Концепция сгенерирована: '+actions.map(a=>(labels[a.section]||a.section)+': '+a.data.length).join(', ')});
+    preview+=`<div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+      <button onclick="applyFullConcept(this)" style="padding:6px 14px;border:none;border-radius:8px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--f)">Применить</button>
+      <button onclick="downloadGeneratedConcept()" style="padding:6px 14px;border:none;border-radius:8px;background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--f)">⬇ Скачать .json</button>
+    </div>`;
+    aiEl.innerHTML=preview;
+    _aiChatHistory.push({role:'assistant',content:'Концепция сгенерирована: '+Object.entries(results).map(([k,v])=>labels[k]+': '+(Array.isArray(v)?v.length:'✓')).join(', ')});
     _saveChatHistory();
   }else{
-    aiEl.innerHTML='Jetson не успел ответить. Попробуйте позже.';
+    aiEl.innerHTML='Jetson не успел ответить (получено '+Object.keys(results).length+'/7). Попробуйте ещё раз.';
     aiEl.style.color='var(--rd)';
   }
   _aiChatStreaming=false;
   document.getElementById('rpChatSendBtn').style.opacity='1';
+}
+
+function downloadGeneratedConcept(){
+  const r=window._pendingConceptFull;if(!r)return;
+  const data={_svitaVersion:'1.0',_exportDate:new Date().toISOString(),_name:'ai-concept',_source:'jetson'};
+  // Convert AI arrays to workspace format
+  let nextId=Date.now();
+  if(r.rooms)data.rooms=r.rooms.map(rm=>({id:nextId++,name:rm.name,type:rm.type||'Общественная',area:rm.area||15,zone:rm.zone||'Медицинская'}));
+  if(r.staff)data.employees=r.staff.map(e=>({id:nextId++,position:e.position,salary:e.salary||5000,type:e.type||'full',name:e.name||e.position}));
+  if(r.equipment)data.suppliers=r.equipment.map(eq=>({id:nextId++,name:eq.name,category:eq.category||'Общее',price:eq.price||0,supplier:eq.supplier||'',warranty:eq.warranty||'',country:'PL'}));
+  if(r.services)data.services=r.services.map(s=>({id:nextId++,name:s.name,category:s.category||'Общее',price:s.price||0,duration:s.duration||30}));
+  if(r.renovations)data.renovations=r.renovations.map(rv=>({id:'ai_'+nextId++,name:rv.name,cat:rv.cat||'Общие работы',price:rv.price||0}));
+  if(r.docs){
+    data.pickedDocs={};
+    r.docs.forEach(d=>{data.pickedDocs['ai_'+nextId++]={name:d.name,cat:d.cat||'Прочее',price:d.price||0,required:!!d.required,done:false,items:[]}});
+  }
+  if(r.finance)data._finance=r.finance;
+  // Auto-pick all
+  if(data.rooms){data.pickedRooms={};data.rooms.forEach(rm=>{data.pickedRooms[rm.id]={qty:1}})}
+  if(data.suppliers){data.pickedEquip={};data.suppliers.forEach(s=>{data.pickedEquip[s.id]={qty:1}})}
+  if(data.employees){data.pickedStaff={};data.employees.forEach(e=>{data.pickedStaff[e.id]={qty:1}})}
+  if(data.services){data.pickedServices={};data.services.forEach(s=>{data.pickedServices[s.id]={qty:1}})}
+  if(data.renovations){data.pickedRenovations={};data.renovations.forEach(rv=>{data.pickedRenovations[rv.id]={qty:1}})}
+  const json=JSON.stringify(data,null,2);
+  const blob=new Blob([json],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='svita-ai-concept.json';a.click();URL.revokeObjectURL(url);
+  toast('Концепция скачана','gn');
+}
+
+function applyFullConcept(btn){
+  const r=window._pendingConceptFull;if(!r)return;
+  btn.disabled=true;btn.textContent='Применяю...';
+  let nextId=Date.now();
+  // Rooms
+  if(Array.isArray(r.rooms)){r.rooms.forEach(rm=>{
+    const id=nextId++;DB.rooms.push({id,name:rm.name,type:rm.type||'Общественная',area:rm.area||15,zone:rm.zone||'Медицинская'});
+    DB.pickedRooms[id]={qty:1};
+  })}
+  // Staff
+  if(Array.isArray(r.staff)){r.staff.forEach(e=>{
+    const id=nextId++;DB.employees.push({id,position:e.position,salary:e.salary||5000,type:e.type||'full',name:e.name||e.position});
+    DB.pickedStaff[id]={qty:1};
+  })}
+  // Equipment
+  if(Array.isArray(r.equipment)){r.equipment.forEach(eq=>{
+    const id=nextId++;DB.suppliers.push({id,name:eq.name,category:eq.category||'Общее',price:eq.price||0,supplier:eq.supplier||'',warranty:eq.warranty||'',country:'PL'});
+    DB.pickedEquip[id]={qty:1};
+  })}
+  // Services
+  if(Array.isArray(r.services)){r.services.forEach(s=>{
+    const id=nextId++;DB.services.push({id,name:s.name,category:s.category||'Общее',price:s.price||0,duration:s.duration||30});
+    DB.pickedServices[id]={qty:1,customPrice:null};
+  })}
+  // Renovations
+  if(Array.isArray(r.renovations)){r.renovations.forEach(rv=>{
+    const id='ai_'+nextId++;DB.renovations.push({id,name:rv.name,cat:rv.cat||'Общие работы',price:rv.price||0});
+    DB.pickedRenovations[id]={qty:1};
+  })}
+  // Docs
+  if(Array.isArray(r.docs)){r.docs.forEach(d=>{
+    const key='ai_'+nextId++;DB.pickedDocs[key]={name:d.name,cat:d.cat||'Прочее',desc:'',price:d.price||0,required:!!d.required,done:false,items:[]};
+  })}
+  savePicked();buildSidebar();renderAll();recalc();
+  btn.textContent='✓ Применено';btn.style.background='var(--gn)';btn.style.opacity='0.7';
+  const tag=document.createElement('div');tag.style.cssText='font-size:9px;color:var(--gn);margin-top:4px;font-weight:600';tag.textContent='✓ Все секции загружены в концепцию';
+  btn.parentNode.appendChild(tag);
+  toast('Полная концепция применена','gn');
+  window._pendingConceptFull=null;
 }
 
 function applyPendingConcept(btn){
