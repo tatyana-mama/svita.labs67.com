@@ -7742,52 +7742,69 @@ async function generateConcept(){
   const desc=currentBizType||'dental';
   const city=activeProperty?.city||'Warszawa';
   const area=activeProperty?.area||200;
-  const msg='Сгенерируй полную концепцию: тип='+desc+', город='+city+', площадь='+area+'м². Заполни все секции: комнаты, персонал, оборудование, услуги.';
 
-  _rpChatAppend('user','🚀 Генерация концепции...');
-  _aiChatHistory.push({role:'user',content:msg});
-
-  const aiEl=_rpChatAppend('ai','SVITA AI — генерирую концепцию, это может занять до минуты...');
+  _rpChatAppend('user','Генерация концепции...');
+  const aiEl=_rpChatAppend('ai','SVITA AI — генерирую по секциям, подождите...');
   _aiChatStreaming=true;
   document.getElementById('rpChatSendBtn').style.opacity='0.5';
 
-  const context={
-    bizType:currentBizType||'dental',
-    section:cur,
-    concept:document.getElementById('cBrand')?.value||'',
-    rooms:Object.keys(DB.pickedRooms||{}).length,
-    equipment:Object.keys(DB.pickedEquip||{}).length,
-    staff:Object.keys(DB.pickedStaff||{}).length,
-    services:(DB.services||[]).length,
-    renovations:Object.keys(DB.pickedRenovations||{}).length,
-    docs:Object.keys(DB.pickedDocs||{}).length
-  };
-  if(activeProperty)context.property={name:activeProperty.name,area:activeProperty.area,city:activeProperty.city};
-
   const CHAT_URL=SB_URL+'/functions/v1/ai-chat';
-  try{
-    const res=await fetch(CHAT_URL,{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_KEY},
-      body:JSON.stringify({message:msg,context,history:_aiChatHistory.slice(-4),mode:'fill'})
-    });
-    if(!res.ok)throw new Error('HTTP '+res.status);
-    const data=await res.json();
-    if(!data.actions||!data.actions.length)throw new Error('Нет данных');
+  const sections=[
+    {key:'rooms',prompt:'Верни JSON массив комнат для стоматологии ('+desc+') '+area+'м² в '+city+'. Формат: [{"name":"Кабинет 1","type":"Стоматологический","area":18}]. Типы: Стоматологический, Хирургический, Ортодонтический, Рентген, Техническая, Общественная, Служебная. 10-15 комнат. Только JSON массив!'},
+    {key:'staff',prompt:'Верни JSON массив персонала для стоматологии '+area+'м² в '+city+'. Формат: [{"position":"Стоматолог","salary":12000,"type":"full"}]. Зарплаты PLN брутто/мес. 8-12 человек. Только JSON массив!'},
+    {key:'equipment',prompt:'Верни JSON массив оборудования для стоматологии '+area+'м². Формат: [{"name":"Установка Sirona","category":"Кабинет","price":35000}]. Цены PLN. 15-25 позиций. Только JSON массив!'},
+    {key:'services',prompt:'Верни JSON массив стоматологических услуг. Формат: [{"name":"Консультация","category":"Диагностика","price":150,"duration":30}]. Цены PLN. 20-35 услуг. Только JSON массив!'}
+  ];
 
-    applyAiActions(data.actions);
-    aiEl.textContent=data.reply||'Концепция заполнена!';
+  const results={};
+  let done=0;
+  const total=sections.length;
+
+  // Send all 4 in parallel
+  const promises=sections.map(async(s)=>{
+    try{
+      const res=await fetch(CHAT_URL,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_KEY},
+        body:JSON.stringify({message:s.prompt,context:{bizType:desc},history:[]})
+      });
+      if(!res.ok)return;
+      const data=await res.json();
+      const raw=data.reply||'';
+      // Try parse JSON array from reply
+      let arr=null;
+      try{arr=JSON.parse(raw)}catch{
+        const m=raw.match(/\[[\s\S]*\]/);
+        if(m)try{arr=JSON.parse(m[0])}catch{}
+      }
+      if(Array.isArray(arr)&&arr.length){
+        results[s.key]=arr;
+        done++;
+        aiEl.textContent='Генерирую... ('+done+'/'+total+' секций)';
+      }
+    }catch{}
+  });
+
+  await Promise.all(promises);
+
+  if(Object.keys(results).length){
+    const actions=[];
+    for(const[k,v]of Object.entries(results)){
+      actions.push({section:k,data:v});
+    }
+    applyAiActions(actions);
+    const summary=Object.entries(results).map(([k,v])=>k+': '+v.length).join(', ');
+    aiEl.textContent='Концепция заполнена! '+summary;
     const tag=document.createElement('span');tag.style.cssText='display:block;font-size:9px;color:var(--gn);margin-top:4px;font-weight:600';tag.textContent='✓ Данные применены';aiEl.appendChild(tag);
-    _aiChatHistory.push({role:'assistant',content:data.reply||'Концепция сгенерирована'});
+    _aiChatHistory.push({role:'assistant',content:'Концепция сгенерирована: '+summary});
     _saveChatHistory();
     toast('AI заполнил концепцию','gn');
-  }catch(e){
-    aiEl.textContent='Не удалось сгенерировать: '+e.message;
+  }else{
+    aiEl.textContent='Jetson не успел ответить. Попробуйте позже.';
     aiEl.style.color='var(--rd)';
-  }finally{
-    _aiChatStreaming=false;
-    document.getElementById('rpChatSendBtn').style.opacity='1';
   }
+  _aiChatStreaming=false;
+  document.getElementById('rpChatSendBtn').style.opacity='1';
 }
 
 function applyAiActions(actions){
