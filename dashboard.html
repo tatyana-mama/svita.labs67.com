@@ -7858,17 +7858,28 @@ function _restoreRpChat(){
 
 // ═══ EXPORT / IMPORT CONCEPT FILE ═══
 // ═══ PDF EXPORT — План реализации ═══
-function exportPDF(){
+async function exportPDF(){
+  try{
   if(!window.jspdf){
     toast('Загрузка PDF-модуля...','yl');
-    const s=document.createElement('script');
-    s.src='https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js';
-    s.onload=()=>exportPDF();
-    s.onerror=()=>toast('Не удалось загрузить PDF-модуль','rd');
-    document.head.appendChild(s);return;
+    await new Promise((res,rej)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js';s.onload=res;s.onerror=()=>{toast('Не удалось загрузить PDF-модуль','rd');rej()};document.head.appendChild(s)});
+  }
+  if(!window._svitaFontR){
+    toast('Загрузка шрифтов...','yl');
+    const toB64=buf=>{const u=new Uint8Array(buf);let b='';for(let i=0;i<u.length;i++)b+=String.fromCharCode(u[i]);return btoa(b)};
+    const [rBuf,bBuf]=await Promise.all([
+      fetch('https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/ptsans/PTSans-Regular.ttf').then(r=>r.arrayBuffer()),
+      fetch('https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/ptsans/PTSans-Bold.ttf').then(r=>r.arrayBuffer())
+    ]);
+    window._svitaFontR=toB64(rBuf);window._svitaFontB=toB64(bBuf);
   }
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  doc.addFileToVFS('PTSans-Regular.ttf',window._svitaFontR);
+  doc.addFont('PTSans-Regular.ttf','PTSans','normal');
+  doc.addFileToVFS('PTSans-Bold.ttf',window._svitaFontB);
+  doc.addFont('PTSans-Bold.ttf','PTSans','bold');
+  doc.setFont('PTSans');
   const W=210,H=297,M=18,CW=W-M*2;
   const t=calcTotals();
   const brand=document.getElementById('cBrand')?.value||'Клиника';
@@ -7883,7 +7894,7 @@ function exportPDF(){
   // Helpers
   function setFont(size,weight,color){
     doc.setFontSize(size);
-    doc.setFont('helvetica',weight||'normal');
+    doc.setFont('PTSans',weight||'normal');
     if(color)doc.setTextColor(...color);
   }
   function drawLine(yy,color){doc.setDrawColor(...(color||GRAY));doc.setLineWidth(0.3);doc.line(M,yy,W-M,yy)}
@@ -7892,7 +7903,7 @@ function exportPDF(){
     checkPage(20);
     y+=6;
     doc.setFillColor(...GOLD);doc.rect(M,y,3,8,'F');
-    setFont(13,'bold',DARK);doc.text((icon||'')+' '+title,M+6,y+6);
+    setFont(13,'bold',DARK);doc.text(title,M+6,y+6);
     y+=14;
   }
   function addRow(label,value,bold){
@@ -8130,7 +8141,7 @@ function exportPDF(){
     y+=6;
     s.items.forEach(item=>{
       checkPage(6);
-      setFont(8,'normal',GRAY);doc.text('☐',M+4,y);
+      setFont(8,'normal',GRAY);doc.text('-',M+4,y);
       setFont(8,'normal',DARK);doc.text(item,M+10,y);
       y+=5;
     });
@@ -8140,15 +8151,15 @@ function exportPDF(){
   // ══════ РИСКИ ══════
   addSectionTitle('Риски и рекомендации','⚠️');
   const risks=[];
-  if(profit<0)risks.push('❗ Отрицательная маржа — пересмотрите ценообразование или снизьте расходы');
-  if(t.staff/t.revenue>0.5)risks.push('⚠ ФОТ составляет '+Math.round(t.staff/t.revenue*100)+'% выручки — рекомендуется не более 40%');
-  if(t.rentMonth/t.revenue>0.2)risks.push('⚠ Аренда '+Math.round(t.rentMonth/t.revenue*100)+'% от выручки — рассмотрите другую локацию');
-  if(roi>36)risks.push('⚠ Срок окупаемости '+roi+' мес — выше среднего (24 мес)');
-  if(pickedEquip.length<10)risks.push('💡 Мало оборудования ('+pickedEquip.length+') — добавьте для полной комплектации');
-  if(pickedStaff.length<3)risks.push('💡 Мало персонала ('+pickedStaff.length+') — минимум 3-4 для работы клиники');
-  if(!risks.length)risks.push('✅ Критических рисков не обнаружено');
-  risks.push('💡 Рекомендуем заложить резерв 15-20% от бюджета на непредвиденные расходы');
-  risks.push('💡 Первые 3-6 мес — фаза набора пациентской базы, загрузка будет ниже плановой');
+  if(profit<0)risks.push('[!] Отрицательная маржа — пересмотрите ценообразование или снизьте расходы');
+  if(t.staff/t.revenue>0.5)risks.push('[!] ФОТ составляет '+Math.round(t.staff/t.revenue*100)+'% выручки — рекомендуется не более 40%');
+  if(t.rentMonth/t.revenue>0.2)risks.push('[!] Аренда '+Math.round(t.rentMonth/t.revenue*100)+'% от выручки — рассмотрите другую локацию');
+  if(roi>36)risks.push('[!] Срок окупаемости '+roi+' мес — выше среднего (24 мес)');
+  if(pickedEquip.length<10)risks.push('[*] Мало оборудования ('+pickedEquip.length+') — добавьте для полной комплектации');
+  if(pickedStaff.length<3)risks.push('[*] Мало персонала ('+pickedStaff.length+') — минимум 3-4 для работы клиники');
+  if(!risks.length)risks.push('[OK] Критических рисков не обнаружено');
+  risks.push('[*] Рекомендуем заложить резерв 15-20% от бюджета на непредвиденные расходы');
+  risks.push('[*] Первые 3-6 мес — фаза набора пациентской базы, загрузка будет ниже плановой');
   risks.forEach(r=>{
     checkPage(8);
     addText(r,9,DARK);
@@ -8168,6 +8179,7 @@ function exportPDF(){
   const filename='SVITA-'+brand.replace(/\s+/g,'-')+'-plan-'+new Date().toISOString().slice(0,10)+'.pdf';
   doc.save(filename);
   toast('PDF скачан: '+filename,'gn');
+  }catch(e){console.error('PDF export error:',e);toast('Ошибка генерации PDF','rd')}
 }
 
 function exportConceptFile(){
