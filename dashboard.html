@@ -5211,7 +5211,7 @@ function getPickedRoomsList(){
   const fromFP=(FP&&FP.rooms||[]).map((r,i)=>{
     const bb=fpPolyBBox(r.pts);
     const w=+(bb.x2-bb.x1).toFixed(1),h=+(bb.y2-bb.y1).toFixed(1);
-    return{id:'fp_'+i,name:r.name||'Комната '+(i+1),type:r.type||'Без типа',area:+(w*h).toFixed(1),w,h,source:'constructor'};
+    return{id:'fp_'+i,name:r.name||'Комната '+(i+1),type:r.type||'Без типа',zone:r.zone||'Медицинская',area:+(w*h).toFixed(1),w,h,source:'constructor'};
   });
   // Объединяем, убирая дубли по имени
   const dbNames=new Set(fromDB.map(r=>r.name));
@@ -5256,7 +5256,7 @@ function updateZoneStats(){}
 
 // ═══════════════ FLOOR PLAN CONSTRUCTOR ═══════════════
 const FP={
-  rooms:[],       // each: {name,type,abbr,pts:[[x,y],...],doors:[]}
+  rooms:[],       // each: {name,type,abbr,zone,pts:[[x,y],...],doors:[]}
   elements:[],    // architectural elements: {type,x,y,angle,w,h}
   history:[],     // undo stack (snapshots of {rooms,elements})
   future:[],      // redo stack
@@ -5293,7 +5293,9 @@ const FP={
     // Вспомогательные
     'Коридор','Тамбур/вход','Гардероб','Кладовая','Архив документов',
     'Прачечная','Помещение для отходов','Лифтовой холл'
-  ]
+  ],
+  zones:['Медицинская','Общественная','Техническая','Служебная'],
+  zoneToId:{Медицинская:'medical',Общественная:'public',Техническая:'technical',Служебная:'service'}
 };
 
 function fpSnap(v){return Math.round(v*10)/10}
@@ -5718,7 +5720,7 @@ function fpDown(e){
       const d=Math.hypot(gx-FP.polyPts[0][0],gy-FP.polyPts[0][1]);
       if(d<0.8){
         const name='Комната '+(FP.rooms.length+1);
-        FP.rooms.push({name,type:FP.types[0],pts:[...FP.polyPts],doors:[]});
+        FP.rooms.push({name,type:FP.types[0],zone:FP.zones[0],pts:[...FP.polyPts],doors:[]});
         FP.sel.clear();FP.sel.add(FP.rooms.length-1);FP.polyPts=[];fpDraw();fpUpdateList();return;
       }
     }
@@ -5844,7 +5846,7 @@ function fpUp(e){
         // Wall segment — not a room, just structural element
         FP.elements.push({type:'wall_part',x:x1,y:y1,w:Math.round((x2-x1)*10)/10,h:Math.round((y2-y1)*10)/10,angle:0,specs:{}});
       }else{
-        FP.rooms.push({name:'Комната '+(FP.rooms.length+1),type:FP.types[0],pts:[[x1,y1],[x2,y1],[x2,y2],[x1,y2]],doors:[]});
+        FP.rooms.push({name:'Комната '+(FP.rooms.length+1),type:FP.types[0],zone:FP.zones[0],pts:[[x1,y1],[x2,y1],[x2,y2],[x1,y2]],doors:[]});
         FP.sel.clear();FP.sel.add(FP.rooms.length-1);
       }
       fpUpdateList();
@@ -5956,7 +5958,7 @@ function fpAddRoom(){
   const h=parseFloat(prompt('Длина (м):','3.5'))||3.5;
   let maxX=0;FP.rooms.forEach(r=>{const bb=fpPolyBBox(r.pts);maxX=Math.max(maxX,bb.x2)});
   const sx=maxX+1,sy=1;
-  FP.rooms.push({name,type:FP.types[0],pts:[[sx,sy],[sx+w,sy],[sx+w,sy+h],[sx,sy+h]],doors:[]});
+  FP.rooms.push({name,type:FP.types[0],zone:FP.zones[0],pts:[[sx,sy],[sx+w,sy],[sx+w,sy+h],[sx,sy+h]],doors:[]});
   FP.sel.clear();FP.sel.add(FP.rooms.length-1);fpDraw();fpUpdateList();
 }
 
@@ -5978,7 +5980,7 @@ function fpMergeSelected(){
   const hull=fpConvexHull(allPts);
   // Take name from first room
   const first=FP.rooms[indices[0]];
-  const merged={name:first.name+' (объед.)',type:first.type,abbr:first.abbr||'',pts:hull,doors:[],_merged:originals};
+  const merged={name:first.name+' (объед.)',type:first.type,zone:first.zone||FP.zones[0],abbr:first.abbr||'',pts:hull,doors:[],_merged:originals};
   // Remove old rooms (from end to preserve indices)
   for(let k=indices.length-1;k>=0;k--)FP.rooms.splice(indices[k],1);
   FP.rooms.push(merged);
@@ -6018,6 +6020,7 @@ function fpSelectRoom(i,e){
 }
 
 function fpChangeType(i,type){FP.rooms[i].type=type;fpDraw()}
+function fpChangeZone(i,zone){FP.rooms[i].zone=zone;fpUpdateList()}
 function fpRename(i,name){FP.rooms[i].name=name;fpDraw()}
 function fpSetAbbr(i,abbr){FP.rooms[i].abbr=abbr;fpDraw()}
 
@@ -6356,6 +6359,7 @@ function fpUpdateList(){
     const col=FP.colors[i%FP.colors.length];
     const area=fpPolyArea(r.pts);
     const typeOpts=FP.types.map(t=>`<option${t===r.type?' selected':''}>${t}</option>`).join('');
+    const zoneOpts=FP.zones.map(z=>`<option${z===r.zone?' selected':''}>${z}</option>`).join('');
     const isSel=fpIsSel(i);
     // Door list for this room
     let doorHtml='';
@@ -6375,6 +6379,7 @@ function fpUpdateList(){
       <input class="fp-name-input" value="${r.name}" onclick="event.stopPropagation()" onchange="fpRename(${i},this.value)" style="border-color:transparent;background:transparent;padding:2px 4px;font-size:11px;font-weight:500;width:90px" onfocus="this.style.borderColor='var(--ac)';this.style.background='var(--sf)'" onblur="this.style.borderColor='transparent';this.style.background='transparent'">
       <input placeholder="Сокр." value="${r.abbr||''}" onclick="event.stopPropagation()" onchange="fpSetAbbr(${i},this.value)" style="border:1px solid transparent;border-radius:4px;padding:2px 4px;font-size:10px;font-family:var(--f);width:44px;color:var(--ac2);font-weight:600;background:transparent;outline:none" onfocus="this.style.borderColor='var(--ac)';this.style.background='var(--sf)'" onblur="this.style.borderColor='transparent';this.style.background='transparent'" title="Сокращение (приоритет на сетке)">
       <select class="fp-type-select" onclick="event.stopPropagation()" onchange="fpChangeType(${i},this.value)" style="max-width:130px">${typeOpts}</select>
+      <select onclick="event.stopPropagation()" onchange="fpChangeZone(${i},this.value)" style="max-width:110px;font-size:10px;padding:2px 4px;border:1px solid var(--bd);border-radius:4px;background:var(--sf);color:var(--tx);font-family:var(--f);cursor:pointer">${zoneOpts}</select>
       <input type="number" value="${area.toFixed(1)}" step="0.5" min="0.5" onclick="event.stopPropagation()" onchange="fpSetArea(${i},parseFloat(this.value))" style="border:1px solid transparent;border-radius:4px;padding:2px 4px;font-size:10px;font-family:var(--f);width:52px;text-align:right;background:transparent;outline:none;color:var(--tx)" onfocus="this.style.borderColor='var(--ac)';this.style.background='var(--sf)'" onblur="this.style.borderColor='transparent';this.style.background='transparent'" title="Площадь (м²) — изменит размер пропорционально"> <span style="font-size:9px;color:var(--tx3)">м²</span>
       <span class="fp-del" onclick="event.stopPropagation();fpDelRoom(${i})" title="Удалить из конструктора">✕</span>
       ${doorHtml}
@@ -6987,7 +6992,9 @@ function renderZones(){
   if(!zs)return;
   const rooms=getPickedRoomsList();
   const zoneMap={};
-  // Map room types to zones
+  // Map zone names to DB zone IDs
+  const nameToId={Медицинская:'medical',Общественная:'public',Техническая:'technical',Служебная:'service'};
+  // Fallback: map room types to zones for rooms without explicit zone
   const typeToZone={'Стоматологический':'medical','Хирургический':'medical','Ортодонтический':'medical','Рентген':'medical',
     'Общественная':'public','Ресепшен':'public',
     'Техническая':'technical','Стерилизаторная':'technical','Серверная':'technical',
@@ -6995,15 +7002,19 @@ function renderZones(){
   DB.zones.forEach(z=>{zoneMap[z.id]={...z,rooms:[],area:0}});
 
   rooms.forEach(rm=>{
-    const zid=typeToZone[rm.type]||'service';
+    const zid=rm.zone?nameToId[rm.zone]||'service':typeToZone[rm.type]||'service';
     if(zoneMap[zid]){zoneMap[zid].rooms.push(rm);zoneMap[zid].area+=rm.area||0}
   });
 
+  const totalArea=Object.values(zoneMap).reduce((s,d)=>s+d.area,0);
   let zsHtml='';
   DB.zones.forEach(z=>{
     const d=zoneMap[z.id];
-    zsHtml+=`<div class="st" style="border-left:3px solid ${z.color}"><div class="st-l">${z.icon} ${z.name}</div><div class="st-v" style="font-size:18px">${d.area.toFixed(0)} м²</div><div style="font-size:10px;color:var(--tx3)">${d.rooms.length} помещений</div></div>`;
+    const pct=totalArea>0?(d.area/totalArea*100).toFixed(1):'0.0';
+    zsHtml+=`<div class="st" style="border-left:3px solid ${z.color}"><div class="st-l">${z.icon} ${z.name}</div><div class="st-v" style="font-size:18px">${d.area.toFixed(0)} м²</div><div style="font-size:10px;color:var(--tx3)">${d.rooms.length} помещ. · ${pct}%</div>
+    <div style="margin-top:4px;height:4px;border-radius:2px;background:var(--bd);overflow:hidden"><div style="height:100%;width:${pct}%;background:${z.color};border-radius:2px"></div></div></div>`;
   });
+  if(totalArea>0)zsHtml+=`<div class="st"><div class="st-l">Итого</div><div class="st-v" style="font-size:18px">${totalArea.toFixed(0)} м²</div></div>`;
   zs.innerHTML=zsHtml;
 
   // 2. Zonalities per room type
