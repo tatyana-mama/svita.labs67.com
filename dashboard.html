@@ -7856,6 +7856,8 @@ function _restoreRpChat(){
   }
 }
 
+// ═══ TOAST ═══
+if(typeof toast==='undefined'){window.toast=function(msg,type){const d=document.createElement('div');d.textContent=msg;Object.assign(d.style,{position:'fixed',top:'20px',right:'20px',padding:'12px 24px',borderRadius:'8px',color:'#fff',fontSize:'14px',zIndex:'99999',background:type==='rd'?'#ef4444':type==='yl'?'#eab308':'#22c55e',boxShadow:'0 4px 12px rgba(0,0,0,.3)',transition:'opacity .3s'});document.body.appendChild(d);setTimeout(()=>{d.style.opacity='0';setTimeout(()=>d.remove(),300)},3000)}}
 // ═══ EXPORT / IMPORT CONCEPT FILE ═══
 // ═══ PDF EXPORT — План реализации ═══
 async function exportPDF(){
