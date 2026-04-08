@@ -13,6 +13,7 @@
 <title>SVITA — Конструктор клиники</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
 <style>
 :root{--bg:#f8fafc;--sf:#ffffff;--sf2:#f1f5f9;--sf3:#e2e8f0;--bd:rgba(0,0,0,.06);--bd2:rgba(0,0,0,.10);--tx:#1e293b;--tx2:rgba(30,41,59,.6);--tx3:rgba(30,41,59,.35);--ac:#3b82f6;--ac2:#2563eb;--acbg:rgba(59,130,246,.06);--acbd:rgba(59,130,246,.15);--gn:#16a34a;--gnbg:rgba(22,163,74,.06);--yl:#ca8a04;--ylbg:rgba(202,138,4,.06);--rd:#dc2626;--or:#ea580c;--r:12px;--f:'Inter',system-ui,sans-serif;--shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);--shadow-md:0 4px 6px rgba(0,0,0,.04),0 2px 4px rgba(0,0,0,.03)}
 *{box-sizing:border-box;margin:0;padding:0}body{font-family:var(--f);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}a{color:inherit;text-decoration:none}
@@ -741,6 +742,15 @@ Apple</button>
 <div style="font-size:12px;color:var(--tx2);margin-bottom:12px;line-height:1.5">Загрузите файл <b>.json</b> с готовой концепцией — все 7 секций заполнятся автоматически.<br>Файл можно получить от AI (кнопка ✨ в чате) или от коллеги.</div>
 <button class="btn pr" onclick="importConceptFile()" style="font-size:13px;padding:10px 24px">⬆ Загрузить .json файл</button>
 <div id="importConceptStatus" style="margin-top:10px;font-size:11px;color:var(--gn);display:none"></div>
+</div>
+</div>
+
+<!-- PDF EXPORT -->
+<div class="c" style="background:linear-gradient(135deg,rgba(186,117,23,0.06),rgba(139,92,246,0.04));border:1px solid rgba(186,117,23,0.15)">
+<div class="ch"><h3>📄 План реализации</h3></div>
+<div class="cb" style="text-align:center;padding:20px">
+<div style="font-size:12px;color:var(--tx2);margin-bottom:12px;line-height:1.5">Детальная PDF-презентация с пошаговым планом реализации вашей концепции.<br>Финмодель, оборудование, персонал, ремонт, документация, риски и чеклист.</div>
+<button class="btn pr" onclick="exportPDF()" style="font-size:13px;padding:10px 24px;background:linear-gradient(135deg,#BA7517,#D4A44A);border:none;color:#fff">📄 Скачать план реализации (PDF)</button>
 </div>
 </div>
 
@@ -7847,6 +7857,311 @@ function _restoreRpChat(){
 }
 
 // ═══ EXPORT / IMPORT CONCEPT FILE ═══
+// ═══ PDF EXPORT — План реализации ═══
+function exportPDF(){
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  const W=210,H=297,M=18,CW=W-M*2;
+  const t=calcTotals();
+  const brand=document.getElementById('cBrand')?.value||'Клиника';
+  const city=document.getElementById('propCity')?.value||activeProperty?.city||'Город';
+  const area=activeProperty?.area||parseInt(document.getElementById('propArea')?.value)||0;
+  let y=0;
+
+  // Colors
+  const GOLD=[186,117,23],DARK=[26,26,36],GRAY=[120,120,140],WHITE=[255,255,255];
+  const LIGHT_BG=[248,250,252];
+
+  // Helpers
+  function setFont(size,weight,color){
+    doc.setFontSize(size);
+    doc.setFont('helvetica',weight||'normal');
+    if(color)doc.setTextColor(...color);
+  }
+  function drawLine(yy,color){doc.setDrawColor(...(color||GRAY));doc.setLineWidth(0.3);doc.line(M,yy,W-M,yy)}
+  function checkPage(need){if(y+need>H-20){doc.addPage();y=M;return true}return false}
+  function addSectionTitle(title,icon){
+    checkPage(20);
+    y+=6;
+    doc.setFillColor(...GOLD);doc.rect(M,y,3,8,'F');
+    setFont(13,'bold',DARK);doc.text((icon||'')+' '+title,M+6,y+6);
+    y+=14;
+  }
+  function addRow(label,value,bold){
+    checkPage(6);
+    setFont(9,bold?'bold':'normal',DARK);doc.text(label,M+2,y);
+    setFont(9,bold?'bold':'normal',GOLD);doc.text(String(value),W-M-2,y,{align:'right'});
+    y+=5;
+  }
+  function addText(text,size,color){
+    checkPage(8);
+    setFont(size||9,'normal',color||GRAY);
+    const lines=doc.splitTextToSize(text,CW-4);
+    doc.text(lines,M+2,y);
+    y+=lines.length*4+2;
+  }
+
+  // ══════ PAGE 1: COVER ══════
+  doc.setFillColor(...DARK);doc.rect(0,0,W,H,'F');
+  // Gold accent line
+  doc.setFillColor(...GOLD);doc.rect(0,0,W,3,'F');
+  // Logo
+  setFont(11,'normal',GOLD);doc.text('SVITA',M,35);
+  setFont(8,'normal',[100,100,120]);doc.text('by LABS67',M+25,35);
+  // Title
+  setFont(32,'bold',WHITE);
+  const titleLines=doc.splitTextToSize(brand,CW);
+  doc.text(titleLines,M,80);
+  // Subtitle
+  setFont(14,'normal',[180,180,200]);doc.text('План реализации бизнес-концепции',M,80+titleLines.length*14+8);
+  // Meta
+  const metaY=140;
+  setFont(10,'normal',GOLD);
+  doc.text('Город',M,metaY);doc.text('Площадь',M+60,metaY);doc.text('Инвестиции',M+120,metaY);
+  setFont(16,'bold',WHITE);
+  doc.text(city,M,metaY+10);doc.text(area+' м²',M+60,metaY+10);doc.text(t.grand.toLocaleString('ru')+' PLN',M+120,metaY+10);
+  // Stats row
+  const sy=180;
+  const profit=t.revenue-t.expenses;
+  const roi=profit>0&&t.grand>0?Math.ceil(t.grand/profit):0;
+  setFont(10,'normal',GOLD);
+  doc.text('Выручка/мес',M,sy);doc.text('Расходы/мес',M+50,sy);doc.text('Прибыль/мес',M+100,sy);doc.text('Окупаемость',M+150,sy);
+  setFont(14,'bold',WHITE);
+  doc.text(t.revenue.toLocaleString('ru'),M,sy+9);
+  doc.text(t.expenses.toLocaleString('ru'),M+50,sy+9);
+  setFont(14,'bold',profit>0?[34,197,94]:[239,68,68]);
+  doc.text(profit.toLocaleString('ru'),M+100,sy+9);
+  setFont(14,'bold',WHITE);
+  doc.text(roi>0?roi+' мес':'—',M+150,sy+9);
+  // Footer
+  setFont(8,'normal',[80,80,100]);
+  doc.text('Документ сгенерирован автоматически платформой SVITA · '+new Date().toLocaleDateString('ru'),M,H-15);
+  doc.text('svita.labs67.com',W-M,H-15,{align:'right'});
+
+  // ══════ PAGE 2: ФИНАНСОВАЯ МОДЕЛЬ ══════
+  doc.addPage();y=M;
+  doc.setFillColor(...LIGHT_BG);doc.rect(0,0,W,H,'F');
+  addSectionTitle('Финансовая модель','📊');
+  // Investment breakdown
+  addRow('Депозит + аренда',t.rent.toLocaleString('ru')+' PLN');
+  addRow('Ремонт и модернизация',t.renovation.toLocaleString('ru')+' PLN');
+  addRow('Инженерные системы',t.eng.toLocaleString('ru')+' PLN');
+  addRow('Оборудование',t.equip.toLocaleString('ru')+' PLN');
+  addRow('Документация и лицензии',t.docs.toLocaleString('ru')+' PLN');
+  y+=2;drawLine(y);y+=4;
+  addRow('ИТОГО ИНВЕСТИЦИИ',t.grand.toLocaleString('ru')+' PLN',true);
+  y+=8;
+  addSectionTitle('Ежемесячные показатели','💰');
+  addRow('Кресел',String(t.chairs));
+  addRow('Пациентов/день на кресло',String(t.ppc));
+  addRow('Рабочих дней/мес',String(t.wd));
+  addRow('Средний чек',t.avgCheck.toLocaleString('ru')+' PLN');
+  y+=2;drawLine(y);y+=4;
+  addRow('Выручка/мес',t.revenue.toLocaleString('ru')+' PLN',true);
+  y+=4;
+  addRow('ФОТ (зарплаты)',t.staff.toLocaleString('ru')+' PLN');
+  addRow('ФОТ (налоги ZUS)',t.fot.toLocaleString('ru')+' PLN');
+  addRow('Аренда/мес',t.rentMonth.toLocaleString('ru')+' PLN');
+  const prUtils=parseInt(document.getElementById('prUtils')?.value)||0;
+  const prMat=parseInt(document.getElementById('prMaterials')?.value)||0;
+  const prMark=parseInt(document.getElementById('prMarketing')?.value)||0;
+  const prOther=parseInt(document.getElementById('prOther')?.value)||0;
+  addRow('Коммунальные',prUtils.toLocaleString('ru')+' PLN');
+  addRow('Материалы',prMat.toLocaleString('ru')+' PLN');
+  addRow('Маркетинг',prMark.toLocaleString('ru')+' PLN');
+  addRow('Прочее',prOther.toLocaleString('ru')+' PLN');
+  y+=2;drawLine(y);y+=4;
+  addRow('Расходы/мес',t.expenses.toLocaleString('ru')+' PLN',true);
+  y+=4;
+  addRow('Прибыль/мес',profit.toLocaleString('ru')+' PLN',true);
+  addRow('Маржинальность',t.revenue>0?Math.round(profit/t.revenue*100)+'%':'—');
+  addRow('Окупаемость',roi>0?roi+' мес':'—');
+
+  // ══════ ПОМЕЩЕНИЯ ══════
+  doc.addPage();y=M;
+  doc.setFillColor(...LIGHT_BG);doc.rect(0,0,W,H,'F');
+  addSectionTitle('Помещения и зоны','🏢');
+  if(area>0){addRow('Общая площадь',area+' м²');y+=2}
+  const pickedRooms=Object.entries(DB.pickedRooms||{});
+  if(pickedRooms.length){
+    // Header
+    checkPage(8);
+    setFont(8,'bold',GRAY);
+    doc.text('Помещение',M+2,y);doc.text('Тип',M+80,y);doc.text('Площадь',W-M-2,y,{align:'right'});
+    y+=3;drawLine(y);y+=4;
+    pickedRooms.forEach(([id,p])=>{
+      const r=DB.rooms.find(x=>x.id==id);
+      if(!r)return;
+      checkPage(6);
+      setFont(9,'normal',DARK);doc.text((r.name||'').substring(0,40),M+2,y);
+      setFont(8,'normal',GRAY);doc.text(r.type||r.zone||'',M+80,y);
+      setFont(9,'normal',GOLD);doc.text((r.area||'—')+' м²',W-M-2,y,{align:'right'});
+      y+=5;
+    });
+  } else { addText('Помещения не выбраны'); }
+
+  // ══════ ОБОРУДОВАНИЕ ══════
+  addSectionTitle('Оборудование','📦');
+  const pickedEquip=Object.entries(DB.pickedEquip||{});
+  if(pickedEquip.length){
+    setFont(8,'bold',GRAY);
+    doc.text('Название',M+2,y);doc.text('Кол-во',M+110,y);doc.text('Цена',W-M-2,y,{align:'right'});
+    y+=3;drawLine(y);y+=4;
+    pickedEquip.forEach(([id,p])=>{
+      const s=DB.suppliers.find(x=>x.id==id);
+      if(!s)return;
+      checkPage(6);
+      const price=(p.customPrice!=null?p.customPrice:s.price)*(p.qty||1);
+      setFont(8,'normal',DARK);doc.text((s.name||'').substring(0,55),M+2,y);
+      setFont(8,'normal',GRAY);doc.text('×'+(p.qty||1),M+110,y);
+      setFont(8,'normal',GOLD);doc.text(price.toLocaleString('ru')+' PLN',W-M-2,y,{align:'right'});
+      y+=5;
+    });
+    y+=2;drawLine(y);y+=4;
+    addRow('ИТОГО оборудование',t.equip.toLocaleString('ru')+' PLN',true);
+  } else { addText('Оборудование не выбрано'); }
+
+  // ══════ ПЕРСОНАЛ ══════
+  doc.addPage();y=M;
+  doc.setFillColor(...LIGHT_BG);doc.rect(0,0,W,H,'F');
+  addSectionTitle('Персонал','👥');
+  const pickedStaff=Object.entries(DB.pickedStaff||{});
+  if(pickedStaff.length){
+    setFont(8,'bold',GRAY);
+    doc.text('Должность',M+2,y);doc.text('Тип',M+100,y);doc.text('ЗП/мес',W-M-2,y,{align:'right'});
+    y+=3;drawLine(y);y+=4;
+    pickedStaff.forEach(([id,p])=>{
+      const e=DB.employees.find(x=>x.id==id);
+      if(!e)return;
+      checkPage(6);
+      setFont(9,'normal',DARK);doc.text((e.name||e.position||'').substring(0,50),M+2,y);
+      setFont(8,'normal',GRAY);doc.text(e.type==='full'?'Полный':'Частичный',M+100,y);
+      setFont(9,'normal',GOLD);doc.text(((e.salary||0)*(p.qty||1)).toLocaleString('ru')+' PLN',W-M-2,y,{align:'right'});
+      y+=5;
+    });
+    y+=2;drawLine(y);y+=4;
+    addRow('ФОТ/мес (брутто)',t.staff.toLocaleString('ru')+' PLN',true);
+    addRow('Налоги ZUS',t.fot.toLocaleString('ru')+' PLN');
+  } else { addText('Персонал не выбран'); }
+
+  // ══════ УСЛУГИ ══════
+  addSectionTitle('Перечень услуг','🦷');
+  const pickedSvc=Object.entries(DB.pickedServices||{});
+  if(pickedSvc.length){
+    setFont(8,'bold',GRAY);
+    doc.text('Услуга',M+2,y);doc.text('Категория',M+90,y);doc.text('Цена',W-M-2,y,{align:'right'});
+    y+=3;drawLine(y);y+=4;
+    pickedSvc.forEach(([id,p])=>{
+      const s=DB.services.find(x=>x.id==id);
+      if(!s)return;
+      checkPage(6);
+      const price=p.customPrice!=null?p.customPrice:s.price;
+      setFont(8,'normal',DARK);doc.text((s.name||'').substring(0,45),M+2,y);
+      setFont(7,'normal',GRAY);doc.text((s.category||'').substring(0,25),M+90,y);
+      setFont(8,'normal',GOLD);doc.text(price.toLocaleString('ru')+' PLN',W-M-2,y,{align:'right'});
+      y+=5;
+    });
+  } else { addText('Услуги не выбраны'); }
+
+  // ══════ РЕМОНТ ══════
+  doc.addPage();y=M;
+  doc.setFillColor(...LIGHT_BG);doc.rect(0,0,W,H,'F');
+  addSectionTitle('Модернизация и ремонт','🔧');
+  const pickedReno=Object.entries(DB.pickedRenovations||{});
+  if(pickedReno.length){
+    setFont(8,'bold',GRAY);
+    doc.text('Работа',M+2,y);doc.text('Стоимость',W-M-2,y,{align:'right'});
+    y+=3;drawLine(y);y+=4;
+    pickedReno.forEach(([id])=>{
+      const r=DB.renovations.find(x=>x.id==id);
+      if(!r)return;
+      checkPage(6);
+      const cost=getRenItemCost(id);
+      setFont(8,'normal',DARK);doc.text((r.name||'').substring(0,60),M+2,y);
+      setFont(8,'normal',GOLD);doc.text(cost.toLocaleString('ru')+' PLN',W-M-2,y,{align:'right'});
+      y+=5;
+    });
+    y+=2;drawLine(y);y+=4;
+    addRow('ИТОГО ремонт',t.renovation.toLocaleString('ru')+' PLN',true);
+  } else { addText('Ремонтные работы не выбраны'); }
+
+  // ══════ ДОКУМЕНТАЦИЯ ══════
+  addSectionTitle('Документация и лицензии','📋');
+  const pickedDocs=Object.entries(DB.pickedDocs||{});
+  if(pickedDocs.length){
+    setFont(8,'bold',GRAY);
+    doc.text('Документ',M+2,y);doc.text('Стоимость',W-M-2,y,{align:'right'});
+    y+=3;drawLine(y);y+=4;
+    pickedDocs.forEach(([id])=>{
+      const d=(DB.docs||DB.documentation||[]).find(x=>x.id==id);
+      if(!d)return;
+      checkPage(6);
+      setFont(8,'normal',DARK);doc.text((d.name||'').substring(0,60),M+2,y);
+      setFont(8,'normal',GOLD);doc.text((d.cost||d.price||0).toLocaleString('ru')+' PLN',W-M-2,y,{align:'right'});
+      y+=5;
+    });
+    y+=2;drawLine(y);y+=4;
+    addRow('ИТОГО документация',t.docs.toLocaleString('ru')+' PLN',true);
+  } else { addText('Документы не выбраны'); }
+
+  // ══════ ПОШАГОВЫЙ ПЛАН ══════
+  doc.addPage();y=M;
+  doc.setFillColor(...LIGHT_BG);doc.rect(0,0,W,H,'F');
+  addSectionTitle('Пошаговый план реализации','✅');
+  const steps=[
+    {phase:'Месяц 1-2',title:'Подготовка',items:['Регистрация компании (NIP, REGON, KRS)','Подписание договора аренды','Получение санитарно-эпидемиологического заключения','Проектирование перепланировки','Подача документов на лицензию']},
+    {phase:'Месяц 2-4',title:'Ремонт и модернизация',items:['Демонтажные работы','Электромонтаж, сантехника, вентиляция','Отделка стен, полов, потолков','Рентгенозащита (при наличии рентген-кабинета)','Пожарная сигнализация, видеонаблюдение','Приёмка помещения инспекцией']},
+    {phase:'Месяц 4-5',title:'Оснащение',items:['Закупка и доставка оборудования','Установка стоматологических установок','Монтаж автоклавов и компрессоров','Настройка IT-инфраструктуры','Калибровка и тестирование']},
+    {phase:'Месяц 5-6',title:'Персонал и запуск',items:['Подбор и найм персонала','Обучение стандартам работы','Получение лицензии на медицинскую деятельность','Регистрация в реестре медицинских субъектов','Маркетинговая кампания запуска','Soft opening (тестовый день)','Grand opening']},
+    {phase:'Месяц 7+',title:'Рабочий процесс',items:['Выход на плановую загрузку ('+t.chairs*t.ppc+' пациентов/день)','Оптимизация расписания','Контроль P&L, корректировка маркетинга','Внедрение CRM/ERP','Сбор отзывов и NPS']},
+  ];
+  steps.forEach(s=>{
+    checkPage(20);
+    setFont(10,'bold',GOLD);doc.text(s.phase,M+2,y);
+    setFont(10,'bold',DARK);doc.text(s.title,M+30,y);
+    y+=6;
+    s.items.forEach(item=>{
+      checkPage(6);
+      setFont(8,'normal',GRAY);doc.text('☐',M+4,y);
+      setFont(8,'normal',DARK);doc.text(item,M+10,y);
+      y+=5;
+    });
+    y+=4;
+  });
+
+  // ══════ РИСКИ ══════
+  addSectionTitle('Риски и рекомендации','⚠️');
+  const risks=[];
+  if(profit<0)risks.push('❗ Отрицательная маржа — пересмотрите ценообразование или снизьте расходы');
+  if(t.staff/t.revenue>0.5)risks.push('⚠ ФОТ составляет '+Math.round(t.staff/t.revenue*100)+'% выручки — рекомендуется не более 40%');
+  if(t.rentMonth/t.revenue>0.2)risks.push('⚠ Аренда '+Math.round(t.rentMonth/t.revenue*100)+'% от выручки — рассмотрите другую локацию');
+  if(roi>36)risks.push('⚠ Срок окупаемости '+roi+' мес — выше среднего (24 мес)');
+  if(pickedEquip.length<10)risks.push('💡 Мало оборудования ('+pickedEquip.length+') — добавьте для полной комплектации');
+  if(pickedStaff.length<3)risks.push('💡 Мало персонала ('+pickedStaff.length+') — минимум 3-4 для работы клиники');
+  if(!risks.length)risks.push('✅ Критических рисков не обнаружено');
+  risks.push('💡 Рекомендуем заложить резерв 15-20% от бюджета на непредвиденные расходы');
+  risks.push('💡 Первые 3-6 мес — фаза набора пациентской базы, загрузка будет ниже плановой');
+  risks.forEach(r=>{
+    checkPage(8);
+    addText(r,9,DARK);
+  });
+
+  // ══════ FOOTER on last page ══════
+  y=H-25;
+  drawLine(y,GOLD);y+=6;
+  setFont(8,'normal',GRAY);
+  doc.text('Данный документ подготовлен платформой SVITA (svita.labs67.com) и носит рекомендательный характер.',M,y);
+  y+=4;
+  doc.text('Фактические затраты могут отличаться в зависимости от рыночных условий, подрядчиков и локации.',M,y);
+  y+=4;
+  doc.text('© '+new Date().getFullYear()+' LABS67. Все расчёты на основе данных пользователя.',M,y);
+
+  // Save
+  const filename='SVITA-'+brand.replace(/\s+/g,'-')+'-plan-'+new Date().toISOString().slice(0,10)+'.pdf';
+  doc.save(filename);
+  toast('PDF скачан: '+filename,'gn');
+}
+
 function exportConceptFile(){
   const data=serializeWorkspace();
   data._svitaVersion='1.0';
