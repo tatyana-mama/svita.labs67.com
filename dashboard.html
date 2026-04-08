@@ -7771,9 +7771,21 @@ async function sendRpChat(){
     if(!res.ok)throw new Error('HTTP '+res.status);
     const data=await res.json();
     if(!data.reply)throw new Error('Пустой ответ');
-    aiEl.innerHTML=_mdToHtml(data.reply)+'<span style="display:block;font-size:9px;color:var(--tx3);margin-top:4px">SVITA AI</span>';
-    _aiChatHistory.push({role:'assistant',content:data.reply});
+    // Check for concept generation trigger
+    const conceptMatch=data.reply.match(/\[GENERATE_CONCEPT:(\{.*?\})\]/);
+    const cleanReply=data.reply.replace(/\[GENERATE_CONCEPT:.*?\]/,'').trim();
+    aiEl.innerHTML=_mdToHtml(cleanReply)+'<span style="display:block;font-size:9px;color:var(--tx3);margin-top:4px">SVITA AI</span>';
+    _aiChatHistory.push({role:'assistant',content:cleanReply});
     _saveChatHistory();
+    if(conceptMatch){
+      try{
+        const params=JSON.parse(conceptMatch[1]);
+        _aiChatStreaming=false;
+        document.getElementById('rpChatSendBtn').style.opacity='1';
+        generateConceptWithParams(params);
+        return;
+      }catch(e){console.error('Concept params parse error:',e)}
+    }
   }catch(e){
     aiEl.innerHTML='AI временно недоступен. Попробуйте позже.';
     aiEl.style.color='var(--rd)';
@@ -7839,11 +7851,24 @@ function importConceptFile(){
   inp.click();
 }
 
+function generateConceptWithParams(params){
+  const area=params.area||activeProperty?.area||200;
+  const city=params.city||activeProperty?.city||'Warszawa';
+  const desc=params.type||currentBizType||'dental_general';
+  // Override for this generation
+  _generateConceptCore(desc,city,area);
+}
+
 async function generateConcept(){
   if(_aiChatStreaming)return;
-  const desc=currentBizType||'dental';
+  const desc=currentBizType||'dental_general';
   const city=activeProperty?.city||'Warszawa';
   const area=activeProperty?.area||200;
+  _generateConceptCore(desc,city,area);
+}
+
+async function _generateConceptCore(desc,city,area){
+  if(_aiChatStreaming)return;
 
   _rpChatAppend('user','Сгенерируй полную концепцию стоматологии '+area+' м² в '+city);
   const aiEl=_rpChatAppend('ai','Генерирую полную концепцию по 7 секциям...\nПомещение считаем полностью голым — с нуля.\n\n⏳ 0/7 секций...');
@@ -7910,7 +7935,13 @@ async function generateConcept(){
     preview+=`<div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
       <button onclick="downloadGeneratedConcept()" style="padding:6px 14px;border:none;border-radius:8px;background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--f)">⬇ Скачать концепцию</button>
     </div>
-    <div style="font-size:9px;color:var(--tx3);margin-top:6px">Скачайте файл → откройте Обзор → «Загрузить концепцию»</div>`;
+    <div style="font-size:10px;color:var(--tx2);margin-top:8px;line-height:1.5;background:rgba(59,130,246,.06);padding:8px;border-radius:6px">
+      <b>Как загрузить:</b><br>
+      1. Скачайте файл (кнопка выше)<br>
+      2. Откройте раздел <a href="#" onclick="nav('overview');return false" style="color:var(--ac2);font-weight:600">Обзор</a><br>
+      3. Нажмите «⬆ Загрузить .json файл»<br>
+      4. Все 7 секций заполнятся автоматически
+    </div>`;
     aiEl.innerHTML=preview;
     _aiChatHistory.push({role:'assistant',content:'Концепция сгенерирована: '+Object.entries(results).map(([k,v])=>labels[k]+': '+(Array.isArray(v)?v.length:'✓')).join(', ')});
     _saveChatHistory();
