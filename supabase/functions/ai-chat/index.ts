@@ -105,7 +105,7 @@ async function tryClaude(
       },
       body: JSON.stringify({
         model: "claude-haiku-4-5-20251001",
-        max_tokens: 1024,
+        max_tokens: 512,
         system: systemPrompt,
         messages,
       }),
@@ -142,7 +142,8 @@ function buildSystemPrompt(ctx: Record<string, unknown> | undefined): string {
 - Если данные устарели, предупреди
 - Не выдумывай — если не знаешь, скажи
 - Ответы компактные, по делу, с bullet-points где уместно
-- Валюта — PLN (злотый)`
+- Валюта — PLN (злотый)
+- МАКСИМУМ 200 слов в ответе. Будь лаконичным.`
 
   if (!ctx) return base
 
