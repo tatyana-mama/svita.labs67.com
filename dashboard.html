@@ -7678,13 +7678,26 @@ function updateFormulaDisplay(){
 // ═══════════════ RIGHT PANEL ═══════════════
 function updateRightPanel(){/* chat is in rpanel now */}
 
+function _mdToHtml(txt){
+  return txt
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/^### (.+)$/gm,'<div style="font-weight:700;font-size:12px;margin:6px 0 2px">$1</div>')
+    .replace(/^## (.+)$/gm,'<div style="font-weight:700;font-size:13px;margin:8px 0 3px">$1</div>')
+    .replace(/^# (.+)$/gm,'<div style="font-weight:700;font-size:14px;margin:8px 0 4px">$1</div>')
+    .replace(/^[-–•] (.+)$/gm,'<div style="padding-left:10px;text-indent:-10px">• $1</div>')
+    .replace(/^\d+\.\s+(.+)$/gm,'<div style="padding-left:12px">$&</div>')
+    .replace(/\n{2,}/g,'<div style="height:6px"></div>')
+    .replace(/\n/g,'<br>');
+}
+
 function _rpChatAppend(role,text){
   const m=document.getElementById('rpChatMessages');
   const d=document.createElement('div');
   d.style.cssText=role==='user'
     ?'align-self:flex-end;background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;border-radius:10px 10px 2px 10px;padding:8px 10px;font-size:11px;line-height:1.4;max-width:90%;word-break:break-word'
     :'align-self:flex-start;background:var(--sf2);color:var(--tx);border-radius:10px 10px 10px 2px;padding:8px 10px;font-size:11px;line-height:1.4;max-width:90%;word-break:break-word';
-  d.textContent=text;
+  if(role==='ai'){d.innerHTML=_mdToHtml(text)}else{d.textContent=text}
   m.appendChild(d);
   m.scrollTop=m.scrollHeight;
   return d;
@@ -7728,12 +7741,11 @@ async function sendRpChat(){
     if(!res.ok)throw new Error('HTTP '+res.status);
     const data=await res.json();
     if(!data.reply)throw new Error('Пустой ответ');
-    aiEl.textContent=data.reply;
-    const tag=document.createElement('span');tag.style.cssText='display:block;font-size:9px;color:var(--tx3);margin-top:4px';tag.textContent='SVITA AI';aiEl.appendChild(tag);
+    aiEl.innerHTML=_mdToHtml(data.reply)+'<span style="display:block;font-size:9px;color:var(--tx3);margin-top:4px">SVITA AI</span>';
     _aiChatHistory.push({role:'assistant',content:data.reply});
     _saveChatHistory();
   }catch(e){
-    aiEl.textContent='AI временно недоступен. Попробуйте позже.';
+    aiEl.innerHTML='AI временно недоступен. Попробуйте позже.';
     aiEl.style.color='var(--rd)';
   }finally{
     _aiChatStreaming=false;
@@ -7820,7 +7832,7 @@ async function generateConcept(){
     _aiChatHistory.push({role:'assistant',content:'Концепция сгенерирована: '+actions.map(a=>(labels[a.section]||a.section)+': '+a.data.length).join(', ')});
     _saveChatHistory();
   }else{
-    aiEl.textContent='Jetson не успел ответить. Попробуйте позже.';
+    aiEl.innerHTML='Jetson не успел ответить. Попробуйте позже.';
     aiEl.style.color='var(--rd)';
   }
   _aiChatStreaming=false;
@@ -8079,7 +8091,7 @@ async function sendAiChat(){
       if(result){_aiChatHistory.push({role:'assistant',content:result});_saveChatHistory()}
       else throw new Error('empty');
     }catch(e2){
-      aiEl.textContent='AI временно недоступен. Попробуйте позже.';
+      aiEl.innerHTML='AI временно недоступен. Попробуйте позже.';
       aiEl.style.color='var(--rd)';
     }
   }finally{
