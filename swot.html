@@ -91,6 +91,17 @@ td:first-child{font-weight:600;color:var(--tx);white-space:nowrap}
 .tag.yl{background:rgba(234,179,8,.12);color:var(--yl)}
 .tag.pr{background:rgba(139,92,246,.12);color:var(--ac2)}
 
+/* ═══ MOBILE CARDS (competitors) ═══ */
+.mob-cards{display:none}
+.mob-card{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:10px}
+.mob-card.svita-card{border-color:rgba(139,92,246,.3);background:linear-gradient(135deg,rgba(139,92,246,.06),rgba(59,130,246,.04))}
+.mob-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.mob-card-name{font-weight:700;font-size:14px;color:var(--tx)}
+.mob-card-type{font-family:var(--fm);font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.mob-card-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-top:1px solid var(--bd);font-size:12px}
+.mob-card-row .k{color:var(--tx3);font-family:var(--fm);font-size:10px}
+.mob-card-row .v{color:var(--tx2);text-align:right}
+
 /* ═══ COMPARE ═══ */
 .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px}
 .compare-col{border-radius:12px;padding:28px;border:1px solid var(--bd)}
@@ -120,10 +131,72 @@ td:first-child{font-weight:600;color:var(--tx);white-space:nowrap}
 
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:900px){
-  .slide{padding:80px 24px}
-  .hero-grid,.swot-grid,.items-grid,.compare-grid{grid-template-columns:1fr}
+  .slide{padding:68px 20px 40px;min-height:auto;align-items:flex-start}
+  .slide-inner{max-width:100%}
+  .hero-grid{grid-template-columns:1fr;gap:24px}
   .hero-visual{display:none}
-  .pnav{padding:0 16px}
+  .pnav{padding:0 12px;gap:12px}
+  .pnav-logo{font-size:14px}
+  .pnav-dots{gap:4px}
+  .pnav-dot{width:6px;height:6px}
+  .pnav-dot.act{width:18px}
+  .pnav-num{font-size:9px;margin-left:8px}
+  h1{font-size:clamp(28px,8vw,40px)}
+  h2{font-size:clamp(22px,6vw,32px)}
+  h3{font-size:17px}
+  .subtitle{font-size:15px;line-height:1.6}
+  .hero-badge{font-size:10px;padding:5px 12px}
+  /* SWOT grid: 1 col on mobile */
+  .swot-grid{grid-template-columns:1fr;gap:1px;border-radius:12px}
+  .swot-cell{padding:20px 16px}
+  .swot-cell h3{font-size:16px;margin-bottom:14px}
+  .swot-item{font-size:12px;margin-bottom:10px;gap:8px}
+  .swot-item .num{width:16px;font-size:10px}
+  /* Detail cards: 1 col */
+  .items-grid{grid-template-columns:1fr;gap:12px}
+  .item-card{padding:16px}
+  .item-card .num{font-size:22px}
+  .item-card h4{font-size:13px}
+  .item-card p{font-size:11px}
+  .item-card:hover{transform:none}
+  .detail-header{margin-bottom:24px}
+  .detail-header .icon{font-size:32px;margin-bottom:8px}
+  /* Table: hide on mobile, show cards instead */
+  .tbl-desktop{display:none}
+  .mob-cards{display:block}
+  /* Compare */
+  .compare-grid{grid-template-columns:1fr;gap:16px;margin-top:24px}
+  .compare-col{padding:20px;border-radius:10px}
+  .compare-col h3{font-size:16px;margin-bottom:14px}
+  .compare-row{font-size:12px;padding:6px 0}
+  .compare-row .v{font-size:11px}
+  /* Conclusion */
+  .conclusion-card,.risk-card{padding:24px;border-radius:12px}
+  .conclusion-card h3,.risk-card h3{font-size:16px;margin-bottom:10px}
+  .conclusion-card p,.risk-card p{font-size:13px;line-height:1.6}
+  .risk-card{margin-top:12px}
+  /* Nav keys: bottom bar */
+  .keys{bottom:12px;right:12px;gap:4px}
+  .key{width:44px;height:44px;border-radius:10px;font-size:16px}
+  /* Tags */
+  .tag{font-size:8px;padding:2px 6px}
+  /* Footer */
+  .foot{padding:24px 16px;font-size:10px}
+}
+@media(max-width:420px){
+  .slide{padding:60px 14px 32px}
+  .pnav{height:44px}
+  .progress{top:44px}
+  h1{font-size:26px}
+  h2{font-size:21px}
+  .swot-cell{padding:16px 12px}
+  .item-card{padding:14px}
+  .item-card .num{font-size:20px}
+  .compare-col{padding:16px}
+  .conclusion-card,.risk-card{padding:18px}
+  .conclusion-card p,.risk-card p{font-size:12px}
+  .hero-badge{font-size:9px;padding:4px 10px;margin-bottom:16px}
+  .subtitle{font-size:14px}
 }
 </style>
 </head>
@@ -302,7 +375,8 @@ td:first-child{font-weight:600;color:var(--tx);white-space:nowrap}
 <div class="label" style="margin-bottom:8px">Конкуренты</div>
 <h2>Сравнительная таблица</h2>
 </div>
-<div class="tbl-wrap">
+<!-- Desktop table -->
+<div class="tbl-wrap tbl-desktop">
 <table>
 <thead><tr><th>Продукт</th><th>Тип</th><th>Цена/мес</th><th>AI</th><th>Мед.</th><th>Отличие</th></tr></thead>
 <tbody>
@@ -319,6 +393,23 @@ td:first-child{font-weight:600;color:var(--tx);white-space:nowrap}
 <tr><td>Pearl AI</td><td>Диагностика</td><td>Enterprise</td><td>CV, рентген-анализ</td><td><span class="tag gn">FDA</span></td><td>Клинический AI</td></tr>
 </tbody>
 </table>
+</div>
+<!-- Mobile cards -->
+<div class="mob-cards">
+<div class="mob-card svita-card">
+<div class="mob-card-head"><span class="mob-card-name">&#9733; SVITA AI</span><span class="tag gn">$0</span></div>
+<div class="mob-card-type">Конструктор концепций</div>
+<div class="mob-card-row"><span class="k">AI</span><span class="v">Edge Jetson, Qwen 32B</span></div>
+<div class="mob-card-row"><span class="k">Мед.</span><span class="tag gn">Глубокий</span></div>
+<div class="mob-card-row"><span class="k">Отличие</span><span class="v">Полный цикл от идеи до ROI</span></div>
+</div>
+<div class="mob-card"><div class="mob-card-head"><span class="mob-card-name">LivePlan</span><span>$15-40</span></div><div class="mob-card-type">Бизнес-план</div><div class="mob-card-row"><span class="k">AI</span><span class="v">500+ шаблонов</span></div><div class="mob-card-row"><span class="k">Мед.</span><span class="tag yl">Шаблон</span></div></div>
+<div class="mob-card"><div class="mob-card-head"><span class="mob-card-name">ProAI</span><span>$25-199</span></div><div class="mob-card-type">AI планирование</div><div class="mob-card-row"><span class="k">AI</span><span class="v">Ace AI, 3600 кейсов</span></div><div class="mob-card-row"><span class="k">Мед.</span><span class="tag rd">Нет</span></div></div>
+<div class="mob-card"><div class="mob-card-head"><span class="mob-card-name">Upmetrics</span><span>$9-49</span></div><div class="mob-card-type">AI план + финансы</div><div class="mob-card-row"><span class="k">AI</span><span class="v">AI-писатель, 3-statement</span></div><div class="mob-card-row"><span class="k">Мед.</span><span class="tag rd">Нет</span></div></div>
+<div class="mob-card"><div class="mob-card-head"><span class="mob-card-name">PrometAI</span><span>$0-145</span></div><div class="mob-card-type">AI план + оценка</div><div class="mob-card-row"><span class="k">AI</span><span class="v">PESTEL, VRIO, DCF</span></div><div class="mob-card-row"><span class="k">Мед.</span><span class="tag rd">Нет</span></div></div>
+<div class="mob-card"><div class="mob-card-head"><span class="mob-card-name">FranConnect</span><span>$500-2K+</span></div><div class="mob-card-type">Франшиза</div><div class="mob-card-row"><span class="k">AI</span><span class="v">Frannie AI, CRM</span></div><div class="mob-card-row"><span class="k">Мед.</span><span class="tag rd">Нет</span></div></div>
+<div class="mob-card"><div class="mob-card-head"><span class="mob-card-name">Dentira</span><span>$0</span></div><div class="mob-card-type">Закупки</div><div class="mob-card-row"><span class="k">AI</span><span class="v">Каталоги, сравнение</span></div><div class="mob-card-row"><span class="k">Мед.</span><span class="tag gn">Только стом.</span></div></div>
+<div class="mob-card"><div class="mob-card-head"><span class="mob-card-name">Pearl AI</span><span>Enterprise</span></div><div class="mob-card-type">Диагностика</div><div class="mob-card-row"><span class="k">AI</span><span class="v">CV, рентген-анализ</span></div><div class="mob-card-row"><span class="k">Мед.</span><span class="tag gn">FDA</span></div></div>
 </div>
 </div>
 </section>
@@ -390,7 +481,7 @@ const obs=new IntersectionObserver(entries=>{
       if(idx!==cur){cur=idx;updateNav()}
     }
   });
-},{threshold:0.4});
+},{threshold:window.innerWidth<900?0.15:0.4});
 slides.forEach(s=>obs.observe(s));
 
 function updateNav(){
@@ -413,6 +504,17 @@ document.addEventListener('keydown',e=>{
   if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' ')navSlide(1);
   if(e.key==='ArrowLeft'||e.key==='ArrowUp')navSlide(-1);
 });
+
+// Touch swipe
+let _tx=0,_ty=0;
+document.addEventListener('touchstart',e=>{_tx=e.touches[0].clientX;_ty=e.touches[0].clientY},{passive:true});
+document.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-_tx;
+  const dy=e.changedTouches[0].clientY-_ty;
+  if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>60){
+    if(dx<0)navSlide(1);else navSlide(-1);
+  }
+},{passive:true});
 
 // Init
 updateNav();
