@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SVITA AI — SWOT-анализ</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a12;--bg2:#12121f;--bg3:#1a1a2e;
+  --tx:#e8e8f0;--tx2:#a0a0b8;--tx3:#666680;
+  --ac:#8b5cf6;--ac2:#a78bfa;--acbg:rgba(139,92,246,.08);
+  --gn:#22c55e;--rd:#ef4444;--yl:#eab308;--bl:#3b82f6;
+  --bd:rgba(255,255,255,.06);--bd2:rgba(255,255,255,.1);
+  --f:'Inter',system-ui,sans-serif;--fm:'JetBrains Mono',monospace;--fd:'Syne',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--bg);color:var(--tx);overflow-x:hidden;font-size:16px;line-height:1.6}
+
+/* ═══ SLIDE SYSTEM ═══ */
+.slide{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 60px;position:relative;opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
+.slide.vis{opacity:1;transform:none}
+.slide-inner{max-width:1100px;width:100%}
+
+/* ═══ NAV ═══ */
+.pnav{position:fixed;top:0;left:0;right:0;height:48px;background:rgba(10,10,18,.92);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);z-index:999;display:flex;align-items:center;padding:0 40px;gap:24px}
+.pnav-logo{font-family:var(--fd);font-weight:800;font-size:16px;color:var(--ac2);letter-spacing:-.02em}
+.pnav-dots{display:flex;gap:6px;margin-left:auto}
+.pnav-dot{width:8px;height:8px;border-radius:50%;background:var(--tx3);cursor:pointer;transition:all .2s}
+.pnav-dot.act{background:var(--ac);width:24px;border-radius:4px}
+.pnav-num{font-family:var(--fm);font-size:10px;color:var(--tx3);margin-left:12px}
+
+/* ═══ PROGRESS ═══ */
+.progress{position:fixed;top:48px;left:0;height:2px;background:linear-gradient(90deg,var(--ac),var(--bl));z-index:999;transition:width .3s ease}
+
+/* ═══ TYPOGRAPHY ═══ */
+h1{font-family:var(--fd);font-size:clamp(36px,5vw,64px);font-weight:800;line-height:1.05;letter-spacing:-.03em}
+h2{font-family:var(--fd);font-size:clamp(28px,3.5vw,44px);font-weight:700;line-height:1.1;letter-spacing:-.02em}
+h3{font-family:var(--fd);font-size:20px;font-weight:700;line-height:1.2}
+.label{font-family:var(--fm);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--tx3)}
+.subtitle{font-size:18px;color:var(--tx2);font-weight:300;line-height:1.7;max-width:640px}
+
+/* ═══ HERO ═══ */
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:20px;border:1px solid var(--bd2);background:var(--acbg);font-family:var(--fm);font-size:11px;color:var(--ac2);margin-bottom:24px}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.hero-visual{position:relative;display:flex;align-items:center;justify-content:center}
+.hero-orb{width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.15),transparent 70%);position:relative;display:flex;align-items:center;justify-content:center;animation:orbPulse 4s ease infinite}
+.hero-orb::after{content:'';position:absolute;inset:20px;border-radius:50%;border:1px solid rgba(139,92,246,.2);animation:orbSpin 20s linear infinite}
+@keyframes orbPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes orbSpin{to{transform:rotate(360deg)}}
+.hero-icon{font-size:80px;filter:drop-shadow(0 0 40px rgba(139,92,246,.3))}
+
+/* ═══ SWOT GRID ═══ */
+.swot-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;border-radius:16px;overflow:hidden;margin-top:32px}
+.swot-cell{padding:32px;background:var(--bg2)}
+.swot-cell h3{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.swot-cell.s h3{color:var(--gn)}.swot-cell.w h3{color:var(--rd)}
+.swot-cell.o h3{color:var(--bl)}.swot-cell.t h3{color:var(--yl)}
+.swot-cell.s{border-top:3px solid var(--gn)}.swot-cell.w{border-top:3px solid var(--rd)}
+.swot-cell.o{border-top:3px solid var(--bl)}.swot-cell.t{border-top:3px solid var(--yl)}
+.swot-item{display:flex;gap:10px;margin-bottom:12px;font-size:13px;line-height:1.5}
+.swot-item .num{font-family:var(--fm);font-size:11px;font-weight:600;color:var(--tx3);flex-shrink:0;width:20px;text-align:right}
+.swot-item .txt b{color:var(--tx)}
+.swot-item .txt{color:var(--tx2)}
+
+/* ═══ DETAIL SLIDES ═══ */
+.detail-header{margin-bottom:40px}
+.detail-header .icon{font-size:40px;margin-bottom:12px}
+.items-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.item-card{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:20px;transition:all .2s}
+.item-card:hover{border-color:var(--bd2);transform:translateY(-2px)}
+.item-card .num{font-family:var(--fm);font-size:28px;font-weight:600;margin-bottom:4px}
+.item-card h4{font-size:14px;font-weight:600;margin-bottom:6px}
+.item-card p{font-size:12px;color:var(--tx2);line-height:1.5}
+.item-card.s .num{color:var(--gn)}.item-card.w .num{color:var(--rd)}
+.item-card.o .num{color:var(--bl)}.item-card.t .num{color:var(--yl)}
+
+/* ═══ TABLE ═══ */
+.tbl-wrap{overflow-x:auto;margin-top:24px;border-radius:12px;border:1px solid var(--bd)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead{background:var(--bg3)}
+th{font-family:var(--fm);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--tx3);padding:12px 14px;text-align:left;white-space:nowrap}
+td{padding:10px 14px;border-top:1px solid var(--bd);color:var(--tx2);vertical-align:top}
+tr:hover td{background:rgba(139,92,246,.03)}
+td:first-child{font-weight:600;color:var(--tx);white-space:nowrap}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-family:var(--fm);font-size:9px;font-weight:600}
+.tag.gn{background:rgba(34,197,94,.12);color:var(--gn)}
+.tag.rd{background:rgba(239,68,68,.12);color:var(--rd)}
+.tag.bl{background:rgba(59,130,246,.12);color:var(--bl)}
+.tag.yl{background:rgba(234,179,8,.12);color:var(--yl)}
+.tag.pr{background:rgba(139,92,246,.12);color:var(--ac2)}
+
+/* ═══ COMPARE ═══ */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px}
+.compare-col{border-radius:12px;padding:28px;border:1px solid var(--bd)}
+.compare-col.svita{border-color:rgba(139,92,246,.3);background:linear-gradient(135deg,rgba(139,92,246,.06),rgba(59,130,246,.04))}
+.compare-col.comp{border-color:var(--bd);background:var(--bg2)}
+.compare-col h3{margin-bottom:20px}
+.compare-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--bd);font-size:13px}
+.compare-row:last-child{border:none}
+.compare-row .k{color:var(--tx2)}
+.compare-row .v{font-weight:600;font-family:var(--fm);font-size:12px}
+
+/* ═══ CONCLUSION ═══ */
+.conclusion-card{background:linear-gradient(135deg,rgba(139,92,246,.08),rgba(59,130,246,.06));border:1px solid rgba(139,92,246,.2);border-radius:16px;padding:40px;margin-top:32px}
+.conclusion-card h3{color:var(--ac2);margin-bottom:16px}
+.conclusion-card p{color:var(--tx2);font-size:14px;line-height:1.7}
+.risk-card{background:rgba(234,179,8,.06);border:1px solid rgba(234,179,8,.2);border-radius:16px;padding:40px;margin-top:16px}
+.risk-card h3{color:var(--yl);margin-bottom:16px}
+.risk-card p{color:var(--tx2);font-size:14px;line-height:1.7}
+
+/* ═══ FOOTER ═══ */
+.foot{text-align:center;padding:40px;font-family:var(--fm);font-size:11px;color:var(--tx3);border-top:1px solid var(--bd)}
+
+/* ═══ KEYS ═══ */
+.keys{position:fixed;bottom:20px;right:20px;display:flex;gap:6px;z-index:999}
+.key{width:36px;height:36px;border-radius:8px;border:1px solid var(--bd2);background:rgba(10,10,18,.9);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--tx2);font-size:14px;transition:all .2s}
+.key:hover{border-color:var(--ac);color:var(--ac2)}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:900px){
+  .slide{padding:80px 24px}
+  .hero-grid,.swot-grid,.items-grid,.compare-grid{grid-template-columns:1fr}
+  .hero-visual{display:none}
+  .pnav{padding:0 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="pnav">
+<div class="pnav-logo">SVITA AI</div>
+<div class="pnav-dots" id="dots"></div>
+<div class="pnav-num" id="slideNum">1 / 8</div>
+</nav>
+<div class="progress" id="progress"></div>
+
+<!-- ═══ SLIDE 1: HERO ═══ -->
+<section class="slide" data-slide="0">
+<div class="slide-inner">
+<div class="hero-grid">
+<div>
+<div class="hero-badge">&#128202; Стратегический анализ · Апрель 2026</div>
+<h1 style="margin-bottom:20px">SWOT-анализ<br><span style="background:linear-gradient(135deg,#8b5cf6,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent">SVITA AI</span></h1>
+<p class="subtitle">Конструктор бизнес-концепций с Edge AI. Позиционирование среди 12 конкурентов: от LivePlan до FranConnect.</p>
+<div style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap">
+<span class="tag gn" style="font-size:11px;padding:6px 14px">8 сильных сторон</span>
+<span class="tag rd" style="font-size:11px;padding:6px 14px">7 слабых сторон</span>
+<span class="tag bl" style="font-size:11px;padding:6px 14px">8 возможностей</span>
+<span class="tag yl" style="font-size:11px;padding:6px 14px">8 угроз</span>
+</div>
+</div>
+<div class="hero-visual">
+<div class="hero-orb"><span class="hero-icon">&#129302;</span></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ═══ SLIDE 2: SWOT OVERVIEW ═══ -->
+<section class="slide" data-slide="1">
+<div class="slide-inner">
+<div class="label" style="margin-bottom:12px">Обзор</div>
+<h2>SWOT-матрица</h2>
+<div class="swot-grid">
+<div class="swot-cell s">
+<h3>&#9989; Strengths</h3>
+<div class="swot-item"><span class="num">1</span><span class="txt"><b>Вертикальная интеграция</b> — план + каталог + ремонт + штат + прайс</span></div>
+<div class="swot-item"><span class="num">2</span><span class="txt"><b>Edge AI (Jetson)</b> — автономность, $0/мес за inference</span></div>
+<div class="swot-item"><span class="num">3</span><span class="txt"><b>Реальные цены</b> — конкретный рынок, не бенчмарки</span></div>
+<div class="swot-item"><span class="num">4</span><span class="txt"><b>5 ролей</b> — экосистема владелец/поставщик/подрядчик</span></div>
+<div class="swot-item"><span class="num">5</span><span class="txt"><b>Авторасчёт ROI</b> — мгновенный пересчёт бюджета</span></div>
+<div class="swot-item"><span class="num">6</span><span class="txt"><b>Franchise-ready</b> — масштабируется на любой бизнес</span></div>
+<div class="swot-item"><span class="num">7</span><span class="txt"><b>$0/мес</b> — GitHub Pages + Supabase free + Jetson</span></div>
+<div class="swot-item"><span class="num">8</span><span class="txt"><b>SCYRA.AI</b> — 7 агентов, операционная система клиники</span></div>
+</div>
+<div class="swot-cell w">
+<h3>&#9888;&#65039; Weaknesses</h3>
+<div class="swot-item"><span class="num">1</span><span class="txt"><b>Прототип v3</b> — single HTML, localStorage</span></div>
+<div class="swot-item"><span class="num">2</span><span class="txt"><b>Узкая ниша</b> — стоматология, Польша</span></div>
+<div class="swot-item"><span class="num">3</span><span class="txt"><b>Bus factor = 1</b> — один разработчик</span></div>
+<div class="swot-item"><span class="num">4</span><span class="txt"><b>Нет мобильного</b> — только десктоп SPA</span></div>
+<div class="swot-item"><span class="num">5</span><span class="txt"><b>Нет интеграций</b> — нет QuickBooks/Xero/API</span></div>
+<div class="swot-item"><span class="num">6</span><span class="txt"><b>Ручные каталоги</b> — нет автообновления цен</span></div>
+<div class="swot-item"><span class="num">7</span><span class="txt"><b>0 пользователей</b> — нет track record</span></div>
+</div>
+<div class="swot-cell o">
+<h3>&#128640; Opportunities</h3>
+<div class="swot-item"><span class="num">1</span><span class="txt"><b>Рынок +6.4%</b> — стоматология Польши → $342M к 2030</span></div>
+<div class="swot-item"><span class="num">2</span><span class="txt"><b>Другие вертикали</b> — ветклиники, косметология, оптики</span></div>
+<div class="swot-item"><span class="num">3</span><span class="txt"><b>Marketplace Tech Books</b> — готовые конструкторы по нишам</span></div>
+<div class="swot-item"><span class="num">4</span><span class="txt"><b>Indiegogo SCYRA</b> — финансирование + первые клиенты</span></div>
+<div class="swot-item"><span class="num">5</span><span class="txt"><b>Edge AI тренд</b> — 80% inference локально к 2027</span></div>
+<div class="swot-item"><span class="num">6</span><span class="txt"><b>B2B поставщики</b> — KaVo, Planmeca, Sirona</span></div>
+<div class="swot-item"><span class="num">7</span><span class="txt"><b>CEE экспансия</b> — Чехия, Словакия, Венгрия</span></div>
+<div class="swot-item"><span class="num">8</span><span class="txt"><b>Парсеры OLX/Otodom</b> — автопоиск помещений</span></div>
+</div>
+<div class="swot-cell t">
+<h3>&#9888;&#65039; Threats</h3>
+<div class="swot-item"><span class="num">1</span><span class="txt"><b>AI-прорыв конкурентов</b> — LivePlan/ProAI за 6-12 мес</span></div>
+<div class="swot-item"><span class="num">2</span><span class="txt"><b>Облачные гиганты</b> — Microsoft Copilot, Google Gemini</span></div>
+<div class="swot-item"><span class="num">3</span><span class="txt"><b>EU AI Act</b> — сертификация медицинских AI</span></div>
+<div class="swot-item"><span class="num">4</span><span class="txt"><b>Pearl AI / Overjet</b> — если добавят startup planning</span></div>
+<div class="swot-item"><span class="num">5</span><span class="txt"><b>Edge устаревание</b> — Jetson через 2-3 года</span></div>
+<div class="swot-item"><span class="num">6</span><span class="txt"><b>Низкий барьер входа</b> — клон за 2-3 месяца</span></div>
+<div class="swot-item"><span class="num">7</span><span class="txt"><b>Зависимость от Qwen</b> — смена модели = перенастройка</span></div>
+<div class="swot-item"><span class="num">8</span><span class="txt"><b>Макроэкономика</b> — инфляция, спад открытий</span></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ═══ SLIDE 3: STRENGTHS ═══ -->
+<section class="slide" data-slide="2">
+<div class="slide-inner">
+<div class="detail-header">
+<div class="icon">&#9989;</div>
+<div class="label" style="margin-bottom:8px;color:var(--gn)">Strengths</div>
+<h2>Сильные стороны</h2>
+</div>
+<div class="items-grid">
+<div class="item-card s"><div class="num">01</div><h4>Вертикальная интеграция</h4><p>Единственный продукт, объединяющий бизнес-план + каталог оборудования + штатное расписание + расчёт ремонта + прайс услуг в одном дашборде. LivePlan генерирует шаблоны, Dentira продаёт расходники — никто не собирает полный конструктор.</p></div>
+<div class="item-card s"><div class="num">02</div><h4>Edge AI на Jetson</h4><p>Qwen 2.5:32B на Jetson AGX Orin (275 TOPS, 64GB). Нулевые затраты на inference, работа без интернета, контроль данных. По прогнозу IDC, к 2027 году 80% AI inference будет локальным.</p></div>
+<div class="item-card s"><div class="num">03</div><h4>Реальные цены рынка</h4><p>Конкуренты — абстрактные "industry benchmarks". SVITA — реальные цены оборудования, подрядчиков, зарплат с конкретного рынка (Варшава). Разница может составлять сотни тысяч PLN.</p></div>
+<div class="item-card s"><div class="num">04</div><h4>5 ролей в экосистеме</h4><p>Админ, владелец, подрядчик, поставщик, сотрудник — каждый видит свой интерфейс. Поставщик заполняет каталог, подрядчик конкурирует ценой, владелец видит итог.</p></div>
+<div class="item-card s"><div class="num">05</div><h4>Авторасчёт ROI</h4><p>Кресла × пациенты × дни × чек = выручка. Минус расходы = маржа, payback. Изменение любого параметра — мгновенный пересчёт всего бюджета.</p></div>
+<div class="item-card s"><div class="num">06</div><h4>Franchise-ready</h4><p>Конструктор масштабируется на любой тип бизнеса. FranConnect — $500-2000/мес за управление существующими сетями. SVITA запускает с нуля.</p></div>
+<div class="item-card s"><div class="num">07</div><h4>$0/мес стоимость</h4><p>GitHub Pages (free) + Supabase free tier + Jetson (~$2000 однократно). ProAI за 2 года: $2,400-4,776. LivePlan Premium: $720/год.</p></div>
+<div class="item-card s"><div class="num">08</div><h4>Экосистема SCYRA.AI</h4><p>7 AI-агентов (ADM, SCH, COM, VIS, DOC, VOI, PAT) на том же Jetson. От конструктора до операционной системы клиники.</p></div>
+</div>
+</div>
+</section>
+
+<!-- ═══ SLIDE 4: WEAKNESSES ═══ -->
+<section class="slide" data-slide="3">
+<div class="slide-inner">
+<div class="detail-header">
+<div class="icon">&#9888;&#65039;</div>
+<div class="label" style="margin-bottom:8px;color:var(--rd)">Weaknesses</div>
+<h2>Слабые стороны</h2>
+</div>
+<div class="items-grid">
+<div class="item-card w"><div class="num">01</div><h4>Прототип v3</h4><p>Single HTML + inline JS, данные в localStorage. Нет реальной авторизации, нет 3D модели. Конкуренты — зрелые продукты с годами разработки и тысячами пользователей.</p></div>
+<div class="item-card w"><div class="num">02</div><h4>Узкая ниша</h4><p>Стоматология, Польша. TAM: $208M. ProAI обслуживает все отрасли глобально. Масштабирование требует новых баз данных для каждого региона и вертикали.</p></div>
+<div class="item-card w"><div class="num">03</div><h4>Bus factor = 1</h4><p>Вся разработка — один человек (CEO). Конкуренты имеют команды из десятков разработчиков, маркетологов и поддержки.</p></div>
+<div class="item-card w"><div class="num">04</div><h4>Нет мобильного приложения</h4><p>60%+ бизнес-пользователей работают с мобильных. У Bizplanr, Upmetrics, IdeaBuddy — мобильные приложения или mobile-first.</p></div>
+<div class="item-card w"><div class="num">05</div><h4>Нет внешних интеграций</h4><p>LivePlan синхронизируется с QuickBooks/Xero. ProAI генерирует pitch deck. SVITA — изолированная система без API и экспорта.</p></div>
+<div class="item-card w"><div class="num">06</div><h4>Ручные каталоги</h4><p>Dentira/ALARA — реалтайм каталоги 10,000+ позиций с автообновлением цен от 13+ поставщиков. SVITA требует ручного наполнения.</p></div>
+<div class="item-card w"><div class="num">07</div><h4>Нет track record</h4><p>0 пользователей, 0 отзывов, 0 success stories. LivePlan — "30 лет экспертизы". ProAI — "3600+ кейсов".</p></div>
+</div>
+</div>
+</section>
+
+<!-- ═══ SLIDE 5: OPPORTUNITIES ═══ -->
+<section class="slide" data-slide="4">
+<div class="slide-inner">
+<div class="detail-header">
+<div class="icon">&#128640;</div>
+<div class="label" style="margin-bottom:8px;color:var(--bl)">Opportunities</div>
+<h2>Возможности</h2>
+</div>
+<div class="items-grid">
+<div class="item-card o"><div class="num">01</div><h4>Рост рынка +6.4% CAGR</h4><p>Стоматология Польши: $208M (2022) → $342M (2030). Стоматологический туризм из Западной Европы создаёт дополнительный спрос.</p></div>
+<div class="item-card o"><div class="num">02</div><h4>Новые вертикали</h4><p>Ветклиники, косметология, физиотерапия, оптики, аптеки. Тот же конструктор + новый набор баз данных на едином ядре.</p></div>
+<div class="item-card o"><div class="num">03</div><h4>Marketplace Tech Books</h4><p>Каждый бизнес-тип = Tech Book + Dashboard. Предприниматели покупают готовый "конструктор" для своей ниши. YOU COFFEE — первый паттерн.</p></div>
+<div class="item-card o"><div class="num">04</div><h4>Indiegogo для SCYRA</h4><p>MVP агентов на 60% готов. Краудфандинг = финансирование + социальное доказательство + первые пользователи для SVITA.</p></div>
+<div class="item-card o"><div class="num">05</div><h4>Тренд Edge AI</h4><p>80% inference локально к 2027 (IDC). Когда облачные конкуренты столкнутся с ростом затрат на API — SVITA уже автономна.</p></div>
+<div class="item-card o"><div class="num">06</div><h4>B2B с поставщиками</h4><p>KaVo, Planmeca, Sirona — заинтересованы в каналах продаж. Модель: комиссия или подписка для поставщиков.</p></div>
+<div class="item-card o"><div class="num">07</div><h4>CEE экспансия</h4><p>Чехия, Словакия, Венгрия, Румыния, Балтия. 12 языков уже есть (labs67-i18n.js). Нужны только локальные цены.</p></div>
+<div class="item-card o"><div class="num">08</div><h4>Парсеры недвижимости</h4><p>Автосбор с OLX/Otodom/Gratka. Ни один бизнес-план генератор не ищет реальные помещения — уникальная функция.</p></div>
+</div>
+</div>
+</section>
+
+<!-- ═══ SLIDE 6: THREATS ═══ -->
+<section class="slide" data-slide="5">
+<div class="slide-inner">
+<div class="detail-header">
+<div class="icon">&#9888;&#65039;</div>
+<div class="label" style="margin-bottom:8px;color:var(--yl)">Threats</div>
+<h2>Угрозы</h2>
+</div>
+<div class="items-grid">
+<div class="item-card t"><div class="num">01</div><h4>AI-прорыв конкурентов</h4><p>LivePlan, ProAI активно внедряют AI-агентов. С командами и инвестициями — за 6-12 мес добавят вертикальные решения для медицины.</p></div>
+<div class="item-card t"><div class="num">02</div><h4>Облачные гиганты</h4><p>Microsoft Copilot, Google Gemini могут интегрировать бизнес-планирование в свои экосистемы. Мгновенно изменят рынок.</p></div>
+<div class="item-card t"><div class="num">03</div><h4>EU AI Act</h4><p>Медицинские AI — высокий уровень регулирования. Сертификация, аудит, документирование увеличат стоимость и время выхода на рынок.</p></div>
+<div class="item-card t"><div class="num">04</div><h4>Pearl AI / Overjet</h4><p>Зрелые стоматологические AI-платформы с FDA-одобрением и тысячами клиентов. Если добавят startup planning — преимущество аудитории.</p></div>
+<div class="item-card t"><div class="num">05</div><h4>Устаревание edge-железа</h4><p>Jetson AGX Orin мощный сегодня, но через 2-3 года появятся быстрее. Облако обновляется автоматически.</p></div>
+<div class="item-card t"><div class="num">06</div><h4>Низкий барьер входа</h4><p>"AI бизнес-план для стоматологии" = 2-3 месяца на OpenAI API + шаблоны. Преимущество — в глубине, не в идее.</p></div>
+<div class="item-card t"><div class="num">07</div><h4>Зависимость от Qwen</h4><p>Экосистема открытых LLM быстро меняется. Смена модели = перенастройка промптов. Облако просто переключает API.</p></div>
+<div class="item-card t"><div class="num">08</div><h4>Макроэкономика</h4><p>39% предпринимателей оптимистичны в 2026. Спад → меньше открытий клиник. Инфляция обесценивает базы цен.</p></div>
+</div>
+</div>
+</section>
+
+<!-- ═══ SLIDE 7: COMPETITORS TABLE ═══ -->
+<section class="slide" data-slide="6">
+<div class="slide-inner">
+<div class="detail-header">
+<div class="label" style="margin-bottom:8px">Конкуренты</div>
+<h2>Сравнительная таблица</h2>
+</div>
+<div class="tbl-wrap">
+<table>
+<thead><tr><th>Продукт</th><th>Тип</th><th>Цена/мес</th><th>AI</th><th>Мед.</th><th>Отличие</th></tr></thead>
+<tbody>
+<tr><td>&#9733; SVITA AI</td><td>Конструктор концепций</td><td><span class="tag gn">$0</span></td><td>Edge Jetson, Qwen 32B</td><td><span class="tag gn">Глубокий</span></td><td>Полный цикл от идеи до ROI</td></tr>
+<tr><td>LivePlan</td><td>Бизнес-план</td><td>$15-40</td><td>AI-ассистент, 500+ шаблонов</td><td><span class="tag yl">Шаблон</span></td><td>QuickBooks/Xero, 30 лет</td></tr>
+<tr><td>ProAI</td><td>AI планирование</td><td>$25-199</td><td>Ace AI, 3600 кейсов</td><td><span class="tag rd">Нет</span></td><td>Консалтинговый уровень</td></tr>
+<tr><td>Upmetrics</td><td>AI план + финансы</td><td>$9-49</td><td>AI-писатель, 3-statement</td><td><span class="tag rd">Нет</span></td><td>Командная работа</td></tr>
+<tr><td>PrometAI</td><td>AI план + оценка</td><td>$0-145</td><td>PESTEL, VRIO, DCF</td><td><span class="tag rd">Нет</span></td><td>700+ шаблонов</td></tr>
+<tr><td>IdeaBuddy</td><td>Валидация идей</td><td>$5-18</td><td>AI-валидация, Canvas</td><td><span class="tag rd">Нет</span></td><td>Ранняя стадия</td></tr>
+<tr><td>Enloop</td><td>Генератор планов</td><td>$0-40</td><td>Автогенерация, скоринг</td><td><span class="tag rd">Нет</span></td><td>Реалтайм оценка A-F</td></tr>
+<tr><td>Bizplanr</td><td>AI план (free)</td><td>$0-7</td><td>NLP за 10 мин</td><td><span class="tag yl">Шаблон</span></td><td>Полностью бесплатный</td></tr>
+<tr><td>FranConnect</td><td>Франшиза</td><td>$500-2K+</td><td>Frannie AI, CRM</td><td><span class="tag rd">Нет</span></td><td>500+ точек, enterprise</td></tr>
+<tr><td>Dentira</td><td>Закупки</td><td>$0</td><td>Каталоги, сравнение</td><td><span class="tag gn">Только стом.</span></td><td>Реальные цены от дилеров</td></tr>
+<tr><td>Pearl AI</td><td>Диагностика</td><td>Enterprise</td><td>CV, рентген-анализ</td><td><span class="tag gn">FDA</span></td><td>Клинический AI</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+
+<!-- ═══ SLIDE 8: CONCLUSION ═══ -->
+<section class="slide" data-slide="7">
+<div class="slide-inner">
+<div class="detail-header">
+<div class="label" style="margin-bottom:8px">Итог</div>
+<h2>Ключевые выводы</h2>
+</div>
+<div class="compare-grid">
+<div class="compare-col svita">
+<h3 style="color:var(--ac2)">&#9733; SVITA AI</h3>
+<div class="compare-row"><span class="k">Модель</span><span class="v" style="color:var(--ac2)">Вертикальный конструктор</span></div>
+<div class="compare-row"><span class="k">AI</span><span class="v" style="color:var(--ac2)">Edge (Jetson, локально)</span></div>
+<div class="compare-row"><span class="k">Данные</span><span class="v" style="color:var(--ac2)">Реальные цены рынка</span></div>
+<div class="compare-row"><span class="k">Роли</span><span class="v" style="color:var(--ac2)">5 типов в экосистеме</span></div>
+<div class="compare-row"><span class="k">Стоимость</span><span class="v" style="color:var(--gn)">~$0/мес</span></div>
+<div class="compare-row"><span class="k">Мед. фокус</span><span class="v" style="color:var(--gn)">Глубокий</span></div>
+<div class="compare-row"><span class="k">Зрелость</span><span class="v" style="color:var(--yl)">Прототип v3</span></div>
+</div>
+<div class="compare-col comp">
+<h3 style="color:var(--tx3)">Типичный конкурент</h3>
+<div class="compare-row"><span class="k">Модель</span><span class="v">Горизонтальный генератор</span></div>
+<div class="compare-row"><span class="k">AI</span><span class="v">Cloud (OpenAI API)</span></div>
+<div class="compare-row"><span class="k">Данные</span><span class="v">Отраслевые бенчмарки</span></div>
+<div class="compare-row"><span class="k">Роли</span><span class="v">1-2 типа</span></div>
+<div class="compare-row"><span class="k">Стоимость</span><span class="v" style="color:var(--rd)">$9-199/мес</span></div>
+<div class="compare-row"><span class="k">Мед. фокус</span><span class="v" style="color:var(--rd)">Шаблонный / нет</span></div>
+<div class="compare-row"><span class="k">Зрелость</span><span class="v" style="color:var(--gn)">3-10 лет</span></div>
+</div>
+</div>
+<div class="conclusion-card">
+<h3>&#128142; Главное преимущество</h3>
+<p>Ни один продукт на рынке не объединяет AI-ассистента + реальные каталоги оборудования + расчёт ремонта + штатное расписание + финмодель + мультиролевой доступ в одном конструкторе. Конкуренты либо генерируют абстрактные документы, либо решают одну узкую задачу. SVITA — единственный путь "от идеи до операционной модели" с реальными данными.</p>
+</div>
+<div class="risk-card">
+<h3>&#9888;&#65039; Главный риск</h3>
+<p>Прототип против зрелых продуктов с тысячами пользователей. Стратегия "первый в нише" работает только при быстром занятии позиции — до того, как крупные игроки добавят вертикальные решения для медицины.</p>
+</div>
+</div>
+</section>
+
+<footer class="foot">&copy; 2026 SVITA AI &middot; LABS67</footer>
+
+<!-- CONTROLS -->
+<div class="keys">
+<div class="key" onclick="navSlide(-1)" title="Назад">&#9664;</div>
+<div class="key" onclick="navSlide(1)" title="Далее">&#9654;</div>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const dots=document.getElementById('dots');
+const numEl=document.getElementById('slideNum');
+const progEl=document.getElementById('progress');
+let cur=0;
+
+// Build dots
+slides.forEach((_,i)=>{const d=document.createElement('div');d.className='pnav-dot'+(i===0?' act':'');d.onclick=()=>goSlide(i);dots.appendChild(d)});
+
+// Intersection observer for scroll-based reveal
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('vis');
+      const idx=+e.target.dataset.slide;
+      if(idx!==cur){cur=idx;updateNav()}
+    }
+  });
+},{threshold:0.4});
+slides.forEach(s=>obs.observe(s));
+
+function updateNav(){
+  dots.querySelectorAll('.pnav-dot').forEach((d,i)=>d.className='pnav-dot'+(i===cur?' act':''));
+  numEl.textContent=(cur+1)+' / '+slides.length;
+  progEl.style.width=((cur+1)/slides.length*100)+'%';
+}
+
+function goSlide(i){
+  slides[i].scrollIntoView({behavior:'smooth'});
+}
+
+function navSlide(d){
+  const next=Math.max(0,Math.min(slides.length-1,cur+d));
+  goSlide(next);
+}
+
+// Keyboard nav
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' ')navSlide(1);
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp')navSlide(-1);
+});
+
+// Init
+updateNav();
+slides[0].classList.add('vis');
+</script>
+</body>
+</html>
