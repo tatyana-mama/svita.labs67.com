@@ -2,7 +2,12 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="SVITA">
+<meta name="theme-color" content="#f8fafc">
 <meta http-equiv="X-Frame-Options" content="DENY">
 <meta http-equiv="Content-Security-Policy" content="frame-ancestors 'none'">
 <title>SVITA — Конструктор клиники</title>
@@ -49,33 +54,11 @@
 .role-badge{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600}
 
 /* MAIN — 3 columns */
-.main{flex:1;margin-left:240px;margin-right:320px;min-height:100vh;min-width:0;overflow-x:hidden}
+.main{flex:1;margin-left:240px;margin-right:150px;min-height:100vh;min-width:0;overflow-x:hidden}
 
-/* RIGHT PANEL — AI CHAT */
-.rpanel{width:320px;flex-shrink:0;background:var(--sf);border-left:1px solid var(--bd);position:fixed;top:0;right:0;bottom:0;z-index:100;display:flex;flex-direction:column;overflow:hidden}
-.rp-head{padding:14px 16px;border-bottom:1px solid var(--bd);font-size:12px;font-weight:700;color:var(--ac2);display:flex;align-items:center;justify-content:space-between;gap:8px}
-.rp-status{font-size:9px;font-weight:500;color:var(--gn);display:flex;align-items:center;gap:4px}
-.rp-status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gn)}
-.ai-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
-.ai-msg{padding:10px 14px;border-radius:14px;font-size:12px;line-height:1.5;max-width:88%;word-break:break-word;animation:aiMsgIn .2s ease}
-@keyframes aiMsgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.ai-msg.bot{background:var(--sf2);color:var(--tx);align-self:flex-start;border-bottom-left-radius:4px}
-.ai-msg.user{background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
-.ai-msg .ai-label{font-size:9px;font-weight:600;color:var(--tx3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
-.ai-typing{display:flex;gap:4px;padding:10px 14px;align-self:flex-start}
-.ai-typing span{width:6px;height:6px;border-radius:50%;background:var(--tx3);animation:aiDot 1.2s infinite}
-.ai-typing span:nth-child(2){animation-delay:.2s}
-.ai-typing span:nth-child(3){animation-delay:.4s}
-@keyframes aiDot{0%,80%,100%{opacity:.3;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
-.ai-input-wrap{padding:12px;border-top:1px solid var(--bd);display:flex;gap:8px;align-items:flex-end;background:var(--sf)}
-.ai-input-wrap textarea{flex:1;border:1px solid var(--bd);border-radius:12px;padding:10px 14px;font-size:12px;font-family:var(--f);color:var(--tx);background:var(--sf2);resize:none;outline:none;min-height:40px;max-height:100px;line-height:1.4}
-.ai-input-wrap textarea:focus{border-color:var(--ac);background:var(--sf)}
-.ai-input-wrap textarea::placeholder{color:var(--tx3)}
-.ai-send{width:40px;height:40px;border-radius:12px;border:none;background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;transition:all .15s}
-.ai-send:hover{transform:scale(1.05)}.ai-send:disabled{opacity:.4;cursor:default;transform:none}
-.ai-suggestions{padding:8px 12px;display:flex;flex-wrap:wrap;gap:6px;border-top:1px solid var(--bd)}
-.ai-sug{padding:5px 12px;border-radius:20px;font-size:10px;font-weight:500;border:1px solid var(--bd);background:var(--sf);color:var(--tx2);cursor:pointer;transition:all .15s;white-space:nowrap}
-.ai-sug:hover{border-color:var(--ac);color:var(--ac2);background:var(--acbg)}
+/* RIGHT PANEL */
+.rpanel{width:150px;flex-shrink:0;background:var(--sf);border-left:1px solid var(--bd);position:fixed;top:0;right:0;bottom:0;z-index:100;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;word-break:break-word}
+.rp-head{padding:10px 8px;border-bottom:1px solid var(--bd);font-size:10px;font-weight:700;color:var(--ac2);text-transform:uppercase;letter-spacing:.5px}
 .rp-sec{padding:8px 8px;border-bottom:1px solid var(--bd)}
 .rp-sec-title{font-size:8px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
 .rp-stat{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:10px;gap:4px}
@@ -326,6 +309,7 @@
 .prop-empty-icon{font-size:40px;opacity:.2;margin-bottom:12px}
 
 /* RESPONSIVE */
+@media(max-width:1400px){.rpanel{width:130px}.main{margin-right:130px}}
 @media(max-width:1100px){.sts{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:1fr}.rpanel{display:none}.main{margin-right:0}}
 /* Mobile burger */
 .mob-burger{display:none;background:none;border:none;font-size:22px;cursor:pointer;padding:4px 8px;color:var(--tx);line-height:1}
@@ -352,25 +336,15 @@
 .c{margin:0 0 8px}
 .modal-box{width:95%!important;max-height:90vh;overflow-y:auto}
 }
-/* ── 600px: Compact sidebar on small screens ── */
+/* ── 600px: Hide sidebar, show burger ── */
 @media(max-width:600px){
-.side{width:56px;overflow:hidden}
-.side:hover{width:220px;overflow:visible;box-shadow:4px 0 20px rgba(0,0,0,.15)}
-.side .sl{display:none}
-.side:hover .sl{display:inline}
-.side .sb{display:none}
-.side:hover .sb{display:inline}
-.side-head{padding:12px 8px 10px;text-align:center}
-.side:hover .side-head{padding:20px 24px 16px;text-align:left}
-.side-logo{font-size:16px;justify-content:center}
-.side:hover .side-logo{font-size:20px;justify-content:flex-start}
-.side-tag,.side-head>div:last-child{display:none}
-.side:hover .side-tag,.side:hover .side-head>div:last-child{display:block}
-.side-sec{display:none}
-.side:hover .side-sec{display:block}
-.si{justify-content:center;padding:10px 8px}
-.side:hover .si{justify-content:flex-start;padding:10px 16px}
-.main{margin-left:56px!important}
+.mob-burger{display:block!important}
+.side{position:fixed;left:0;top:0;bottom:0;width:260px;z-index:100;transform:translateX(-100%);transition:transform .25s ease;overflow-y:auto}
+.side.mob-open{transform:translateX(0)!important}
+.mob-overlay.vis{display:block!important}
+.main{margin-left:0!important}
+#aiChatPanel{width:100vw!important;max-width:100vw!important;right:0!important;left:0!important;bottom:0!important;height:100vh!important;max-height:100vh!important;border-radius:0!important}
+#aiChatBtn{bottom:16px!important;right:16px!important;width:46px!important;height:46px!important;font-size:18px!important}
 }
 
 /* ═══════════════ RESPONSIVE ADDITIONS ═══════════════ */
@@ -450,8 +424,10 @@
   .lightbox-close{top:12px;right:12px;width:32px;height:32px;font-size:20px}
 }
 
-/* ── 480px: Extra compact ── */
+/* ── 480px: Extra compact + touch-friendly ── */
 @media(max-width:480px){
+  body{padding-bottom:env(safe-area-inset-bottom)}
+  .top{padding-left:max(8px,env(safe-area-inset-left));padding-right:max(8px,env(safe-area-inset-right))}
   .sec{padding:8px 10px}
   .ph{gap:4px}
   .ph h2{font-size:14px}
@@ -477,7 +453,9 @@
   .modal h3{font-size:13px}
   .modal-actions{flex-direction:column}
   .modal-actions .btn{width:100%;justify-content:center;text-align:center}
-  .btn{padding:5px 10px;font-size:10px}
+  .btn{padding:8px 12px;font-size:10px;min-height:36px}
+  .si{min-height:40px}
+  .sel{min-height:40px}
   #fpCanvas{min-height:150px;max-height:50vw}
   .db-card{padding:10px}
   .db-card-name{font-size:11px}
@@ -1530,16 +1508,11 @@ Apple</button>
 </div><!-- /main -->
 
 
-<!-- RIGHT PANEL — AI CHAT -->
+<!-- RIGHT PANEL -->
 <aside class="rpanel" id="rpanel">
-<div class="rp-head"><span>&#129302; SVITA AI</span><span class="rp-status" id="aiChatStatus">Online</span></div>
-<div class="ai-messages" id="aiMessages">
-<div class="ai-msg bot"><div class="ai-label">SVITA AI</div>Привет! Я помогу собрать концепцию. Спроси о бюджете, оборудовании, помещении, персонале или документах.</div>
-</div>
-<div class="ai-suggestions" id="aiSuggestions"></div>
-<div class="ai-input-wrap">
-<textarea id="aiChatInput" rows="1" placeholder="Спросите что-нибудь..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();aiChatSend()}" oninput="this.style.height='36px';this.style.height=Math.min(this.scrollHeight,100)+'px'"></textarea>
-<button class="ai-send" onclick="aiChatSend()" id="aiChatSendBtn" title="Отправить">&#9654;</button>
+<div class="rp-head" id="rpTitle">Сводка проекта</div>
+<div id="rpContent">
+<!-- dynamically filled -->
 </div>
 </aside>
 
@@ -7854,91 +7827,92 @@ function lbDelete(){
 
 // Focus email field on load
 document.getElementById('loginEmail').focus();
+updateRightPanel();
 
-// ═══════════════ AI CHAT (RIGHT PANEL) ═══════════════
+// ═══════════════ AI CHAT ═══════════════
 let _aiChatHistory=[];
+let _aiChatStreaming=false;
 
-function aiGetContext(){
-  const t=calcTotals();
-  return{section:cur,budget:t.grand,revenue:t.revenue,expenses:t.expenses,
-    rooms:Object.keys(DB.pickedRooms||{}).length,equipment:Object.keys(DB.pickedEquip||{}).length,
-    staff:Object.keys(DB.pickedStaff||{}).length,services:Object.keys(DB.pickedServices||{}).length,
-    renovations:Object.keys(DB.pickedRenovations||{}).length,docs:Object.keys(DB.pickedDocs||{}).length,
-    property:activeProperty?{name:activeProperty.name,area:activeProperty.area,city:activeProperty.city}:null,
-    concept:window._currentConceptName||null,bizType:currentBizType||'dental'};
+function toggleAiChat(){
+  const p=document.getElementById('aiChatPanel');
+  const isOpen=p.style.display==='flex';
+  p.style.display=isOpen?'none':'flex';
+  document.getElementById('aiChatBtnIco').innerHTML=isOpen?'&#10024;':'&#10006;';
+  if(!isOpen)document.getElementById('aiChatInput').focus();
 }
 
-function aiAddMessage(text,role){
-  const el=document.getElementById('aiMessages');
-  const msg=document.createElement('div');
-  msg.className='ai-msg '+(role==='user'?'user':'bot');
-  if(role!=='user')msg.innerHTML='<div class="ai-label">SVITA AI</div>'+esc(text).replace(/\n/g,'<br>');
-  else msg.textContent=text;
-  el.appendChild(msg);el.scrollTop=el.scrollHeight;
-  _aiChatHistory.push({role,content:text});
-  return msg;
+function clearAiChat(){
+  _aiChatHistory=[];
+  const m=document.getElementById('aiChatMessages');
+  m.innerHTML='<div style="background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(59,130,246,0.08));border-radius:12px;padding:12px;font-size:11px;color:var(--tx2);line-height:1.5">&#128075; Привет! Я AI-ассистент SVITA. Спроси меня о чём угодно: бизнес-план, оборудование, помещения, персонал, юридические вопросы, маркетинг...</div>';
 }
 
-function aiShowTyping(){const el=document.getElementById('aiMessages');const t=document.createElement('div');t.className='ai-typing';t.id='aiTypingIndicator';t.innerHTML='<span></span><span></span><span></span>';el.appendChild(t);el.scrollTop=el.scrollHeight}
-function aiHideTyping(){const t=document.getElementById('aiTypingIndicator');if(t)t.remove()}
-
-function aiSuggest(el){document.getElementById('aiChatInput').value=el.textContent;aiChatSend()}
-
-function aiUpdateSuggestions(){
-  const sg=document.getElementById('aiSuggestions');if(!sg)return;
-  const m={overview:['Оцени концепцию','Что не хватает?','Сравни с рынком'],s1:['Помещение подходит?','Какой район лучше?','Нормы площади'],s2:['Что ремонтировать?','Сколько стоит ремонт?','Нормы SANEPID'],s3:['Какое оборудование?','Минимальный набор','Лучшие бренды'],s4:['Сколько врачей?','Средние зарплаты','Кого нанять первым?'],s5:['Топ процедуры','Средний чек?','Ценообразование'],s6:['Оцени рентабельность','Когда окупится?','Как повысить доход?'],s7:['Какие документы?','Порядок получения','Стоимость оформления']};
-  const items=m[cur]||m.overview;
-  sg.innerHTML=items.map(s=>'<span class="ai-sug" onclick="aiSuggest(this)">'+esc(s)+'</span>').join('');
+function _aiChatAppend(role,text){
+  const m=document.getElementById('aiChatMessages');
+  const d=document.createElement('div');
+  d.style.cssText=role==='user'
+    ?'align-self:flex-end;background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;border-radius:12px 12px 2px 12px;padding:10px 14px;font-size:12px;line-height:1.5;max-width:85%;word-break:break-word'
+    :'align-self:flex-start;background:var(--sf2);color:var(--tx);border-radius:12px 12px 12px 2px;padding:10px 14px;font-size:12px;line-height:1.5;max-width:85%;word-break:break-word';
+  d.textContent=text;
+  if(role==='ai')d.id='aiChatLast';
+  m.appendChild(d);
+  m.scrollTop=m.scrollHeight;
+  return d;
 }
 
-async function aiChatSend(){
-  const inp=document.getElementById('aiChatInput');const text=inp.value.trim();if(!text)return;
-  inp.value='';inp.style.height='36px';
-  aiAddMessage(text,'user');aiShowTyping();
-  document.getElementById('aiChatSendBtn').disabled=true;
+async function sendAiChat(){
+  if(_aiChatStreaming)return;
+  const inp=document.getElementById('aiChatInput');
+  const text=inp.value.trim();
+  if(!text)return;
+  inp.value='';inp.style.height='auto';
+
+  _aiChatAppend('user',text);
   _aiChatHistory.push({role:'user',content:text});
-  const ctx=aiGetContext();
 
-  // Cloud proxy (Edge Function → Jetson + Claude fallback)
+  // Build context for Edge Function
+  const context={
+    bizType:currentBizType||'dental',
+    section:cur,
+    concept:document.getElementById('cBrand')?.value||'',
+    rooms:Object.keys(DB.pickedRooms||{}).length,
+    equipment:Object.keys(DB.pickedEquip||{}).length,
+    staff:Object.keys(DB.pickedStaff||{}).length,
+    services:(DB.services||[]).length,
+    renovations:Object.keys(DB.pickedRenovations||{}).length,
+    docs:Object.keys(DB.pickedDocs||{}).length
+  };
+  if(activeProperty)context.property={name:activeProperty.name,area:activeProperty.area,city:activeProperty.city};
+
+  const aiEl=_aiChatAppend('ai','AI думает...');
+  _aiChatStreaming=true;
+  document.getElementById('aiChatSendBtn').style.opacity='0.5';
+
+  // Use cloud Supabase Edge Function (proxies to Jetson, Claude fallback)
   const CHAT_URL=SB_URL+'/functions/v1/ai-chat';
-  const context={bizType:ctx.bizType,section:ctx.section,concept:ctx.concept,
-    rooms:ctx.rooms,equipment:ctx.equipment,staff:ctx.staff,
-    services:ctx.services,renovations:ctx.renovations,docs:ctx.docs};
-  if(ctx.property)context.property=ctx.property;
-
   try{
     const res=await fetch(CHAT_URL,{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_KEY},
       body:JSON.stringify({message:text,context,history:_aiChatHistory.slice(-8)})
     });
-    aiHideTyping();
     if(!res.ok)throw new Error('HTTP '+res.status);
     const data=await res.json();
-    if(!data.reply)throw new Error('empty');
-    const botMsg=aiAddMessage(data.reply,'bot');
+    if(!data.reply)throw new Error('Пустой ответ');
+    aiEl.textContent=data.reply;
     const src=data.source==='jetson'?' [Jetson]':data.source==='claude'?' [Claude]':'';
-    if(src){const tag=document.createElement('span');tag.style.cssText='font-size:9px;color:var(--tx3);margin-left:4px';tag.textContent=src;botMsg.appendChild(tag)}
+    if(src){const tag=document.createElement('span');tag.style.cssText='font-size:9px;color:var(--tx3);margin-left:4px';tag.textContent=src;aiEl.appendChild(tag)}
     _aiChatHistory.push({role:'assistant',content:data.reply});
   }catch(e){
-    // Fallback: Jetson SSE directly
+    // Fallback: try Jetson directly (works from same network)
     try{
-      const ctxParts=[];
-      if(ctx.bizType)ctxParts.push('Тип: '+(BIZ_TYPES[ctx.bizType]?.name||ctx.bizType));
-      if(ctx.property)ctxParts.push('Помещение: '+ctx.property.name+', '+ctx.property.area+'м², '+ctx.property.city);
-      ctxParts.push('Бюджет: '+ctx.budget+' PLN, Выручка: '+ctx.revenue+'/мес');
-      ctxParts.push('Оборудов: '+ctx.equipment+', Персонал: '+ctx.staff+', Услуг: '+ctx.services);
-      const sysP='Ты — SVITA AI, ассистент конструктора бизнес-концепций. Контекст: '+ctxParts.join('. ')+'. Отвечай на русском, кратко, по делу.';
-      const msgs=_aiChatHistory.slice(-10);
-      const fullP=sysP+'\n\n'+msgs.map(m=>m.role==='user'?'Пользователь: '+m.content:'Ассистент: '+m.content).join('\n')+'\nАссистент:';
       const res2=await fetch(AI_URL,{
         method:'POST',
         headers:{'Content-Type':'application/json','Authorization':'Bearer '+AI_KEY},
-        body:JSON.stringify({prompt:fullP,mode:'chat',category:ctx.bizType||'dental',country:ctx.property?.city||''})
+        body:JSON.stringify({prompt:text,mode:'chat',category:currentBizType||'dental'})
       });
       if(!res2.ok)throw new Error('HTTP '+res2.status);
       let result='';
-      const botMsg=aiAddMessage('...','bot');
       const reader=res2.body.getReader();
       const decoder=new TextDecoder();
       while(true){
@@ -7947,42 +7921,28 @@ async function aiChatSend(){
         const chunk=decoder.decode(value,{stream:true});
         for(const line of chunk.split('\n')){
           if(!line.startsWith('data: '))continue;
-          try{const obj=JSON.parse(line.slice(6));if(obj.token){result+=obj.token;botMsg.innerHTML='<div class="ai-label">SVITA AI</div>'+esc(result).replace(/\n/g,'<br>')}if(obj.done&&obj.text){result=obj.text;botMsg.innerHTML='<div class="ai-label">SVITA AI</div>'+esc(result).replace(/\n/g,'<br>')}}catch{}
+          try{const obj=JSON.parse(line.slice(6));if(obj.token){result+=obj.token;aiEl.textContent=result}if(obj.done&&obj.text){result=obj.text;aiEl.textContent=result}}catch{}
         }
-        document.getElementById('aiMessages').scrollTop=document.getElementById('aiMessages').scrollHeight;
+        document.getElementById('aiChatMessages').scrollTop=document.getElementById('aiChatMessages').scrollHeight;
       }
       if(result)_aiChatHistory.push({role:'assistant',content:result});
       else throw new Error('empty');
     }catch(e2){
-      aiHideTyping();
-      aiAddMessage(aiLocalReply(text,ctx),'bot');
+      aiEl.textContent='AI временно недоступен. Попробуйте позже.';
+      aiEl.style.color='var(--rd)';
     }
+  }finally{
+    _aiChatStreaming=false;
+    document.getElementById('aiChatSendBtn').style.opacity='1';
   }
-  document.getElementById('aiChatSendBtn').disabled=false;
-  aiUpdateSuggestions();
 }
 
-function aiLocalReply(text,ctx){
-  const q=text.toLowerCase();const t=calcTotals();
-  if(q.includes('бюджет')||q.includes('стоит')||q.includes('оцени'))
-    return 'Бюджет: '+t.grand.toLocaleString('ru')+' PLN\nПомещение: '+t.rent.toLocaleString('ru')+'\nОборудование: '+t.equip.toLocaleString('ru')+'\nИнженерия: '+t.eng.toLocaleString('ru')+'\n\nТипичный бюджет клиники в Варшаве: 800K\u20132M PLN.';
-  if(q.includes('рентаб')||q.includes('окуп')||q.includes('roi'))
-    return 'Выручка: '+t.revenue.toLocaleString('ru')+' PLN/мес\nРасходы: '+t.expenses.toLocaleString('ru')+' PLN/мес\nПрибыль: '+(t.revenue-t.expenses).toLocaleString('ru')+' PLN/мес\nОкупаемость: '+(t.revenue>t.expenses?Math.ceil(t.grand/(t.revenue-t.expenses))+' мес.':'\u2014');
-  if(q.includes('оборудов')||q.includes('минимал'))
-    return 'Минимум для стоматологии:\n\u2022 3\u20135 установок\n\u2022 Автоклав\n\u2022 Рентген (ОПТГ/КЛКТ)\n\u2022 Компрессор + аспиратор\n\u2022 Мебель\n\nВыбрано: '+ctx.equipment+' из '+DB.suppliers.length;
-  if(q.includes('персонал')||q.includes('сотрудник')||q.includes('врач'))
-    return 'Минимальный штат:\n\u2022 2\u20133 стоматолога\n\u2022 1 хирург\n\u2022 1\u20132 ассистента\n\u2022 1 администратор\n\u2022 1 гигиенист\n\nВыбрано: '+ctx.staff+' сотрудников';
-  if(q.includes('помещ')||q.includes('район'))
-    return ctx.property?'Объект: '+ctx.property.name+', '+ctx.property.area+' м\u00B2\n\nДля 5\u20137 кресел: 150\u2013250 м\u00B2\nЛучшие районы: Mokot\u00F3w, Wola, \u015Ar\u00F3dmie\u015Bcie':'Помещение не выбрано. Откройте раздел \u00ABПомещение\u00BB.';
-  if(q.includes('документ')||q.includes('лицензи'))
-    return 'Ключевые документы:\n\u2022 Wpis do RPWDL\n\u2022 SANEPID разрешение\n\u2022 NIP/REGON\n\u2022 Страхование OC\n\u2022 Пожарная безопасность\n\nОформлено: '+ctx.docs;
-  if(q.includes('не хватает')||q.includes('что дальше'))
-    return 'Статус:\n'+(ctx.property?'\u2705':'\u274C')+' Помещение\n'+(ctx.renovations>0?'\u2705':'\u274C')+' Модернизация ('+ctx.renovations+')\n'+(ctx.equipment>0?'\u2705':'\u274C')+' Оборудование ('+ctx.equipment+')\n'+(ctx.staff>0?'\u2705':'\u274C')+' Персонал ('+ctx.staff+')\n'+(ctx.services>0?'\u2705':'\u274C')+' Услуги ('+ctx.services+')\n'+(ctx.docs>0?'\u2705':'\u274C')+' Документы ('+ctx.docs+')';
-  return 'Могу помочь с:\n\u2022 Бюджет и рентабельность\n\u2022 Подбор оборудования\n\u2022 Рекомендации по персоналу\n\u2022 Документы и лицензии\n\u2022 Анализ помещения\n\nЗадайте конкретный вопрос!';
-}
-
-// Init suggestions on nav change
-aiUpdateSuggestions();
+// Show chat button after login
+const _origEnterApp=enterApp;
+enterApp=function(){
+  _origEnterApp.apply(this,arguments);
+  document.getElementById('aiChatBtn').style.display='flex';
+};
 </script>
 
 <!-- LIGHTBOX -->
@@ -8016,6 +7976,26 @@ aiUpdateSuggestions();
 <div id="tourHighlight" style="display:none;position:fixed;z-index:7999;border:2px solid var(--ac);border-radius:8px;box-shadow:0 0 0 4000px rgba(0,0,0,.08);pointer-events:none;transition:all .3s ease"></div>
 <style>@keyframes obSlide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}</style>
 
+<!-- AI Chat -->
+<div id="aiChatBtn" onclick="toggleAiChat()" style="display:none;position:fixed;bottom:24px;right:24px;z-index:8000;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(139,92,246,.4);font-size:22px;align-items:center;justify-content:center;transition:transform .2s" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+<span id="aiChatBtnIco">&#10024;</span>
+</div>
+<div id="aiChatPanel" style="display:none;position:fixed;bottom:88px;right:24px;z-index:8001;width:400px;max-width:calc(100vw - 48px);height:520px;max-height:calc(100vh - 120px);background:var(--sf);border:1px solid var(--bd2);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,.12);flex-direction:column;overflow:hidden">
+<div style="padding:14px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(139,92,246,0.06),rgba(59,130,246,0.06))">
+<div><div style="font-size:13px;font-weight:700">&#10024; SVITA AI</div><div style="font-size:9px;color:var(--tx3)">Jetson AGX Orin · qwen2.5:32b</div></div>
+<div style="display:flex;gap:6px">
+<button onclick="clearAiChat()" style="background:none;border:1px solid var(--bd);border-radius:6px;padding:3px 8px;font-size:9px;color:var(--tx3);cursor:pointer" title="Очистить">&#128465;</button>
+<button onclick="toggleAiChat()" style="background:none;border:none;font-size:18px;color:var(--tx3);cursor:pointer;padding:0 4px">&times;</button>
+</div>
+</div>
+<div id="aiChatMessages" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px">
+<div style="background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(59,130,246,0.08));border-radius:12px;padding:12px;font-size:11px;color:var(--tx2);line-height:1.5">&#128075; Привет! Я AI-ассистент SVITA. Спроси меня о чём угодно: бизнес-план, оборудование, помещения, персонал, юридические вопросы, маркетинг...</div>
+</div>
+<div style="padding:10px 12px;border-top:1px solid var(--bd);display:flex;gap:8px;align-items:end">
+<textarea id="aiChatInput" placeholder="Напишите сообщение..." rows="1" style="flex:1;border:1px solid var(--bd);border-radius:10px;padding:8px 12px;font-size:12px;font-family:var(--f);color:var(--tx);background:var(--sf2);resize:none;max-height:80px;outline:none" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAiChat()}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,80)+'px'"></textarea>
+<button onclick="sendAiChat()" id="aiChatSendBtn" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#3b82f6);color:#fff;border:none;cursor:pointer;font-size:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center" title="Отправить">&#9654;</button>
+</div>
+</div>
 
 <!-- Cookie Consent -->
 <div id="cookieConsent" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,.08);padding:14px 24px;font-family:var(--f)">
