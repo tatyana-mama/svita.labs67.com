@@ -733,6 +733,16 @@ Apple</button>
 <div class="stg" onclick="nav('s6')"><div style="display:flex;justify-content:space-between"><div class="stg-n">06</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Концепция</div><div class="stg-d">Бизнес-модель, рентабельность</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
 <div class="stg" onclick="nav('s7')"><div style="display:flex;justify-content:space-between"><div class="stg-n">07</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Документация</div><div class="stg-d">Лицензии, санэпиднадзор, RODO, страхование</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
 </div>
+<!-- IMPORT CONCEPT -->
+<div class="c" style="background:linear-gradient(135deg,rgba(139,92,246,0.04),rgba(59,130,246,0.04))">
+<div class="ch"><h3>📂 Загрузить концепцию</h3></div>
+<div class="cb" style="text-align:center;padding:20px">
+<div style="font-size:12px;color:var(--tx2);margin-bottom:12px;line-height:1.5">Загрузите файл <b>.json</b> с готовой концепцией — все 7 секций заполнятся автоматически.<br>Файл можно получить от AI (кнопка ✨ в чате) или от коллеги.</div>
+<button class="btn pr" onclick="importConceptFile()" style="font-size:13px;padding:10px 24px">⬆ Загрузить .json файл</button>
+<div id="importConceptStatus" style="margin-top:10px;font-size:11px;color:var(--gn);display:none"></div>
+</div>
+</div>
+
 <!-- ACHIEVEMENTS -->
 <div class="c" id="achievementsBlock">
 <div class="ch"><h3>&#127942; Достижения</h3><span style="font-size:10px;color:var(--tx3)" id="achCount">0 / 12</span></div>
@@ -1513,8 +1523,7 @@ Apple</button>
 <span>SVITA AI</span>
 <div style="display:flex;gap:3px">
 <button onclick="generateConcept()" style="font-size:9px;padding:3px 8px;border:1px solid rgba(139,92,246,.3);border-radius:6px;background:rgba(139,92,246,.08);color:#8b5cf6;cursor:pointer;font-family:var(--f);font-weight:600" title="AI сгенерирует полную концепцию">✨ Генерация</button>
-<button onclick="exportConceptFile()" style="font-size:9px;padding:3px 6px;border:1px solid var(--bd);border-radius:6px;background:var(--sf2);color:var(--tx2);cursor:pointer;font-family:var(--f)" title="Скачать концепцию как файл">⬇</button>
-<button onclick="importConceptFile()" style="font-size:9px;padding:3px 6px;border:1px solid var(--bd);border-radius:6px;background:var(--sf2);color:var(--tx2);cursor:pointer;font-family:var(--f)" title="Загрузить концепцию из файла">⬆</button>
+<button onclick="exportConceptFile()" style="font-size:9px;padding:3px 6px;border:1px solid var(--bd);border-radius:6px;background:var(--sf2);color:var(--tx2);cursor:pointer;font-family:var(--f)" title="Скачать текущую концепцию">⬇</button>
 </div>
 </div>
 <div id="rpChatMessages" style="flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:8px">
@@ -7811,7 +7820,6 @@ function importConceptFile(){
         }
         hydrateWorkspace(data);
         savePicked();buildSidebar();renderAll();recalc();
-        // Show summary in chat
         const counts=[];
         if(data.rooms?.length)counts.push('Помещения: '+data.rooms.length);
         if(data.suppliers?.length)counts.push('Оборудование: '+data.suppliers.length);
@@ -7819,6 +7827,9 @@ function importConceptFile(){
         if(data.services?.length)counts.push('Услуги: '+data.services.length);
         if(data.renovations?.length)counts.push('Ремонт: '+data.renovations.length);
         if(data.pickedDocs&&Object.keys(data.pickedDocs).length)counts.push('Документы: '+Object.keys(data.pickedDocs).length);
+        // Show in overview status
+        const st=document.getElementById('importConceptStatus');
+        if(st){st.style.display='block';st.innerHTML='✓ Загружено: '+counts.join(' · ')}
         _rpChatAppend('ai','Концепция загружена из файла!\n\n'+counts.join('\n')+'\n\nВсе секции заполнены.');
         toast('Концепция загружена','gn');
       }catch(err){toast('Ошибка чтения файла: '+err.message,'rd')}
@@ -7897,9 +7908,9 @@ async function generateConcept(){
       }
     }
     preview+=`<div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
-      <button onclick="applyFullConcept(this)" style="padding:6px 14px;border:none;border-radius:8px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--f)">Применить</button>
-      <button onclick="downloadGeneratedConcept()" style="padding:6px 14px;border:none;border-radius:8px;background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--f)">⬇ Скачать .json</button>
-    </div>`;
+      <button onclick="downloadGeneratedConcept()" style="padding:6px 14px;border:none;border-radius:8px;background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--f)">⬇ Скачать концепцию</button>
+    </div>
+    <div style="font-size:9px;color:var(--tx3);margin-top:6px">Скачайте файл → откройте Обзор → «Загрузить концепцию»</div>`;
     aiEl.innerHTML=preview;
     _aiChatHistory.push({role:'assistant',content:'Концепция сгенерирована: '+Object.entries(results).map(([k,v])=>labels[k]+': '+(Array.isArray(v)?v.length:'✓')).join(', ')});
     _saveChatHistory();
