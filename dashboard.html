@@ -7830,19 +7830,36 @@ document.getElementById('loginEmail').focus();
 updateRightPanel();
 
 // ═══════════════ AI CHAT ═══════════════
-let _aiChatHistory=[];
+let _aiChatHistory=JSON.parse(localStorage.getItem('svita_chat_history')||'[]');
 let _aiChatStreaming=false;
+
+function _saveChatHistory(){
+  try{localStorage.setItem('svita_chat_history',JSON.stringify(_aiChatHistory.slice(-30)))}catch{}
+}
 
 function toggleAiChat(){
   const p=document.getElementById('aiChatPanel');
   const isOpen=p.style.display==='flex';
   p.style.display=isOpen?'none':'flex';
   document.getElementById('aiChatBtnIco').innerHTML=isOpen?'&#10024;':'&#10006;';
-  if(!isOpen)document.getElementById('aiChatInput').focus();
+  if(!isOpen){
+    document.getElementById('aiChatInput').focus();
+    _restoreChatUI();
+  }
+}
+
+function _restoreChatUI(){
+  if(!_aiChatHistory.length)return;
+  const m=document.getElementById('aiChatMessages');
+  if(m.children.length>1)return;
+  for(const h of _aiChatHistory){
+    _aiChatAppend(h.role==='user'?'user':'ai',h.content);
+  }
 }
 
 function clearAiChat(){
   _aiChatHistory=[];
+  _saveChatHistory();
   const m=document.getElementById('aiChatMessages');
   m.innerHTML='<div style="background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(59,130,246,0.08));border-radius:12px;padding:12px;font-size:11px;color:var(--tx2);line-height:1.5">&#128075; Привет! Я AI-ассистент SVITA. Спроси меня о чём угодно: бизнес-план, оборудование, помещения, персонал, юридические вопросы, маркетинг...</div>';
 }
@@ -7869,6 +7886,7 @@ async function sendAiChat(){
 
   _aiChatAppend('user',text);
   _aiChatHistory.push({role:'user',content:text});
+  _saveChatHistory();
 
   // Build context for Edge Function
   const context={
@@ -7884,7 +7902,7 @@ async function sendAiChat(){
   };
   if(activeProperty)context.property={name:activeProperty.name,area:activeProperty.area,city:activeProperty.city};
 
-  const aiEl=_aiChatAppend('ai','AI думает...');
+  const aiEl=_aiChatAppend('ai','SVITA AI — мне нужно немного времени для формирования ответа, не перезагружайте страницу...');
   _aiChatStreaming=true;
   document.getElementById('aiChatSendBtn').style.opacity='0.5';
 
@@ -7900,9 +7918,9 @@ async function sendAiChat(){
     const data=await res.json();
     if(!data.reply)throw new Error('Пустой ответ');
     aiEl.textContent=data.reply;
-    const src=data.source==='jetson'?' [Jetson]':data.source==='claude'?' [Claude]':'';
-    if(src){const tag=document.createElement('span');tag.style.cssText='font-size:9px;color:var(--tx3);margin-left:4px';tag.textContent=src;aiEl.appendChild(tag)}
+    const tag=document.createElement('span');tag.style.cssText='display:block;font-size:9px;color:var(--tx3);margin-top:6px';tag.textContent='SVITA AI';aiEl.appendChild(tag);
     _aiChatHistory.push({role:'assistant',content:data.reply});
+    _saveChatHistory();
   }catch(e){
     // Fallback: try Jetson directly (works from same network)
     try{
@@ -7925,7 +7943,7 @@ async function sendAiChat(){
         }
         document.getElementById('aiChatMessages').scrollTop=document.getElementById('aiChatMessages').scrollHeight;
       }
-      if(result)_aiChatHistory.push({role:'assistant',content:result});
+      if(result){_aiChatHistory.push({role:'assistant',content:result});_saveChatHistory()}
       else throw new Error('empty');
     }catch(e2){
       aiEl.textContent='AI временно недоступен. Попробуйте позже.';
