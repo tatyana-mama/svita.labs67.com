@@ -7805,19 +7805,37 @@ async function generateConcept(){
     for(const[k,v]of Object.entries(results)){
       actions.push({section:k,data:v});
     }
-    applyAiActions(actions);
-    const summary=Object.entries(results).map(([k,v])=>k+': '+v.length).join(', ');
-    aiEl.textContent='Концепция заполнена! '+summary;
-    const tag=document.createElement('span');tag.style.cssText='display:block;font-size:9px;color:var(--gn);margin-top:4px;font-weight:600';tag.textContent='✓ Данные применены';aiEl.appendChild(tag);
-    _aiChatHistory.push({role:'assistant',content:'Концепция сгенерирована: '+summary});
+    // Store pending concept for preview
+    window._pendingConcept=actions;
+    // Build preview
+    const labels={rooms:'Помещения',staff:'Персонал',equipment:'Оборудование',services:'Услуги'};
+    let preview='';
+    actions.forEach(a=>{
+      const lbl=labels[a.section]||a.section;
+      const items=a.data.slice(0,5).map(d=>d.name||d.position||'?').join(', ');
+      const more=a.data.length>5?' и ещё '+(a.data.length-5):'';
+      preview+=`<div style="margin:4px 0"><b>${lbl}</b> (${a.data.length}): <span style="color:var(--tx2)">${items}${more}</span></div>`;
+    });
+    aiEl.innerHTML=`<div style="font-weight:600;margin-bottom:6px">Концепция готова!</div>${preview}<button onclick="applyPendingConcept(this)" style="margin-top:8px;padding:6px 16px;border:none;border-radius:8px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--f)">Применить концепцию</button>`;
+    _aiChatHistory.push({role:'assistant',content:'Концепция сгенерирована: '+actions.map(a=>(labels[a.section]||a.section)+': '+a.data.length).join(', ')});
     _saveChatHistory();
-    toast('AI заполнил концепцию','gn');
   }else{
     aiEl.textContent='Jetson не успел ответить. Попробуйте позже.';
     aiEl.style.color='var(--rd)';
   }
   _aiChatStreaming=false;
   document.getElementById('rpChatSendBtn').style.opacity='1';
+}
+
+function applyPendingConcept(btn){
+  if(!window._pendingConcept)return;
+  btn.disabled=true;btn.textContent='Применяю...';
+  applyAiActions(window._pendingConcept);
+  btn.textContent='✓ Применено';btn.style.background='var(--gn)';btn.style.opacity='0.7';
+  const tag=document.createElement('div');tag.style.cssText='font-size:9px;color:var(--gn);margin-top:4px;font-weight:600';tag.textContent='✓ Данные загружены в концепцию';
+  btn.parentNode.appendChild(tag);
+  toast('Концепция применена','gn');
+  window._pendingConcept=null;
 }
 
 function applyAiActions(actions){
