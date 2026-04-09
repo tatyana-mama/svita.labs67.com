@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SVITA — Prototype v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f8fafc;--sf:#fff;--sf2:#f1f5f9;--bd:rgba(0,0,0,.06);
+  --tx:#1e293b;--tx2:rgba(30,41,59,.55);--tx3:rgba(30,41,59,.3);
+  --ac:#3b82f6;--ac2:#2563eb;--gn:#16a34a;--yl:#ca8a04;--rd:#dc2626;
+  --gold:#BA7517;--gold2:#D4A44A;--goldbg:rgba(186,117,23,.06);
+  --r:12px;--f:'Inter',system-ui,sans-serif;
+  --shadow:0 1px 3px rgba(0,0,0,.06);
+  --shadow-lg:0 8px 30px rgba(0,0,0,.08);
+}
+body{font-family:var(--f);background:var(--bg);color:var(--tx);min-height:100vh;display:flex;flex-direction:column}
+
+/* ══════ TOP BAR ══════ */
+.topbar{height:52px;background:var(--sf);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 24px;gap:16px;position:fixed;top:0;left:0;right:0;z-index:100}
+.logo{font-weight:700;font-size:16px;color:var(--gold);letter-spacing:-.5px}
+.logo span{color:var(--tx3);font-weight:400;font-size:12px;margin-left:6px}
+
+/* Stage switcher */
+.stages{display:flex;gap:2px;background:var(--sf2);border-radius:8px;padding:3px;margin-left:auto}
+.stage{padding:6px 16px;border-radius:6px;font-size:12px;font-weight:500;color:var(--tx2);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.stage:hover{color:var(--tx)}
+.stage.act{background:var(--sf);color:var(--tx);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.stage.locked{opacity:.4;cursor:default}
+.stage .snum{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600}
+.stage.act .snum{background:var(--gold);color:#fff}
+.stage:not(.act) .snum{background:var(--sf2);color:var(--tx3);border:1px solid var(--bd)}
+.stage.done .snum{background:var(--gn);color:#fff}
+
+.user-ava{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:600;cursor:pointer;margin-left:12px}
+
+/* ══════ LAYOUT ══════ */
+.layout{display:flex;margin-top:52px;min-height:calc(100vh - 52px)}
+
+/* ══════ SIDEBAR ══════ */
+.sidebar{width:220px;background:var(--sf);border-right:1px solid var(--bd);padding:12px 8px;flex-shrink:0;position:fixed;top:52px;bottom:0;left:0;overflow-y:auto}
+.sg{margin-bottom:12px}
+.sg-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--tx3);padding:4px 12px;margin-bottom:2px}
+.si{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;cursor:pointer;transition:all .15s;font-size:13px;font-weight:400;color:var(--tx2)}
+.si:hover{background:var(--sf2);color:var(--tx)}
+.si.act{background:var(--goldbg);color:var(--gold);font-weight:500}
+.si .ico{width:20px;text-align:center;font-size:15px;flex-shrink:0}
+.si .badge{margin-left:auto;font-size:10px;font-weight:600;padding:1px 6px;border-radius:10px;background:var(--sf2);color:var(--tx3)}
+.si.act .badge{background:rgba(186,117,23,.12);color:var(--gold)}
+
+/* ══════ MAIN ══════ */
+.main{flex:1;margin-left:220px;padding:24px 32px;max-width:1200px}
+
+/* Section header */
+.sec-head{margin-bottom:24px}
+.sec-head h1{font-size:22px;font-weight:600;letter-spacing:-.3px}
+.sec-head p{font-size:13px;color:var(--tx2);margin-top:4px}
+
+/* Progress bar */
+.progress-wrap{margin-bottom:28px}
+.progress-bar{height:6px;background:var(--sf2);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:3px;transition:width .5s}
+.progress-label{display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--tx2)}
+
+/* Cards grid */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:28px}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:20px;transition:all .2s;cursor:pointer}
+.card:hover{box-shadow:var(--shadow-lg);border-color:rgba(186,117,23,.2);transform:translateY(-1px)}
+.card .card-icon{font-size:28px;margin-bottom:12px}
+.card h3{font-size:14px;font-weight:600;margin-bottom:4px}
+.card p{font-size:12px;color:var(--tx2);line-height:1.5}
+.card .card-meta{margin-top:12px;display:flex;justify-content:space-between;font-size:11px}
+.card .card-cost{color:var(--gold);font-weight:600}
+.card .card-count{color:var(--tx3)}
+
+/* Stats row */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+.stat{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:16px 20px}
+.stat .stat-label{font-size:11px;color:var(--tx2);font-weight:500;text-transform:uppercase;letter-spacing:.3px}
+.stat .stat-value{font-size:24px;font-weight:600;margin-top:4px;letter-spacing:-.5px}
+.stat .stat-sub{font-size:11px;color:var(--tx3);margin-top:2px}
+.stat.gold .stat-value{color:var(--gold)}
+.stat.green .stat-value{color:var(--gn)}
+.stat.red .stat-value{color:var(--rd)}
+
+/* Table */
+.tbl-wrap{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:28px}
+.tbl-head{padding:16px 20px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}
+.tbl-head h3{font-size:14px;font-weight:600}
+.tbl-head .btn-add{font-size:12px;padding:6px 14px;border-radius:6px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);cursor:pointer;font-weight:500;transition:all .15s}
+.tbl-head .btn-add:hover{border-color:var(--gold);color:var(--gold)}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:11px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.3px;padding:10px 20px;border-bottom:1px solid var(--bd)}
+td{padding:12px 20px;font-size:13px;border-bottom:1px solid var(--sf2)}
+tr:hover{background:var(--sf2)}
+td .price{color:var(--gold);font-weight:600}
+
+/* ══════ STAGE 2: IMPLEMENTATION ══════ */
+.phase-timeline{position:relative;padding-left:28px}
+.phase-timeline::before{content:'';position:absolute;left:11px;top:0;bottom:0;width:2px;background:var(--sf2)}
+.phase{margin-bottom:24px;position:relative}
+.phase .dot{position:absolute;left:-28px;top:4px;width:22px;height:22px;border-radius:50%;border:2px solid var(--bd);background:var(--sf);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--tx3)}
+.phase.done .dot{background:var(--gn);border-color:var(--gn);color:#fff}
+.phase.active .dot{background:var(--gold);border-color:var(--gold);color:#fff}
+.phase h3{font-size:14px;font-weight:600;margin-bottom:2px}
+.phase .phase-sub{font-size:12px;color:var(--tx2);margin-bottom:8px}
+.phase .tasks{list-style:none}
+.phase .tasks li{font-size:13px;padding:6px 0;display:flex;align-items:center;gap:8px;color:var(--tx2)}
+.phase .tasks li .check{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--bd);flex-shrink:0}
+.phase.done .tasks li .check{background:var(--gn);border-color:var(--gn)}
+.phase.done .tasks li .check::after{content:'\\2713';color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;height:100%}
+.phase.done .tasks li{color:var(--tx3);text-decoration:line-through}
+
+/* AI assistant mini */
+.ai-mini{position:fixed;bottom:24px;right:24px;width:360px;background:var(--sf);border:1px solid var(--bd);border-radius:16px;box-shadow:var(--shadow-lg);overflow:hidden;z-index:50}
+.ai-mini .ai-head{padding:12px 16px;background:linear-gradient(135deg,#1a1a24,#2a2a3a);color:#fff;font-size:13px;font-weight:500;display:flex;align-items:center;gap:8px}
+.ai-mini .ai-head .ai-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.ai-mini .ai-body{padding:12px 16px;max-height:200px;overflow-y:auto}
+.ai-mini .ai-msg{font-size:12px;color:var(--tx2);line-height:1.6;margin-bottom:8px}
+.ai-mini .ai-msg b{color:var(--tx);font-weight:500}
+.ai-mini .ai-input{display:flex;gap:8px;padding:8px 16px 12px;border-top:1px solid var(--sf2)}
+.ai-mini .ai-input input{flex:1;border:1px solid var(--bd);border-radius:8px;padding:8px 12px;font-size:12px;font-family:var(--f);outline:none}
+.ai-mini .ai-input input:focus{border-color:var(--gold)}
+.ai-mini .ai-input button{padding:8px 14px;border-radius:8px;border:none;background:var(--gold);color:#fff;font-size:12px;font-weight:500;cursor:pointer}
+
+/* ══════ STAGE 3: CRM PREVIEW ══════ */
+.crm-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+.crm-card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:20px}
+.crm-card h3{font-size:14px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.crm-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--sf2);font-size:13px}
+.crm-row:last-child{border:none}
+.crm-row .label{color:var(--tx2)}
+
+/* Stage content visibility */
+.stage-content{display:none}
+.stage-content.active{display:block}
+
+/* Responsive */
+@media(max-width:768px){
+  .sidebar{display:none}
+  .main{margin-left:0}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .cards{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════ TOP BAR ══════ -->
+<div class="topbar">
+  <div class="logo">SVITA <span>by LABS67</span></div>
+  <div class="stages">
+    <div class="stage done" onclick="switchStage(1)"><span class="snum">&#10003;</span>Конструктор</div>
+    <div class="stage act" onclick="switchStage(2)"><span class="snum">2</span>Реализация</div>
+    <div class="stage locked" onclick="switchStage(3)"><span class="snum">3</span>Работа</div>
+  </div>
+  <div class="user-ava">AV</div>
+</div>
+
+<!-- ══════ LAYOUT ══════ -->
+<div class="layout">
+
+<!-- ══════ SIDEBAR — Stage 1 ══════ -->
+<div class="sidebar" id="sidebar1" style="display:none">
+  <div class="sg">
+    <div class="sg-label">Этапы</div>
+    <div class="si act"><span class="ico">&#127970;</span>Помещение<span class="badge">36 000</span></div>
+    <div class="si"><span class="ico">&#128736;</span>Модернизация<span class="badge">0</span></div>
+    <div class="si"><span class="ico">&#128230;</span>Оснащение<span class="badge">0</span></div>
+    <div class="si"><span class="ico">&#129489;</span>Персонал<span class="badge">0</span></div>
+    <div class="si"><span class="ico">&#129657;</span>Услуги<span class="badge">0</span></div>
+    <div class="si"><span class="ico">&#128203;</span>Документация<span class="badge">0</span></div>
+  </div>
+  <div class="sg">
+    <div class="sg-label">Аналитика</div>
+    <div class="si"><span class="ico">&#9673;</span>Обзор</div>
+    <div class="si"><span class="ico">&#128200;</span>Рентабельность</div>
+  </div>
+</div>
+
+<!-- ══════ SIDEBAR — Stage 2 ══════ -->
+<div class="sidebar" id="sidebar2">
+  <div class="sg">
+    <div class="sg-label">Фазы реализации</div>
+    <div class="si" style="color:var(--gn)"><span class="ico">&#10003;</span>Регистрация</div>
+    <div class="si act"><span class="ico">&#9654;</span>Ремонт</div>
+    <div class="si"><span class="ico">&#9675;</span>Оснащение</div>
+    <div class="si"><span class="ico">&#9675;</span>Персонал</div>
+    <div class="si"><span class="ico">&#9675;</span>Запуск</div>
+  </div>
+  <div class="sg">
+    <div class="sg-label">Инструменты</div>
+    <div class="si"><span class="ico">&#128196;</span>PDF-план</div>
+    <div class="si"><span class="ico">&#128172;</span>AI-ассистент</div>
+    <div class="si"><span class="ico">&#128176;</span>Бюджет</div>
+  </div>
+</div>
+
+<!-- ══════ SIDEBAR — Stage 3 ══════ -->
+<div class="sidebar" id="sidebar3" style="display:none">
+  <div class="sg">
+    <div class="sg-label">CRM</div>
+    <div class="si act"><span class="ico">&#128197;</span>Расписание</div>
+    <div class="si"><span class="ico">&#129489;</span>Пациенты</div>
+    <div class="si"><span class="ico">&#128200;</span>Аналитика</div>
+  </div>
+  <div class="sg">
+    <div class="sg-label">ERP</div>
+    <div class="si"><span class="ico">&#128176;</span>Бухгалтерия</div>
+    <div class="si"><span class="ico">&#128230;</span>Склад</div>
+    <div class="si"><span class="ico">&#128203;</span>Документы</div>
+  </div>
+  <div class="sg">
+    <div class="sg-label">AI</div>
+    <div class="si"><span class="ico">&#127916;</span>Камеры</div>
+    <div class="si"><span class="ico">&#128172;</span>Ассистент</div>
+  </div>
+</div>
+
+<!-- ══════ MAIN CONTENT ══════ -->
+<div class="main">
+
+<!-- ── STAGE 1: CONSTRUCTOR ── -->
+<div class="stage-content" id="content1">
+  <div class="sec-head">
+    <h1>Конструктор концепции</h1>
+    <p>Соберите бизнес-план вашей клиники шаг за шагом</p>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" style="width:15%"></div></div>
+    <div class="progress-label"><span>1 из 6 этапов</span><span>15%</span></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-label">Инвестиции</div><div class="stat-value">36 000</div><div class="stat-sub">PLN</div></div>
+    <div class="stat gold"><div class="stat-label">Выручка/мес</div><div class="stat-value">600 600</div><div class="stat-sub">PLN</div></div>
+    <div class="stat green"><div class="stat-label">Прибыль/мес</div><div class="stat-value">562 600</div><div class="stat-sub">PLN</div></div>
+    <div class="stat"><div class="stat-label">Окупаемость</div><div class="stat-value">1</div><div class="stat-sub">мес</div></div>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">&#127970;</div>
+      <h3>Помещение</h3>
+      <p>Выберите помещение, нарисуйте план кабинетов и зон</p>
+      <div class="card-meta"><span class="card-cost">36 000 PLN</span><span class="card-count">0 комнат</span></div>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#128736;</div>
+      <h3>Модернизация</h3>
+      <p>Ремонт, электрика, вентиляция, отделка</p>
+      <div class="card-meta"><span class="card-cost">0 PLN</span><span class="card-count">0 работ</span></div>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#128230;</div>
+      <h3>Оснащение</h3>
+      <p>Стоматологическое оборудование, мебель, IT</p>
+      <div class="card-meta"><span class="card-cost">0 PLN</span><span class="card-count">0 позиций</span></div>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#129489;</div>
+      <h3>Персонал</h3>
+      <p>Врачи, ассистенты, администраторы</p>
+      <div class="card-meta"><span class="card-cost">0 PLN/мес</span><span class="card-count">0 чел</span></div>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#129657;</div>
+      <h3>Услуги</h3>
+      <p>Перечень процедур и прейскурант</p>
+      <div class="card-meta"><span class="card-cost">—</span><span class="card-count">0 услуг</span></div>
+    </div>
+    <div class="card">
+      <div class="card-icon">&#128203;</div>
+      <h3>Документация</h3>
+      <p>Лицензии, разрешения, сертификаты</p>
+      <div class="card-meta"><span class="card-cost">0 PLN</span><span class="card-count">0 документов</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── STAGE 2: IMPLEMENTATION ── -->
+<div class="stage-content active" id="content2">
+  <div class="sec-head">
+    <h1>План реализации</h1>
+    <p>Dental Premium Clinic &middot; Warszawa &middot; 180 m&sup2;</p>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" style="width:35%"></div></div>
+    <div class="progress-label"><span>Фаза 2 из 5 &middot; Ремонт и модернизация</span><span>35%</span></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-label">Общий бюджет</div><div class="stat-value">1 240 000</div><div class="stat-sub">PLN</div></div>
+    <div class="stat green"><div class="stat-label">Потрачено</div><div class="stat-value">186 000</div><div class="stat-sub">PLN (15%)</div></div>
+    <div class="stat gold"><div class="stat-label">Следующий платёж</div><div class="stat-value">45 000</div><div class="stat-sub">до 15.04</div></div>
+    <div class="stat"><div class="stat-label">До открытия</div><div class="stat-value">4.5</div><div class="stat-sub">мес</div></div>
+  </div>
+
+  <div class="phase-timeline">
+    <div class="phase done">
+      <div class="dot">&#10003;</div>
+      <h3>Фаза 1 &middot; Регистрация и подготовка</h3>
+      <div class="phase-sub">Месяц 1-2 &middot; Завершено 28.03.2026</div>
+      <ul class="tasks">
+        <li><span class="check"></span>Регистрация компании (NIP, REGON, KRS)</li>
+        <li><span class="check"></span>Подписание договора аренды</li>
+        <li><span class="check"></span>Санитарно-эпидемиологическое заключение</li>
+        <li><span class="check"></span>Проектирование перепланировки</li>
+        <li><span class="check"></span>Подача документов на лицензию</li>
+      </ul>
+    </div>
+
+    <div class="phase active">
+      <div class="dot">2</div>
+      <h3>Фаза 2 &middot; Ремонт и модернизация</h3>
+      <div class="phase-sub">Месяц 2-4 &middot; В процессе</div>
+      <ul class="tasks">
+        <li><span class="check" style="background:var(--gn);border-color:var(--gn)"></span>Демонтажные работы</li>
+        <li><span class="check" style="background:var(--gold);border-color:var(--gold)"></span>Электромонтаж, сантехника, вентиляция</li>
+        <li><span class="check"></span>Отделка стен, полов, потолков</li>
+        <li><span class="check"></span>Рентгенозащита кабинета</li>
+        <li><span class="check"></span>Пожарная сигнализация</li>
+        <li><span class="check"></span>Приёмка инспекцией</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="dot">3</div>
+      <h3>Фаза 3 &middot; Оснащение</h3>
+      <div class="phase-sub">Месяц 4-5</div>
+      <ul class="tasks">
+        <li><span class="check"></span>Закупка оборудования</li>
+        <li><span class="check"></span>Установка и монтаж</li>
+        <li><span class="check"></span>IT-инфраструктура</li>
+        <li><span class="check"></span>Калибровка и тестирование</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="dot">4</div>
+      <h3>Фаза 4 &middot; Персонал и запуск</h3>
+      <div class="phase-sub">Месяц 5-6</div>
+      <ul class="tasks">
+        <li><span class="check"></span>Найм персонала</li>
+        <li><span class="check"></span>Обучение стандартам</li>
+        <li><span class="check"></span>Получение лицензии</li>
+        <li><span class="check"></span>Grand opening</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="dot">5</div>
+      <h3>Фаза 5 &middot; Рабочий процесс</h3>
+      <div class="phase-sub">Месяц 7+</div>
+      <ul class="tasks">
+        <li><span class="check"></span>Выход на плановую загрузку</li>
+        <li><span class="check"></span>CRM/ERP интеграция</li>
+        <li><span class="check"></span>Маркетинг и NPS</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ── STAGE 3: CRM/ERP ── -->
+<div class="stage-content" id="content3">
+  <div class="sec-head">
+    <h1>Рабочий процесс</h1>
+    <p>CRM &middot; ERP &middot; AI-ассистент &middot; Аналитика</p>
+  </div>
+  <div class="stats">
+    <div class="stat gold"><div class="stat-label">Пациентов сегодня</div><div class="stat-value">18</div><div class="stat-sub">из 24 слотов</div></div>
+    <div class="stat green"><div class="stat-label">Выручка (апрель)</div><div class="stat-value">142 300</div><div class="stat-sub">PLN</div></div>
+    <div class="stat"><div class="stat-label">Загрузка</div><div class="stat-value">75%</div><div class="stat-sub">+12% к марту</div></div>
+    <div class="stat"><div class="stat-label">NPS</div><div class="stat-value">8.4</div><div class="stat-sub">из 10</div></div>
+  </div>
+  <div class="crm-grid">
+    <div class="crm-card">
+      <h3>&#128197; Расписание на сегодня</h3>
+      <div class="crm-row"><span>09:00 &middot; Кресло 1</span><span class="label">Kowalski A. &middot; Имплантация</span></div>
+      <div class="crm-row"><span>09:30 &middot; Кресло 2</span><span class="label">Nowak M. &middot; Осмотр</span></div>
+      <div class="crm-row"><span>10:00 &middot; Кресло 1</span><span class="label">Wiśniewski J. &middot; Протезирование</span></div>
+      <div class="crm-row"><span>10:30 &middot; Кресло 3</span><span class="label">Kowalczyk E. &middot; Чистка</span></div>
+      <div class="crm-row"><span>11:00 &middot; Кресло 2</span><span class="label">Kamiński P. &middot; Лечение кариеса</span></div>
+      <div class="crm-row"><span>11:30 &middot; Кресло 1</span><span class="label">Lewandowski R. &middot; Консультация</span></div>
+    </div>
+    <div>
+      <div class="crm-card" style="margin-bottom:16px">
+        <h3>&#128176; Финансы</h3>
+        <div class="crm-row"><span>Выручка сегодня</span><span style="color:var(--gold);font-weight:600">12 400 PLN</span></div>
+        <div class="crm-row"><span>Неоплаченных</span><span style="color:var(--rd)">2 счёта</span></div>
+        <div class="crm-row"><span>Средний чек</span><span>650 PLN</span></div>
+      </div>
+      <div class="crm-card">
+        <h3>&#127916; AI-камера</h3>
+        <div class="crm-row"><span>Кресло 1</span><span style="color:var(--gn)">Норма</span></div>
+        <div class="crm-row"><span>Кресло 2</span><span style="color:var(--gn)">Норма</span></div>
+        <div class="crm-row"><span>Ресепшен</span><span style="color:var(--yl)">Очередь 3 чел</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+</div><!-- /layout -->
+
+<!-- ══════ AI ASSISTANT (Stage 2) ══════ -->
+<div class="ai-mini" id="aiMini">
+  <div class="ai-head"><span class="ai-dot"></span>SVITA AI &middot; Помощник реализации</div>
+  <div class="ai-body">
+    <div class="ai-msg"><b>SVITA:</b> Фаза 2 в процессе. Электромонтаж завершён на 60%. Рекомендую запросить акт скрытых работ у подрядчика до заливки стяжки.</div>
+    <div class="ai-msg"><b>SVITA:</b> Следующий платёж подрядчику 45 000 PLN — до 15 апреля. Документы на подпись в разделе "Документация".</div>
+  </div>
+  <div class="ai-input">
+    <input type="text" placeholder="Спросите что угодно...">
+    <button>&#10148;</button>
+  </div>
+</div>
+
+<script>
+function switchStage(n) {
+  document.querySelectorAll('.stage').forEach((s,i) => {
+    s.classList.remove('act');
+    if (i+1 < n) { s.classList.add('done'); s.classList.remove('locked'); }
+    else if (i+1 === n) { s.classList.add('act'); s.classList.remove('locked'); }
+    else { s.classList.add('locked'); s.classList.remove('done'); }
+  });
+  document.querySelectorAll('.stage-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('content'+n).classList.add('active');
+  document.querySelectorAll('.sidebar').forEach(s => s.style.display='none');
+  document.getElementById('sidebar'+n).style.display='';
+  document.getElementById('aiMini').style.display = n===2 ? '' : 'none';
+}
+</script>
+</body>
+</html>
