@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -83,11 +83,23 @@
         .back { position: fixed; top: 16px; left: 16px; color: var(--tx2); font-size: .8rem; text-decoration: none; z-index: 10; display: flex; align-items: center; gap: 4px; }
         .back:hover { color: var(--bright); }
 
+        .lang-toggle { position: fixed; top: 16px; right: 16px; display: flex; border: 1px solid var(--bd); border-radius: 8px; overflow: hidden; z-index: 10; backdrop-filter: blur(12px); background: rgba(22,27,34,.8); }
+        .lang-toggle span { padding: 6px 14px; cursor: pointer; font-size: .75rem; font-weight: 600; color: var(--tx2); transition: all .15s; }
+        .lang-toggle span.active { background: var(--blue); color: #fff; }
+        .lang-toggle span:hover:not(.active) { color: var(--bright); }
+
+        [data-lang="ru"] { display: none !important; }
+        body.lang-ru [data-lang="ru"] { display: revert !important; }
+        body.lang-ru [data-lang="en"] { display: none !important; }
+
+        .view-count { position: fixed; top: 16px; right: 140px; font-size: .75rem; color: var(--tx2); z-index: 10; display: flex; align-items: center; gap: 4px; }
+
         @media(max-width:768px) {
             .slide { padding: 24px 20px; }
             .grid { grid-template-columns: 1fr; }
             .stats { gap: 20px; flex-wrap: wrap; }
             table { font-size: .75rem; }
+            .lang-toggle { top: auto; bottom: 76px; right: 16px; }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -95,55 +107,83 @@
 <body>
 
 <a href="/news.html" class="back">&larr; News</a>
+<div class="view-count">&#128065; <span id="vc">&mdash;</span></div>
+<div class="lang-toggle" id="langToggle">
+    <span class="active" onclick="setLang('en')">EN</span>
+    <span onclick="setLang('ru')">RU</span>
+</div>
 
-<!-- SLIDE 1: Title -->
 <div class="container">
 
+<!-- SLIDE 1: Title -->
 <div class="slide active" data-slide="0">
     <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center">
         <div style="font-size:.8rem;color:var(--blue);font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px">SVITA AI</div>
-        <h1 style="font-size:clamp(2rem,5vw,3.2rem);margin-bottom:8px">Pricing & Plans</h1>
-        <p style="color:var(--tx2);font-size:1.1rem;max-width:500px">3 roles. 3 plans. One platform for launching any service business in Europe.</p>
+        <h1 style="font-size:clamp(2rem,5vw,3.2rem);margin-bottom:8px">
+            <span data-lang="en">Pricing & Plans</span>
+            <span data-lang="ru">Тарифы и планы</span>
+        </h1>
+        <p style="color:var(--tx2);font-size:1.1rem;max-width:500px">
+            <span data-lang="en">3 roles. 3 plans. One platform for launching any service business in Europe.</span>
+            <span data-lang="ru">3 роли. 3 плана. Одна платформа для запуска сервисного бизнеса в Европе.</span>
+        </p>
         <div class="stats">
-            <div><div class="hero-num" style="color:var(--blue)">3</div><div class="hero-label">Roles</div></div>
-            <div><div class="hero-num" style="color:var(--green)">3</div><div class="hero-label">Plans</div></div>
-            <div><div class="hero-num" style="color:var(--gold)">40+</div><div class="hero-label">Countries</div></div>
-            <div><div class="hero-num" style="color:var(--purple)">12</div><div class="hero-label">Currencies</div></div>
+            <div><div class="hero-num" style="color:var(--blue)">3</div><div class="hero-label" data-lang="en">Roles</div><div class="hero-label" data-lang="ru">Роли</div></div>
+            <div><div class="hero-num" style="color:var(--green)">3</div><div class="hero-label" data-lang="en">Plans</div><div class="hero-label" data-lang="ru">Плана</div></div>
+            <div><div class="hero-num" style="color:var(--gold)">40+</div><div class="hero-label" data-lang="en">Countries</div><div class="hero-label" data-lang="ru">Стран</div></div>
+            <div><div class="hero-num" style="color:var(--purple)">12</div><div class="hero-label" data-lang="en">Currencies</div><div class="hero-label" data-lang="ru">Валют</div></div>
         </div>
     </div>
 </div>
 
 <!-- SLIDE 2: 3 Roles -->
 <div class="slide" data-slide="1">
-    <h2 style="border-color:var(--purple)">Three Roles, One Ecosystem</h2>
-    <p class="sub">Each role gets its own dashboard, tools, and pricing.</p>
+    <h2 style="border-color:var(--purple)">
+        <span data-lang="en">Three Roles, One Ecosystem</span>
+        <span data-lang="ru">Три роли, одна экосистема</span>
+    </h2>
+    <p class="sub">
+        <span data-lang="en">Each role gets its own dashboard, tools, and pricing.</span>
+        <span data-lang="ru">Каждая роль получает свой дашборд, инструменты и тарификацию.</span>
+    </p>
     <div class="grid" style="grid-template-columns:repeat(3,1fr)">
         <div class="card" style="border-left:3px solid var(--blue)">
             <div class="role-badge role-owner">OWNER</div>
-            <h3 style="margin-top:10px">Business Owner</h3>
-            <p class="sub">Builds the full business concept: premises, staff, equipment, services, budget. Gets AI analysis and exports.</p>
+            <h3 style="margin-top:10px" data-lang="en">Business Owner</h3>
+            <h3 style="margin-top:10px" data-lang="ru">Владелец бизнеса</h3>
+            <p class="sub" data-lang="en">Builds the full business concept: premises, staff, equipment, services, budget. Gets AI analysis and exports.</p>
+            <p class="sub" data-lang="ru">Строит полную бизнес-концепцию: помещение, персонал, оборудование, услуги, бюджет. Получает AI-анализ и экспорт.</p>
         </div>
         <div class="card" style="border-left:3px solid var(--orange)">
             <div class="role-badge role-contr">CONTRACTOR</div>
-            <h3 style="margin-top:10px">Contractor</h3>
-            <p class="sub">Finds renovation and construction jobs. Responds to owner requests, sends proposals, builds portfolio and reputation.</p>
+            <h3 style="margin-top:10px" data-lang="en">Contractor</h3>
+            <h3 style="margin-top:10px" data-lang="ru">Подрядчик</h3>
+            <p class="sub" data-lang="en">Finds renovation and construction jobs. Responds to owner requests, sends proposals, builds portfolio and reputation.</p>
+            <p class="sub" data-lang="ru">Находит заказы на ремонт и строительство. Откликается на запросы владельцев, отправляет предложения, строит портфолио.</p>
         </div>
         <div class="card" style="border-left:3px solid var(--purple)">
             <div class="role-badge role-supp">SUPPLIER</div>
-            <h3 style="margin-top:10px">Supplier</h3>
-            <p class="sub">Lists equipment in the catalog. Owners pick directly from catalog. Gets analytics, contacts, and promotion tools.</p>
+            <h3 style="margin-top:10px" data-lang="en">Supplier</h3>
+            <h3 style="margin-top:10px" data-lang="ru">Поставщик</h3>
+            <p class="sub" data-lang="en">Lists equipment in the catalog. Owners pick directly from catalog. Gets analytics, contacts, and promotion tools.</p>
+            <p class="sub" data-lang="ru">Размещает оборудование в каталоге. Владельцы выбирают напрямую. Получает аналитику, контакты и инструменты продвижения.</p>
         </div>
     </div>
 </div>
 
 <!-- SLIDE 3: Owner Plans -->
 <div class="slide" data-slide="2">
-    <h2><span class="role-badge role-owner" style="margin-right:8px">OWNER</span> Business Owner Plans</h2>
+    <h2>
+        <span class="role-badge role-owner" style="margin-right:8px">OWNER</span>
+        <span data-lang="en">Business Owner Plans</span>
+        <span data-lang="ru">Тарифы для владельца</span>
+    </h2>
     <div class="grid" style="grid-template-columns:repeat(3,1fr)">
         <div class="card plan-trial">
             <div class="label" style="color:var(--tx2)">Trial</div>
-            <div class="price">Free</div>
-            <ul>
+            <div class="price" data-lang="en">Free</div>
+            <div class="price" data-lang="ru">Бесплатно</div>
+            <ul data-lang="en">
                 <li><span class="ck">+</span> 1 concept</li>
                 <li><span class="ck">+</span> All 7 constructor stages</li>
                 <li><span class="ck">+</span> All databases</li>
@@ -154,11 +194,22 @@
                 <li><span class="no">-</span> Contractors access</li>
                 <li><span class="no">-</span> Suppliers access</li>
             </ul>
+            <ul data-lang="ru">
+                <li><span class="ck">+</span> 1 концепция</li>
+                <li><span class="ck">+</span> Все 7 этапов конструктора</li>
+                <li><span class="ck">+</span> Все базы данных</li>
+                <li><span class="ck">+</span> Бюджет и рентабельность</li>
+                <li><span class="ck">+</span> AI-чат (5/день)</li>
+                <li><span class="no">-</span> AI-генерация концепции</li>
+                <li><span class="no">-</span> Экспорт PDF/JSON</li>
+                <li><span class="no">-</span> Доступ к подрядчикам</li>
+                <li><span class="no">-</span> Доступ к поставщикам</li>
+            </ul>
         </div>
         <div class="card plan-pro">
             <div class="label">Pro</div>
-            <div class="price">99 <span>EUR / mo</span></div>
-            <ul>
+            <div class="price">99 <span>EUR / <span data-lang="en">mo</span><span data-lang="ru">мес</span></span></div>
+            <ul data-lang="en">
                 <li><span class="ck">+</span> 5 concepts</li>
                 <li><span class="ck">+</span> All 7 stages + databases</li>
                 <li><span class="ck">+</span> AI chat (50/day)</li>
@@ -168,11 +219,21 @@
                 <li><span class="no">-</span> Suppliers access</li>
                 <li><span class="no">-</span> Commercial proposals</li>
             </ul>
+            <ul data-lang="ru">
+                <li><span class="ck">+</span> 5 концепций</li>
+                <li><span class="ck">+</span> Все 7 этапов + базы данных</li>
+                <li><span class="ck">+</span> AI-чат (50/день)</li>
+                <li><span class="ck">+</span> AI-генерация концепции</li>
+                <li><span class="ck">+</span> Экспорт PDF / JSON</li>
+                <li><span class="no">-</span> Доступ к подрядчикам</li>
+                <li><span class="no">-</span> Доступ к поставщикам</li>
+                <li><span class="no">-</span> Коммерческие предложения</li>
+            </ul>
         </div>
         <div class="card plan-unlimited">
             <div class="label">Unlimited</div>
-            <div class="price">249 <span>EUR / mo</span></div>
-            <ul>
+            <div class="price">249 <span>EUR / <span data-lang="en">mo</span><span data-lang="ru">мес</span></span></div>
+            <ul data-lang="en">
                 <li><span class="ck">+</span> Unlimited concepts</li>
                 <li><span class="ck">+</span> All features</li>
                 <li><span class="ck">+</span> Unlimited AI chat</li>
@@ -181,14 +242,27 @@
                 <li><span class="ck">+</span> Commercial proposals</li>
                 <li><span class="ck">+</span> Priority support</li>
             </ul>
+            <ul data-lang="ru">
+                <li><span class="ck">+</span> Безлимитные концепции</li>
+                <li><span class="ck">+</span> Все функции</li>
+                <li><span class="ck">+</span> Безлимитный AI-чат</li>
+                <li><span class="ck">+</span> Маркетплейс подрядчиков</li>
+                <li><span class="ck">+</span> Каталог поставщиков</li>
+                <li><span class="ck">+</span> Коммерческие предложения</li>
+                <li><span class="ck">+</span> Приоритетная поддержка</li>
+            </ul>
         </div>
     </div>
 </div>
 
 <!-- SLIDE 4: Owner Feature Matrix -->
 <div class="slide" data-slide="3">
-    <h2><span class="role-badge role-owner" style="margin-right:8px">OWNER</span> Feature Matrix</h2>
-    <table>
+    <h2>
+        <span class="role-badge role-owner" style="margin-right:8px">OWNER</span>
+        <span data-lang="en">Feature Matrix</span>
+        <span data-lang="ru">Матрица функций</span>
+    </h2>
+    <table data-lang="en">
         <tr><th>Feature</th><th class="t-trial">Trial</th><th class="t-pro">Pro</th><th class="t-unl">Unlimited</th></tr>
         <tr><td>Concepts</td><td class="t-trial">1</td><td class="t-pro">5</td><td class="t-unl">Unlimited</td></tr>
         <tr><td>7 Constructor Stages</td><td class="t-trial">Yes</td><td class="t-pro">Yes</td><td class="t-unl">Yes</td></tr>
@@ -202,16 +276,35 @@
         <tr><td>Commercial Proposals</td><td class="t-trial">-</td><td class="t-pro">-</td><td class="t-unl">Yes</td></tr>
         <tr><td>Priority Support</td><td class="t-trial">-</td><td class="t-pro">-</td><td class="t-unl">Yes</td></tr>
     </table>
+    <table data-lang="ru">
+        <tr><th>Функция</th><th class="t-trial">Trial</th><th class="t-pro">Pro</th><th class="t-unl">Unlimited</th></tr>
+        <tr><td>Концепции</td><td class="t-trial">1</td><td class="t-pro">5</td><td class="t-unl">Безлимит</td></tr>
+        <tr><td>7 этапов конструктора</td><td class="t-trial">Да</td><td class="t-pro">Да</td><td class="t-unl">Да</td></tr>
+        <tr><td>Базы данных (помещения, оборудование, персонал, услуги, документы)</td><td class="t-trial">Да</td><td class="t-pro">Да</td><td class="t-unl">Да</td></tr>
+        <tr><td>Бюджет и аналитика рентабельности</td><td class="t-trial">Да</td><td class="t-pro">Да</td><td class="t-unl">Да</td></tr>
+        <tr><td>AI-чат (анализ концепции)</td><td class="t-trial">5 / день</td><td class="t-pro">50 / день</td><td class="t-unl">Безлимит</td></tr>
+        <tr><td>AI-генерация концепции</td><td class="t-trial">-</td><td class="t-pro">Да</td><td class="t-unl">Да</td></tr>
+        <tr><td>Экспорт PDF / JSON</td><td class="t-trial">-</td><td class="t-pro">Да</td><td class="t-unl">Да</td></tr>
+        <tr><td>Маркетплейс подрядчиков</td><td class="t-trial">-</td><td class="t-pro">-</td><td class="t-unl">Да</td></tr>
+        <tr><td>Каталог поставщиков</td><td class="t-trial">-</td><td class="t-pro">-</td><td class="t-unl">Да</td></tr>
+        <tr><td>Коммерческие предложения</td><td class="t-trial">-</td><td class="t-pro">-</td><td class="t-unl">Да</td></tr>
+        <tr><td>Приоритетная поддержка</td><td class="t-trial">-</td><td class="t-pro">-</td><td class="t-unl">Да</td></tr>
+    </table>
 </div>
 
 <!-- SLIDE 5: Contractor Plans -->
 <div class="slide" data-slide="4">
-    <h2 style="border-color:var(--orange)"><span class="role-badge role-contr" style="margin-right:8px">CONTRACTOR</span> Plans</h2>
+    <h2 style="border-color:var(--orange)">
+        <span class="role-badge role-contr" style="margin-right:8px">CONTRACTOR</span>
+        <span data-lang="en">Plans</span>
+        <span data-lang="ru">Тарифы</span>
+    </h2>
     <div class="grid" style="grid-template-columns:repeat(3,1fr)">
         <div class="card plan-trial">
             <div class="label" style="color:var(--tx2)">Trial</div>
-            <div class="price">Free</div>
-            <ul>
+            <div class="price" data-lang="en">Free</div>
+            <div class="price" data-lang="ru">Бесплатно</div>
+            <ul data-lang="en">
                 <li><span class="ck">+</span> Browse available jobs</li>
                 <li><span class="ck">+</span> 3 responses / month</li>
                 <li><span class="ck">+</span> Basic profile</li>
@@ -221,11 +314,21 @@
                 <li><span class="no">-</span> Priority placement</li>
                 <li><span class="no">-</span> Verified badge</li>
             </ul>
+            <ul data-lang="ru">
+                <li><span class="ck">+</span> Просмотр доступных заказов</li>
+                <li><span class="ck">+</span> 3 отклика / месяц</li>
+                <li><span class="ck">+</span> Базовый профиль</li>
+                <li><span class="no">-</span> Контакты владельцев</li>
+                <li><span class="no">-</span> Коммерческие предложения</li>
+                <li><span class="no">-</span> Рейтинг и отзывы</li>
+                <li><span class="no">-</span> Приоритетное размещение</li>
+                <li><span class="no">-</span> Верифицированный бейдж</li>
+            </ul>
         </div>
         <div class="card plan-pro" style="border-color:var(--orange);background:rgba(240,136,62,.06)">
             <div class="label" style="color:var(--orange)">Pro</div>
-            <div class="price">79 <span>EUR / mo</span></div>
-            <ul>
+            <div class="price">79 <span>EUR / <span data-lang="en">mo</span><span data-lang="ru">мес</span></span></div>
+            <ul data-lang="en">
                 <li><span class="ck">+</span> 20 responses / month</li>
                 <li><span class="ck">+</span> Full portfolio profile</li>
                 <li><span class="ck">+</span> Direct owner contacts</li>
@@ -234,16 +337,32 @@
                 <li><span class="no">-</span> Priority placement</li>
                 <li><span class="no">-</span> Verified badge</li>
             </ul>
+            <ul data-lang="ru">
+                <li><span class="ck">+</span> 20 откликов / месяц</li>
+                <li><span class="ck">+</span> Полный портфолио-профиль</li>
+                <li><span class="ck">+</span> Прямые контакты владельцев</li>
+                <li><span class="ck">+</span> Коммерческие предложения</li>
+                <li><span class="ck">+</span> Рейтинг и отзывы</li>
+                <li><span class="no">-</span> Приоритетное размещение</li>
+                <li><span class="no">-</span> Верифицированный бейдж</li>
+            </ul>
         </div>
         <div class="card plan-unlimited">
             <div class="label">Unlimited</div>
-            <div class="price">149 <span>EUR / mo</span></div>
-            <ul>
+            <div class="price">149 <span>EUR / <span data-lang="en">mo</span><span data-lang="ru">мес</span></span></div>
+            <ul data-lang="en">
                 <li><span class="ck">+</span> Unlimited responses</li>
                 <li><span class="ck">+</span> All Pro features</li>
                 <li><span class="ck">+</span> Priority in search</li>
                 <li><span class="ck">+</span> Verified badge</li>
                 <li><span class="ck">+</span> Featured placement</li>
+            </ul>
+            <ul data-lang="ru">
+                <li><span class="ck">+</span> Безлимитные отклики</li>
+                <li><span class="ck">+</span> Все Pro-функции</li>
+                <li><span class="ck">+</span> Приоритет в поиске</li>
+                <li><span class="ck">+</span> Верифицированный бейдж</li>
+                <li><span class="ck">+</span> Продвинутое размещение</li>
             </ul>
         </div>
     </div>
@@ -251,12 +370,17 @@
 
 <!-- SLIDE 6: Supplier Plans -->
 <div class="slide" data-slide="5">
-    <h2 style="border-color:var(--purple)"><span class="role-badge role-supp" style="margin-right:8px">SUPPLIER</span> Plans</h2>
+    <h2 style="border-color:var(--purple)">
+        <span class="role-badge role-supp" style="margin-right:8px">SUPPLIER</span>
+        <span data-lang="en">Plans</span>
+        <span data-lang="ru">Тарифы</span>
+    </h2>
     <div class="grid" style="grid-template-columns:repeat(3,1fr)">
         <div class="card plan-trial">
             <div class="label" style="color:var(--tx2)">Trial</div>
-            <div class="price">Free</div>
-            <ul>
+            <div class="price" data-lang="en">Free</div>
+            <div class="price" data-lang="ru">Бесплатно</div>
+            <ul data-lang="en">
                 <li><span class="ck">+</span> 10 catalog items</li>
                 <li><span class="ck">+</span> Basic product cards</li>
                 <li><span class="ck">+</span> Visible to owners</li>
@@ -265,11 +389,20 @@
                 <li><span class="no">-</span> Promo banner</li>
                 <li><span class="no">-</span> Priority & badge</li>
             </ul>
+            <ul data-lang="ru">
+                <li><span class="ck">+</span> 10 позиций в каталоге</li>
+                <li><span class="ck">+</span> Базовые карточки товаров</li>
+                <li><span class="ck">+</span> Видимость для владельцев</li>
+                <li><span class="no">-</span> Контакты владельцев</li>
+                <li><span class="no">-</span> Аналитика просмотров</li>
+                <li><span class="no">-</span> Промо-баннер</li>
+                <li><span class="no">-</span> Приоритет и бейдж</li>
+            </ul>
         </div>
         <div class="card plan-pro" style="border-color:var(--purple);background:rgba(139,92,246,.06)">
             <div class="label" style="color:var(--purple)">Pro</div>
-            <div class="price">69 <span>EUR / mo</span></div>
-            <ul>
+            <div class="price">69 <span>EUR / <span data-lang="en">mo</span><span data-lang="ru">мес</span></span></div>
+            <ul data-lang="en">
                 <li><span class="ck">+</span> 100 catalog items</li>
                 <li><span class="ck">+</span> Full product cards (photos, specs)</li>
                 <li><span class="ck">+</span> Direct owner contacts</li>
@@ -277,16 +410,31 @@
                 <li><span class="no">-</span> Promo banner</li>
                 <li><span class="no">-</span> Priority & badge</li>
             </ul>
+            <ul data-lang="ru">
+                <li><span class="ck">+</span> 100 позиций в каталоге</li>
+                <li><span class="ck">+</span> Полные карточки (фото, характеристики)</li>
+                <li><span class="ck">+</span> Прямые контакты владельцев</li>
+                <li><span class="ck">+</span> Аналитика просмотров</li>
+                <li><span class="no">-</span> Промо-баннер</li>
+                <li><span class="no">-</span> Приоритет и бейдж</li>
+            </ul>
         </div>
         <div class="card plan-unlimited">
             <div class="label">Unlimited</div>
-            <div class="price">129 <span>EUR / mo</span></div>
-            <ul>
+            <div class="price">129 <span>EUR / <span data-lang="en">mo</span><span data-lang="ru">мес</span></span></div>
+            <ul data-lang="en">
                 <li><span class="ck">+</span> Unlimited items</li>
                 <li><span class="ck">+</span> All Pro features</li>
                 <li><span class="ck">+</span> Promo banner in catalog</li>
                 <li><span class="ck">+</span> Priority in search</li>
                 <li><span class="ck">+</span> Verified badge</li>
+            </ul>
+            <ul data-lang="ru">
+                <li><span class="ck">+</span> Безлимитные позиции</li>
+                <li><span class="ck">+</span> Все Pro-функции</li>
+                <li><span class="ck">+</span> Промо-баннер в каталоге</li>
+                <li><span class="ck">+</span> Приоритет в поиске</li>
+                <li><span class="ck">+</span> Верифицированный бейдж</li>
             </ul>
         </div>
     </div>
@@ -294,28 +442,36 @@
 
 <!-- SLIDE 7: Revenue Model -->
 <div class="slide" data-slide="6">
-    <h2 style="border-color:var(--gold)">Revenue Model</h2>
-    <p class="sub">How SVITA generates revenue across three role segments.</p>
+    <h2 style="border-color:var(--gold)">
+        <span data-lang="en">Revenue Model</span>
+        <span data-lang="ru">Модель дохода</span>
+    </h2>
+    <p class="sub">
+        <span data-lang="en">How SVITA generates revenue across three role segments.</span>
+        <span data-lang="ru">Как SVITA генерирует доход по трём ролевым сегментам.</span>
+    </p>
     <div class="grid" style="grid-template-columns:repeat(2,1fr);margin-top:12px">
         <div class="card">
-            <h3>Subscription Revenue</h3>
+            <h3 data-lang="en">Subscription Revenue</h3>
+            <h3 data-lang="ru">Доход от подписок</h3>
             <table style="margin:0">
-                <tr><td style="color:var(--tx2)">Owner Pro</td><td style="text-align:right;font-weight:700">99 EUR/mo</td></tr>
-                <tr><td style="color:var(--tx2)">Owner Unlimited</td><td style="text-align:right;font-weight:700">249 EUR/mo</td></tr>
-                <tr><td style="color:var(--tx2)">Contractor Pro</td><td style="text-align:right;font-weight:700">79 EUR/mo</td></tr>
-                <tr><td style="color:var(--tx2)">Contractor Unlimited</td><td style="text-align:right;font-weight:700">149 EUR/mo</td></tr>
-                <tr><td style="color:var(--tx2)">Supplier Pro</td><td style="text-align:right;font-weight:700">69 EUR/mo</td></tr>
-                <tr><td style="color:var(--tx2)">Supplier Unlimited</td><td style="text-align:right;font-weight:700">129 EUR/mo</td></tr>
+                <tr><td style="color:var(--tx2)">Owner Pro</td><td style="text-align:right;font-weight:700">99 EUR/<span data-lang="en">mo</span><span data-lang="ru">мес</span></td></tr>
+                <tr><td style="color:var(--tx2)">Owner Unlimited</td><td style="text-align:right;font-weight:700">249 EUR/<span data-lang="en">mo</span><span data-lang="ru">мес</span></td></tr>
+                <tr><td style="color:var(--tx2)">Contractor Pro</td><td style="text-align:right;font-weight:700">79 EUR/<span data-lang="en">mo</span><span data-lang="ru">мес</span></td></tr>
+                <tr><td style="color:var(--tx2)">Contractor Unlimited</td><td style="text-align:right;font-weight:700">149 EUR/<span data-lang="en">mo</span><span data-lang="ru">мес</span></td></tr>
+                <tr><td style="color:var(--tx2)">Supplier Pro</td><td style="text-align:right;font-weight:700">69 EUR/<span data-lang="en">mo</span><span data-lang="ru">мес</span></td></tr>
+                <tr><td style="color:var(--tx2)">Supplier Unlimited</td><td style="text-align:right;font-weight:700">129 EUR/<span data-lang="en">mo</span><span data-lang="ru">мес</span></td></tr>
             </table>
         </div>
         <div class="card">
-            <h3>Unit Economics (target)</h3>
+            <h3 data-lang="en">Unit Economics (target)</h3>
+            <h3 data-lang="ru">Юнит-экономика (цель)</h3>
             <table style="margin:0">
-                <tr><td style="color:var(--tx2)">Average MRR per user</td><td style="text-align:right;font-weight:700;color:var(--green)">~85 EUR</td></tr>
-                <tr><td style="color:var(--tx2)">Free-to-paid conversion</td><td style="text-align:right;font-weight:700">8-12%</td></tr>
-                <tr><td style="color:var(--tx2)">Churn rate target</td><td style="text-align:right;font-weight:700">&lt;5%/mo</td></tr>
-                <tr><td style="color:var(--tx2)">CAC (organic)</td><td style="text-align:right;font-weight:700;color:var(--green)">~15 EUR</td></tr>
-                <tr><td style="color:var(--tx2)">LTV/CAC ratio</td><td style="text-align:right;font-weight:700;color:var(--green)">&gt;10x</td></tr>
+                <tr><td style="color:var(--tx2)" data-lang="en">Average MRR per user</td><td style="color:var(--tx2)" data-lang="ru">Средний MRR на пользователя</td><td style="text-align:right;font-weight:700;color:var(--green)">~85 EUR</td></tr>
+                <tr><td style="color:var(--tx2)" data-lang="en">Free-to-paid conversion</td><td style="color:var(--tx2)" data-lang="ru">Конверсия бесплатных в платных</td><td style="text-align:right;font-weight:700">8-12%</td></tr>
+                <tr><td style="color:var(--tx2)" data-lang="en">Churn rate target</td><td style="color:var(--tx2)" data-lang="ru">Целевой отток</td><td style="text-align:right;font-weight:700">&lt;5%/<span data-lang="en">mo</span><span data-lang="ru">мес</span></td></tr>
+                <tr><td style="color:var(--tx2)" data-lang="en">CAC (organic)</td><td style="color:var(--tx2)" data-lang="ru">CAC (органика)</td><td style="text-align:right;font-weight:700;color:var(--green)">~15 EUR</td></tr>
+                <tr><td style="color:var(--tx2)" data-lang="en">LTV/CAC ratio</td><td style="color:var(--tx2)" data-lang="ru">LTV/CAC</td><td style="text-align:right;font-weight:700;color:var(--green)">&gt;10x</td></tr>
             </table>
         </div>
     </div>
@@ -325,12 +481,23 @@
 <div class="slide" data-slide="7">
     <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center">
         <div style="font-size:3rem;margin-bottom:16px">&#9889;</div>
-        <h1 style="font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:12px">Start Building Today</h1>
-        <p style="color:var(--tx2);font-size:1rem;max-width:480px;margin-bottom:28px">Create your first business concept for free. No credit card required. All 40+ European countries supported.</p>
-        <a href="/dashboard.html#signup" style="display:inline-block;padding:14px 36px;background:var(--blue);color:#fff;border-radius:10px;font-size:1rem;font-weight:700;text-decoration:none;transition:.15s" onmouseover="this.style.filter='brightness(1.15)'" onmouseout="this.style.filter='none'">Try SVITA Free &rarr;</a>
+        <h1 style="font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:12px">
+            <span data-lang="en">Start Building Today</span>
+            <span data-lang="ru">Начните строить сегодня</span>
+        </h1>
+        <p style="color:var(--tx2);font-size:1rem;max-width:480px;margin-bottom:28px">
+            <span data-lang="en">Create your first business concept for free. No credit card required. All 40+ European countries supported.</span>
+            <span data-lang="ru">Создайте первую бизнес-концепцию бесплатно. Без банковской карты. Поддержка 40+ стран Европы.</span>
+        </p>
+        <a href="/dashboard.html#signup" style="display:inline-block;padding:14px 36px;background:var(--blue);color:#fff;border-radius:10px;font-size:1rem;font-weight:700;text-decoration:none;transition:.15s" onmouseover="this.style.filter='brightness(1.15)'" onmouseout="this.style.filter='none'">
+            <span data-lang="en">Try SVITA Free &rarr;</span>
+            <span data-lang="ru">Попробовать бесплатно &rarr;</span>
+        </a>
         <div style="margin-top:24px;display:flex;gap:24px">
-            <a href="/dashboard.html" style="color:var(--tx2);font-size:.85rem;text-decoration:none">Sign In</a>
-            <a href="/news.html" style="color:var(--tx2);font-size:.85rem;text-decoration:none">All News</a>
+            <a href="/dashboard.html" style="color:var(--tx2);font-size:.85rem;text-decoration:none" data-lang="en">Sign In</a>
+            <a href="/dashboard.html" style="color:var(--tx2);font-size:.85rem;text-decoration:none" data-lang="ru">Войти</a>
+            <a href="/news.html" style="color:var(--tx2);font-size:.85rem;text-decoration:none" data-lang="en">All News</a>
+            <a href="/news.html" style="color:var(--tx2);font-size:.85rem;text-decoration:none" data-lang="ru">Все новости</a>
         </div>
     </div>
 </div>
@@ -342,10 +509,22 @@
     <button class="prev" id="prevBtn" disabled>&larr;</button>
     <div class="counter" id="counter">1 / 8</div>
     <div class="bar"><div class="bar-fill" id="bar" style="width:12.5%"></div></div>
-    <button class="next" id="nextBtn">Next &rarr;</button>
+    <button class="next" id="nextBtn"><span data-lang="en">Next &rarr;</span><span data-lang="ru">Далее &rarr;</span></button>
 </div>
 
 <script>
+const SB_URL='https://ctdleobjnzniqkqomlrq.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZGxlb2JqbnpuaXFrcW9tbHJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMzE4MTEsImV4cCI6MjA4NzgwNzgxMX0.AMHtY7zGPemKYCxMy2bqRTOEAp8trA_Slor9wmg7C38';
+
+// Lang toggle
+function setLang(l){
+    document.body.classList.toggle('lang-ru',l==='ru');
+    document.querySelectorAll('.lang-toggle span').forEach(s=>s.classList.toggle('active',s.textContent===l.toUpperCase()));
+    localStorage.setItem('svita_pricing_lang',l);
+}
+(function(){var s=localStorage.getItem('svita_pricing_lang');if(s)setLang(s)})();
+
+// Slides
 let cur=0;
 const slides=document.querySelectorAll('.slide');
 const total=slides.length;
@@ -354,7 +533,6 @@ function go(n){
     cur=n;
     slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
     document.getElementById('prevBtn').disabled=cur===0;
-    document.getElementById('nextBtn').innerHTML=cur===total-1?'Done':'Next &rarr;';
     document.getElementById('counter').textContent=(cur+1)+' / '+total;
     document.getElementById('bar').style.width=((cur+1)/total*100)+'%';
 }
@@ -364,6 +542,12 @@ document.addEventListener('keydown',e=>{
     if(e.code==='ArrowRight'||e.code==='Space'){e.preventDefault();go(cur+1)}
     if(e.code==='ArrowLeft')go(cur-1);
 });
+
+// View counter
+fetch(SB_URL+'/rest/v1/rpc/track_page_view',{method:'POST',headers:{'apikey':SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({p_page:location.pathname})}).catch(()=>{});
+fetch(SB_URL+'/rest/v1/rpc/get_page_views',{method:'POST',headers:{'apikey':SB_KEY,'Content-Type':'application/json'},body:JSON.stringify({p_page:location.pathname})})
+.then(r=>r.json()).then(c=>{document.getElementById('vc').textContent=typeof c==='number'?c:'0'}).catch(()=>{});
 </script>
+<script src="/js/news-edit.js"></script>
 </body>
 </html>
