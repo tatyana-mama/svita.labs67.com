@@ -2982,13 +2982,22 @@ async function generateAIConcept(){
   const _aiCat=currentBizType||'dental';
   const _aiCountry=(activeProperty&&activeProperty.city)?activeProperty.city:'';
 
-  const prompt=`Пользователь описал концепцию: "${desc}"
+  // Collect current state for context
+  const _mRooms=Object.keys(DB.pickedRooms||{}).length;
+  const _mStaff=Object.keys(DB.pickedStaff||{}).length;
+  const _mEquip=Object.keys(DB.pickedEquip||{}).length;
+  const _mSvc=Object.keys(DB.pickedServices||{}).length;
+  const _hasData=_mRooms+_mStaff+_mEquip+_mSvc>0;
+  const _stateCtx=_hasData?`\n\nУЖЕ В КОНСТРУКТОРЕ (учти, дополни, не дублируй): помещений: ${_mRooms}, персонала: ${_mStaff}, оборудования: ${_mEquip}, услуг: ${_mSvc}.`:'';
+
+  const prompt=`Пользователь описал концепцию: "${desc}"${_stateCtx}
 
 Сгенерируй полную структуру для конструктора бизнеса. Ответ СТРОГО в JSON (без markdown, без \`\`\`):
 {
   "name": "Название концепции",
   "bizType": "тип_бизнеса",
   "bizSubtype": "подтип",
+  "disclaimer": "Концепция сгенерирована AI и требует оптимизации. Проверьте цены и состав.",
   "employees": [{"id":1,"name":"Должность","spec":"Описание","salary":число,"status":"Вакансия","country":"Страна"}],
   "services": [{"id":1,"name":"Название","category":"Категория","time":"время","price":число}],
   "rooms": [{"id":1,"name":"Название помещения","type":"Тип зоны","w":ширина,"h":высота,"l":длина,"area":площадь}],
@@ -3096,6 +3105,13 @@ async function generateAIConcept(){
           '<div style="font-size:18px;font-weight:700">'+Math.round((equipCost+renoCost)/1000)+'k</div>'+
           '<div style="color:var(--tx3);font-size:10px">PLN инвестиции</div>'+
         '</div>'+
+      '</div>'+
+      '<div style="background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(239,68,68,.08));border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:8px 10px;margin-top:8px;font-size:10px;line-height:1.5;color:var(--tx2)">'+
+        '<b style="color:#f59e0b">⚠ Концепция сгенерирована AI и требует оптимизации</b><br>'+
+        'Цены, зарплаты и состав могут отличаться от реальных. Проверьте каждую позицию перед использованием.'+
+      '</div>'+
+      '<div style="display:flex;gap:6px;margin-top:8px">'+
+        '<button onclick="downloadAIModalConcept()" style="padding:5px 12px;border:none;border-radius:6px;background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;font-size:10px;font-weight:600;cursor:pointer;font-family:var(--f)">⬇ Скачать JSON</button>'+
       '</div>';
     }
     const applyBtn=document.getElementById('aiApplyBtn');
@@ -3106,6 +3122,19 @@ async function generateAIConcept(){
     status.innerHTML='<span style="color:var(--rd)">✗ Ошибка: '+esc(e.message)+'</span>';
   }
   btn.disabled=false;btn.textContent='✨ Сгенерировать';
+}
+
+function downloadAIModalConcept(){
+  if(!_aiConcept)return;
+  const data=Object.assign({},_aiConcept,{
+    _svitaVersion:'1.0',_exportDate:new Date().toISOString(),_source:'jetson-modal',
+    _disclaimer:'Концепция сгенерирована AI (SVITA AI) и требует оптимизации. Проверьте цены и состав.'
+  });
+  const json=JSON.stringify(data,null,2);
+  const blob=new Blob([json],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='svita-concept-'+(data.bizType||'ai')+'.json';a.click();URL.revokeObjectURL(url);
+  toast('Концепция скачана','gn');
 }
 
 function _getDemoConcept(cat,desc){
@@ -7901,14 +7930,20 @@ async function sendRpChat(){
   _saveChatHistory();
 
   const _bEl=document.getElementById('ovBudget');const _rEl=document.getElementById('ovRevenue');const _eEl=document.getElementById('ovExpenses');
+  const _pRIds=Object.keys(DB.pickedRooms||{});const _pSIds=Object.keys(DB.pickedStaff||{});
+  const _pEIds=Object.keys(DB.pickedEquip||{});const _pSvIds=Object.keys(DB.pickedServices||{});
   const context={
     bizType:currentBizType||'dental',
     section:cur,
     concept:document.getElementById('cBrand')?.value||'',
-    rooms:Object.keys(DB.pickedRooms||{}).length,
-    equipment:Object.keys(DB.pickedEquip||{}).length,
-    staff:Object.keys(DB.pickedStaff||{}).length,
-    services:(DB.services||[]).length,
+    rooms:_pRIds.length,
+    roomNames:_pRIds.length?(DB.rooms||[]).filter(r=>_pRIds.includes(String(r.id))).slice(0,10).map(r=>r.name).join(', '):'',
+    equipment:_pEIds.length,
+    equipNames:_pEIds.length?(DB.suppliers||[]).filter(s=>_pEIds.includes(String(s.id))).slice(0,10).map(s=>s.name).join(', '):'',
+    staff:_pSIds.length,
+    staffNames:_pSIds.length?(DB.employees||[]).filter(e=>_pSIds.includes(String(e.id))).slice(0,10).map(e=>e.position||e.name).join(', '):'',
+    services:_pSvIds.length,
+    serviceNames:_pSvIds.length?(DB.services||[]).filter(s=>_pSvIds.includes(String(s.id))).slice(0,10).map(s=>s.name).join(', '):'',
     renovations:Object.keys(DB.pickedRenovations||{}).length,
     docs:Object.keys(DB.pickedDocs||{}).length,
     budget:_bEl?_bEl.textContent:'0',
@@ -8328,13 +8363,36 @@ async function generateConcept(){
 async function _generateConceptCore(desc,city,area){
   if(_aiChatStreaming)return;
 
-  _rpChatAppend('user','Сгенерируй полную концепцию стоматологии '+area+' м² в '+city);
-  const aiEl=_rpChatAppend('ai','Генерирую полную концепцию по 7 секциям...\nПомещение считаем полностью голым — с нуля.\n\n⏳ 0/7 секций...');
+  // Collect current constructor state for context-aware generation
+  const _curState={};
+  const _pickedRoomIds=Object.keys(DB.pickedRooms||{});
+  const _pickedStaffIds=Object.keys(DB.pickedStaff||{});
+  const _pickedEquipIds=Object.keys(DB.pickedEquip||{});
+  const _pickedSvcIds=Object.keys(DB.pickedServices||{});
+  const _pickedRenoIds=Object.keys(DB.pickedRenovations||{});
+  const _pickedDocKeys=Object.keys(DB.pickedDocs||{});
+  if(_pickedRoomIds.length){_curState.rooms=(DB.rooms||[]).filter(r=>_pickedRoomIds.includes(String(r.id))).map(r=>r.name+' ('+r.type+', '+(r.area||'?')+'м²)').join(', ')}
+  if(_pickedStaffIds.length){_curState.staff=(DB.employees||[]).filter(e=>_pickedStaffIds.includes(String(e.id))).map(e=>(e.position||e.name)+' '+(e.salary||'?')+'PLN').join(', ')}
+  if(_pickedEquipIds.length){_curState.equipment=(DB.suppliers||[]).filter(s=>_pickedEquipIds.includes(String(s.id))).map(s=>s.name+' '+(s.price||'?')+'PLN').join(', ')}
+  if(_pickedSvcIds.length){_curState.services=(DB.services||[]).filter(s=>_pickedSvcIds.includes(String(s.id))).map(s=>s.name+' '+(s.price||'?')+'PLN').join(', ')}
+  if(_pickedRenoIds.length){_curState.renovations=(DB.renovations||[]).filter(r=>_pickedRenoIds.includes(String(r.id))).map(r=>r.name+' '+(r.price||'?')+'PLN').join(', ')}
+  if(_pickedDocKeys.length){_curState.docs=_pickedDocKeys.map(k=>{const d=DB.pickedDocs[k];return d?.name||k}).join(', ')}
+  const hasState=Object.keys(_curState).length>0;
+  const stateNote=hasState?'\n\nУЖЕ ВЫБРАНО ПОЛЬЗОВАТЕЛЕМ (учти при генерации, дополни недостающее, не дублируй):'+
+    (_curState.rooms?'\nПомещения: '+_curState.rooms:'')+
+    (_curState.staff?'\nПерсонал: '+_curState.staff:'')+
+    (_curState.equipment?'\nОборудование: '+_curState.equipment:'')+
+    (_curState.services?'\nУслуги: '+_curState.services:'')+
+    (_curState.renovations?'\nРемонт: '+_curState.renovations:'')+
+    (_curState.docs?'\nДокументы: '+_curState.docs:''):'';
+
+  _rpChatAppend('user','Сгенерируй полную концепцию '+desc+' '+area+' м² в '+city+(hasState?' (с учётом уже выбранного)':''));
+  const aiEl=_rpChatAppend('ai','Генерирую полную концепцию по 7 секциям...\n'+(hasState?'Учитываю уже выбранные позиции.\n':' Помещение считаем полностью голым — с нуля.\n')+'\n⏳ 0/7 секций...');
   _aiChatStreaming=true;
   document.getElementById('rpChatSendBtn').style.opacity='0.5';
 
   const CHAT_URL=SB_URL+'/functions/v1/ai-chat';
-  const preamble='Стоматология ('+desc+') '+area+'м² в '+city+', Польша. Помещение голое — с нуля. Цены PLN 2025. Верни ТОЛЬКО JSON массив без пояснений!';
+  const preamble=desc+' '+area+'м² в '+city+', Польша. Цены PLN 2025. Верни ТОЛЬКО JSON массив без пояснений!'+stateNote;
   const sections=[
     {key:'rooms',prompt:preamble+' Комнаты. Формат: [{"name":"Кабинет 1","type":"Стоматологический","area":18,"zone":"Медицинская"}]. Типы: Стоматологический кабинет, Хирургический кабинет, Рентген, Стерилизационная, Рецепция, Зал ожидания, Туалет, Техническая, Коридор. Зоны: Медицинская, Общественная, Техническая, Служебная. 12-18 комнат, площади пропорционально '+area+'м².'},
     {key:'staff',prompt:preamble+' Персонал. Формат: [{"position":"Стоматолог","salary":12000,"type":"full","name":"Стоматолог"}]. type: full/part/b2b. 8-14 человек.'},
@@ -8390,15 +8448,18 @@ async function _generateConceptCore(desc,city,area){
         preview+=`<div style="margin:3px 0"><b>${lbl}</b> (${v.length}): <span style="color:var(--tx2);font-size:10px">${names}${more}</span></div>`;
       }
     }
-    preview+=`<div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
-      <button onclick="downloadGeneratedConcept()" style="padding:6px 14px;border:none;border-radius:8px;background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--f)">⬇ Скачать концепцию</button>
+    preview+=`<div style="background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(239,68,68,.08));border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:8px 10px;margin-top:8px;font-size:10px;line-height:1.5;color:var(--tx2)">
+      <b style="color:#f59e0b">⚠ Концепция сгенерирована AI и требует оптимизации</b><br>
+      Цены, зарплаты и состав могут отличаться от реальных. Проверьте каждую позицию перед использованием.
+    </div>
+    <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+      <button onclick="applyFullConcept(this)" style="padding:6px 14px;border:none;border-radius:8px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--f)">✓ Применить к проекту</button>
+      <button onclick="downloadGeneratedConcept()" style="padding:6px 14px;border:none;border-radius:8px;background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--f)">⬇ Скачать JSON</button>
     </div>
     <div style="font-size:10px;color:var(--tx2);margin-top:8px;line-height:1.5;background:rgba(59,130,246,.06);padding:8px;border-radius:6px">
-      <b>Как загрузить:</b><br>
-      1. Скачайте файл (кнопка выше)<br>
-      2. Откройте раздел <a href="#" onclick="nav('overview');return false" style="color:var(--ac2);font-weight:600">Обзор</a><br>
-      3. Нажмите «⬆ Загрузить .json файл»<br>
-      4. Все 7 секций заполнятся автоматически
+      <b>Как использовать:</b><br>
+      1. <b>Применить</b> — загрузит все секции прямо в конструктор<br>
+      2. <b>Скачать JSON</b> — сохранит файл для импорта позже через «⬆ Загрузить .json файл» в <a href="#" onclick="nav('overview');return false" style="color:var(--ac2);font-weight:600">Обзоре</a>
     </div>`;
     aiEl.innerHTML=preview;
     _aiChatHistory.push({role:'assistant',content:'Концепция сгенерирована: '+Object.entries(results).map(([k,v])=>labels[k]+': '+(Array.isArray(v)?v.length:'✓')).join(', ')});
@@ -8413,7 +8474,9 @@ async function _generateConceptCore(desc,city,area){
 
 function downloadGeneratedConcept(){
   const r=window._pendingConceptFull;if(!r)return;
-  const data={_svitaVersion:'1.0',_exportDate:new Date().toISOString(),_name:'ai-concept',_source:'jetson'};
+  const data={_svitaVersion:'1.0',_exportDate:new Date().toISOString(),_name:'ai-concept',_source:'jetson',
+    _disclaimer:'Концепция сгенерирована AI (SVITA AI / Jetson AGX Orin). Цены, зарплаты и состав требуют проверки и оптимизации.',
+    _bizType:currentBizType||'dental',_city:activeProperty?.city||'',_area:activeProperty?.area||0};
   // Convert AI arrays to workspace format
   let nextId=Date.now();
   if(r.rooms)data.rooms=r.rooms.map(rm=>({id:nextId++,name:rm.name,type:rm.type||'Общественная',area:rm.area||15,zone:rm.zone||'Медицинская'}));
