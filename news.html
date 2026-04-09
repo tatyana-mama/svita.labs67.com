@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SVITA — News</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f7f8fb;--sf:#ffffff;--sf2:#f0f2f7;--bd:rgba(0,0,0,.05);--bd2:rgba(0,0,0,.09);--tx:#1a2332;--tx2:rgba(26,35,50,.58);--tx3:rgba(26,35,50,.32);--ac:#4f6ef7;--ac2:#3b5ce4;--acbg:rgba(79,110,247,.05);--r:14px;--f:'Inter',system-ui,sans-serif;--shadow:0 1px 4px rgba(0,0,0,.05),0 0 1px rgba(0,0,0,.03);--shadow-md:0 4px 12px rgba(0,0,0,.04),0 1px 3px rgba(0,0,0,.03)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--f);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:inherit;text-decoration:none}
+
+.header{background:var(--sf);border-bottom:1px solid var(--bd);padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.header-left{display:flex;align-items:center;gap:14px}
+.logo{font-size:18px;font-weight:800;display:flex;align-items:center;gap:8px}
+.logo .dot{width:7px;height:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 3px var(--acbg)}
+.logo-tag{font-size:9px;color:var(--tx3);letter-spacing:2px;text-transform:uppercase;font-weight:500}
+.header-sep{width:1px;height:20px;background:var(--bd2)}
+.header-section{font-size:13px;font-weight:600;color:var(--tx2)}
+.back-link{font-size:12px;color:var(--ac);font-weight:500;display:flex;align-items:center;gap:4px;transition:opacity .15s}
+.back-link:hover{opacity:.7}
+
+.page{max-width:960px;margin:0 auto;padding:40px 24px 80px}
+.page-head{margin-bottom:36px}
+.page-head h1{font-size:28px;font-weight:800;letter-spacing:-.02em}
+.page-head p{font-size:13px;color:var(--tx2);margin-top:6px;line-height:1.6}
+
+.news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+
+.news-card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;transition:all .2s;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.news-card:hover{border-color:var(--bd2);box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.news-thumb{width:100%;height:180px;background:var(--sf2);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.news-thumb img{width:100%;height:100%;object-fit:cover}
+.news-thumb-icon{font-size:48px;opacity:.3}
+.news-badge{position:absolute;top:10px;left:10px;font-size:9px;font-weight:700;padding:3px 8px;border-radius:5px;text-transform:uppercase;letter-spacing:.5px}
+.badge-presentation{background:rgba(79,110,247,.12);color:var(--ac2)}
+.badge-research{background:rgba(34,197,94,.1);color:#1a9956}
+.badge-tool{background:rgba(249,115,22,.1);color:#c05a10}
+.news-body{padding:16px 18px 18px;flex:1;display:flex;flex-direction:column}
+.news-date{font-size:10px;color:var(--tx3);font-weight:500;margin-bottom:6px}
+.news-title{font-size:15px;font-weight:700;line-height:1.35;margin-bottom:6px}
+.news-desc{font-size:12px;color:var(--tx2);line-height:1.55;flex:1}
+.news-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:12px}
+.news-tag{font-size:9px;font-weight:600;padding:2px 7px;border-radius:5px;background:var(--sf2);color:var(--tx3)}
+
+.news-cta{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-size:11px;font-weight:600;color:var(--ac);transition:gap .15s}
+.news-card:hover .news-cta{gap:8px}
+
+.empty-state{text-align:center;padding:80px 20px;color:var(--tx3)}
+.empty-state .icon{font-size:48px;margin-bottom:16px;opacity:.4}
+.empty-state p{font-size:13px;line-height:1.6}
+
+@media(max-width:640px){
+  .header{padding:0 16px}
+  .page{padding:24px 16px 60px}
+  .news-grid{grid-template-columns:1fr}
+  .page-head h1{font-size:22px}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <a href="/" class="logo"><span class="dot"></span>SVITA</a>
+    <span class="header-sep"></span>
+    <span class="header-section">News</span>
+  </div>
+  <a href="/" class="back-link">&larr; Dashboard</a>
+</div>
+
+<div class="page">
+  <div class="page-head">
+    <h1>AI & Neural Networks</h1>
+    <p>Presentations, research, and tools — everything we build and discover in the world of artificial intelligence.</p>
+  </div>
+
+  <div class="news-grid">
+
+    <!-- 1. Vibe Coding EN -->
+    <a href="/news/vibe-coding-en.html" class="news-card">
+      <div class="news-thumb" style="background:linear-gradient(135deg,#0a0e14,#161b22)">
+        <div style="text-align:center;color:#58a6ff;font-size:32px;font-weight:800;letter-spacing:2px;opacity:.7">VIBE<br><span style="font-size:18px;color:#adbac7;font-weight:300">CODING</span></div>
+        <span class="news-badge badge-presentation">Presentation</span>
+      </div>
+      <div class="news-body">
+        <div class="news-date">April 9, 2026</div>
+        <div class="news-title">Vibe Coding — The New Era of Building Things</div>
+        <div class="news-desc">11-slide interactive presentation about prompt-driven development, AI agents as extensions of self, and the $616B market opportunity.</div>
+        <div class="news-tags">
+          <span class="news-tag">AI Agents</span>
+          <span class="news-tag">Vibe Coding</span>
+          <span class="news-tag">EN</span>
+        </div>
+        <div class="news-cta">Open &rarr;</div>
+      </div>
+    </a>
+
+    <!-- 2. Vibe Coding RU -->
+    <a href="/news/vibe-coding-ru.html" class="news-card">
+      <div class="news-thumb" style="background:linear-gradient(135deg,#0a0e14,#161b22)">
+        <div style="text-align:center;color:#bc8cff;font-size:32px;font-weight:800;letter-spacing:2px;opacity:.7">ВАЙБ<br><span style="font-size:18px;color:#adbac7;font-weight:300">КОДИНГ</span></div>
+        <span class="news-badge badge-presentation">Presentation</span>
+      </div>
+      <div class="news-body">
+        <div class="news-date">9 апреля 2026</div>
+        <div class="news-title">Вайб Кодинг — Новая Эра Создания</div>
+        <div class="news-desc">11 интерактивных слайдов о промпт-разработке, AI-агентах как продолжении мышления, и рынке в $616 млрд.</div>
+        <div class="news-tags">
+          <span class="news-tag">AI Агенты</span>
+          <span class="news-tag">Вайб Кодинг</span>
+          <span class="news-tag">RU</span>
+        </div>
+        <div class="news-cta">Открыть &rarr;</div>
+      </div>
+    </a>
+
+    <!-- 3. Claude Opus Principles -->
+    <a href="/principles.html" class="news-card">
+      <div class="news-thumb" style="background:linear-gradient(135deg,#06060c,#141426)">
+        <div style="text-align:center;color:#8b5cf6;font-size:28px;font-weight:800;opacity:.7">CLAUDE<br><span style="font-size:16px;color:#9898b8;font-weight:300">OPUS 4.6</span></div>
+        <span class="news-badge badge-research">Research</span>
+      </div>
+      <div class="news-body">
+        <div class="news-date">April 2026</div>
+        <div class="news-title">Claude Opus 4.6 — Fundamental Principles</div>
+        <div class="news-desc">Deep dive into the architecture, reasoning capabilities, and core principles behind one of the most advanced AI models.</div>
+        <div class="news-tags">
+          <span class="news-tag">Claude</span>
+          <span class="news-tag">Anthropic</span>
+          <span class="news-tag">LLM</span>
+        </div>
+        <div class="news-cta">Open &rarr;</div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+</body>
+</html>

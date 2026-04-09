@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIBE CODING | Новая эпоха создания продуктов</title>
+    <style>
+        :root {
+            --bg-color: #0a0e14;
+            --card-bg: #161b22;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-purple: #bc8cff;
+            --accent-orange: #f0883e;
+            --accent-red: #f85149;
+            --text-main: #adbac7;
+            --text-bright: #ffffff;
+            --border: #30363d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .presentation-container {
+            width: 90vw;
+            height: 80vh;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        .slides-wrapper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 40px;
+            display: none;
+            flex-direction: column;
+            animation: slideIn 0.5s ease-out forwards;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            overflow-y: auto;
+        }
+
+        .slide.active { display: flex; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 { color: var(--accent-blue); font-size: 2.5rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
+        h2 { color: var(--accent-green); margin-bottom: 15px; border-left: 4px solid var(--accent-green); padding-left: 15px; }
+        h3 { color: var(--text-bright); margin-bottom: 10px; }
+        p { line-height: 1.7; margin-bottom: 15px; font-size: 1.05rem; }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .skill-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .skill-card:hover { border-color: var(--accent-blue); transform: translateY(-5px); }
+        .skill-card h3 { font-size: 1rem; margin-bottom: 10px; }
+        .skill-card ul { list-style: none; font-size: 0.9rem; }
+        .skill-card li { margin-bottom: 6px; display: flex; align-items: center; }
+        .skill-card li::before { content: '\25B9'; color: var(--accent-blue); margin-right: 8px; }
+
+        .pipeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+            flex: 1;
+        }
+
+        .step-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bg-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .step::after {
+            content: '';
+            position: absolute;
+            top: 30px;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background: var(--border);
+            z-index: -1;
+        }
+
+        .step:last-child::after { display: none; }
+
+        .controls {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        button {
+            background: var(--accent-blue);
+            color: var(--bg-color);
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            font-size: 0.95rem;
+        }
+
+        button:hover { opacity: 0.8; }
+        button:disabled { background: var(--border); cursor: not-allowed; }
+
+        .progress {
+            position: absolute;
+            top: -20px;
+            left: 0;
+            height: 4px;
+            background: var(--accent-blue);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .slide-counter {
+            color: var(--text-main);
+            font-size: 0.85rem;
+            font-family: monospace;
+        }
+
+        .tool-badge {
+            display: inline-block;
+            padding: 5px 14px;
+            background: rgba(188, 140, 255, 0.1);
+            border: 1px solid var(--accent-purple);
+            color: var(--accent-purple);
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 0.85rem;
+        }
+
+        .tool-badge.green {
+            background: rgba(63, 185, 80, 0.1);
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .tool-badge.blue {
+            background: rgba(88, 166, 255, 0.1);
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .tool-badge.orange {
+            background: rgba(240, 136, 62, 0.1);
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+        }
+
+        .quote-block {
+            background: rgba(88, 166, 255, 0.05);
+            border-left: 4px solid var(--accent-blue);
+            padding: 20px 25px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+            font-size: 1.15rem;
+            font-style: italic;
+            color: var(--text-bright);
+        }
+
+        .versus-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .versus-table th {
+            text-align: left;
+            padding: 15px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .versus-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+            font-size: 0.95rem;
+        }
+
+        .versus-table tr:hover td {
+            background: rgba(88, 166, 255, 0.03);
+        }
+
+        .old { color: var(--accent-red); opacity: 0.6; text-decoration: line-through; }
+        .new { color: var(--accent-green); font-weight: 600; }
+
+        .big-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+            line-height: 1;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+            background: rgba(88, 166, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .stat-card p {
+            font-size: 0.85rem;
+            margin-top: 8px;
+            margin-bottom: 0;
+        }
+
+        .cover-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .cover-slide h1 {
+            font-size: 4rem;
+            letter-spacing: 8px;
+            margin-bottom: 10px;
+        }
+
+        .cover-slide .subtitle {
+            font-size: 1.4rem;
+            color: var(--accent-green);
+            margin-bottom: 40px;
+            letter-spacing: 3px;
+        }
+
+        .cover-slide .tagline {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            max-width: 600px;
+            line-height: 1.8;
+        }
+
+        .cta-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .cta-slide h1 {
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+        }
+
+        .cta-list {
+            list-style: none;
+            font-size: 1.2rem;
+            line-height: 2.2;
+        }
+
+        .cta-list li::before {
+            content: '\2192';
+            color: var(--accent-green);
+            margin-right: 12px;
+            font-weight: bold;
+        }
+
+        .two-col {
+            display: flex;
+            gap: 40px;
+            flex: 1;
+        }
+
+        .two-col > div { flex: 1; }
+
+        .dashed-box {
+            background: rgba(88, 166, 255, 0.05);
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px dashed var(--accent-blue);
+        }
+
+        .orange-box {
+            background: rgba(240, 136, 62, 0.05);
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px dashed var(--accent-orange);
+        }
+    </style>
+</head>
+<body>
+
+<div class="presentation-container">
+    <div class="progress" id="progressBar" style="width: 10%;"></div>
+
+    <div class="slides-wrapper">
+
+        <!-- SLIDE 1: Cover -->
+        <div class="slide active cover-slide">
+            <h1>VIBE CODING</h1>
+            <div class="subtitle">НОВАЯ ЭПОХА СОЗДАНИЯ ПРОДУКТОВ</div>
+            <div class="tagline">
+                Важно не то, как хорошо ты знаешь код.<br>
+                Важнее то, насколько хорошо ты ладишь с людьми.
+            </div>
+            <div style="margin-top: 50px; color: var(--border); font-size: 0.85rem; letter-spacing: 2px;">LABS67 / 2026</div>
+        </div>
+
+        <!-- SLIDE 2: Старый мир мёртв -->
+        <div class="slide">
+            <h1>01. Старый мир мёртв</h1>
+            <div class="two-col">
+                <div>
+                    <h2>Чему нас учили</h2>
+                    <div class="orange-box">
+                        <ul style="list-style: none; font-size: 1rem; line-height: 2;">
+                            <li><span class="old">Заучивать синтаксис</span></li>
+                            <li><span class="old">Гриндить LeetCode</span></li>
+                            <li><span class="old">Годами учиться в одиночку</span></li>
+                            <li><span class="old">Закрыться и "фокусироваться"</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <h2>Что реально важно</h2>
+                    <div class="dashed-box">
+                        <ul style="list-style: none; font-size: 1rem; line-height: 2;">
+                            <li><span class="new">Насколько ясно ты мыслишь</span></li>
+                            <li><span class="new">Насколько точно ты формулируешь</span></li>
+                            <li><span class="new">Насколько глубоко ты понимаешь контекст</span></li>
+                            <li><span class="new">Насколько быстро ты адаптируешься</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="quote-block" style="margin-top: 30px;">
+                Лучшие разработчики 2026 года &mdash; не те, кто быстрее всех печатает.<br>
+                А те, кто яснее всех думает.
+            </div>
+        </div>
+
+        <!-- SLIDE 3: Что такое Vibe Coding -->
+        <div class="slide">
+            <h1>02. Что такое Vibe Coding?</h1>
+            <p style="font-size: 1.15rem; margin-bottom: 30px;">Ты не пишешь каждую строку руками. Ты <strong style="color: var(--accent-green);">направляешь</strong> процесс.</p>
+            <div class="pipeline">
+                <div class="step">
+                    <div class="step-icon" style="background: var(--accent-blue);">1</div>
+                    <p style="font-size: 0.85rem;"><strong>Задать<br>видение</strong></p>
+                </div>
+                <div class="step">
+                    <div class="step-icon" style="background: var(--accent-green);">2</div>
+                    <p style="font-size: 0.85rem;"><strong>Определить<br>контекст</strong></p>
+                </div>
+                <div class="step">
+                    <div class="step-icon" style="background: var(--accent-purple);">3</div>
+                    <p style="font-size: 0.85rem;"><strong>Направить<br>агента</strong></p>
+                </div>
+                <div class="step">
+                    <div class="step-icon" style="background: var(--accent-orange);">4</div>
+                    <p style="font-size: 0.85rem;"><strong>Проверить<br>результат</strong></p>
+                </div>
+            </div>
+            <div class="quote-block" style="margin-top: 50px;">
+                Это как быть кинорежиссёром.<br>
+                Ты не держишь камеру. Ты держишь историю.
+            </div>
+        </div>
+
+        <!-- SLIDE 4: Промпт как стиль жизни -->
+        <div class="slide">
+            <h1>03. Промпт как стиль жизни</h1>
+            <div class="two-col">
+                <div>
+                    <p style="font-size: 1.1rem;">Промпт &mdash; это не команда. Это <strong style="color: var(--accent-purple);">зеркало твоего мышления.</strong></p>
+                    <p>Когда ты пишешь промпт, ты отвечаешь на один вопрос:</p>
+                    <div class="quote-block">
+                        "Могу ли я объяснить то, что хочу, настолько ясно, что даже машина поймёт?"
+                    </div>
+                    <p>Если да &mdash; <strong style="color: var(--accent-green);">любой человек тоже поймёт.</strong></p>
+                    <p style="margin-top: 20px; font-size: 1.05rem;">Сгенерированный ответ &mdash; это <strong>доказательство</strong> того, что ты хочешь быть правильно понятым.</p>
+                </div>
+                <div>
+                    <h3 style="color: var(--accent-orange); margin-bottom: 15px;">Промпт-инженерия = инженерия коммуникации</h3>
+                    <div class="dashed-box">
+                        <p style="margin-bottom: 10px;">Чем лучше твои промпты, тем лучше твои:</p>
+                        <ul style="list-style: none; font-size: 1rem; line-height: 2.2;">
+                            <li><span class="tool-badge blue">Письма</span></li>
+                            <li><span class="tool-badge green">Питчи</span></li>
+                            <li><span class="tool-badge">Брифы для команды</span></li>
+                            <li><span class="tool-badge orange">Спецификации</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: Агент = продолжение тебя -->
+        <div class="slide">
+            <h1>04. Агент = продолжение тебя</h1>
+            <p style="font-size: 1.1rem; margin-bottom: 10px;">Твой AI-агент &mdash; это не инструмент. Это <strong style="color: var(--accent-blue);">продолжение тебя.</strong></p>
+            <div class="grid-container">
+                <div class="skill-card">
+                    <h3 style="color: var(--accent-blue);">Твои знания</h3>
+                    <ul>
+                        <li>Он помнит всё</li>
+                        <li>Память между сессиями</li>
+                        <li>Общие файлы контекста</li>
+                        <li>Никогда не забывает решения</li>
+                    </ul>
+                </div>
+                <div class="skill-card">
+                    <h3 style="color: var(--accent-green);">Твоя логика</h3>
+                    <ul>
+                        <li>Он рассуждает над задачами</li>
+                        <li>Цепочка рассуждений</li>
+                        <li>Параллельная проверка гипотез</li>
+                        <li>Поиск первопричин</li>
+                    </ul>
+                </div>
+                <div class="skill-card">
+                    <h3 style="color: var(--accent-purple);">Твои руки</h3>
+                    <ul>
+                        <li>Он пишет, ищет, строит</li>
+                        <li>40+ специализированных агентов</li>
+                        <li>Код, документация, тесты, деплой</li>
+                        <li>Параллельное выполнение</li>
+                    </ul>
+                </div>
+                <div class="skill-card">
+                    <h3 style="color: var(--accent-orange);">Твоя настройка</h3>
+                    <ul>
+                        <li>Настроить агента = настроить инструмент</li>
+                        <li>Правила, память, обратная связь</li>
+                        <li>Музыка идёт от тебя</li>
+                        <li>Инструмент её усиливает</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="quote-block" style="margin-top: 20px;">
+                Настоящий скил &mdash; калибровка.<br>
+                Настроить агента на высокий уровень интеллекта &mdash; как настроить инструмент перед концертом.
+            </div>
+        </div>
+
+        <!-- SLIDE 6: Реальный профит -->
+        <div class="slide">
+            <h1>05. Реальный профит</h1>
+            <table class="versus-table">
+                <tr>
+                    <th style="color: var(--accent-red); opacity: 0.6;">Старый мир</th>
+                    <th style="color: var(--accent-green);">Vibe Coding</th>
+                </tr>
+                <tr>
+                    <td class="old">1 разработчик = 1 человек</td>
+                    <td class="new">1 разработчик = команда из 40+ агентов</td>
+                </tr>
+                <tr>
+                    <td class="old">Обучение занимает годы</td>
+                    <td class="new">Контекст задаётся за минуты</td>
+                </tr>
+                <tr>
+                    <td class="old">Знания заперты в голове</td>
+                    <td class="new">Знания сохранены в общей памяти</td>
+                </tr>
+                <tr>
+                    <td class="old">Пишешь код строка за строкой</td>
+                    <td class="new">Проектируешь целые системы</td>
+                </tr>
+                <tr>
+                    <td class="old">Застрял = залип на часы</td>
+                    <td class="new">Застрял = переформулируй и направь</td>
+                </tr>
+            </table>
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="big-number">10</div>
+                    <p>параллельных агентов</p>
+                </div>
+                <div class="stat-card">
+                    <div class="big-number">44</div>
+                    <p>страны охвачены</p>
+                </div>
+                <div class="stat-card">
+                    <div class="big-number">616</div>
+                    <p>обучающих примеров</p>
+                </div>
+                <div class="stat-card">
+                    <div class="big-number">1</div>
+                    <p>человек. 1 вечер.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: Новые скилы -->
+        <div class="slide">
+            <h1>06. Новые скилы</h1>
+            <p style="font-size: 1.1rem; margin-bottom: 10px;">Ни один из них не требует заучивания API.</p>
+            <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                <div class="skill-card" style="border-left: 3px solid var(--accent-blue);">
+                    <h3 style="color: var(--accent-blue);">Настройка контекста</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 0;">Точная формулировка задачи. Определение границ, ограничений и целей до первой строки кода.</p>
+                </div>
+                <div class="skill-card" style="border-left: 3px solid var(--accent-green);">
+                    <h3 style="color: var(--accent-green);">Оркестрация агентов</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 0;">Запуск параллельных процессов. 10 агентов исследуют одновременно, пока ты проверяешь результаты.</p>
+                </div>
+                <div class="skill-card" style="border-left: 3px solid var(--accent-purple);">
+                    <h3 style="color: var(--accent-purple);">Архитектура памяти</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 0;">Персистентные системы знаний. Агент помнит всё между сессиями, проектами, командами.</p>
+                </div>
+                <div class="skill-card" style="border-left: 3px solid var(--accent-orange);">
+                    <h3 style="color: var(--accent-orange);">Ясность коммуникации</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 0;">Единый язык. Если машина тебя идеально понимает &mdash; любой человек тоже поймёт.</p>
+                </div>
+                <div class="skill-card" style="border-left: 3px solid var(--text-bright);">
+                    <h3>Системное мышление</h3>
+                    <p style="font-size: 0.9rem; margin-bottom: 0;">Видеть целое, а не части. Связывать домены, потоки данных и бизнес-логику в единое видение.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: Единый язык -->
+        <div class="slide">
+            <h1>07. Единый язык</h1>
+            <p style="font-size: 1.1rem;">Общие признаки контекста. Единый язык. Так масштабируются команды в эпоху AI.</p>
+            <div class="two-col" style="margin-top: 20px;">
+                <div>
+                    <h2>Когда команда разделяет:</h2>
+                    <div style="margin-top: 15px;">
+                        <span class="tool-badge blue">Общие паттерны промптов</span>
+                        <span class="tool-badge green">Общие файлы памяти</span>
+                        <span class="tool-badge">Общие конфиги агентов</span>
+                        <span class="tool-badge orange">Общие протоколы контекста</span>
+                    </div>
+                    <div class="quote-block" style="margin-top: 25px;">
+                        Не нужны 3-часовые созвоны.<br>
+                        Не нужны 50-страничные ТЗ.<br>
+                        Нужен <strong>один чёткий промпт</strong> и общий контекст.
+                    </div>
+                </div>
+                <div>
+                    <h2>Инструментарий</h2>
+                    <div style="margin-top: 15px; padding: 20px; background: #000; border-radius: 8px; font-family: monospace; font-size: 0.85rem; line-height: 1.8;">
+                        <span style="color: var(--accent-green);">MEMORY.md</span> &rarr; индекс знаний<br>
+                        <span style="color: var(--accent-blue);">CLAUDE.md</span> &rarr; контекст проекта и правила<br>
+                        <span style="color: var(--accent-purple);">sync_prompt.md</span> &rarr; передача между сессиями<br>
+                        <span style="color: var(--accent-orange);">open_tasks.md</span> &rarr; единый трекер задач<br>
+                        <span style="color: var(--text-bright);">rules/</span> &rarr; стандарты кода (11 языков)<br>
+                        <span style="color: var(--accent-green);">agents/</span> &rarr; 40+ специализированных агентов<br>
+                        <span style="color: var(--accent-blue);">MCP серверы</span> &rarr; Figma, Notion, Gmail, Calendar
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: Манифест -->
+        <div class="slide">
+            <h1>08. Новая эпоха</h1>
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center;">
+                <div style="max-width: 700px;">
+                    <p style="font-size: 1.4rem; line-height: 2.2; margin-bottom: 30px;">
+                        <span class="old" style="font-size: 1.2rem;">Не заучивание</span> &mdash; <span class="new" style="font-size: 1.4rem;">Изучение.</span><br>
+                        <span class="old" style="font-size: 1.2rem;">Не закрытие в себе</span> &mdash; <span class="new" style="font-size: 1.4rem;">Коммуникация.</span><br>
+                        <span class="old" style="font-size: 1.2rem;">Не зубрёжка</span> &mdash; <span class="new" style="font-size: 1.4rem;">Оркестрация.</span>
+                    </p>
+                    <div class="quote-block" style="text-align: left;">
+                        Выиграют не те, кто может написать бинарный поиск по памяти.<br><br>
+                        А те, кто может объяснить что нужно построить &mdash; и зачем &mdash;
+                        настолько ясно, что и люди, и машины двигаются в одном направлении.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: Горизонт -->
+        <div class="slide">
+            <h1>09. Горизонт</h1>
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center;">
+                <div style="max-width: 750px;">
+                    <p style="font-size: 1.15rem; line-height: 1.9; margin-bottom: 30px;">
+                        Сейчас узкое место &mdash; вычислительные мощности. Но когда железо дойдёт до технологического потолка, агенты, работающие на нём, уже будут уметь общаться между собой с максимальной эффективностью.
+                    </p>
+                    <p style="font-size: 1.15rem; line-height: 1.9; margin-bottom: 30px;">
+                        Процент ошибок будет на порядки ниже сегодняшнего. Не потому что машины поумнели сами &mdash; а потому что <strong style="color: var(--accent-green);">мы научились говорить на их языке, а они &mdash; на нашем.</strong>
+                    </p>
+                    <div class="quote-block" style="text-align: center; font-size: 1.3rem;">
+                        Из простого в сложное &mdash; из сложного в простое.
+                    </div>
+                    <p style="font-size: 1rem; color: var(--text-main); margin-top: 25px;">
+                        Каждый технологический скачок идёт по этой дуге. Сначала мы делаем сложное возможным. Потом делаем возможное простым. Мы сейчас в точке перелома.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 11: Призыв -->
+        <div class="slide cta-slide">
+            <h1>Хватит учить синтаксис.<br>Учись понимать людей.</h1>
+            <ul class="cta-list">
+                <li>Сформулировать задачу</li>
+                <li>Задать контекст</li>
+                <li>Направить агента</li>
+                <li>Донести видение</li>
+            </ul>
+            <div style="margin-top: 50px;">
+                <p style="font-size: 1.3rem; color: var(--accent-blue); font-weight: 600;">Код пишет себя сам.</p>
+                <p style="font-size: 1.5rem; color: var(--text-bright); font-weight: 700;">Видение &mdash; это на тебе.</p>
+            </div>
+            <div style="margin-top: 40px; color: var(--border); font-size: 0.85rem; letter-spacing: 2px;">LABS67 / 2026</div>
+        </div>
+
+    </div>
+
+    <div class="controls">
+        <button id="prevBtn" disabled>&larr; Назад</button>
+        <span class="slide-counter" id="slideCounter">1 / 11</span>
+        <button id="nextBtn">Далее &rarr;</button>
+    </div>
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const progressBar = document.getElementById('progressBar');
+    const slideCounter = document.getElementById('slideCounter');
+
+    function updateSlides() {
+        slides.forEach((slide, index) => {
+            slide.classList.remove('active');
+            if (index === currentSlide) {
+                slide.classList.add('active');
+            }
+        });
+
+        prevBtn.disabled = currentSlide === 0;
+        nextBtn.innerHTML = currentSlide === slides.length - 1 ? 'Готово' : 'Далее &rarr;';
+
+        const progress = ((currentSlide + 1) / slides.length) * 100;
+        progressBar.style.width = progress + '%';
+        slideCounter.textContent = (currentSlide + 1) + ' / ' + slides.length;
+    }
+
+    nextBtn.addEventListener('click', () => {
+        if (currentSlide < slides.length - 1) {
+            currentSlide++;
+            updateSlides();
+        }
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentSlide > 0) {
+            currentSlide--;
+            updateSlides();
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' || e.code === 'ArrowRight') {
+            e.preventDefault();
+            nextBtn.click();
+        } else if (e.code === 'ArrowLeft') {
+            prevBtn.click();
+        }
+    });
+</script>
+
+</body>
+</html>
