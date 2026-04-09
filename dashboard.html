@@ -7932,7 +7932,7 @@ function calcTotals(){
   const chairs=parseInt(document.getElementById('chairsCount')?.value)||7;
   const revenue=chairs*ppc*wd*avgCheck;
   const expenses=staff+fot+rentMonth+getVal('prUtils')+getVal('prMaterials')+getVal('prMarketing')+getVal('prOther');
-  const grand=rent+eng+equip+docs;
+  const grand=rent+eng+equip;
   // Update S1 cost total
   const s1el=document.getElementById('s1CostTotal');
   if(s1el)s1el.textContent=rent.toLocaleString('ru')+' PLN';
@@ -7945,7 +7945,7 @@ function updateBudgetSummary(t){
   const rentYear=t.rentMonth*12;
   const staffQ=t.staff*3;
   const mkt=parseInt(document.getElementById('prMarketing')?.value||0);
-  const totalInvest=rentYear+t.renovation+t.eng+t.equip+staffQ+t.docs+mkt;
+  const totalInvest=rentYear+t.renovation+t.eng+t.equip+staffQ+mkt;
   const profit=t.revenue-t.expenses;
   const payback=profit>0&&totalInvest>0?Math.ceil(totalInvest/profit):'--';
   const el=id=>document.getElementById(id);
