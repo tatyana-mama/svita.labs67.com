@@ -6825,14 +6825,18 @@ function renderServices(){
   const catKeys=Object.keys(groups);
   if(!catKeys.length){c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Нет услуг — сгенерируйте концепцию через AI</div>';return}
 
-  let html=`<div style="padding:8px 16px;font-size:11px;color:var(--tx2);border-bottom:1px solid var(--bd)">Всего: <strong>${src.length}</strong> услуг в <strong>${catKeys.length}</strong> категориях</div>`;
+  const picked=DB.pickedServices||{};
+  let html=`<div style="padding:8px 16px;font-size:11px;color:var(--tx2);border-bottom:1px solid var(--bd)">Всего: <strong>${src.length}</strong> услуг в <strong>${catKeys.length}</strong> категориях · <strong style="color:var(--gn)">${Object.keys(picked).length}</strong> добавлено</div>`;
   catKeys.forEach(cat=>{
     const items=groups[cat].items;
-    html+=`<div class="c"><div class="ch"><h3>${esc(cat)}</h3><span style="font-size:10px;color:var(--tx3)">${items.length} услуг</span></div><div class="cb">`;
+    const pickedCnt=items.filter(s=>!!picked[s.id]).length;
+    html+=`<div class="c"><div class="ch"><h3>${esc(cat)}</h3><span style="font-size:10px;color:${pickedCnt?'var(--gn)':'var(--tx3)'};font-weight:${pickedCnt?'600':'400'}">${pickedCnt} / ${items.length} добавлено</span></div><div class="cb">`;
     items.forEach(r=>{
-      html+=`<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--bd)">
-<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600">${esc(r.name)}</div><div style="font-size:10px;color:var(--tx3)">${esc(r.time||'')}</div></div>
-<div style="font-size:13px;font-weight:700;color:var(--ac2);flex-shrink:0">${(r.price||0).toLocaleString('ru')} PLN</div>
+      const isPicked=!!picked[r.id];
+      html+=`<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--bd);${isPicked?'background:var(--acbg);margin:0 -12px;padding-left:12px;padding-right:12px;border-radius:8px':''}">
+<div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:${isPicked?'700':'500'}">${esc(r.name)}</div><div style="font-size:10px;color:var(--tx3)">${esc(r.time||'')}</div></div>
+<div style="font-size:12px;font-weight:700;color:var(--ac2);flex-shrink:0;margin-right:6px">${(r.price||0).toLocaleString('ru')} PLN</div>
+<button class="btn sm ${isPicked?'gn':'pr'}" style="flex-shrink:0;min-width:90px;font-size:10px" onclick="toggleSvcPick('${r.id}')">${isPicked?'✓ Добавлено':'+ В перечень'}</button>
 </div>`;
     });
     html+=`</div></div>`;
