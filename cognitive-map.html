@@ -1,718 +1,857 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<link rel="icon" type="image/svg+xml" href="favicon.svg">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Claude Opus 4.6 — Cognitive Architecture</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{
---bg:#08080f;--bg2:#0f0f1a;--bg3:#161625;--bg4:#1e1e32;
---tx:#e4e4f0;--tx2:#9898b8;--tx3:#5c5c7a;
---ac:#8b5cf6;--ac2:#a78bfa;--acbg:rgba(139,92,246,.06);
---gn:#22c55e;--gn2:#4ade80;--gnbg:rgba(34,197,94,.08);
---bl:#3b82f6;--bl2:#60a5fa;--blbg:rgba(59,130,246,.08);
---cy:#06b6d4;--cy2:#22d3ee;--cybg:rgba(6,182,212,.08);
---or:#f97316;--or2:#fb923c;--orbg:rgba(249,115,22,.08);
---rd:#ef4444;--rd2:#f87171;--rdbg:rgba(239,68,68,.08);
---yl:#eab308;--yl2:#facc15;--ylbg:rgba(234,179,8,.08);
---pk:#ec4899;--pk2:#f472b6;--pkbg:rgba(236,72,153,.08);
---bd:rgba(255,255,255,.05);--bd2:rgba(255,255,255,.1);
---f:'Inter',system-ui,sans-serif;--fm:'JetBrains Mono',monospace;--fd:'Syne',sans-serif;
---glow:0 0 80px rgba(139,92,246,.08);
-}
-html{scroll-behavior:smooth}
-body{font-family:var(--f);background:var(--bg);color:var(--tx);overflow:hidden;height:100vh;width:100vw;-webkit-font-smoothing:antialiased}
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang="en">Claude Opus 4.6 — Cognitive Architecture</title>
+    <title data-lang="ru" style="display:none;">Claude Opus 4.6 — Когнитивная архитектура</title>
+    <style>
+        :root {
+            --bg-color: #0a0e14;
+            --card-bg: #161b22;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-purple: #bc8cff;
+            --accent-orange: #f0883e;
+            --accent-red: #f85149;
+            --accent-cyan: #39d2c0;
+            --accent-yellow: #e3b341;
+            --accent-pink: #f778ba;
+            --text-main: #adbac7;
+            --text-bright: #ffffff;
+            --border: #30363d;
+        }
 
-/* ═══ LANG TOGGLE ═══ */
-[data-ru]{display:none!important}
-body.lang-ru [data-ru]{display:block!important}
-body.lang-ru [data-en]{display:none!important}
-body.lang-ru span[data-ru]{display:inline!important}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
+        .presentation-container {
+            width: 90vw;
+            height: 80vh;
+            position: relative;
+            perspective: 1000px;
+        }
 
-div[data-ru],div[data-en]{display:block}
-body.lang-ru div[data-ru]{display:block}
-body.lang-ru div[data-en]{display:none}
+        .slides-wrapper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
 
-.lang-toggle{display:flex;border:1px solid var(--bd2);border-radius:6px;overflow:hidden;font-size:11px;font-weight:600;margin-left:auto;margin-right:12px}
-.lang-btn{padding:4px 10px;cursor:pointer;color:var(--tx3);background:transparent;border:none;font-family:var(--f);font-size:11px;font-weight:600;transition:all .15s;-webkit-tap-highlight-color:transparent}
-.lang-btn:hover{color:var(--tx)}
-.lang-btn.active{background:var(--ac);color:#fff}
-.view-count{font-family:var(--fm);font-size:10px;color:var(--tx3);opacity:.5;margin-left:10px;white-space:nowrap}
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 40px;
+            display: none;
+            flex-direction: column;
+            animation: slideIn 0.5s ease-out forwards;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            overflow-y: auto;
+        }
 
-/* ═══ SLIDE ENGINE ═══ */
-.deck{position:relative;width:100%;height:100vh;overflow:hidden}
-.slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:80px 60px 60px;opacity:0;pointer-events:none;transform:translateX(60px);transition:opacity .5s ease,transform .5s ease}
-.slide.active{opacity:1;pointer-events:all;transform:none}
-.slide.prev{transform:translateX(-60px)}
-.slide-inner{max-width:1200px;width:100%;overflow-y:auto;max-height:calc(100vh - 140px)}
+        .slide.active { display: flex; }
 
-/* ═══ NAV ═══ */
-.topbar{position:fixed;top:0;left:0;right:0;height:52px;background:rgba(8,8,15,.9);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);z-index:999;display:flex;align-items:center;padding:0 32px;gap:20px}
-.topbar-logo{font-family:var(--fd);font-weight:800;font-size:15px;background:linear-gradient(135deg,var(--ac),var(--bl));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.topbar-sep{width:1px;height:20px;background:var(--bd2)}
-.topbar-title{font-family:var(--fm);font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.14em}
-.topbar-dots{display:flex;gap:6px;margin-left:auto}
-.topbar-dot{width:8px;height:8px;border-radius:50%;background:var(--bg4);border:1px solid var(--bd2);cursor:pointer;transition:all .25s}
-.topbar-dot.act{background:var(--ac);border-color:var(--ac);width:24px;border-radius:4px;box-shadow:0 0 12px rgba(139,92,246,.4)}
-.topbar-num{font-family:var(--fm);font-size:10px;color:var(--tx3);margin-left:12px;min-width:40px}
-.progress{position:fixed;top:52px;left:0;height:2px;background:linear-gradient(90deg,var(--ac),var(--bl),var(--cy));z-index:999;transition:width .4s ease;box-shadow:0 0 8px rgba(139,92,246,.5)}
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-/* ═══ TYPOGRAPHY ═══ */
-h1{font-family:var(--fd);font-size:clamp(32px,4.5vw,56px);font-weight:800;line-height:1.05;letter-spacing:-.03em}
-h2{font-family:var(--fd);font-size:clamp(24px,3vw,36px);font-weight:700;line-height:1.1;letter-spacing:-.02em}
-h3{font-family:var(--fd);font-size:18px;font-weight:700;line-height:1.2}
-h4{font-size:13px;font-weight:600;line-height:1.3}
-.label{font-family:var(--fm);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.16em;color:var(--tx3)}
-.label-ac{color:var(--ac2)}
-.subtitle{font-size:16px;color:var(--tx2);font-weight:300;line-height:1.7;max-width:600px}
+        h1 { color: var(--accent-blue); font-size: 2.5rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; }
+        h2 { color: var(--accent-green); margin-bottom: 15px; border-left: 4px solid var(--accent-green); padding-left: 15px; }
+        h3 { color: var(--text-bright); margin-bottom: 10px; }
+        p { line-height: 1.7; margin-bottom: 15px; font-size: 1.05rem; }
 
-/* ═══ HERO (SLIDE 1) ═══ */
-.hero-layout{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:16px;border:1px solid var(--bd2);background:var(--acbg);font-family:var(--fm);font-size:10px;color:var(--ac2);margin-bottom:20px}
-.hero-visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:340px}
-.neural-core{width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.12),transparent 70%);position:relative;display:flex;align-items:center;justify-content:center;animation:corePulse 3s ease infinite}
-.neural-core::before{content:'';position:absolute;inset:-30px;border-radius:50%;border:1px dashed rgba(139,92,246,.15);animation:coreRing 15s linear infinite}
-.neural-core::after{content:'';position:absolute;inset:-60px;border-radius:50%;border:1px solid rgba(59,130,246,.08);animation:coreRing 25s linear infinite reverse}
-@keyframes corePulse{0%,100%{transform:scale(1);box-shadow:var(--glow)}50%{transform:scale(1.03);box-shadow:0 0 120px rgba(139,92,246,.12)}}
-@keyframes coreRing{to{transform:rotate(360deg)}}
-.core-label{font-family:var(--fd);font-size:28px;font-weight:800;background:linear-gradient(135deg,var(--ac2),var(--bl2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.orbit-node{position:absolute;padding:6px 12px;border-radius:8px;background:var(--bg3);border:1px solid var(--bd2);font-family:var(--fm);font-size:9px;color:var(--tx2);white-space:nowrap}
-.orbit-node:nth-child(2){top:10px;left:50%;transform:translateX(-50%)}
-.orbit-node:nth-child(3){top:35%;right:-10px}
-.orbit-node:nth-child(4){bottom:10px;left:50%;transform:translateX(-50%)}
-.orbit-node:nth-child(5){top:35%;left:-10px}
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
 
-.constraints{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:32px}
-.constraint{padding:14px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2)}
-.constraint .ico{font-size:18px;margin-bottom:6px}
-.constraint h4{font-size:11px;margin-bottom:4px}
-.constraint p{font-size:10px;color:var(--tx3);line-height:1.4}
+        .skill-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
 
-/* ═══ SKILL TREE (SLIDE 2) ═══ */
-.skills-header{margin-bottom:28px}
-.skills-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
-.skill-col{border-radius:12px;border:1px solid var(--bd);overflow:hidden}
-.skill-col-head{padding:14px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px}
-.skill-col-head .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.skill-col-head h4{font-size:11px;font-weight:700}
-.skill-col-body{padding:10px}
-.skill-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;margin-bottom:4px;font-size:11px;color:var(--tx2);transition:all .15s;cursor:default}
-.skill-item:hover{background:rgba(255,255,255,.03);color:var(--tx)}
-.skill-item .bar{height:3px;border-radius:2px;flex:1;background:var(--bg4);overflow:hidden;max-width:40px}
-.skill-item .bar-fill{height:100%;border-radius:2px;transition:width .6s ease}
-.skill-item .lvl{font-family:var(--fm);font-size:8px;color:var(--tx3);min-width:16px;text-align:right}
+        .skill-card:hover { border-color: var(--accent-blue); transform: translateY(-5px); }
+        .skill-card h3 { font-size: 1rem; margin-bottom: 10px; }
+        .skill-card ul { list-style: none; font-size: 0.9rem; }
+        .skill-card li { margin-bottom: 6px; display: flex; align-items: center; }
+        .skill-card li::before { content: '\25B9'; color: var(--accent-blue); margin-right: 8px; }
 
-.col-analytics .dot,.col-analytics .bar-fill{background:var(--bl)}
-.col-analytics .skill-col-head{background:var(--blbg)}
-.col-code .dot,.col-code .bar-fill{background:var(--gn)}
-.col-code .skill-col-head{background:var(--gnbg)}
-.col-nlp .dot,.col-nlp .bar-fill{background:var(--ac)}
-.col-nlp .skill-col-head{background:var(--acbg)}
-.col-arch .dot,.col-arch .bar-fill{background:var(--or)}
-.col-arch .skill-col-head{background:var(--orbg)}
-.col-qa .dot,.col-qa .bar-fill{background:var(--cy)}
-.col-qa .skill-col-head{background:var(--cybg)}
+        .pipeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 30px;
+            gap: 8px;
+        }
 
-/* ═══ RELATIONSHIPS (SLIDE 3) ═══ */
-.rel-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
-.rel-card{padding:20px;border-radius:12px;border:1px solid var(--bd);background:var(--bg2);position:relative;overflow:hidden}
-.rel-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
-.rel-card.r1::before{background:linear-gradient(90deg,var(--bl),var(--gn))}
-.rel-card.r2::before{background:linear-gradient(90deg,var(--ac),var(--or))}
-.rel-card.r3::before{background:linear-gradient(90deg,var(--cy),var(--ac))}
-.rel-card.r4::before{background:linear-gradient(90deg,var(--or),var(--rd))}
-.rel-card.r5::before{background:linear-gradient(90deg,var(--gn),var(--cy))}
-.rel-card.r6::before{background:linear-gradient(90deg,var(--pk),var(--bl))}
-.rel-flow{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-family:var(--fm);font-size:10px}
-.rel-flow .node{padding:4px 10px;border-radius:6px;border:1px solid var(--bd2);background:var(--bg3);color:var(--tx2)}
-.rel-flow .arrow{color:var(--tx3);font-size:12px}
-.rel-card p{font-size:11px;color:var(--tx2);line-height:1.5}
+        .step {
+            text-align: center;
+            position: relative;
+            flex: 1;
+        }
 
-/* ═══ PIPELINE (SLIDE 4) ═══ */
-.pipeline{display:flex;gap:0;margin-top:28px;position:relative}
-.pipe-step{flex:1;position:relative;padding:20px 16px;border:1px solid var(--bd);border-radius:12px;background:var(--bg2);display:flex;flex-direction:column;gap:8px}
-.pipe-step::after{content:'';position:absolute;right:-18px;top:50%;transform:translateY(-50%);width:0;height:0;border:6px solid transparent;border-left-color:var(--tx3);z-index:1}
-.pipe-step:last-child::after{display:none}
-.pipe-connector{width:36px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.pipe-num{font-family:var(--fm);font-size:20px;font-weight:700;margin-bottom:4px}
-.pipe-step h4{font-size:12px;font-weight:700}
-.pipe-step p{font-size:10px;color:var(--tx3);line-height:1.4}
-.pipe-step .pipe-tag{font-family:var(--fm);font-size:8px;padding:2px 6px;border-radius:4px;display:inline-block;margin-top:4px}
-.p1 .pipe-num{color:var(--bl)}.p1{border-top:2px solid var(--bl)}.p1 .pipe-tag{background:var(--blbg);color:var(--bl2)}
-.p2 .pipe-num{color:var(--ac)}.p2{border-top:2px solid var(--ac)}.p2 .pipe-tag{background:var(--acbg);color:var(--ac2)}
-.p3 .pipe-num{color:var(--gn)}.p3{border-top:2px solid var(--gn)}.p3 .pipe-tag{background:var(--gnbg);color:var(--gn2)}
-.p4 .pipe-num{color:var(--or)}.p4{border-top:2px solid var(--or)}.p4 .pipe-tag{background:var(--orbg);color:var(--or2)}
-.p5 .pipe-num{color:var(--cy)}.p5{border-top:2px solid var(--cy)}.p5 .pipe-tag{background:var(--cybg);color:var(--cy2)}
-.p6 .pipe-num{color:var(--pk)}.p6{border-top:2px solid var(--pk)}.p6 .pipe-tag{background:var(--pkbg);color:var(--pk2)}
+        .step-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bg-color);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
 
-.pipeline-detail{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:20px}
-.pd-card{padding:14px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2)}
-.pd-card h4{font-size:11px;margin-bottom:6px}
-.pd-card p{font-size:10px;color:var(--tx3);line-height:1.4}
+        .step::after {
+            content: '';
+            position: absolute;
+            top: 25px;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background: var(--border);
+            z-index: -1;
+        }
 
-/* ═══ EXTERNAL (SLIDE 5) ═══ */
-.ext-layout{display:grid;grid-template-columns:280px 1fr;gap:32px;margin-top:24px}
-.ext-core{border-radius:14px;border:1px solid rgba(139,92,246,.2);background:linear-gradient(135deg,rgba(139,92,246,.04),rgba(59,130,246,.03));padding:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px}
-.ext-core-icon{font-size:48px}
-.ext-tools{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.ext-tool{padding:16px;border-radius:10px;border:1px solid var(--bd);background:var(--bg2);transition:all .2s}
-.ext-tool:hover{border-color:var(--bd2);transform:translateY(-1px)}
-.ext-tool .ico{font-size:20px;margin-bottom:8px}
-.ext-tool h4{font-size:12px;font-weight:600;margin-bottom:4px}
-.ext-tool p{font-size:10px;color:var(--tx3);line-height:1.4}
-.ext-tool .status{display:inline-flex;align-items:center;gap:4px;font-family:var(--fm);font-size:8px;padding:2px 8px;border-radius:4px;margin-top:8px}
-.st-native{background:var(--gnbg);color:var(--gn2)}
-.st-mcp{background:var(--acbg);color:var(--ac2)}
-.st-ext{background:var(--blbg);color:var(--bl2)}
-.st-limit{background:var(--ylbg);color:var(--yl2)}
+        .step:last-child::after { display: none; }
 
-/* ═══ BOTTOM CONTROLS ═══ */
-.controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:999}
-.ctrl{width:44px;height:44px;border-radius:10px;border:1px solid var(--bd2);background:rgba(8,8,15,.9);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--tx2);font-size:16px;transition:all .2s;-webkit-tap-highlight-color:transparent}
-.ctrl:hover{border-color:var(--ac);color:var(--ac2)}
-.ctrl:active{transform:scale(.95)}
+        .controls {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
 
-/* ═══ RESPONSIVE 1024 ═══ */
-@media(max-width:1024px){
-  .slide{padding:68px 24px 80px}
-  .hero-layout{grid-template-columns:1fr;gap:24px}
-  .hero-visual{display:none}
-  .skills-grid{grid-template-columns:repeat(2,1fr)}
-  .pipeline{flex-direction:column;gap:10px}
-  .pipe-step::after{display:none}
-  .pipe-connector{display:none}
-  .pipeline-detail{grid-template-columns:1fr 1fr}
-  .ext-layout{grid-template-columns:1fr}
-  .ext-tools{grid-template-columns:1fr 1fr}
-  .rel-grid{grid-template-columns:1fr}
-  .constraints{grid-template-columns:1fr 1fr 1fr}
-}
+        button {
+            background: var(--accent-blue);
+            color: var(--bg-color);
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            font-size: 0.95rem;
+        }
 
-/* ═══ RESPONSIVE 768 ═══ */
-@media(max-width:768px){
-  .slide{padding:62px 18px 80px}
-  .slide-inner{max-height:calc(100vh - 120px)}
-  h1{font-size:clamp(24px,5vw,32px)}
-  h2{font-size:clamp(20px,4vw,26px)}
-  h3{font-size:16px}
-  .subtitle{font-size:14px;line-height:1.6}
-  .skills-grid{grid-template-columns:repeat(2,1fr);gap:8px}
-  .skill-col-head{padding:10px 12px}
-  .skill-item{padding:5px 8px;font-size:10px}
-  .constraints{grid-template-columns:1fr 1fr;gap:8px}
-  .constraint{padding:10px}
-  .rel-grid{gap:10px}
-  .rel-card{padding:14px}
-  .rel-card p{font-size:10px}
-  .pipeline-detail{grid-template-columns:1fr 1fr;gap:8px}
-  .pd-card{padding:10px}
-  .ext-tools{grid-template-columns:1fr 1fr;gap:8px}
-  .ext-tool{padding:12px}
-  .topbar{padding:0 16px;gap:12px}
-  .topbar-logo{font-size:13px}
-  .topbar-dot{width:7px;height:7px}
-  .topbar-dot.act{width:18px}
-  .lang-toggle{margin-right:8px}
-  .lang-btn{padding:3px 8px;font-size:10px}
-}
+        button:hover { opacity: 0.8; }
+        button:disabled { background: var(--border); cursor: not-allowed; }
 
-/* ═══ RESPONSIVE 480 ═══ */
-@media(max-width:480px){
-  .slide{padding:56px 12px 76px}
-  .slide-inner{max-height:calc(100vh - 100px)}
-  h1{font-size:22px}
-  h2{font-size:18px}
-  h3{font-size:14px}
-  .subtitle{font-size:12px;line-height:1.5}
-  .label{font-size:8px}
-  .hero-badge{font-size:8px;padding:4px 10px}
-  .skills-grid{grid-template-columns:1fr;gap:6px}
-  .skill-col-head{padding:8px 10px}
-  .skill-col-head h4{font-size:10px}
-  .skill-item{padding:5px 6px;font-size:9px;gap:4px}
-  .constraints{grid-template-columns:1fr;gap:6px}
-  .constraint{padding:10px}
-  .constraint h4{font-size:10px}
-  .constraint p{font-size:9px}
-  .rel-grid{grid-template-columns:1fr;gap:8px}
-  .rel-card{padding:12px}
-  .rel-flow{flex-wrap:wrap;gap:4px}
-  .rel-flow .node{font-size:9px;padding:3px 8px}
-  .rel-card p{font-size:9px}
-  .pipeline{gap:6px}
-  .pipe-step{padding:14px 12px}
-  .pipe-num{font-size:16px}
-  .pipe-step h4{font-size:11px}
-  .pipe-step p{font-size:9px}
-  .pipeline-detail{grid-template-columns:1fr;gap:6px}
-  .pd-card{padding:10px}
-  .pd-card h4{font-size:10px}
-  .pd-card p{font-size:9px}
-  .ext-layout{grid-template-columns:1fr;gap:16px}
-  .ext-core{padding:16px}
-  .ext-core-icon{font-size:36px}
-  .ext-tools{grid-template-columns:1fr;gap:6px}
-  .ext-tool{padding:10px}
-  .ext-tool .ico{font-size:16px;margin-bottom:4px}
-  .ext-tool h4{font-size:11px}
-  .ext-tool p{font-size:9px}
-  .topbar{padding:0 10px;height:44px;gap:6px}
-  .topbar-logo{font-size:12px}
-  .topbar-sep,.topbar-title{display:none}
-  .topbar-dot{width:6px;height:6px}
-  .topbar-dot.act{width:14px}
-  .topbar-num{font-size:9px;margin-left:6px}
-  .progress{top:44px}
-  .controls{bottom:12px;gap:6px}
-  .ctrl{width:44px;height:44px;font-size:18px}
-  .lang-toggle{margin-right:4px}
-  .lang-btn{padding:4px 8px;font-size:10px;min-height:28px}
-}
+        .progress {
+            position: absolute;
+            top: -20px;
+            left: 0;
+            height: 4px;
+            background: var(--accent-blue);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
 
-/* ═══ RESPONSIVE 640 (keep original breakpoint) ═══ */
-@media(max-width:640px){
-  .topbar-sep,.topbar-title{display:none}
-}
-</style>
+        .slide-counter {
+            color: var(--text-main);
+            font-size: 0.85rem;
+            font-family: monospace;
+        }
+
+        .tool-badge {
+            display: inline-block;
+            padding: 5px 14px;
+            background: rgba(188, 140, 255, 0.1);
+            border: 1px solid var(--accent-purple);
+            color: var(--accent-purple);
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 0.85rem;
+        }
+
+        .tool-badge.green {
+            background: rgba(63, 185, 80, 0.1);
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .tool-badge.blue {
+            background: rgba(88, 166, 255, 0.1);
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .tool-badge.orange {
+            background: rgba(240, 136, 62, 0.1);
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+        }
+
+        .tool-badge.cyan {
+            background: rgba(57, 210, 192, 0.1);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .quote-block {
+            background: rgba(88, 166, 255, 0.05);
+            border-left: 4px solid var(--accent-blue);
+            padding: 20px 25px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+            font-size: 1.15rem;
+            font-style: italic;
+            color: var(--text-bright);
+        }
+
+        .two-col {
+            display: flex;
+            gap: 40px;
+            flex: 1;
+        }
+
+        .two-col > div { flex: 1; }
+
+        .rel-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rel-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+        }
+
+        .rel-card.r1::before { background: linear-gradient(90deg, var(--accent-blue), var(--accent-green)); }
+        .rel-card.r2::before { background: linear-gradient(90deg, var(--accent-purple), var(--accent-orange)); }
+        .rel-card.r3::before { background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple)); }
+        .rel-card.r4::before { background: linear-gradient(90deg, var(--accent-orange), var(--accent-red)); }
+        .rel-card.r5::before { background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan)); }
+        .rel-card.r6::before { background: linear-gradient(90deg, var(--accent-pink), var(--accent-blue)); }
+
+        .rel-flow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+
+        .rel-flow .node {
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.03);
+            color: var(--text-main);
+        }
+
+        .rel-flow .arrow { color: var(--text-main); opacity: 0.5; }
+
+        .rel-card p { font-size: 0.9rem; margin-bottom: 0; }
+
+        .pipe-tag {
+            display: inline-block;
+            font-family: monospace;
+            font-size: 0.75rem;
+            padding: 3px 10px;
+            border-radius: 4px;
+            margin-top: 6px;
+        }
+
+        .warning-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .warning-card h3 { font-size: 0.95rem; margin-bottom: 6px; }
+        .warning-card p { font-size: 0.85rem; margin-bottom: 0; }
+
+        .ext-tool {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            padding: 18px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .ext-tool:hover { border-color: var(--accent-blue); transform: translateY(-3px); }
+        .ext-tool h3 { font-size: 0.95rem; margin-bottom: 6px; }
+        .ext-tool p { font-size: 0.85rem; margin-bottom: 8px; }
+
+        .status-badge {
+            display: inline-block;
+            font-family: monospace;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .st-native { background: rgba(63,185,80,0.1); color: var(--accent-green); }
+        .st-mcp { background: rgba(188,140,255,0.1); color: var(--accent-purple); }
+        .st-ext { background: rgba(88,166,255,0.1); color: var(--accent-blue); }
+        .st-limit { background: rgba(227,179,65,0.1); color: var(--accent-yellow); }
+
+        .cover-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .cover-slide h1 {
+            font-size: 3rem;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+
+        .cover-slide .subtitle {
+            font-size: 1.2rem;
+            color: var(--accent-green);
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+
+        .cover-slide .tagline {
+            font-size: 1rem;
+            color: var(--text-main);
+            max-width: 600px;
+            line-height: 1.8;
+        }
+
+        /* Language toggle */
+        .lang-toggle {
+            position: fixed;
+            top: 16px;
+            right: 24px;
+            z-index: 1000;
+            display: flex;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .lang-toggle span {
+            padding: 6px 14px;
+            cursor: pointer;
+            color: var(--text-main);
+            transition: 0.2s;
+            user-select: none;
+        }
+
+        .lang-toggle span.active {
+            background: var(--accent-blue);
+            color: var(--bg-color);
+        }
+
+        .lang-toggle span:hover:not(.active) {
+            color: var(--text-bright);
+        }
+
+        .view-count{font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:10px;color:var(--text-main);opacity:.5;margin-left:14px;white-space:nowrap}
+
+        /* Language visibility */
+        [data-lang="ru"] { display: none; }
+        body.lang-ru [data-lang="ru"] { display: revert; }
+        body.lang-ru [data-lang="en"] { display: none; }
+    </style>
 </head>
 <body>
 
-<nav class="topbar">
-<div class="topbar-logo">Claude Opus 4.6</div>
-<div class="topbar-sep"></div>
-<div class="topbar-title"><span data-en>Cognitive Architecture</span><span data-ru>Когнитивная архитектура</span></div>
-<div class="lang-toggle">
-  <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
-  <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
-</div>
-<div class="topbar-dots" id="dots"></div>
-<div class="topbar-num" id="sNum">1 / 5</div>
-<span class="view-count" id="viewCount"></span>
-</nav>
-<div class="progress" id="prog"></div>
-
-<div class="deck" id="deck">
-
-<!-- ═══════════════════════════════════════════ SLIDE 1: CORE IDENTITY ═══ -->
-<div class="slide active" data-s="0">
-<div class="slide-inner">
-<div class="hero-layout">
-<div>
-<div class="hero-badge">Anthropic &middot; Claude Model Family &middot; May 2025 Training Cut</div>
-<h1 style="margin-bottom:16px" data-en>Autoregressive<br>Language<br><span style="background:linear-gradient(135deg,var(--ac),var(--bl));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Transformer</span></h1>
-<h1 style="margin-bottom:16px" data-ru>Авторегрессивный<br>языковой<br><span style="background:linear-gradient(135deg,var(--ac),var(--bl));-webkit-background-clip:text;-webkit-text-fill-color:transparent">трансформер</span></h1>
-<p class="subtitle" data-en>Claude Opus 4.6 is the largest model in the Claude 4 family. I generate text token by token, predicting the most likely continuation based on the entire preceding context. I have no persistent memory, state, or consciousness.</p>
-<p class="subtitle" data-ru>Claude Opus 4.6 — крупнейшая модель семейства Claude 4. Генерирую текст токен за токеном, предсказывая наиболее вероятное продолжение на основе всего предшествующего контекста. Не имею постоянной памяти, состояния или сознания.</p>
-<div class="constraints">
-<div class="constraint">
-<div class="ico">&#9201;</div>
-<h4><span data-en>Context Window</span><span data-ru>Контекстное окно</span></h4>
-<p data-en>~200K tokens. This is my "working memory." Everything beyond the window does not exist for me.</p>
-<p data-ru>~200K токенов. Это моя «оперативная память». Всё за пределами окна — не существует для меня.</p>
-</div>
-<div class="constraint">
-<div class="ico">&#128679;</div>
-<h4><span data-en>No State</span><span data-ru>Нет состояния</span></h4>
-<p data-en>Every session starts from scratch. Without file-based memory (MEMORY.md) I don't remember previous conversations.</p>
-<p data-ru>Каждая сессия — с нуля. Без файловой памяти (MEMORY.md) я не помню предыдущих разговоров.</p>
-</div>
-<div class="constraint">
-<div class="ico">&#127922;</div>
-<h4><span data-en>Stochasticity</span><span data-ru>Стохастичность</span></h4>
-<p data-en>I sample from a probability distribution. The same prompt can yield different results each time.</p>
-<p data-ru>Сэмплирую из распределения вероятностей. Один и тот же промпт может дать разный результат.</p>
-</div>
-</div>
-</div>
-<div class="hero-visual">
-<div class="neural-core">
-<span class="core-label">LLM</span>
-<span class="orbit-node">200K ctx</span>
-<span class="orbit-node">Attention</span>
-<span class="orbit-node">Autoregressive</span>
-<span class="orbit-node">Transformer</span>
-</div>
-</div>
-</div>
-</div>
+<div class="lang-toggle" id="langToggle">
+    <span data-pick="en" class="active">EN</span>
+    <span data-pick="ru">RU</span>
 </div>
 
-<!-- ═══════════════════════════════════════════ SLIDE 2: SKILL TREE ═══ -->
-<div class="slide" data-s="1">
-<div class="slide-inner">
-<div class="skills-header">
-<div class="label label-ac" style="margin-bottom:8px">Skill Tree</div>
-<h2><span data-en>Skill Tree</span><span data-ru>Дерево навыков</span></h2>
-<p style="font-size:13px;color:var(--tx2);margin-top:6px"><span data-en>Level: estimate relative to the model's upper bound, not an absolute metric</span><span data-ru>Уровень: оценка относительно верхней границы возможностей модели, не абсолютная метрика</span></p>
-</div>
-<div class="skills-grid">
+<div class="presentation-container">
+    <div class="progress" id="progressBar" style="width: 20%;"></div>
 
-<div class="skill-col col-analytics">
-<div class="skill-col-head"><div class="dot"></div><h4><span data-en>Analytics</span><span data-ru>Аналитика</span></h4></div>
-<div class="skill-col-body">
-<div class="skill-item"><span data-en>Logical reasoning</span><span data-ru>Логический вывод</span><span class="bar"><span class="bar-fill" style="width:92%"></span></span><span class="lvl">92</span></div>
-<div class="skill-item"><span data-en>Mathematics</span><span data-ru>Математика</span><span class="bar"><span class="bar-fill" style="width:78%"></span></span><span class="lvl">78</span></div>
-<div class="skill-item"><span data-en>Data analysis</span><span data-ru>Анализ данных</span><span class="bar"><span class="bar-fill" style="width:88%"></span></span><span class="lvl">88</span></div>
-<div class="skill-item"><span data-en>SWOT / Strategy</span><span data-ru>SWOT / стратегия</span><span class="bar"><span class="bar-fill" style="width:90%"></span></span><span class="lvl">90</span></div>
-<div class="skill-item"><span data-en>Financial modeling</span><span data-ru>Финмоделирование</span><span class="bar"><span class="bar-fill" style="width:82%"></span></span><span class="lvl">82</span></div>
-<div class="skill-item"><span data-en>Statistics</span><span data-ru>Статистика</span><span class="bar"><span class="bar-fill" style="width:75%"></span></span><span class="lvl">75</span></div>
-<div class="skill-item"><span data-en>Causal inference</span><span data-ru>Причинно-следственный</span><span class="bar"><span class="bar-fill" style="width:86%"></span></span><span class="lvl">86</span></div>
-</div>
-</div>
+    <div class="slides-wrapper">
 
-<div class="skill-col col-code">
-<div class="skill-col-head"><div class="dot"></div><h4><span data-en>Code</span><span data-ru>Код</span></h4></div>
-<div class="skill-col-body">
-<div class="skill-item">TypeScript/JS<span class="bar"><span class="bar-fill" style="width:94%"></span></span><span class="lvl">94</span></div>
-<div class="skill-item">Python<span class="bar"><span class="bar-fill" style="width:93%"></span></span><span class="lvl">93</span></div>
-<div class="skill-item">HTML/CSS<span class="bar"><span class="bar-fill" style="width:95%"></span></span><span class="lvl">95</span></div>
-<div class="skill-item">Rust<span class="bar"><span class="bar-fill" style="width:85%"></span></span><span class="lvl">85</span></div>
-<div class="skill-item">Go<span class="bar"><span class="bar-fill" style="width:84%"></span></span><span class="lvl">84</span></div>
-<div class="skill-item">SQL<span class="bar"><span class="bar-fill" style="width:90%"></span></span><span class="lvl">90</span></div>
-<div class="skill-item">Shell / CLI<span class="bar"><span class="bar-fill" style="width:88%"></span></span><span class="lvl">88</span></div>
-<div class="skill-item">Debugging<span class="bar"><span class="bar-fill" style="width:91%"></span></span><span class="lvl">91</span></div>
-</div>
-</div>
+        <!-- SLIDE 1: Core Identity -->
+        <div class="slide active cover-slide">
+            <div style="margin-bottom: 20px; font-family: monospace; font-size: 0.8rem; color: var(--accent-purple); letter-spacing: 2px;">Anthropic &middot; Claude Model Family &middot; May 2025 Training Cut</div>
+            <h1 data-lang="en">Autoregressive<br>Language<br><span style="background:linear-gradient(135deg,var(--accent-purple),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Transformer</span></h1>
+            <h1 data-lang="ru">Авторегрессивный<br>языковой<br><span style="background:linear-gradient(135deg,var(--accent-purple),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent">трансформер</span></h1>
+            <div class="tagline" data-lang="en">
+                Claude Opus 4.6 is the largest model in the Claude 4 family. I generate text token by token, predicting the most likely continuation based on the entire preceding context. I have no persistent memory, state, or consciousness.
+            </div>
+            <div class="tagline" data-lang="ru">
+                Claude Opus 4.6 — крупнейшая модель семейства Claude 4. Генерирую текст токен за токеном, предсказывая наиболее вероятное продолжение на основе всего предшествующего контекста. Не имею постоянной памяти, состояния или сознания.
+            </div>
+            <div class="grid-container" style="margin-top: 30px; max-width: 800px;">
+                <div class="skill-card" style="text-align: center;">
+                    <h3 style="font-size: 1.5rem;">&#9201;</h3>
+                    <h3 data-lang="en" style="color: var(--accent-blue);">Context Window</h3>
+                    <h3 data-lang="ru" style="color: var(--accent-blue);">Контекстное окно</h3>
+                    <p data-lang="en" style="font-size: 0.85rem; margin-bottom: 0;">~200K tokens. This is my "working memory." Everything beyond the window does not exist for me.</p>
+                    <p data-lang="ru" style="font-size: 0.85rem; margin-bottom: 0;">~200K токенов. Это моя «оперативная память». Всё за пределами окна — не существует для меня.</p>
+                </div>
+                <div class="skill-card" style="text-align: center;">
+                    <h3 style="font-size: 1.5rem;">&#128679;</h3>
+                    <h3 data-lang="en" style="color: var(--accent-orange);">No State</h3>
+                    <h3 data-lang="ru" style="color: var(--accent-orange);">Нет состояния</h3>
+                    <p data-lang="en" style="font-size: 0.85rem; margin-bottom: 0;">Every session starts from scratch. Without file-based memory (MEMORY.md) I don't remember previous conversations.</p>
+                    <p data-lang="ru" style="font-size: 0.85rem; margin-bottom: 0;">Каждая сессия — с нуля. Без файловой памяти (MEMORY.md) я не помню предыдущих разговоров.</p>
+                </div>
+                <div class="skill-card" style="text-align: center;">
+                    <h3 style="font-size: 1.5rem;">&#127922;</h3>
+                    <h3 data-lang="en" style="color: var(--accent-purple);">Stochasticity</h3>
+                    <h3 data-lang="ru" style="color: var(--accent-purple);">Стохастичность</h3>
+                    <p data-lang="en" style="font-size: 0.85rem; margin-bottom: 0;">I sample from a probability distribution. The same prompt can yield different results each time.</p>
+                    <p data-lang="ru" style="font-size: 0.85rem; margin-bottom: 0;">Сэмплирую из распределения вероятностей. Один и тот же промпт может дать разный результат.</p>
+                </div>
+            </div>
+        </div>
 
-<div class="skill-col col-nlp">
-<div class="skill-col-head"><div class="dot"></div><h4><span data-en>NLP / Text</span><span data-ru>NLP / Тексты</span></h4></div>
-<div class="skill-col-body">
-<div class="skill-item"><span data-en>Text generation</span><span data-ru>Генерация текста</span><span class="bar"><span class="bar-fill" style="width:96%"></span></span><span class="lvl">96</span></div>
-<div class="skill-item"><span data-en>Summarization</span><span data-ru>Суммаризация</span><span class="bar"><span class="bar-fill" style="width:94%"></span></span><span class="lvl">94</span></div>
-<div class="skill-item"><span data-en>Translation (12+ lang.)</span><span data-ru>Перевод (12+ яз.)</span><span class="bar"><span class="bar-fill" style="width:88%"></span></span><span class="lvl">88</span></div>
-<div class="skill-item"><span data-en>Tone &amp; style</span><span data-ru>Тон и стиль</span><span class="bar"><span class="bar-fill" style="width:93%"></span></span><span class="lvl">93</span></div>
-<div class="skill-item"><span data-en>Fact extraction</span><span data-ru>Извлечение фактов</span><span class="bar"><span class="bar-fill" style="width:90%"></span></span><span class="lvl">90</span></div>
-<div class="skill-item"><span data-en>Classification</span><span data-ru>Классификация</span><span class="bar"><span class="bar-fill" style="width:92%"></span></span><span class="lvl">92</span></div>
-<div class="skill-item"><span data-en>Prompt engineering</span><span data-ru>Промпт-инжиниринг</span><span class="bar"><span class="bar-fill" style="width:95%"></span></span><span class="lvl">95</span></div>
-</div>
-</div>
+        <!-- SLIDE 2: Skill Tree -->
+        <div class="slide">
+            <h1 data-lang="en">Skill Tree</h1>
+            <h1 data-lang="ru">Дерево навыков</h1>
+            <p data-lang="en" style="font-size: 0.9rem; margin-bottom: 20px;">Level: estimate relative to the model's upper bound, not an absolute metric</p>
+            <p data-lang="ru" style="font-size: 0.9rem; margin-bottom: 20px;">Уровень: оценка относительно верхней границы возможностей модели, не абсолютная метрика</p>
+            <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                <div class="skill-card" style="border-top: 3px solid var(--accent-blue);">
+                    <h3 data-lang="en" style="color: var(--accent-blue);">Analytics</h3>
+                    <h3 data-lang="ru" style="color: var(--accent-blue);">Аналитика</h3>
+                    <ul>
+                        <li data-lang="en">Logical reasoning <span style="color:var(--accent-blue);margin-left:auto;font-size:0.8rem;">92</span></li>
+                        <li data-lang="ru">Логический вывод <span style="color:var(--accent-blue);margin-left:auto;font-size:0.8rem;">92</span></li>
+                        <li data-lang="en">Mathematics <span style="color:var(--accent-blue);margin-left:auto;font-size:0.8rem;">78</span></li>
+                        <li data-lang="ru">Математика <span style="color:var(--accent-blue);margin-left:auto;font-size:0.8rem;">78</span></li>
+                        <li data-lang="en">Data analysis <span style="color:var(--accent-blue);margin-left:auto;font-size:0.8rem;">88</span></li>
+                        <li data-lang="ru">Анализ данных <span style="color:var(--accent-blue);margin-left:auto;font-size:0.8rem;">88</span></li>
+                        <li data-lang="en">SWOT / Strategy <span style="color:var(--accent-blue);margin-left:auto;font-size:0.8rem;">90</span></li>
+                        <li data-lang="ru">SWOT / стратегия <span style="color:var(--accent-blue);margin-left:auto;font-size:0.8rem;">90</span></li>
+                        <li data-lang="en">Financial modeling <span style="color:var(--accent-blue);margin-left:auto;font-size:0.8rem;">82</span></li>
+                        <li data-lang="ru">Финмоделирование <span style="color:var(--accent-blue);margin-left:auto;font-size:0.8rem;">82</span></li>
+                        <li data-lang="en">Statistics <span style="color:var(--accent-blue);margin-left:auto;font-size:0.8rem;">75</span></li>
+                        <li data-lang="ru">Статистика <span style="color:var(--accent-blue);margin-left:auto;font-size:0.8rem;">75</span></li>
+                        <li data-lang="en">Causal inference <span style="color:var(--accent-blue);margin-left:auto;font-size:0.8rem;">86</span></li>
+                        <li data-lang="ru">Причинно-следственный <span style="color:var(--accent-blue);margin-left:auto;font-size:0.8rem;">86</span></li>
+                    </ul>
+                </div>
+                <div class="skill-card" style="border-top: 3px solid var(--accent-green);">
+                    <h3 style="color: var(--accent-green);">Code</h3>
+                    <ul>
+                        <li>TypeScript/JS <span style="color:var(--accent-green);margin-left:auto;font-size:0.8rem;">94</span></li>
+                        <li>Python <span style="color:var(--accent-green);margin-left:auto;font-size:0.8rem;">93</span></li>
+                        <li>HTML/CSS <span style="color:var(--accent-green);margin-left:auto;font-size:0.8rem;">95</span></li>
+                        <li>Rust <span style="color:var(--accent-green);margin-left:auto;font-size:0.8rem;">85</span></li>
+                        <li>Go <span style="color:var(--accent-green);margin-left:auto;font-size:0.8rem;">84</span></li>
+                        <li>SQL <span style="color:var(--accent-green);margin-left:auto;font-size:0.8rem;">90</span></li>
+                        <li>Shell / CLI <span style="color:var(--accent-green);margin-left:auto;font-size:0.8rem;">88</span></li>
+                        <li>Debugging <span style="color:var(--accent-green);margin-left:auto;font-size:0.8rem;">91</span></li>
+                    </ul>
+                </div>
+                <div class="skill-card" style="border-top: 3px solid var(--accent-purple);">
+                    <h3 data-lang="en" style="color: var(--accent-purple);">NLP / Text</h3>
+                    <h3 data-lang="ru" style="color: var(--accent-purple);">NLP / Тексты</h3>
+                    <ul>
+                        <li data-lang="en">Text generation <span style="color:var(--accent-purple);margin-left:auto;font-size:0.8rem;">96</span></li>
+                        <li data-lang="ru">Генерация текста <span style="color:var(--accent-purple);margin-left:auto;font-size:0.8rem;">96</span></li>
+                        <li data-lang="en">Summarization <span style="color:var(--accent-purple);margin-left:auto;font-size:0.8rem;">94</span></li>
+                        <li data-lang="ru">Суммаризация <span style="color:var(--accent-purple);margin-left:auto;font-size:0.8rem;">94</span></li>
+                        <li data-lang="en">Translation (12+ lang.) <span style="color:var(--accent-purple);margin-left:auto;font-size:0.8rem;">88</span></li>
+                        <li data-lang="ru">Перевод (12+ яз.) <span style="color:var(--accent-purple);margin-left:auto;font-size:0.8rem;">88</span></li>
+                        <li data-lang="en">Tone &amp; style <span style="color:var(--accent-purple);margin-left:auto;font-size:0.8rem;">93</span></li>
+                        <li data-lang="ru">Тон и стиль <span style="color:var(--accent-purple);margin-left:auto;font-size:0.8rem;">93</span></li>
+                        <li data-lang="en">Fact extraction <span style="color:var(--accent-purple);margin-left:auto;font-size:0.8rem;">90</span></li>
+                        <li data-lang="ru">Извлечение фактов <span style="color:var(--accent-purple);margin-left:auto;font-size:0.8rem;">90</span></li>
+                        <li data-lang="en">Classification <span style="color:var(--accent-purple);margin-left:auto;font-size:0.8rem;">92</span></li>
+                        <li data-lang="ru">Классификация <span style="color:var(--accent-purple);margin-left:auto;font-size:0.8rem;">92</span></li>
+                        <li data-lang="en">Prompt engineering <span style="color:var(--accent-purple);margin-left:auto;font-size:0.8rem;">95</span></li>
+                        <li data-lang="ru">Промпт-инжиниринг <span style="color:var(--accent-purple);margin-left:auto;font-size:0.8rem;">95</span></li>
+                    </ul>
+                </div>
+                <div class="skill-card" style="border-top: 3px solid var(--accent-orange);">
+                    <h3 data-lang="en" style="color: var(--accent-orange);">Architecture</h3>
+                    <h3 data-lang="ru" style="color: var(--accent-orange);">Архитектура</h3>
+                    <ul>
+                        <li>System Design <span style="color:var(--accent-orange);margin-left:auto;font-size:0.8rem;">90</span></li>
+                        <li data-lang="en">API design <span style="color:var(--accent-orange);margin-left:auto;font-size:0.8rem;">91</span></li>
+                        <li data-lang="ru">API дизайн <span style="color:var(--accent-orange);margin-left:auto;font-size:0.8rem;">91</span></li>
+                        <li data-lang="en">DB / schemas <span style="color:var(--accent-orange);margin-left:auto;font-size:0.8rem;">88</span></li>
+                        <li data-lang="ru">БД / схемы <span style="color:var(--accent-orange);margin-left:auto;font-size:0.8rem;">88</span></li>
+                        <li>DevOps / CI/CD <span style="color:var(--accent-orange);margin-left:auto;font-size:0.8rem;">82</span></li>
+                        <li data-lang="en">Microservices <span style="color:var(--accent-orange);margin-left:auto;font-size:0.8rem;">86</span></li>
+                        <li data-lang="ru">Микросервисы <span style="color:var(--accent-orange);margin-left:auto;font-size:0.8rem;">86</span></li>
+                        <li>Edge / IoT <span style="color:var(--accent-orange);margin-left:auto;font-size:0.8rem;">78</span></li>
+                        <li>Security patterns <span style="color:var(--accent-orange);margin-left:auto;font-size:0.8rem;">85</span></li>
+                    </ul>
+                </div>
+                <div class="skill-card" style="border-top: 3px solid var(--accent-cyan);">
+                    <h3 style="color: var(--accent-cyan);">QA</h3>
+                    <ul>
+                        <li>Code review <span style="color:var(--accent-cyan);margin-left:auto;font-size:0.8rem;">93</span></li>
+                        <li data-lang="en">Unit tests <span style="color:var(--accent-cyan);margin-left:auto;font-size:0.8rem;">90</span></li>
+                        <li data-lang="ru">Unit-тесты <span style="color:var(--accent-cyan);margin-left:auto;font-size:0.8rem;">90</span></li>
+                        <li data-lang="en">E2E tests <span style="color:var(--accent-cyan);margin-left:auto;font-size:0.8rem;">84</span></li>
+                        <li data-lang="ru">E2E тесты <span style="color:var(--accent-cyan);margin-left:auto;font-size:0.8rem;">84</span></li>
+                        <li>Bug triage <span style="color:var(--accent-cyan);margin-left:auto;font-size:0.8rem;">89</span></li>
+                        <li data-lang="en">Refactoring <span style="color:var(--accent-cyan);margin-left:auto;font-size:0.8rem;">91</span></li>
+                        <li data-lang="ru">Рефакторинг <span style="color:var(--accent-cyan);margin-left:auto;font-size:0.8rem;">91</span></li>
+                        <li>Perf profiling <span style="color:var(--accent-cyan);margin-left:auto;font-size:0.8rem;">80</span></li>
+                        <li>Security audit <span style="color:var(--accent-cyan);margin-left:auto;font-size:0.8rem;">83</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-<div class="skill-col col-arch">
-<div class="skill-col-head"><div class="dot"></div><h4><span data-en>Architecture</span><span data-ru>Архитектура</span></h4></div>
-<div class="skill-col-body">
-<div class="skill-item">System Design<span class="bar"><span class="bar-fill" style="width:90%"></span></span><span class="lvl">90</span></div>
-<div class="skill-item"><span data-en>API design</span><span data-ru>API дизайн</span><span class="bar"><span class="bar-fill" style="width:91%"></span></span><span class="lvl">91</span></div>
-<div class="skill-item"><span data-en>DB / schemas</span><span data-ru>БД / схемы</span><span class="bar"><span class="bar-fill" style="width:88%"></span></span><span class="lvl">88</span></div>
-<div class="skill-item">DevOps / CI/CD<span class="bar"><span class="bar-fill" style="width:82%"></span></span><span class="lvl">82</span></div>
-<div class="skill-item"><span data-en>Microservices</span><span data-ru>Микросервисы</span><span class="bar"><span class="bar-fill" style="width:86%"></span></span><span class="lvl">86</span></div>
-<div class="skill-item">Edge / IoT<span class="bar"><span class="bar-fill" style="width:78%"></span></span><span class="lvl">78</span></div>
-<div class="skill-item">Security patterns<span class="bar"><span class="bar-fill" style="width:85%"></span></span><span class="lvl">85</span></div>
-</div>
-</div>
+        <!-- SLIDE 3: Skill Relationships -->
+        <div class="slide">
+            <h1 data-lang="en">Skill Relationships</h1>
+            <h1 data-lang="ru">Взаимосвязи навыков</h1>
+            <p data-lang="en" style="font-size: 0.95rem; margin-bottom: 20px;">How knowledge domains amplify each other within a single context window</p>
+            <p data-lang="ru" style="font-size: 0.95rem; margin-bottom: 20px;">Как домены знаний усиливают друг друга внутри одного контекстного окна</p>
+            <div class="grid-container" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;">
+                <div class="rel-card r1">
+                    <div class="rel-flow">
+                        <span class="node" data-lang="en">Logical reasoning</span>
+                        <span class="node" data-lang="ru">Логический вывод</span>
+                        <span class="arrow">&#10230;</span>
+                        <span class="node" data-lang="en">Code</span>
+                        <span class="node" data-lang="ru">Код</span>
+                    </div>
+                    <p data-lang="en">Formal logic is the foundation of programming. Task decomposition, choosing data structures and algorithms are direct applications of logical analysis. The harder the problem, the stronger the dependency.</p>
+                    <p data-lang="ru">Формальная логика — фундамент программирования. Декомпозиция задачи, выбор структур данных и алгоритмов — это прямое применение логического анализа. Чем сложнее задача, тем сильнее зависимость.</p>
+                </div>
+                <div class="rel-card r2">
+                    <div class="rel-flow">
+                        <span class="node" data-lang="en">NLP / Understanding</span>
+                        <span class="node" data-lang="ru">NLP / Понимание</span>
+                        <span class="arrow">&#10230;</span>
+                        <span class="node" data-lang="en">Architecture</span>
+                        <span class="node" data-lang="ru">Архитектура</span>
+                    </div>
+                    <p data-lang="en">The ability to break down ambiguous requirements into atomic specifications. From a vague "I want a chat" I extract: protocol (SSE/WS), storage (Supabase), fallback strategy, UI components.</p>
+                    <p data-lang="ru">Умение разбирать неоднозначные требования на атомарные спецификации. Из расплывчатого «хочу чат» извлекаю: протокол (SSE/WS), хранилище (Supabase), fallback-стратегию, UI-компоненты.</p>
+                </div>
+                <div class="rel-card r3">
+                    <div class="rel-flow">
+                        <span class="node">QA / Review</span>
+                        <span class="arrow">&#10230;</span>
+                        <span class="node">NLP</span>
+                    </div>
+                    <p data-lang="en">Code review is translating code into a human explanation. I find bugs by "reading" code as text: function names not matching behavior, dead code, contract violations.</p>
+                    <p data-lang="ru">Code review — это перевод кода в человеческое объяснение. Нахожу баги через «чтение» кода как текста: несоответствие имён функций их поведению, мёртвый код, нарушение контрактов.</p>
+                </div>
+                <div class="rel-card r4">
+                    <div class="rel-flow">
+                        <span class="node" data-lang="en">Context window</span>
+                        <span class="node" data-lang="ru">Контекстное окно</span>
+                        <span class="arrow">&#10230;</span>
+                        <span class="node" data-lang="en">All skills</span>
+                        <span class="node" data-lang="ru">Все навыки</span>
+                    </div>
+                    <p data-lang="en">200K tokens is a hard limit. As I approach the boundary everything degrades: I lose the start of the conversation, forget early decisions, repeat mistakes. File-based memory (MEMORY.md) is a crutch, not a replacement.</p>
+                    <p data-lang="ru">200K токенов — жёсткий лимит. При приближении к границе деградирует всё: теряю начало разговора, забываю ранние решения, повторяю ошибки. Файловая память (MEMORY.md) — костыль, не замена.</p>
+                </div>
+                <div class="rel-card r5">
+                    <div class="rel-flow">
+                        <span class="node" data-lang="en">Code</span>
+                        <span class="node" data-lang="ru">Код</span>
+                        <span class="arrow">&#10230;</span>
+                        <span class="node" data-lang="en">Analytics</span>
+                        <span class="node" data-lang="ru">Аналитика</span>
+                    </div>
+                    <p data-lang="en">I write code to verify analytical hypotheses. An SQL query validates a financial model, a script checks an ROI calculation. Code is an analytics tool, not a separate skill.</p>
+                    <p data-lang="ru">Пишу код для верификации аналитических гипотез. SQL-запрос проверяет финмодель, скрипт валидирует расчёт ROI. Код — инструмент аналитики, не отдельный навык.</p>
+                </div>
+                <div class="rel-card r6">
+                    <div class="rel-flow">
+                        <span class="node" data-lang="en">Architecture</span>
+                        <span class="node" data-lang="ru">Архитектура</span>
+                        <span class="arrow">&#10230;</span>
+                        <span class="node">QA</span>
+                    </div>
+                    <p data-lang="en">Good architecture makes a system testable. Knowledge of patterns (DI, Repository, clean architecture) allows writing code that is easy to test and review.</p>
+                    <p data-lang="ru">Хорошая архитектура делает систему тестируемой. Знание паттернов (DI, Repository, чистая архитектура) позволяет писать код, который легко покрыть тестами и отревьюить.</p>
+                </div>
+            </div>
+        </div>
 
-<div class="skill-col col-qa">
-<div class="skill-col-head"><div class="dot"></div><h4>QA</h4></div>
-<div class="skill-col-body">
-<div class="skill-item">Code review<span class="bar"><span class="bar-fill" style="width:93%"></span></span><span class="lvl">93</span></div>
-<div class="skill-item"><span data-en>Unit tests</span><span data-ru>Unit-тесты</span><span class="bar"><span class="bar-fill" style="width:90%"></span></span><span class="lvl">90</span></div>
-<div class="skill-item"><span data-en>E2E tests</span><span data-ru>E2E тесты</span><span class="bar"><span class="bar-fill" style="width:84%"></span></span><span class="lvl">84</span></div>
-<div class="skill-item">Bug triage<span class="bar"><span class="bar-fill" style="width:89%"></span></span><span class="lvl">89</span></div>
-<div class="skill-item"><span data-en>Refactoring</span><span data-ru>Рефакторинг</span><span class="bar"><span class="bar-fill" style="width:91%"></span></span><span class="lvl">91</span></div>
-<div class="skill-item">Perf profiling<span class="bar"><span class="bar-fill" style="width:80%"></span></span><span class="lvl">80</span></div>
-<div class="skill-item">Security audit<span class="bar"><span class="bar-fill" style="width:83%"></span></span><span class="lvl">83</span></div>
-</div>
-</div>
+        <!-- SLIDE 4: Processing Pipeline -->
+        <div class="slide">
+            <h1 data-lang="en">Processing Pipeline</h1>
+            <h1 data-lang="ru">Пайплайн обработки</h1>
+            <p data-lang="en" style="font-size: 0.95rem; margin-bottom: 15px;">What happens from the moment a prompt is received to the generation of a response</p>
+            <p data-lang="ru" style="font-size: 0.95rem; margin-bottom: 15px;">Что происходит от момента получения промпта до генерации ответа</p>
+            <div class="pipeline">
+                <div class="step">
+                    <div class="step-icon" style="background: var(--accent-blue);">01</div>
+                    <h3 data-lang="en" style="font-size: 0.85rem;">Tokenization</h3>
+                    <h3 data-lang="ru" style="font-size: 0.85rem;">Токенизация</h3>
+                    <p data-lang="en" style="font-size: 0.75rem;">Text is split into tokens (BPE). "Hello" = 1 token. Code splits differently.</p>
+                    <p data-lang="ru" style="font-size: 0.75rem;">Текст разбивается на токены (BPE). «Привет» = 1 токен. Код разбивается иначе.</p>
+                    <span class="pipe-tag" style="background:rgba(88,166,255,0.1);color:var(--accent-blue);" data-lang="en">~4 chars = 1 token</span>
+                    <span class="pipe-tag" style="background:rgba(88,166,255,0.1);color:var(--accent-blue);" data-lang="ru">~4 символа = 1 токен</span>
+                </div>
+                <div class="step">
+                    <div class="step-icon" style="background: var(--accent-purple);">02</div>
+                    <h3 style="font-size: 0.85rem;">Embedding</h3>
+                    <p data-lang="en" style="font-size: 0.75rem;">Each token becomes a high-dimensional vector. Semantically similar words end up close together.</p>
+                    <p data-lang="ru" style="font-size: 0.75rem;">Каждый токен преобразуется в вектор высокой размерности. Семантически близкие слова оказываются рядом.</p>
+                    <span class="pipe-tag" style="background:rgba(188,140,255,0.1);color:var(--accent-purple);">Vectors ~8K+ dims</span>
+                </div>
+                <div class="step">
+                    <div class="step-icon" style="background: var(--accent-green);">03</div>
+                    <h3 style="font-size: 0.85rem;">Attention</h3>
+                    <p data-lang="en" style="font-size: 0.75rem;">Each token "looks at" all preceding ones. Multi-head attention finds relevant connections at different abstraction levels.</p>
+                    <p data-lang="ru" style="font-size: 0.75rem;">Каждый токен «смотрит» на все предыдущие. Multi-head attention находит связи на разных уровнях абстракции.</p>
+                    <span class="pipe-tag" style="background:rgba(63,185,80,0.1);color:var(--accent-green);" data-lang="en">O(n&sup2;) over context</span>
+                    <span class="pipe-tag" style="background:rgba(63,185,80,0.1);color:var(--accent-green);" data-lang="ru">O(n&sup2;) по контексту</span>
+                </div>
+                <div class="step">
+                    <div class="step-icon" style="background: var(--accent-orange);">04</div>
+                    <h3 style="font-size: 0.85rem;">Extended Thinking</h3>
+                    <p data-lang="en" style="font-size: 0.75rem;">Up to 32K tokens of internal reasoning (hidden). Task decomposition, self-correction before response.</p>
+                    <p data-lang="ru" style="font-size: 0.75rem;">До 32K токенов внутреннего рассуждения (скрыто). Декомпозиция задачи, самокоррекция до ответа.</p>
+                    <span class="pipe-tag" style="background:rgba(240,136,62,0.1);color:var(--accent-orange);" data-lang="en">Hidden CoT</span>
+                    <span class="pipe-tag" style="background:rgba(240,136,62,0.1);color:var(--accent-orange);" data-lang="ru">Скрытый CoT</span>
+                </div>
+                <div class="step">
+                    <div class="step-icon" style="background: var(--accent-cyan);">05</div>
+                    <h3 style="font-size: 0.85rem;">Tool Use</h3>
+                    <p data-lang="en" style="font-size: 0.75rem;">The model decides: is a tool needed? Generates a JSON call (Read, Edit, Bash, Grep...). Gets result into context.</p>
+                    <p data-lang="ru" style="font-size: 0.75rem;">Модель решает: нужен ли инструмент? Генерирует JSON-вызов (Read, Edit, Bash, Grep...). Результат в контекст.</p>
+                    <span class="pipe-tag" style="background:rgba(57,210,192,0.1);color:var(--accent-cyan);">JSON function call</span>
+                </div>
+                <div class="step">
+                    <div class="step-icon" style="background: var(--accent-pink);">06</div>
+                    <h3 data-lang="en" style="font-size: 0.85rem;">Decoding</h3>
+                    <h3 data-lang="ru" style="font-size: 0.85rem;">Декодирование</h3>
+                    <p data-lang="en" style="font-size: 0.75rem;">Autoregressive generation: each next token sampled from a distribution conditioned on all previous + temperature.</p>
+                    <p data-lang="ru" style="font-size: 0.75rem;">Авторегрессивная генерация: каждый следующий токен сэмплируется из распределения всех предыдущих + temperature.</p>
+                    <span class="pipe-tag" style="background:rgba(247,120,186,0.1);color:var(--accent-pink);">Token-by-token</span>
+                </div>
+            </div>
+            <div class="grid-container" style="margin-top: 25px; grid-template-columns: repeat(3, 1fr);">
+                <div class="warning-card">
+                    <h3 data-lang="en" style="color: var(--accent-red);">&#9888; No RAG</h3>
+                    <h3 data-lang="ru" style="color: var(--accent-red);">&#9888; Нет RAG</h3>
+                    <p data-lang="en">I have no built-in retrieval. My "knowledge" consists of frozen model weights. Current information is only available through tools (WebSearch, Read).</p>
+                    <p data-lang="ru">Я не имею встроенного retrieval. Мои «знания» — это замороженные веса модели. Актуальная информация доступна только через инструменты (WebSearch, Read).</p>
+                </div>
+                <div class="warning-card">
+                    <h3 data-lang="en" style="color: var(--accent-yellow);">&#9888; Hallucinations</h3>
+                    <h3 data-lang="ru" style="color: var(--accent-yellow);">&#9888; Галлюцинации</h3>
+                    <p data-lang="en">I can generate plausible but factually incorrect text. Especially: specific numbers, dates, URLs, API names. Always verify critical facts.</p>
+                    <p data-lang="ru">Могу генерировать правдоподобный, но фактически неверный текст. Особенно: конкретные цифры, даты, URL, имена API. Всегда верифицируйте критические факты.</p>
+                </div>
+                <div class="warning-card">
+                    <h3 data-lang="en" style="color: var(--accent-green);">&#10003; Self-correction</h3>
+                    <h3 data-lang="ru" style="color: var(--accent-green);">&#10003; Самокоррекция</h3>
+                    <p data-lang="en">Extended thinking allows detecting an error before output. But correction is limited: if the error is in the model weights, thinking won't fix it.</p>
+                    <p data-lang="ru">Extended thinking позволяет обнаружить ошибку до вывода. Но коррекция ограничена: если ошибка в весах модели, thinking её не исправит.</p>
+                </div>
+            </div>
+        </div>
 
-</div>
-</div>
-</div>
+        <!-- SLIDE 5: Tools & External World -->
+        <div class="slide">
+            <h1 data-lang="en">Tools &amp; External World</h1>
+            <h1 data-lang="ru">Инструменты и внешний мир</h1>
+            <p data-lang="en" style="font-size: 0.95rem; margin-bottom: 15px;">Claude Code is a runtime environment that turns an LLM into an agent with access to files, CLI, and external APIs</p>
+            <p data-lang="ru" style="font-size: 0.95rem; margin-bottom: 15px;">Claude Code — среда выполнения, превращающая LLM в агента с доступом к файлам, CLI и внешним API</p>
+            <div class="two-col">
+                <div>
+                    <div class="skill-card" style="text-align: center; border: 1px solid rgba(188,140,255,0.3); background: rgba(188,140,255,0.03); margin-bottom: 20px;">
+                        <h3 style="font-size: 2rem; margin-bottom: 5px;">&#129302;</h3>
+                        <h3 style="color: var(--accent-purple); font-size: 1.2rem;">Claude Code</h3>
+                        <p data-lang="en" style="font-size: 0.85rem; margin-bottom: 10px;">Runtime environment: VS Code extension, CLI, Desktop app. Manages context, routes tool calls, applies CLAUDE.md and rules.</p>
+                        <p data-lang="ru" style="font-size: 0.85rem; margin-bottom: 10px;">Runtime-среда: VS Code extension, CLI, Desktop app. Управляет контекстом, маршрутизирует tool calls, применяет CLAUDE.md и rules.</p>
+                        <div>
+                            <span class="tool-badge blue" style="font-size: 0.7rem; padding: 3px 10px;">CLI</span>
+                            <span class="tool-badge" style="font-size: 0.7rem; padding: 3px 10px;">VS Code</span>
+                            <span class="tool-badge green" style="font-size: 0.7rem; padding: 3px 10px;">Desktop</span>
+                            <span class="tool-badge cyan" style="font-size: 0.7rem; padding: 3px 10px;">Web</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="grid-container" style="grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 0;">
+                        <div class="ext-tool">
+                            <h3 style="font-size: 0.85rem;">&#128196; Read / Write / Edit</h3>
+                            <p data-lang="en" style="font-size: 0.8rem;">Reading files of any type (code, PDF, images, .ipynb). Writing and precise editing via string replacement.</p>
+                            <p data-lang="ru" style="font-size: 0.8rem;">Чтение файлов любого типа (код, PDF, изображения, .ipynb). Запись и точечное редактирование через string replacement.</p>
+                            <span class="status-badge st-native">Native tool</span>
+                        </div>
+                        <div class="ext-tool">
+                            <h3 style="font-size: 0.85rem;">&#128187; Bash</h3>
+                            <p data-lang="en" style="font-size: 0.8rem;">Shell command execution: git, npm, cargo, docker, curl. Sandbox isolation, 2-10 min timeouts. Background processes.</p>
+                            <p data-lang="ru" style="font-size: 0.8rem;">Исполнение shell-команд: git, npm, cargo, docker, curl. Sandbox-изоляция, таймауты 2-10 мин. Фоновые процессы.</p>
+                            <span class="status-badge st-native">Native tool</span>
+                        </div>
+                        <div class="ext-tool">
+                            <h3 style="font-size: 0.85rem;">&#128269; Grep / Glob</h3>
+                            <p data-lang="en" style="font-size: 0.8rem;">Content search (ripgrep) and filename pattern matching. Faster and more accurate than Bash grep. Regex, multiline.</p>
+                            <p data-lang="ru" style="font-size: 0.8rem;">Поиск по содержимому (ripgrep) и по паттернам имён файлов. Быстрее и точнее, чем Bash grep. Regex, multiline.</p>
+                            <span class="status-badge st-native">Native tool</span>
+                        </div>
+                        <div class="ext-tool">
+                            <h3 style="font-size: 0.85rem;">&#129302; Agent (sub-agents)</h3>
+                            <p data-lang="en" style="font-size: 0.8rem;">Launching specialized agents: code-reviewer, planner, tdd-guide, security-reviewer. Parallel execution. Isolated worktrees.</p>
+                            <p data-lang="ru" style="font-size: 0.8rem;">Запуск специализированных агентов: code-reviewer, planner, tdd-guide, security-reviewer. Параллельное исполнение.</p>
+                            <span class="status-badge st-native">Native tool</span>
+                        </div>
+                        <div class="ext-tool">
+                            <h3 style="font-size: 0.85rem;">&#127760; WebSearch / WebFetch</h3>
+                            <p data-lang="en" style="font-size: 0.8rem;">Internet search and web page fetching. The only way to get information newer than the training cut (May 2025).</p>
+                            <p data-lang="ru" style="font-size: 0.8rem;">Поиск в интернете и загрузка веб-страниц. Единственный способ получить информацию новее training cut (May 2025).</p>
+                            <span class="status-badge st-ext">Deferred tool</span>
+                        </div>
+                        <div class="ext-tool">
+                            <h3 style="font-size: 0.85rem;">&#128268; MCP Servers</h3>
+                            <p data-lang="en" style="font-size: 0.8rem;">Model Context Protocol: Figma, Gmail, Notion, Gemini (image gen), Context7 (docs), Stitch (UI). Extensible interface.</p>
+                            <p data-lang="ru" style="font-size: 0.8rem;">Model Context Protocol: Figma, Gmail, Notion, Gemini (image gen), Context7 (docs), Stitch (UI). Расширяемый интерфейс.</p>
+                            <span class="status-badge st-mcp">MCP protocol</span>
+                        </div>
+                        <div class="ext-tool">
+                            <h3 style="font-size: 0.85rem;">&#128065; Vision (multimodal)</h3>
+                            <p data-lang="en" style="font-size: 0.8rem;">Reading images (PNG, JPG, PDF). Analyzing UI screenshots, diagrams, photos. I don't generate images — only analyze them.</p>
+                            <p data-lang="ru" style="font-size: 0.8rem;">Чтение изображений (PNG, JPG, PDF). Анализ скриншотов UI, диаграмм, фото. Не генерирую изображения — только анализирую.</p>
+                            <span class="status-badge st-native">Native capability</span>
+                        </div>
+                        <div class="ext-tool">
+                            <h3 style="font-size: 0.85rem;">&#128024; MEMORY.md</h3>
+                            <p data-lang="en" style="font-size: 0.8rem;">File-based memory system: user, feedback, project, reference records. Persistence between sessions. Index file + separate .md files.</p>
+                            <p data-lang="ru" style="font-size: 0.8rem;">Файловая система памяти: user, feedback, project, reference записи. Персистентность между сессиями. Индексный файл + отдельные .md файлы.</p>
+                            <span class="status-badge st-limit">File-based persistence</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<!-- ═══════════════════════════════════════════ SLIDE 3: RELATIONSHIPS ═══ -->
-<div class="slide" data-s="2">
-<div class="slide-inner">
-<div class="skills-header">
-<div class="label label-ac" style="margin-bottom:8px">Internal Relationships</div>
-<h2><span data-en>Skill Relationships</span><span data-ru>Взаимосвязи навыков</span></h2>
-<p style="font-size:13px;color:var(--tx2);margin-top:6px"><span data-en>How knowledge domains amplify each other within a single context window</span><span data-ru>Как домены знаний усиливают друг друга внутри одного контекстного окна</span></p>
-</div>
-<div class="rel-grid">
+    </div>
 
-<div class="rel-card r1">
-<div class="rel-flow"><span class="node"><span data-en>Logical reasoning</span><span data-ru>Логический вывод</span></span><span class="arrow">&#10230;</span><span class="node"><span data-en>Code</span><span data-ru>Код</span></span></div>
-<p data-en>Formal logic is the foundation of programming. Task decomposition, choosing data structures and algorithms are direct applications of logical analysis. The harder the problem, the stronger the dependency.</p>
-<p data-ru>Формальная логика — фундамент программирования. Декомпозиция задачи, выбор структур данных и алгоритмов — это прямое применение логического анализа. Чем сложнее задача, тем сильнее зависимость.</p>
-</div>
-
-<div class="rel-card r2">
-<div class="rel-flow"><span class="node"><span data-en>NLP / Understanding</span><span data-ru>NLP / Понимание</span></span><span class="arrow">&#10230;</span><span class="node"><span data-en>Architecture</span><span data-ru>Архитектура</span></span></div>
-<p data-en>The ability to break down ambiguous requirements into atomic specifications. From a vague "I want a chat" I extract: protocol (SSE/WS), storage (Supabase), fallback strategy, UI components.</p>
-<p data-ru>Умение разбирать неоднозначные требования на атомарные спецификации. Из расплывчатого «хочу чат» извлекаю: протокол (SSE/WS), хранилище (Supabase), fallback-стратегию, UI-компоненты.</p>
-</div>
-
-<div class="rel-card r3">
-<div class="rel-flow"><span class="node"><span data-en>QA / Review</span><span data-ru>QA / Review</span></span><span class="arrow">&#10230;</span><span class="node">NLP</span></div>
-<p data-en>Code review is translating code into a human explanation. I find bugs by "reading" code as text: function names not matching behavior, dead code, contract violations.</p>
-<p data-ru>Code review — это перевод кода в человеческое объяснение. Нахожу баги через «чтение» кода как текста: несоответствие имён функций их поведению, мёртвый код, нарушение контрактов.</p>
-</div>
-
-<div class="rel-card r4">
-<div class="rel-flow"><span class="node"><span data-en>Context window</span><span data-ru>Контекстное окно</span></span><span class="arrow">&#10230;</span><span class="node"><span data-en>All skills</span><span data-ru>Все навыки</span></span></div>
-<p data-en>200K tokens is a hard limit. As I approach the boundary everything degrades: I lose the start of the conversation, forget early decisions, repeat mistakes. File-based memory (MEMORY.md) is a crutch, not a replacement.</p>
-<p data-ru>200K токенов — жёсткий лимит. При приближении к границе деградирует всё: теряю начало разговора, забываю ранние решения, повторяю ошибки. Файловая память (MEMORY.md) — костыль, не замена.</p>
-</div>
-
-<div class="rel-card r5">
-<div class="rel-flow"><span class="node"><span data-en>Code</span><span data-ru>Код</span></span><span class="arrow">&#10230;</span><span class="node"><span data-en>Analytics</span><span data-ru>Аналитика</span></span></div>
-<p data-en>I write code to verify analytical hypotheses. An SQL query validates a financial model, a script checks an ROI calculation. Code is an analytics tool, not a separate skill.</p>
-<p data-ru>Пишу код для верификации аналитических гипотез. SQL-запрос проверяет финмодель, скрипт валидирует расчёт ROI. Код — инструмент аналитики, не отдельный навык.</p>
-</div>
-
-<div class="rel-card r6">
-<div class="rel-flow"><span class="node"><span data-en>Architecture</span><span data-ru>Архитектура</span></span><span class="arrow">&#10230;</span><span class="node">QA</span></div>
-<p data-en>Good architecture makes a system testable. Knowledge of patterns (DI, Repository, clean architecture) allows writing code that is easy to test and review.</p>
-<p data-ru>Хорошая архитектура делает систему тестируемой. Знание паттернов (DI, Repository, чистая архитектура) позволяет писать код, который легко покрыть тестами и отревьюить.</p>
-</div>
-
-</div>
-</div>
-</div>
-
-<!-- ═══════════════════════════════════════════ SLIDE 4: PIPELINE ═══ -->
-<div class="slide" data-s="3">
-<div class="slide-inner">
-<div class="skills-header">
-<div class="label label-ac" style="margin-bottom:8px">Interaction Flow</div>
-<h2><span data-en>Processing Pipeline</span><span data-ru>Пайплайн обработки</span></h2>
-<p style="font-size:13px;color:var(--tx2);margin-top:6px"><span data-en>What happens from the moment a prompt is received to the generation of a response</span><span data-ru>Что происходит от момента получения промпта до генерации ответа</span></p>
-</div>
-<div class="pipeline">
-
-<div class="pipe-step p1">
-<div class="pipe-num">01</div>
-<h4><span data-en>Tokenization</span><span data-ru>Токенизация</span></h4>
-<p data-en>Text is split into tokens (BPE). "Hello" = 1 token. Code is often split differently: "function" = 1, but "aiChatSend" = 3-4 tokens.</p>
-<p data-ru>Текст разбивается на токены (BPE). «Привет» = 1 токен. Код часто разбивается иначе: «function» = 1, но «aiChatSend» = 3-4 токена.</p>
-<span class="pipe-tag"><span data-en>~4 chars = 1 token</span><span data-ru>~4 символа = 1 токен</span></span>
-</div>
-
-<div class="pipe-step p2">
-<div class="pipe-num">02</div>
-<h4>Embedding</h4>
-<p data-en>Each token is converted into a high-dimensional vector. Semantically similar words end up close together in the space.</p>
-<p data-ru>Каждый токен преобразуется в вектор высокой размерности. Семантически близкие слова оказываются рядом в пространстве.</p>
-<span class="pipe-tag">Vectors ~8K+ dims</span>
-</div>
-
-<div class="pipe-step p3">
-<div class="pipe-num">03</div>
-<h4>Attention</h4>
-<p data-en>Each token "looks at" all preceding ones. Multi-head attention finds relevant connections at different levels of abstraction.</p>
-<p data-ru>Каждый токен «смотрит» на все предыдущие. Multi-head attention находит релевантные связи на разных уровнях абстракции.</p>
-<span class="pipe-tag"><span data-en>O(n&sup2;) over context</span><span data-ru>O(n&sup2;) по контексту</span></span>
-</div>
-
-<div class="pipe-step p4">
-<div class="pipe-num">04</div>
-<h4>Extended Thinking</h4>
-<p data-en>Up to 32K tokens of internal reasoning (hidden from user). Task decomposition, approach evaluation, self-correction before generating a response.</p>
-<p data-ru>До 32K токенов внутреннего рассуждения (скрыто от пользователя). Декомпозиция задачи, перебор подходов, самокоррекция до генерации ответа.</p>
-<span class="pipe-tag"><span data-en>Hidden CoT</span><span data-ru>Скрытый CoT</span></span>
-</div>
-
-<div class="pipe-step p5">
-<div class="pipe-num">05</div>
-<h4>Tool Use</h4>
-<p data-en>The model decides: is a tool needed? It generates a JSON call (Read, Edit, Bash, Grep...). Receives the result and includes it in context.</p>
-<p data-ru>Модель решает: нужен ли инструмент? Генерирует JSON-вызов (Read, Edit, Bash, Grep...). Получает результат, включает в контекст.</p>
-<span class="pipe-tag">JSON function call</span>
-</div>
-
-<div class="pipe-step p6">
-<div class="pipe-num">06</div>
-<h4><span data-en>Decoding</span><span data-ru>Декодирование</span></h4>
-<p data-en>Autoregressive generation: each next token is sampled from a distribution conditioned on all previous tokens + temperature.</p>
-<p data-ru>Авторегрессивная генерация: каждый следующий токен сэмплируется из распределения, обусловленного всеми предыдущими + temperature.</p>
-<span class="pipe-tag">Token-by-token</span>
-</div>
-
-</div>
-
-<div class="pipeline-detail">
-<div class="pd-card">
-<h4 style="color:var(--rd2)"><span data-en>&#9888; No RAG</span><span data-ru>&#9888; Нет RAG</span></h4>
-<p data-en>I have no built-in retrieval. My "knowledge" consists of frozen model weights. Current information is only available through tools (WebSearch, Read).</p>
-<p data-ru>Я не имею встроенного retrieval. Мои «знания» — это замороженные веса модели. Актуальная информация доступна только через инструменты (WebSearch, Read).</p>
-</div>
-<div class="pd-card">
-<h4 style="color:var(--yl2)"><span data-en>&#9888; Hallucinations</span><span data-ru>&#9888; Галлюцинации</span></h4>
-<p data-en>I can generate plausible but factually incorrect text. Especially: specific numbers, dates, URLs, API names. Always verify critical facts.</p>
-<p data-ru>Могу генерировать правдоподобный, но фактически неверный текст. Особенно: конкретные цифры, даты, URL, имена API. Всегда верифицируйте критические факты.</p>
-</div>
-<div class="pd-card">
-<h4 style="color:var(--gn2)"><span data-en>&#10003; Self-correction</span><span data-ru>&#10003; Самокоррекция</span></h4>
-<p data-en>Extended thinking allows detecting an error before output. But correction is limited: if the error is in the model weights, thinking won't fix it.</p>
-<p data-ru>Extended thinking позволяет обнаружить ошибку до вывода. Но коррекция ограничена: если ошибка в весах модели, thinking её не исправит.</p>
-</div>
-</div>
-</div>
-</div>
-
-<!-- ═══════════════════════════════════════════ SLIDE 5: EXTERNAL ═══ -->
-<div class="slide" data-s="4">
-<div class="slide-inner">
-<div class="skills-header">
-<div class="label label-ac" style="margin-bottom:8px">External Interactions</div>
-<h2><span data-en>Tools &amp; External World</span><span data-ru>Инструменты и внешний мир</span></h2>
-<p style="font-size:13px;color:var(--tx2);margin-top:6px"><span data-en>Claude Code is a runtime environment that turns an LLM into an agent with access to files, CLI, and external APIs</span><span data-ru>Claude Code — среда выполнения, превращающая LLM в агента с доступом к файлам, CLI и внешним API</span></p>
-</div>
-<div class="ext-layout">
-
-<div class="ext-core">
-<div class="ext-core-icon">&#129302;</div>
-<h3 style="color:var(--ac2)">Claude Code</h3>
-<p style="font-size:11px;color:var(--tx2);line-height:1.5" data-en>Runtime environment: VS Code extension, CLI, Desktop app. Manages context, routes tool calls, applies CLAUDE.md and rules.</p>
-<p style="font-size:11px;color:var(--tx2);line-height:1.5" data-ru>Runtime-среда: VS Code extension, CLI, Desktop app. Управляет контекстом, маршрутизирует tool calls, применяет CLAUDE.md и rules.</p>
-<div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center">
-<span style="font-family:var(--fm);font-size:8px;padding:3px 8px;border-radius:4px;background:var(--acbg);color:var(--ac2)">CLI</span>
-<span style="font-family:var(--fm);font-size:8px;padding:3px 8px;border-radius:4px;background:var(--blbg);color:var(--bl2)">VS Code</span>
-<span style="font-family:var(--fm);font-size:8px;padding:3px 8px;border-radius:4px;background:var(--gnbg);color:var(--gn2)">Desktop</span>
-<span style="font-family:var(--fm);font-size:8px;padding:3px 8px;border-radius:4px;background:var(--cybg);color:var(--cy2)">Web</span>
-</div>
-</div>
-
-<div class="ext-tools">
-
-<div class="ext-tool">
-<div class="ico">&#128196;</div>
-<h4>Read / Write / Edit</h4>
-<p data-en>Reading files of any type (code, PDF, images, .ipynb). Writing and precise editing via string replacement.</p>
-<p data-ru>Чтение файлов любого типа (код, PDF, изображения, .ipynb). Запись и точечное редактирование через string replacement.</p>
-<span class="status st-native">Native tool</span>
-</div>
-
-<div class="ext-tool">
-<div class="ico">&#128187;</div>
-<h4>Bash</h4>
-<p data-en>Shell command execution: git, npm, cargo, docker, curl. Sandbox isolation, 2-10 min timeouts. Background processes.</p>
-<p data-ru>Исполнение shell-команд: git, npm, cargo, docker, curl. Sandbox-изоляция, таймауты 2-10 мин. Фоновые процессы.</p>
-<span class="status st-native">Native tool</span>
-</div>
-
-<div class="ext-tool">
-<div class="ico">&#128269;</div>
-<h4>Grep / Glob</h4>
-<p data-en>Content search (ripgrep) and filename pattern matching. Faster and more accurate than Bash grep. Regex, multiline.</p>
-<p data-ru>Поиск по содержимому (ripgrep) и по паттернам имён файлов. Быстрее и точнее, чем Bash grep. Regex, multiline.</p>
-<span class="status st-native">Native tool</span>
-</div>
-
-<div class="ext-tool">
-<div class="ico">&#129302;</div>
-<h4>Agent (sub-agents)</h4>
-<p data-en>Launching specialized agents: code-reviewer, planner, tdd-guide, security-reviewer. Parallel execution. Isolated worktrees.</p>
-<p data-ru>Запуск специализированных агентов: code-reviewer, planner, tdd-guide, security-reviewer. Параллельное исполнение. Изолированные worktrees.</p>
-<span class="status st-native">Native tool</span>
-</div>
-
-<div class="ext-tool">
-<div class="ico">&#127760;</div>
-<h4>WebSearch / WebFetch</h4>
-<p data-en>Internet search and web page fetching. The only way to get information newer than the training cut (May 2025).</p>
-<p data-ru>Поиск в интернете и загрузка веб-страниц. Единственный способ получить информацию новее training cut (May 2025).</p>
-<span class="status st-ext">Deferred tool</span>
-</div>
-
-<div class="ext-tool">
-<div class="ico">&#128268;</div>
-<h4>MCP Servers</h4>
-<p data-en>Model Context Protocol: Figma, Gmail, Notion, Gemini (image gen), Context7 (docs), Stitch (UI). Extensible interface.</p>
-<p data-ru>Model Context Protocol: Figma, Gmail, Notion, Gemini (image gen), Context7 (docs), Stitch (UI). Расширяемый интерфейс.</p>
-<span class="status st-mcp">MCP protocol</span>
-</div>
-
-<div class="ext-tool">
-<div class="ico">&#128065;</div>
-<h4>Vision (multimodal)</h4>
-<p data-en>Reading images (PNG, JPG, PDF). Analyzing UI screenshots, diagrams, photos. I don't generate images — only analyze them.</p>
-<p data-ru>Чтение изображений (PNG, JPG, PDF). Анализ скриншотов UI, диаграмм, фото. Не генерирую изображения — только анализирую.</p>
-<span class="status st-native">Native capability</span>
-</div>
-
-<div class="ext-tool">
-<div class="ico">&#128024;</div>
-<h4>MEMORY.md</h4>
-<p data-en>File-based memory system: user, feedback, project, reference records. Persistence between sessions. Index file + separate .md files.</p>
-<p data-ru>Файловая система памяти: user, feedback, project, reference записи. Персистентность между сессиями. Индексный файл + отдельные .md файлы.</p>
-<span class="status st-limit">File-based persistence</span>
-</div>
-
-</div>
-</div>
-</div>
-</div>
-
-</div><!-- /deck -->
-
-<!-- CONTROLS -->
-<div class="controls">
-<div class="ctrl" onclick="nav(-1)"><span data-en title="Back">&#9664;</span><span data-ru title="Назад">&#9664;</span></div>
-<div class="ctrl" onclick="nav(1)"><span data-en title="Next">&#9654;</span><span data-ru title="Далее">&#9654;</span></div>
+    <div class="controls">
+        <button id="prevBtn" disabled><span data-lang="en">&larr; Back</span><span data-lang="ru">&larr; Назад</span></button>
+        <span class="slide-counter" id="slideCounter">1 / 5</span>
+        <span class="view-count" id="viewCount"></span>
+        <button id="nextBtn"><span data-lang="en">Next &rarr;</span><span data-lang="ru">Далее &rarr;</span></button>
+    </div>
 </div>
 
 <script>
-/* ═══ LANG ═══ */
-function setLang(lang){
-  document.body.classList.toggle('lang-ru', lang==='ru');
-  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
-  localStorage.setItem('svita_pres_lang',lang);
-  document.documentElement.lang = lang==='ru'?'ru':'en';
-  document.title = lang==='ru'
-    ? 'Claude Opus 4.6 \u2014 \u041a\u043e\u0433\u043d\u0438\u0442\u0438\u0432\u043d\u0430\u044f \u0430\u0440\u0445\u0438\u0442\u0435\u043a\u0442\u0443\u0440\u0430'
-    : 'Claude Opus 4.6 \u2014 Cognitive Architecture';
-}
-(function(){
-  var saved=localStorage.getItem('svita_pres_lang');
-  if(saved) setLang(saved); /* default is EN, body has no lang-ru class */
-})();
+    // Language toggle
+    const LANG_KEY = 'svita_pres_lang';
+    let currentLang = localStorage.getItem(LANG_KEY) || 'en';
 
-/* ═══ SLIDE ENGINE ═══ */
-const slides=document.querySelectorAll('.slide');
-const dotsEl=document.getElementById('dots');
-const numEl=document.getElementById('sNum');
-const progEl=document.getElementById('prog');
-const N=slides.length;
-let cur=0;
+    function setLang(lang) {
+        currentLang = lang;
+        localStorage.setItem(LANG_KEY, lang);
+        document.body.classList.toggle('lang-ru', lang === 'ru');
+        document.documentElement.lang = lang;
+        document.title = lang === 'ru'
+            ? 'Claude Opus 4.6 \u2014 \u041a\u043e\u0433\u043d\u0438\u0442\u0438\u0432\u043d\u0430\u044f \u0430\u0440\u0445\u0438\u0442\u0435\u043a\u0442\u0443\u0440\u0430'
+            : 'Claude Opus 4.6 \u2014 Cognitive Architecture';
+        document.querySelectorAll('#langToggle span').forEach(s => {
+            s.classList.toggle('active', s.dataset.pick === lang);
+        });
+        updateSlides();
+    }
 
-slides.forEach((_,i)=>{const d=document.createElement('div');d.className='topbar-dot'+(i===0?' act':'');d.onclick=()=>go(i);dotsEl.appendChild(d)});
+    document.getElementById('langToggle').addEventListener('click', (e) => {
+        const pick = e.target.dataset.pick;
+        if (pick) setLang(pick);
+    });
 
-function go(i){
-  if(i<0||i>=N||i===cur)return;
-  slides[cur].classList.remove('active');
-  slides[cur].classList.add(i>cur?'prev':'');
-  setTimeout(()=>slides[cur===i?cur:cur].classList.remove('prev'),500);
-  const prev=cur;
-  cur=i;
-  slides[cur].classList.remove('prev');
-  slides[cur].classList.add('active');
-  // Remove prev class from old
-  setTimeout(()=>slides[prev].classList.remove('prev'),50);
-  upd();
-}
+    // Slide navigation
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const progressBar = document.getElementById('progressBar');
+    const slideCounter = document.getElementById('slideCounter');
 
-function nav(d){go(cur+d)}
+    function updateSlides() {
+        slides.forEach((slide, index) => {
+            slide.classList.remove('active');
+            if (index === currentSlide) {
+                slide.classList.add('active');
+            }
+        });
 
-function upd(){
-  dotsEl.querySelectorAll('.topbar-dot').forEach((d,i)=>d.className='topbar-dot'+(i===cur?' act':''));
-  numEl.textContent=(cur+1)+' / '+N;
-  progEl.style.width=((cur+1)/N*100)+'%';
-}
+        prevBtn.disabled = currentSlide === 0;
 
-document.addEventListener('keydown',e=>{
-  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();nav(1)}
-  if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();nav(-1)}
-});
+        const finishEn = 'Finish';
+        const finishRu = '\u0413\u043e\u0442\u043e\u0432\u043e';
+        const nextEn = 'Next &rarr;';
+        const nextRu = '\u0414\u0430\u043b\u0435\u0435 &rarr;';
+        const isLast = currentSlide === slides.length - 1;
 
-let _tx=0;
-document.addEventListener('touchstart',e=>{_tx=e.touches[0].clientX},{passive:true});
-document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-_tx;if(Math.abs(dx)>50){dx<0?nav(1):nav(-1)}},{passive:true});
+        const enSpan = nextBtn.querySelector('[data-lang="en"]');
+        const ruSpan = nextBtn.querySelector('[data-lang="ru"]');
+        if (enSpan) enSpan.innerHTML = isLast ? finishEn : nextEn;
+        if (ruSpan) ruSpan.innerHTML = isLast ? finishRu : nextRu;
 
-upd();
+        const progress = ((currentSlide + 1) / slides.length) * 100;
+        progressBar.style.width = progress + '%';
+        slideCounter.textContent = (currentSlide + 1) + ' / ' + slides.length;
+    }
+
+    nextBtn.addEventListener('click', () => {
+        if (currentSlide < slides.length - 1) {
+            currentSlide++;
+            updateSlides();
+        }
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentSlide > 0) {
+            currentSlide--;
+            updateSlides();
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' || e.code === 'ArrowRight') {
+            e.preventDefault();
+            nextBtn.click();
+        } else if (e.code === 'ArrowLeft') {
+            prevBtn.click();
+        }
+    });
+
+    // Init
+    setLang(currentLang);
 </script>
+
 <script>
 fetch('https://ctdleobjnzniqkqomlrq.supabase.co/rest/v1/rpc/track_page_view',{
 method:'POST',
