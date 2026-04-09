@@ -25,6 +25,19 @@ Deno.serve(async (req) => {
       })
     }
 
+    // Mode: actions — AI returns structured data to modify the dashboard
+    if (mode === "actions") {
+      const result = await tryActionsMode(message, context, history)
+      if (result) {
+        return new Response(JSON.stringify(result), {
+          headers: { ...CORS, "Content-Type": "application/json" },
+        })
+      }
+      return new Response(JSON.stringify({ reply: "Не удалось сгенерировать действия", actions: [] }), {
+        headers: { ...CORS, "Content-Type": "application/json" },
+      })
+    }
+
     // Try Jetson first (svita model on Ollama)
     const jetsonReply = await tryJetson(message, context, history)
     if (jetsonReply) {
@@ -177,6 +190,113 @@ async function tryFill(
   } catch (e) {
     console.error("Jetson fill error:", e)
   }
+  return null
+}
+
+async function tryActionsMode(
+  message: string,
+  context: Record<string, unknown> | undefined,
+  _history: ChatMessage[] | undefined
+): Promise<{ reply: string; actions: unknown[]; source: string } | null> {
+  const bizType = context?.bizType as string || "dental"
+  const currency = context?.currency as string || "PLN"
+  const currentState = context?.currentState as string || "пустая концепция"
+
+  const actionsPrompt = `Ты — SVITA AI. Пользователь работает в конструкторе бизнес-концепций.
+
+ТЕКУЩЕЕ СОСТОЯНИЕ КОНЦЕПЦИИ:
+${currentState}
+
+Тип бизнеса: ${bizType}. Валюта: ${currency}.
+
+ЗАДАЧА: На основе запроса пользователя сформируй КОНКРЕТНЫЕ действия для изменения концепции.
+
+ФОРМАТ ОТВЕТА — ТОЛЬКО валидный JSON, без markdown:
+{
+  "reply": "Краткое пояснение что ты сделал (1-3 предложения, русский)",
+  "actions": [
+    {"section": "rooms", "action": "add", "data": [{"name": "...", "type": "...", "area": число}]},
+    {"section": "staff", "action": "add", "data": [{"position": "...", "salary": число, "type": "full|part|b2b"}]},
+    {"section": "equipment", "action": "add", "data": [{"name": "...", "category": "...", "price": число}]},
+    {"section": "services", "action": "add", "data": [{"name": "...", "category": "...", "price": число, "duration": число}]},
+    {"section": "renovations", "action": "add", "data": [{"name": "...", "cat": "...", "price": число}]},
+    {"section": "docs", "action": "add", "data": [{"name": "...", "cat": "...", "price": число, "required": true}]}
+  ]
+}
+
+ПРАВИЛА:
+- Только те секции, которые нужны по запросу (не все сразу)
+- action: "add" — добавить позиции, "replace" — заменить секцию целиком
+- Цены реалистичные для 2025 года
+- Оборудование — реальные бренды и модели
+- Зарплаты — брутто/месяц
+- НЕ дублируй то что уже есть (смотри текущее состояние)
+- Если пользователь просто спрашивает совет — верни actions: [] и ответ в reply
+
+Запрос пользователя: ${message}`
+
+  // Prefer Claude for structured JSON (more reliable)
+  const apiKey = Deno.env.get("ANTHROPIC_API_KEY")
+  if (apiKey) {
+    try {
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": apiKey,
+          "anthropic-version": "2023-06-01",
+        },
+        body: JSON.stringify({
+          model: "claude-haiku-4-5-20251001",
+          max_tokens: 2048,
+          system: "Ты возвращаешь ТОЛЬКО валидный JSON. Без markdown, без текста до/после JSON.",
+          messages: [{ role: "user", content: actionsPrompt }],
+        }),
+      })
+      if (res.ok) {
+        const data = await res.json()
+        const raw = data.content?.[0]?.text || ""
+        const parsed = tryParseJson(raw)
+        if (parsed) {
+          return {
+            reply: String(parsed.reply || "Готово"),
+            actions: (parsed.actions as unknown[]) || [],
+            source: "claude"
+          }
+        }
+      }
+    } catch (e) {
+      console.error("Claude actions error:", e)
+    }
+  }
+
+  // Fallback to Jetson
+  try {
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), JETSON_TIMEOUT)
+    const res = await fetch(JETSON_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: actionsPrompt, context, history: [] }),
+      signal: controller.signal,
+    })
+    clearTimeout(timeout)
+    if (res.ok) {
+      const data = await res.json()
+      const raw = data.reply || ""
+      const parsed = tryParseJson(raw)
+      if (parsed) {
+        return {
+          reply: String(parsed.reply || "Готово"),
+          actions: (parsed.actions as unknown[]) || [],
+          source: "jetson"
+        }
+      }
+    }
+  } catch (e) {
+    console.error("Jetson actions error:", e)
+  }
+
   return null
 }
 
