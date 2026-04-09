@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<link rel="icon" type="image/svg+xml" href="news/favicon.svg">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SVITA — News</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -21,49 +21,68 @@ a{color:inherit;text-decoration:none}
 .header-right{display:flex;align-items:center;gap:14px}
 .back-link{font-size:12px;color:var(--ac);font-weight:500;display:flex;align-items:center;gap:4px;transition:opacity .15s}
 .back-link:hover{opacity:.7}
-
-/* Lang toggle */
 .lang-toggle{display:flex;border:1px solid var(--bd2);border-radius:6px;overflow:hidden;font-size:11px;font-weight:600}
 .lang-btn{padding:4px 10px;cursor:pointer;color:var(--tx3);background:transparent;border:none;font-family:var(--f);font-size:11px;font-weight:600;transition:all .15s}
 .lang-btn:hover{color:var(--tx)}
 .lang-btn.active{background:var(--ac);color:#fff}
+.user-pill{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--tx2);font-weight:500}
+.user-pill .avatar{width:24px;height:24px;border-radius:50%;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+.login-link{font-size:11px;color:var(--ac);font-weight:500;transition:opacity .15s}
+.login-link:hover{opacity:.7}
 
 .page{max-width:960px;margin:0 auto;padding:40px 24px 80px}
-.page-head{margin-bottom:36px}
-.page-head h1{font-size:28px;font-weight:800;letter-spacing:-.02em}
-.page-head p{font-size:13px;color:var(--tx2);margin-top:6px;line-height:1.6}
+.page-head{margin-bottom:36px;display:flex;align-items:flex-start;justify-content:space-between}
+.page-head-text h1{font-size:28px;font-weight:800;letter-spacing:-.02em}
+.page-head-text p{font-size:13px;color:var(--tx2);margin-top:6px;line-height:1.6}
 
 .news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
-
-.news-card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;transition:all .2s;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.news-card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;transition:all .2s;box-shadow:var(--shadow);display:flex;flex-direction:column;position:relative}
 .news-card:hover{border-color:var(--bd2);box-shadow:var(--shadow-md);transform:translateY(-2px)}
 .news-thumb{width:100%;height:180px;background:var(--sf2);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
-.news-thumb img{width:100%;height:100%;object-fit:cover}
 .news-badge{position:absolute;top:10px;left:10px;font-size:9px;font-weight:700;padding:3px 8px;border-radius:5px;text-transform:uppercase;letter-spacing:.5px}
 .badge-presentation{background:rgba(79,110,247,.12);color:var(--ac2)}
 .badge-research{background:rgba(34,197,94,.1);color:#1a9956}
 .badge-tool{background:rgba(249,115,22,.1);color:#c05a10}
 .news-body{padding:16px 18px 18px;flex:1;display:flex;flex-direction:column}
-.news-date{font-size:10px;color:var(--tx3);font-weight:500;margin-bottom:6px}
+.news-date{font-size:10px;color:var(--tx3);font-weight:500;margin-bottom:4px}
+.news-views{font-size:10px;color:var(--tx3);display:flex;align-items:center;gap:4px;margin-bottom:6px}
 .news-title{font-size:15px;font-weight:700;line-height:1.35;margin-bottom:6px}
 .news-desc{font-size:12px;color:var(--tx2);line-height:1.55;flex:1}
 .news-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:12px}
 .news-tag{font-size:9px;font-weight:600;padding:2px 7px;border-radius:5px;background:var(--sf2);color:var(--tx3)}
 .news-cta{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-size:11px;font-weight:600;color:var(--ac);transition:gap .15s}
 .news-card:hover .news-cta{gap:8px}
-.news-views{font-size:10px;color:var(--tx3);display:flex;align-items:center;gap:4px}
 
-[data-ru]{display:none!important}
-body.lang-ru [data-ru]{display:block!important}
-body.lang-ru [data-en]{display:none!important}
-/* inline variants */
-body.lang-ru span[data-ru]{display:inline!important}
+/* Admin controls */
+.admin-actions{position:absolute;top:10px;right:10px;display:flex;gap:4px;z-index:5}
+.admin-btn{width:28px;height:28px;border-radius:6px;border:none;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;transition:all .15s;backdrop-filter:blur(8px)}
+.admin-btn.edit{background:rgba(79,110,247,.85);color:#fff}
+.admin-btn.del{background:rgba(248,81,73,.85);color:#fff}
+.admin-btn:hover{transform:scale(1.1)}
+.add-card{background:var(--sf);border:2px dashed var(--bd2);border-radius:var(--r);min-height:300px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-direction:column;gap:8px;color:var(--tx3);font-size:13px;font-weight:600}
+.add-card:hover{border-color:var(--ac);color:var(--ac);background:var(--acbg)}
+
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-bg.vis{display:flex}
+.modal{background:var(--sf);border-radius:16px;padding:28px;width:520px;max-width:95vw;max-height:85vh;overflow-y:auto}
+.modal h3{font-size:16px;font-weight:800;margin-bottom:20px}
+.mf{margin-bottom:14px}
+.mf label{display:block;font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.mf input,.mf select,.mf textarea{width:100%;background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;color:var(--tx);font-family:var(--f);font-size:12px}
+.mf input:focus,.mf textarea:focus,.mf select:focus{border-color:var(--ac);outline:none}
+.mf textarea{min-height:60px;resize:vertical}
+.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px}
+.mbtn{padding:8px 18px;border-radius:8px;font-size:12px;font-weight:600;border:none;cursor:pointer;font-family:var(--f);transition:all .15s}
+.mbtn.pr{background:var(--ac);color:#fff}.mbtn.pr:hover{background:var(--ac2)}
+.mbtn.ghost{background:transparent;color:var(--tx2);border:1px solid var(--bd)}.mbtn.ghost:hover{background:var(--sf2)}
 
 @media(max-width:640px){
   .header{padding:0 16px}
   .page{padding:24px 16px 60px}
   .news-grid{grid-template-columns:1fr}
-  .page-head h1{font-size:22px}
+  .page-head{flex-direction:column;gap:12px}
+  .page-head-text h1{font-size:22px}
 }
 </style>
 </head>
@@ -80,135 +99,215 @@ body.lang-ru span[data-ru]{display:inline!important}
       <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
       <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
     </div>
-    <a href="/" class="back-link"><span data-en>&larr; Dashboard</span><span data-ru>&larr; Dashboard</span></a>
+    <span id="userIndicator"></span>
+    <a href="/" class="back-link">&larr; <span data-t="dashboard">Dashboard</span></a>
   </div>
 </div>
 
 <div class="page">
   <div class="page-head">
-    <h1>
-      <span data-en>AI & Neural Networks</span>
-      <span data-ru>AI & Нейронные сети</span>
-    </h1>
-    <p data-en>Presentations, research, and tools — everything we build and discover in the world of artificial intelligence.</p>
-    <p data-ru>Презентации, исследования и инструменты — всё, что мы создаём и открываем в мире искусственного интеллекта.</p>
+    <div class="page-head-text">
+      <h1 id="pageTitle">AI & Neural Networks</h1>
+      <p id="pageDesc">Presentations, research, and tools — everything we build and discover in the world of artificial intelligence.</p>
+    </div>
   </div>
+  <div class="news-grid" id="newsGrid"></div>
+</div>
 
-  <div class="news-grid">
-
-    <!-- 1. Vibe Coding (EN/RU) -->
-    <a href="/news/vibe-coding.html" class="news-card" data-page="/news/vibe-coding.html">
-      <div class="news-thumb" style="background:linear-gradient(135deg,#0a0e14,#161b22)">
-        <div style="text-align:center;color:#58a6ff;font-size:32px;font-weight:800;letter-spacing:2px;opacity:.7">VIBE<br><span style="font-size:18px;color:#adbac7;font-weight:300">CODING</span></div>
-        <span class="news-badge badge-presentation">Presentation</span>
-      </div>
-      <div class="news-body">
-        <div class="news-date"><span data-en>April 9, 2026</span><span data-ru>9 апреля 2026</span></div>
-        <div class="news-views">👁 <span class="view-count">&mdash;</span></div>
-        <div class="news-title"><span data-en>Vibe Coding — The New Era of Building Things</span><span data-ru>Вайб Кодинг — Новая Эра Создания</span></div>
-        <div class="news-desc"><span data-en>11-slide interactive presentation about prompt-driven development, AI agents as extensions of self, and the $616B market. EN/RU.</span><span data-ru>11 интерактивных слайдов о промпт-разработке, AI-агентах как продолжении мышления, и рынке в $616 млрд. EN/RU.</span></div>
-        <div class="news-tags">
-          <span class="news-tag">AI Agents</span>
-          <span class="news-tag">Vibe Coding</span>
-          <span class="news-tag">EN</span>
-          <span class="news-tag">RU</span>
-        </div>
-        <div class="news-cta"><span data-en>Open &rarr;</span><span data-ru>Открыть &rarr;</span></div>
-      </div>
-    </a>
-
-    <!-- 2. Claude Opus Principles -->
-    <a href="/principles.html" class="news-card" data-page="/principles.html">
-      <div class="news-thumb" style="background:linear-gradient(135deg,#06060c,#141426)">
-        <div style="text-align:center;color:#8b5cf6;font-size:28px;font-weight:800;opacity:.7">CLAUDE<br><span style="font-size:16px;color:#9898b8;font-weight:300">OPUS 4.6</span></div>
-        <span class="news-badge badge-research">Research</span>
-      </div>
-      <div class="news-body">
-        <div class="news-date"><span data-en>April 2026</span><span data-ru>Апрель 2026</span></div>
-        <div class="news-views">👁 <span class="view-count">&mdash;</span></div>
-        <div class="news-title"><span data-en>Claude Opus 4.6 — Fundamental Principles</span><span data-ru>Claude Opus 4.6 — Фундаментальные принципы</span></div>
-        <div class="news-desc"><span data-en>Architecture, reasoning, limitations and capabilities of one of the most advanced AI models. Interactive presentation.</span><span data-ru>Архитектура, рассуждения, ограничения и возможности одной из самых продвинутых AI-моделей. Интерактивная презентация.</span></div>
-        <div class="news-tags">
-          <span class="news-tag">Claude</span>
-          <span class="news-tag">Anthropic</span>
-          <span class="news-tag">LLM</span>
-        </div>
-        <div class="news-cta"><span data-en>Open &rarr;</span><span data-ru>Открыть &rarr;</span></div>
-      </div>
-    </a>
-
-    <!-- 3. Cognitive Map -->
-    <a href="/cognitive-map.html" class="news-card" data-page="/cognitive-map.html">
-      <div class="news-thumb" style="background:linear-gradient(135deg,#08080f,#161625)">
-        <div style="text-align:center;color:#06b6d4;font-size:26px;font-weight:800;opacity:.7">COGNITIVE<br><span style="font-size:16px;color:#9898b8;font-weight:300">ARCHITECTURE</span></div>
-        <span class="news-badge badge-research">Research</span>
-      </div>
-      <div class="news-body">
-        <div class="news-date"><span data-en>April 2026</span><span data-ru>Апрель 2026</span></div>
-        <div class="news-views">👁 <span class="view-count">&mdash;</span></div>
-        <div class="news-title"><span data-en>Cognitive Architecture of Claude Opus 4.6</span><span data-ru>Когнитивная архитектура Claude Opus 4.6</span></div>
-        <div class="news-desc"><span data-en>Map of cognitive processes: how the model thinks, structures information, and makes decisions. Visual presentation.</span><span data-ru>Карта когнитивных процессов: как модель думает, структурирует информацию и принимает решения. Визуальная презентация.</span></div>
-        <div class="news-tags">
-          <span class="news-tag">Cognitive Map</span>
-          <span class="news-tag">Architecture</span>
-          <span class="news-tag">AI</span>
-        </div>
-        <div class="news-cta"><span data-en>Open &rarr;</span><span data-ru>Открыть &rarr;</span></div>
-      </div>
-    </a>
-
-    <!-- 4. SWOT Analysis -->
-    <a href="/swot.html" class="news-card" data-page="/swot.html">
-      <div class="news-thumb" style="background:linear-gradient(135deg,#0a0a12,#1a1a2e)">
-        <div style="text-align:center;color:#eab308;font-size:28px;font-weight:800;opacity:.7">SWOT<br><span style="font-size:16px;color:#a0a0b8;font-weight:300">ANALYSIS</span></div>
-        <span class="news-badge badge-tool">Analysis</span>
-      </div>
-      <div class="news-body">
-        <div class="news-date"><span data-en>April 2026</span><span data-ru>Апрель 2026</span></div>
-        <div class="news-views">👁 <span class="view-count">&mdash;</span></div>
-        <div class="news-title"><span data-en>SVITA AI — SWOT Analysis</span><span data-ru>SVITA AI — SWOT-анализ</span></div>
-        <div class="news-desc"><span data-en>Strengths, weaknesses, opportunities, and threats of the SVITA project. Strategic breakdown in interactive slides.</span><span data-ru>Сильные и слабые стороны, возможности и угрозы проекта SVITA. Стратегический разбор на интерактивных слайдах.</span></div>
-        <div class="news-tags">
-          <span class="news-tag">SWOT</span>
-          <span class="news-tag">Strategy</span>
-          <span class="news-tag">SVITA</span>
-        </div>
-        <div class="news-cta"><span data-en>Open &rarr;</span><span data-ru>Открыть &rarr;</span></div>
-      </div>
-    </a>
-
+<!-- Edit modal -->
+<div class="modal-bg" id="modalBg">
+<div class="modal">
+  <h3 id="modalTitle">New Post</h3>
+  <input type="hidden" id="editId">
+  <div class="mf"><label>Title (EN)</label><input id="fTitleEn"></div>
+  <div class="mf"><label>Title (RU)</label><input id="fTitleRu"></div>
+  <div class="mf"><label>Description (EN)</label><textarea id="fDescEn"></textarea></div>
+  <div class="mf"><label>Description (RU)</label><textarea id="fDescRu"></textarea></div>
+  <div class="mf"><label>URL (page link)</label><input id="fUrl" placeholder="/news/my-post.html"></div>
+  <div class="mf"><label>Date (EN)</label><input id="fDateEn" placeholder="April 2026"></div>
+  <div class="mf"><label>Date (RU)</label><input id="fDateRu" placeholder="Апрель 2026"></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div class="mf"><label>Thumb Label</label><input id="fThumbLabel" placeholder="VIBE"></div>
+    <div class="mf"><label>Thumb Sublabel</label><input id="fThumbSublabel" placeholder="CODING"></div>
+    <div class="mf"><label>Thumb Color</label><input id="fThumbColor" type="color" value="#58a6ff"></div>
+    <div class="mf"><label>Badge</label><select id="fBadge"><option value="Presentation">Presentation</option><option value="Research">Research</option><option value="Analysis">Analysis</option><option value="Tool">Tool</option></select></div>
   </div>
+  <div class="mf"><label>Tags (comma separated)</label><input id="fTags" placeholder="AI Agents, Vibe Coding, EN, RU"></div>
+  <div class="modal-actions">
+    <button class="mbtn ghost" onclick="closeModal()">Cancel</button>
+    <button class="mbtn pr" onclick="savePost()">Save</button>
+  </div>
+</div>
 </div>
 
 <script>
-function setLang(lang){
-  document.body.classList.toggle('lang-ru', lang==='ru');
-  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
-  localStorage.setItem('svita_news_lang',lang);
-}
+const SB='https://ctdleobjnzniqkqomlrq.supabase.co';
+const SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZGxlb2JqbnpuaXFrcW9tbHJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMzE4MTEsImV4cCI6MjA4NzgwNzgxMX0.AMHtY7zGPemKYCxMy2bqRTOEAp8trA_Slor9wmg7C38';
+let lang='en',isAdmin=false,posts=[],sessionUser=null;
+
+// Session
+try{
+  const s=JSON.parse(localStorage.getItem('svita_session'));
+  if(s){sessionUser=s;if(s.isAdmin)isAdmin=true}
+}catch(e){}
+
+// User indicator
 (function(){
-  const saved=localStorage.getItem('svita_news_lang');
-  if(saved)setLang(saved);
+  const el=document.getElementById('userIndicator');
+  if(sessionUser){
+    const name=sessionUser.name||sessionUser.email;
+    const initials=name.split(/[\s@]/)[0].slice(0,2).toUpperCase();
+    el.innerHTML='<span class="user-pill"><span class="avatar">'+initials+'</span>'+name+'</span>';
+  }else{
+    el.innerHTML='<a href="/dashboard.html" class="login-link" data-t="login">Login</a>';
+  }
 })();
 
-/* View counters via Supabase RPC */
-(function(){
-  const SUPABASE_URL='https://ctdleobjnzniqkqomlrq.supabase.co';
-  const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZGxlb2JqbnpuaXFrcW9tbHJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMzE4MTEsImV4cCI6MjA4NzgwNzgxMX0.AMHtY7zGPemKYCxMy2bqRTOEAp8trA_Slor9wmg7C38';
-  document.querySelectorAll('.news-card[data-page]').forEach(function(card){
-    var page=card.getAttribute('data-page');
-    var el=card.querySelector('.view-count');
-    fetch(SUPABASE_URL+'/rest/v1/rpc/get_page_views',{
-      method:'POST',
-      headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},
-      body:JSON.stringify({p_page:page})
-    })
-    .then(function(r){return r.json()})
-    .then(function(count){el.textContent=typeof count==='number'?count:'0'})
-    .catch(function(){el.textContent='0'});
+// i18n dict
+const T={
+  en:{dashboard:'Dashboard',login:'Login',title:'AI & Neural Networks',desc:'Presentations, research, and tools — everything we build and discover in the world of artificial intelligence.',open:'Open',newPost:'+ New Post',deleteConfirm:'Delete post?',presentation:'Presentation',research:'Research',analysis:'Analysis',tool:'Tool'},
+  ru:{dashboard:'Дашборд',login:'Войти',title:'AI & Нейронные сети',desc:'Презентации, исследования и инструменты — всё, что мы создаём и открываем в мире искусственного интеллекта.',open:'Открыть',newPost:'+ Новый пост',deleteConfirm:'Удалить пост?',presentation:'Презентация',research:'Исследование',analysis:'Анализ',tool:'Инструмент'}
+};
+
+// Lang
+function t(k){return T[lang][k]||T.en[k]||k}
+function setLang(l){
+  lang=l;
+  localStorage.setItem('svita_news_lang',l);
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===l));
+  document.getElementById('pageTitle').textContent=t('title');
+  document.getElementById('pageDesc').textContent=t('desc');
+  document.querySelectorAll('[data-t]').forEach(el=>{el.textContent=t(el.dataset.t)});
+  if(!sessionUser){const lnk=document.querySelector('[data-t="login"]');if(lnk)lnk.textContent=t('login')}
+  renderPosts();
+}
+
+// Badge class
+function badgeCls(b){return b==='Research'?'badge-research':b==='Analysis'||b==='Tool'?'badge-tool':'badge-presentation'}
+
+// Render
+function renderPosts(){
+  const grid=document.getElementById('newsGrid');
+  let html='';
+  posts.filter(p=>p.is_visible).forEach(p=>{
+    const t=lang==='ru'?(p.title_ru||p.title_en):p.title_en;
+    const d=lang==='ru'?(p.desc_ru||p.desc_en):p.desc_en;
+    const dt=lang==='ru'?(p.date_ru||p.date_en):p.date_en;
+    const cta=t('open')+' &rarr;';
+    const badgeText=t((p.badge||'Presentation').toLowerCase());
+    const tags=(p.tags||[]).map(tg=>'<span class="news-tag">'+tg+'</span>').join('');
+    const admin=isAdmin?`<div class="admin-actions"><button class="admin-btn edit" onclick="event.preventDefault();editPost('${p.id}')" title="Edit">&#9998;</button><button class="admin-btn del" onclick="event.preventDefault();deletePost('${p.id}')" title="Delete">&#10005;</button></div>`:'';
+    html+=`<a href="${p.url}" class="news-card" data-page="${p.url}">
+      ${admin}
+      <div class="news-thumb" style="background:${p.thumb_bg||'linear-gradient(135deg,#0a0e14,#161b22)'}">
+        <div style="text-align:center;color:${p.thumb_color||'#58a6ff'};font-size:30px;font-weight:800;letter-spacing:2px;opacity:.7">${p.thumb_label||''}<br><span style="font-size:16px;color:#9898b8;font-weight:300">${p.thumb_sublabel||''}</span></div>
+        <span class="news-badge ${badgeCls(p.badge)}">${badgeText}</span>
+      </div>
+      <div class="news-body">
+        <div class="news-date">${dt}</div>
+        <div class="news-views">&#128065; <span class="vc" data-vp="${p.url}">&mdash;</span></div>
+        <div class="news-title">${t}</div>
+        <div class="news-desc">${d}</div>
+        <div class="news-tags">${tags}</div>
+        <div class="news-cta">${cta}</div>
+      </div>
+    </a>`;
   });
+  if(isAdmin)html+='<div class="add-card" onclick="newPost()">'+t('newPost')+'</div>';
+  grid.innerHTML=html;
+  loadViews();
+}
+
+// Views
+function loadViews(){
+  document.querySelectorAll('.vc[data-vp]').forEach(el=>{
+    fetch(SB+'/rest/v1/rpc/get_page_views',{method:'POST',headers:{'apikey':SK,'Content-Type':'application/json'},body:JSON.stringify({p_page:el.dataset.vp})})
+    .then(r=>r.json()).then(c=>{el.textContent=typeof c==='number'?c:'0'}).catch(()=>{el.textContent='0'});
+  });
+}
+
+// Modal
+function openModal(title){document.getElementById('modalTitle').textContent=title;document.getElementById('modalBg').classList.add('vis')}
+function closeModal(){document.getElementById('modalBg').classList.remove('vis')}
+
+function newPost(){
+  document.getElementById('editId').value='';
+  ['fTitleEn','fTitleRu','fDescEn','fDescRu','fUrl','fDateEn','fDateRu','fThumbLabel','fThumbSublabel','fTags'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('fThumbColor').value='#58a6ff';
+  document.getElementById('fBadge').value='Presentation';
+  openModal('New Post');
+}
+
+function editPost(id){
+  const p=posts.find(x=>x.id===id);if(!p)return;
+  document.getElementById('editId').value=id;
+  document.getElementById('fTitleEn').value=p.title_en||'';
+  document.getElementById('fTitleRu').value=p.title_ru||'';
+  document.getElementById('fDescEn').value=p.desc_en||'';
+  document.getElementById('fDescRu').value=p.desc_ru||'';
+  document.getElementById('fUrl').value=p.url||'';
+  document.getElementById('fDateEn').value=p.date_en||'';
+  document.getElementById('fDateRu').value=p.date_ru||'';
+  document.getElementById('fThumbLabel').value=p.thumb_label||'';
+  document.getElementById('fThumbSublabel').value=p.thumb_sublabel||'';
+  document.getElementById('fThumbColor').value=p.thumb_color||'#58a6ff';
+  document.getElementById('fBadge').value=p.badge||'Presentation';
+  document.getElementById('fTags').value=(p.tags||[]).join(', ');
+  openModal('Edit Post');
+}
+
+async function savePost(){
+  const id=document.getElementById('editId').value;
+  const row={
+    title_en:document.getElementById('fTitleEn').value,
+    title_ru:document.getElementById('fTitleRu').value,
+    desc_en:document.getElementById('fDescEn').value,
+    desc_ru:document.getElementById('fDescRu').value,
+    url:document.getElementById('fUrl').value,
+    date_en:document.getElementById('fDateEn').value,
+    date_ru:document.getElementById('fDateRu').value,
+    thumb_label:document.getElementById('fThumbLabel').value,
+    thumb_sublabel:document.getElementById('fThumbSublabel').value,
+    thumb_color:document.getElementById('fThumbColor').value,
+    badge:document.getElementById('fBadge').value,
+    badge_class:badgeCls(document.getElementById('fBadge').value),
+    tags:document.getElementById('fTags').value.split(',').map(s=>s.trim()).filter(Boolean),
+    updated_at:new Date().toISOString()
+  };
+  if(!row.title_en||!row.url){alert('Title and URL required');return}
+  const h={'apikey':SK,'Content-Type':'application/json','Prefer':'return=representation'};
+  let res;
+  if(id){
+    res=await fetch(SB+'/rest/v1/news_posts?id=eq.'+id,{method:'PATCH',headers:h,body:JSON.stringify(row)});
+  }else{
+    row.sort_order=posts.length+1;
+    res=await fetch(SB+'/rest/v1/news_posts',{method:'POST',headers:h,body:JSON.stringify(row)});
+  }
+  if(res.ok){closeModal();loadPosts()}else{alert('Error saving')}
+}
+
+async function deletePost(id){
+  if(!confirm(t('deleteConfirm')))return;
+  await fetch(SB+'/rest/v1/news_posts?id=eq.'+id,{method:'DELETE',headers:{'apikey':SK}});
+  loadPosts();
+}
+
+// Load
+async function loadPosts(){
+  try{
+    const r=await fetch(SB+'/rest/v1/news_posts?select=*&order=sort_order&is_visible=eq.true',{headers:{'apikey':SK}});
+    posts=await r.json();
+  }catch(e){posts=[]}
+  renderPosts();
+}
+
+// Init
+(function(){
+  const saved=localStorage.getItem('svita_news_lang');
+  if(saved)lang=saved;
+  setLang(lang);
+  loadPosts();
 })();
 </script>
-<script src="/js/news-edit.js"></script>
 </body>
 </html>
