@@ -1,0 +1,734 @@
+{
+  "country": "UK",
+  "lang": "en",
+  "currency": "GBP",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Company Registration",
+      "name": "Companies House Registration",
+      "desc": "Incorporate a limited company (Ltd) with Companies House",
+      "price": 50,
+      "required": true,
+      "note": "Purpose: Legal incorporation of the dental practice as a limited company.\nWhere: Companies House — online at gov.uk/register-a-company or via Form IN01.\nTimelines: Online registration usually completes within 24 hours. Paper filing takes 8-10 working days.\nImportant: Choose SIC code 86230 (Dental practice activities). You will need a registered office address, at least one director, and articles of association."
+    },
+    {
+      "cat": "Company Registration",
+      "name": "HMRC Corporation Tax Registration",
+      "desc": "Register for Corporation Tax within 3 months of starting business",
+      "price": 0,
+      "required": true,
+      "note": "Purpose: Legal obligation to register for Corporation Tax with HMRC.\nWhere: HMRC — online at gov.uk/register-for-corporation-tax.\nTimelines: Must register within 3 months of starting trading. HMRC issues a UTR (Unique Taxpayer Reference) within 14 days.\nImportant: Corporation Tax rate is 25% (2025). File CT600 annually. Dental services are VAT-exempt under Schedule 9, Group 7, VATA 1994."
+    },
+    {
+      "cat": "Company Registration",
+      "name": "VAT Registration",
+      "desc": "Register for VAT if turnover exceeds threshold or for input VAT recovery",
+      "price": 0,
+      "required": false,
+      "note": "Purpose: VAT registration — dental treatment is exempt but some goods/services may be taxable.\nWhere: HMRC — online at gov.uk/vat-registration.\nTimelines: Must register if taxable turnover exceeds GBP 90,000 (2025 threshold). Processing takes 4-6 weeks.\nImportant: Most dental treatments are VAT-exempt. Cosmetic dentistry (whitening, veneers) may be standard-rated. Voluntary registration can enable input VAT recovery on equipment and fit-out costs."
+    },
+    {
+      "cat": "Company Registration",
+      "name": "Business Bank Account",
+      "desc": "Dedicated business bank account — required for Ltd companies",
+      "price": 150,
+      "required": true,
+      "note": "Purpose: Separate business finances from personal. Required for Ltd companies.\nWhere: High street banks (Barclays, HSBC, NatWest, Lloyds) or challenger banks (Starling, Tide).\nTimelines: 1-5 working days online, up to 2 weeks for traditional banks.\nImportant: Some banks offer healthcare-specific accounts. Expect monthly fees of GBP 5-15. Card payment terminals are essential — most patients expect card payments."
+    },
+    {
+      "cat": "Company Registration",
+      "name": "PAYE Registration (Employer)",
+      "desc": "Register as employer with HMRC for payroll",
+      "price": 0,
+      "required": true,
+      "note": "Purpose: Register as employer to run payroll and pay employees.\nWhere: HMRC — online at gov.uk/register-as-employer.\nTimelines: Register before first payday. HMRC issues PAYE reference within 5-10 working days.\nImportant: Must operate RTI (Real Time Information) payroll. Report to HMRC on or before each payday. Auto-enrolment pension obligations apply from day one."
+    },
+    {
+      "cat": "Company Registration",
+      "name": "Accountancy Services (Annual)",
+      "desc": "Specialist dental accountant for Corporation Tax, payroll, VAT",
+      "price": 6000,
+      "required": true,
+      "note": "Purpose: Annual accounts, Corporation Tax returns, payroll, and compliance.\nWhere: Specialist dental accountants (e.g., Hive Business, PFM Dental, Lansdell & Rose).\nTimelines: Engage before trading. Annual accounts due 9 months after year-end. CT600 due 12 months after.\nImportant: Dental-specialist accountants understand NHS contract accounting, associate pay structures, and sector-specific tax planning. Budget GBP 400-600/month."
+    },
+    {
+      "cat": "Company Registration",
+      "name": "Workplace Pension Scheme",
+      "desc": "Auto-enrolment pension — mandatory for all employers",
+      "price": 0,
+      "required": true,
+      "note": "Purpose: Legal obligation under Pensions Act 2008 to auto-enrol eligible employees.\nWhere: NEST (gov.uk/nest), The People's Pension, or private providers.\nTimelines: From day one of employing staff. Declaration of compliance to The Pensions Regulator within 5 months.\nImportant: Minimum employer contribution 3% of qualifying earnings. Employee minimum 5%. Penalties for non-compliance are significant."
+    },
+    {
+      "cat": "CQC Registration",
+      "name": "CQC Registration — Dental Practice",
+      "desc": "Care Quality Commission registration — mandatory before treating patients",
+      "price": 3000,
+      "required": true,
+      "note": "Purpose: Legal requirement to register with CQC before providing regulated dental activities in England.\nWhere: Care Quality Commission — online at cqc.org.uk/registration.\nTimelines: Apply at least 12 weeks before planned opening. CQC aims to process within 10 weeks but can take longer.\nImportant: Fee depends on practice size. Application includes Statement of Purpose, information about registered manager, compliance evidence. Without CQC registration, it is a criminal offence to provide dental treatment."
+    },
+    {
+      "cat": "CQC Registration",
+      "name": "CQC Registered Manager",
+      "desc": "Nominated individual responsible for day-to-day compliance",
+      "price": 0,
+      "required": true,
+      "note": "Purpose: CQC requires a named Registered Manager responsible for compliance with fundamental standards.\nWhere: Named in the CQC registration application.\nTimelines: Must be in place before registration is granted. CQC interviews the proposed Registered Manager.\nImportant: Usually the practice principal or practice manager. Must pass a DBS check. CQC assesses their fitness via interview and documentation review."
+    },
+    {
+      "cat": "CQC Registration",
+      "name": "CQC Statement of Purpose",
+      "desc": "Document describing regulated activities, services, and management",
+      "price": 800,
+      "required": true,
+      "note": "Purpose: Required document for CQC registration — describes the practice, its services, and governance.\nWhere: Prepared internally or with a dental compliance consultant.\nTimelines: Must be submitted with CQC application. Update whenever services change.\nImportant: Must include: aims and objectives, regulated activities, types of services, name and address of registered manager, and the number and types of staff."
+    },
+    {
+      "cat": "CQC Registration",
+      "name": "CQC Annual Fee",
+      "desc": "Annual registration fee to CQC — based on turnover",
+      "price": 2100,
+      "required": true,
+      "note": "Purpose: Annual fee to maintain CQC registration. Failure to pay results in cancellation.\nWhere: CQC invoices annually.\nTimelines: Payable annually. CQC sends invoices approximately 2 months before due date.\nImportant: Fee is based on turnover band. For a typical dental practice (GBP 200K-1M turnover) expect GBP 1,500-3,000. CQC can cancel registration for non-payment."
+    },
+    {
+      "cat": "CQC Registration",
+      "name": "CQC Compliance Policies and Procedures",
+      "desc": "Full suite of policies covering the 5 CQC key questions",
+      "price": 2500,
+      "required": true,
+      "note": "Purpose: Evidence of compliance with CQC fundamental standards across Safe, Effective, Caring, Responsive, Well-led.\nWhere: Dental compliance companies (e.g., Apolline, Dental Compliance Made Easy, Agilio Software).\nTimelines: Must be in place before CQC registration. Review and update at least annually.\nImportant: Includes safeguarding, infection prevention, complaints, consent, clinical governance, recruitment, risk management. CQC inspectors will review these during inspections."
+    },
+    {
+      "cat": "CQC Registration",
+      "name": "CQC Compliance Consultant",
+      "desc": "Specialist consultant to prepare for CQC registration and inspection",
+      "price": 3500,
+      "required": false,
+      "note": "Purpose: Expert guidance through the CQC registration process and ongoing compliance.\nWhere: Dental compliance consultancies (e.g., Dental Elite, The Dental Business Guide, RQIA consultants).\nTimelines: Engage 3-6 months before planned opening.\nImportant: Highly recommended for first-time practice owners. Can save months of delays and help achieve Good or Outstanding rating. Some offer mock inspection services."
+    },
+    {
+      "cat": "GDC Registration",
+      "name": "GDC Registration — Dentist",
+      "desc": "General Dental Council registration — mandatory for every practising dentist",
+      "price": 890,
+      "required": true,
+      "note": "Purpose: Legal requirement for every dentist to be registered with the GDC before practising.\nWhere: General Dental Council — gdc-uk.org.\nTimelines: Annual renewal by 31 December. New registration takes 4-8 weeks.\nImportant: Annual Retention Fee (ARF) is GBP 890 for dentists (2025). Without GDC registration it is a criminal offence to practise dentistry. Overseas-qualified dentists must pass the ORE (Overseas Registration Examination)."
+    },
+    {
+      "cat": "GDC Registration",
+      "name": "GDC Registration — Dental Care Professional",
+      "desc": "Registration for hygienists, therapists, nurses, technicians",
+      "price": 114,
+      "required": true,
+      "note": "Purpose: All dental care professionals (DCPs) must be GDC-registered to practise.\nWhere: General Dental Council — gdc-uk.org.\nTimelines: Annual renewal. New registration takes 4-8 weeks.\nImportant: ARF is GBP 114/year for DCPs (2025). Covers dental nurses, hygienists, therapists, technicians, clinical dental technicians, orthodontic therapists. Employer must verify registration status."
+    },
+    {
+      "cat": "GDC Registration",
+      "name": "Enhanced CPD Compliance",
+      "desc": "Continuing Professional Development — mandatory for GDC registrants",
+      "price": 1500,
+      "required": true,
+      "note": "Purpose: GDC Enhanced CPD scheme requires all registrants to complete verifiable CPD hours.\nWhere: CPD providers, conferences, online platforms (e.g., ProDental CPD, BDA, Dentinal Tubules).\nTimelines: 5-year CPD cycle. Dentists need 100 hours (75 verifiable). DCPs need 50 hours (25 verifiable).\nImportant: Must include recommended topics: medical emergencies, disinfection/decontamination, radiography, safeguarding, oral cancer, complaints handling. Maintain a CPD log and personal development plan."
+    },
+    {
+      "cat": "GDC Registration",
+      "name": "Indemnity Arrangements Verification",
+      "desc": "Verify all clinicians hold adequate professional indemnity",
+      "price": 0,
+      "required": true,
+      "note": "Purpose: GDC Standards require all registrants to have adequate and appropriate indemnity arrangements.\nWhere: Verified by the practice — check certificates from indemnity providers.\nTimelines: Verify before any clinician begins treating patients. Re-verify annually.\nImportant: Since 2015, having indemnity is a legal requirement under the Dentists Act 1984 (amended). GDC can remove registrants who lack indemnity."
+    },
+    {
+      "cat": "NHS/Private Practice",
+      "name": "NHS England Dental Contract",
+      "desc": "GDS or PDS contract to provide NHS dental services",
+      "price": 5000,
+      "required": false,
+      "note": "Purpose: Contract with NHS England to provide NHS dental treatment funded by UDAs (Units of Dental Activity).\nWhere: NHS England — Local Area Team. Procured via open tender or contract transfer.\nTimelines: Tender rounds vary. Contract transfers (buying existing practice) take 3-6 months for approval.\nImportant: NHS contracts are valuable assets. UDA values vary regionally (GBP 23-33 per UDA in 2025). Clawback applies if targets not met. Not required for fully private practices."
+    },
+    {
+      "cat": "NHS/Private Practice",
+      "name": "NHS BSA Compass System Access",
+      "desc": "Access to NHS Business Services Authority for claims and payments",
+      "price": 0,
+      "required": false,
+      "note": "Purpose: Submit NHS dental claims and receive payments via BSA Compass system.\nWhere: NHS Business Services Authority — nhsbsa.nhs.uk.\nTimelines: Set up after NHS contract is awarded. Access granted within 2-4 weeks.\nImportant: Only required if holding an NHS contract. Used for FP17 claim submissions, UDA monitoring, patient charge revenue reconciliation."
+    },
+    {
+      "cat": "NHS/Private Practice",
+      "name": "Practice Management Software",
+      "desc": "Clinical records, scheduling, NHS claims, patient communication",
+      "price": 6000,
+      "required": true,
+      "note": "Purpose: Electronic patient records, appointment scheduling, clinical notes, and NHS claims processing.\nWhere: Software providers — Software of Excellence (SOE/Carestream), Dentally, Exact (Henry Schein One), iSmile.\nTimelines: Install and configure 4-6 weeks before opening. Staff training 1-2 weeks.\nImportant: Must be compliant with NHS Digital requirements if NHS practice. Cloud-based systems (Dentally) offer flexibility. Budget GBP 300-600/month depending on features and number of surgeries."
+    },
+    {
+      "cat": "NHS/Private Practice",
+      "name": "NHS Performer Number",
+      "desc": "Each NHS dentist needs a performer number from NHS England",
+      "price": 0,
+      "required": false,
+      "note": "Purpose: Individual NHS performer number required for each dentist providing NHS treatment.\nWhere: NHS England — Performer List application via the Local Area Team.\nTimelines: Application takes 4-8 weeks. Requires enhanced DBS, occupational health check, references.\nImportant: Only needed for NHS work. Without a performer number, a dentist cannot provide NHS-funded treatment. Associates joining the practice also need their own performer number."
+    },
+    {
+      "cat": "NHS/Private Practice",
+      "name": "Private Fee Guide and Price List",
+      "desc": "Published fee guide — required under CQC and consumer law",
+      "price": 300,
+      "required": true,
+      "note": "Purpose: Legal requirement to provide transparent pricing to patients before treatment.\nWhere: Displayed in the practice and on the website.\nTimelines: Must be in place before opening.\nImportant: Consumer Rights Act 2015 and CQC regulations require clear pricing information. Include all common treatments, payment options, and finance availability. Display prominently in reception and on website."
+    },
+    {
+      "cat": "Infection Control",
+      "name": "HTM 01-05 Compliance",
+      "desc": "Decontamination and infection prevention in dental settings",
+      "price": 5000,
+      "required": true,
+      "note": "Purpose: Compliance with Health Technical Memorandum 01-05 (Decontamination in primary care dental practices).\nWhere: Department of Health guidance — implemented via practice design and protocols.\nTimelines: Must be fully compliant before treating patients. Ongoing compliance required.\nImportant: Covers instrument decontamination, clean/dirty workflows, single-use items, environmental cleaning. CQC inspects against HTM 01-05. Includes separate decontamination room with dirty-to-clean workflow."
+    },
+    {
+      "cat": "Infection Control",
+      "name": "Autoclave Validation and Testing",
+      "desc": "Annual validation plus daily/weekly cycle testing",
+      "price": 1500,
+      "required": true,
+      "note": "Purpose: Ensure sterilisation equipment functions correctly per HTM 01-05.\nWhere: Autoclave service engineers (e.g., Eschmann, W&H, Prestige Medical).\nTimelines: Annual validation. Daily automatic cycle tests. Weekly protein residue tests.\nImportant: Type B or Type N autoclave depending on instruments. Keep a log of all test results. Vacuum-type autoclaves require annual pressure vessel insurance inspection. Budget GBP 300-500 per service visit."
+    },
+    {
+      "cat": "Infection Control",
+      "name": "Washer-Disinfector Validation",
+      "desc": "Annual validation and quarterly testing for washer-disinfectors",
+      "price": 800,
+      "required": true,
+      "note": "Purpose: Validate washer-disinfector performance per HTM 01-05 requirements.\nWhere: Service engineers — typically the manufacturer's authorised service provider.\nTimelines: Annual validation, quarterly performance tests, daily checks.\nImportant: Washer-disinfectors are strongly recommended by HTM 01-05. Manual cleaning alone is acceptable only with robust protocols. Thermal disinfection at 93 degrees C for 1 minute minimum."
+    },
+    {
+      "cat": "Infection Control",
+      "name": "Clinical Waste Contract",
+      "desc": "Licensed clinical waste collection — orange/yellow bags, sharps bins",
+      "price": 3000,
+      "required": true,
+      "note": "Purpose: Safe disposal of clinical waste per Environmental Protection Act 1990 and Hazardous Waste Regulations.\nWhere: Licensed waste carriers (e.g., Stericycle, Initial Medical, PHS Group).\nTimelines: Contract must be in place before treating patients. Collections typically weekly or fortnightly.\nImportant: Segregate waste correctly: orange bags (infectious), yellow bags (anatomical), yellow sharps containers, black bags (domestic). Must have Waste Transfer Notes. Duty of Care requirements apply."
+    },
+    {
+      "cat": "Infection Control",
+      "name": "Amalgam Separator",
+      "desc": "ISO 11143 compliant amalgam separator — EU Mercury Regulation",
+      "price": 2500,
+      "required": true,
+      "note": "Purpose: EU Regulation 2017/852 on mercury — amalgam separators mandatory in all dental practices.\nWhere: Dental equipment suppliers (e.g., Metasys, Dürr Dental, Cattani).\nTimelines: Must be installed before treating patients. Annual servicing required.\nImportant: Must achieve minimum 95% retention rate per ISO 11143. Amalgam waste must be collected by an authorised hazardous waste carrier. Retained in UK law post-Brexit."
+    },
+    {
+      "cat": "Infection Control",
+      "name": "Legionella Risk Assessment",
+      "desc": "Water safety assessment — L8 ACOP compliance",
+      "price": 500,
+      "required": true,
+      "note": "Purpose: Compliance with HSE L8 Approved Code of Practice for Legionella control in water systems.\nWhere: Water hygiene specialists (e.g., Clearwater Technology, Water Hygiene Centre).\nTimelines: Before opening. Review every 2 years or after significant changes.\nImportant: Dental unit waterlines are high risk for biofilm. Implement flushing protocols (2 minutes at start of day, 20 seconds between patients). Temperature monitoring of hot/cold water. Annual review."
+    },
+    {
+      "cat": "Infection Control",
+      "name": "Dental Unit Waterline Testing",
+      "desc": "Quarterly microbiological testing of dental unit waterlines",
+      "price": 600,
+      "required": true,
+      "note": "Purpose: Monitor microbial contamination in dental unit waterlines per HTM 01-05.\nWhere: Testing kits from providers (e.g., ProSure, Helix, Water Quality Solutions).\nTimelines: Test quarterly. Target is less than 200 CFU/ml.\nImportant: If results exceed 200 CFU/ml, immediate remedial action required. Use independent water bottles or treatment systems. Document all results."
+    },
+    {
+      "cat": "Infection Control",
+      "name": "Infection Prevention and Control Policy",
+      "desc": "Comprehensive IPC policy and staff training programme",
+      "price": 1200,
+      "required": true,
+      "note": "Purpose: Written IPC policy covering all aspects of infection control per CQC Regulation 12.\nWhere: Prepared internally or via dental compliance consultants.\nTimelines: Must be in place before treating patients. Review annually.\nImportant: Covers hand hygiene, PPE, sharps safety, spillage management, outbreak management, staff immunisation, cleaning schedules. Train all staff before they begin clinical duties."
+    },
+    {
+      "cat": "Radiation Protection",
+      "name": "IRR17 Registration/Notification",
+      "desc": "Ionising Radiations Regulations 2017 — notify HSE of X-ray use",
+      "price": 0,
+      "required": true,
+      "note": "Purpose: Legal requirement to notify HSE before first using ionising radiation equipment.\nWhere: Health and Safety Executive — online notification via hse.gov.uk.\nTimelines: Notify at least 28 days before first use of X-ray equipment.\nImportant: IRR17 replaced IRR99. Notification is required, not registration, for most dental X-ray equipment. Keep confirmation of notification on file."
+    },
+    {
+      "cat": "Radiation Protection",
+      "name": "Radiation Protection Adviser (RPA)",
+      "desc": "Appointed RPA — mandatory under IRR17",
+      "price": 1500,
+      "required": true,
+      "note": "Purpose: Legal requirement under IRR17 to appoint an RPA for advice on radiation protection.\nWhere: RPA services from medical physics providers (e.g., PHE/UKHSA, Dental X-Ray Protection Services, Raysafe).\nTimelines: Appoint before installing X-ray equipment. Written appointment required.\nImportant: RPA must hold a certificate of competence from an appropriate body. They provide a Critical Examination of new equipment, local rules, and risk assessments. Annual retainer typically GBP 500-700."
+    },
+    {
+      "cat": "Radiation Protection",
+      "name": "Medical Physics Expert (MPE)",
+      "desc": "Required under IRMER17 for quality assurance of X-ray equipment",
+      "price": 1200,
+      "required": true,
+      "note": "Purpose: IRMER 2017 requires access to a Medical Physics Expert for radiation quality assurance.\nWhere: Often the same provider as RPA — medical physics consultancies.\nTimelines: Must have access before using X-ray equipment.\nImportant: MPE advises on patient dosimetry, image quality optimisation, and diagnostic reference levels. Can be the same person as the RPA if appropriately qualified."
+    },
+    {
+      "cat": "Radiation Protection",
+      "name": "IRMER17 Employer's Procedures",
+      "desc": "Written procedures for referral, justification, optimisation, clinical evaluation",
+      "price": 800,
+      "required": true,
+      "note": "Purpose: Ionising Radiation (Medical Exposure) Regulations 2017 require written employer's procedures.\nWhere: Prepared with RPA/MPE guidance.\nTimelines: Must be in place before any patient X-rays are taken.\nImportant: Must name the IRMER Referrer, IRMER Practitioner, and IRMER Operator in writing. Procedures cover: patient identification, referral criteria, pregnancy checks, clinical evaluation, quality assurance programme."
+    },
+    {
+      "cat": "Radiation Protection",
+      "name": "Critical Examination and Acceptance Testing",
+      "desc": "Testing of new X-ray equipment before clinical use",
+      "price": 800,
+      "required": true,
+      "note": "Purpose: New X-ray equipment must undergo critical examination (IRR17) and acceptance testing before use.\nWhere: RPA conducts critical examination; MPE/installer conducts acceptance testing.\nTimelines: After installation, before first clinical use.\nImportant: Verify radiation output, image quality, tube alignment, timer accuracy. Results recorded and kept for equipment lifetime."
+    },
+    {
+      "cat": "Radiation Protection",
+      "name": "Routine Quality Assurance Testing (Annual)",
+      "desc": "Annual QA testing of all X-ray equipment",
+      "price": 600,
+      "required": true,
+      "note": "Purpose: Ongoing quality assurance to ensure X-ray equipment continues to perform to standard.\nWhere: RPA/MPE or trained staff for basic tests.\nTimelines: Full testing annually. Basic checks (e.g., image quality grades) monthly or as per local protocol.\nImportant: Keep all QA records. If equipment fails, it must be taken out of clinical use until remediated. CQC may request QA records during inspection."
+    },
+    {
+      "cat": "Radiation Protection",
+      "name": "Personal Dosimetry (if required)",
+      "desc": "Personal dose monitoring for staff working with radiation",
+      "price": 400,
+      "required": false,
+      "note": "Purpose: Monitor radiation dose received by staff.\nWhere: Approved dosimetry services (e.g., PHE/UKHSA, Landauer, Mirion Technologies).\nTimelines: Issue badges from first day of X-ray use. Read quarterly or monthly.\nImportant: Not always required for dental — RPA risk assessment determines necessity. Most dental staff doses are well below limits. If issued, records must be kept for 50 years."
+    },
+    {
+      "cat": "Radiation Protection",
+      "name": "CBCT Additional Requirements",
+      "desc": "Cone Beam CT requires enhanced radiation protection, training, audit",
+      "price": 3000,
+      "required": false,
+      "note": "Purpose: CBCT delivers significantly higher doses than intraoral X-rays — additional requirements apply.\nWhere: RPA/MPE for enhanced risk assessment; specialist training providers.\nTimelines: Before installing CBCT equipment.\nImportant: Requires enhanced room shielding assessment, specific IRMER procedures, CBCT-trained operators, and regular clinical audit. Selection criteria per FGDP/SEDENTEXCT guidelines. Reporting requirements may apply."
+    },
+    {
+      "cat": "Fire Safety",
+      "name": "Fire Risk Assessment",
+      "desc": "Required under Regulatory Reform (Fire Safety) Order 2005",
+      "price": 800,
+      "required": true,
+      "note": "Purpose: Legal requirement under the Regulatory Reform (Fire Safety) Order 2005 for all non-domestic premises.\nWhere: Competent fire risk assessor — can be external consultant or trained responsible person.\nTimelines: Must be completed before opening. Review annually or after significant changes.\nImportant: Must identify fire hazards, people at risk, evaluate/remove/reduce risk, record findings, and prepare emergency plan. The responsible person (usually the employer) can be prosecuted for non-compliance."
+    },
+    {
+      "cat": "Fire Safety",
+      "name": "Fire Detection and Alarm System",
+      "desc": "Appropriate fire alarm system per BS 5839",
+      "price": 2500,
+      "required": true,
+      "note": "Purpose: Detection and warning system appropriate to the premises.\nWhere: Fire alarm installers — must be designed and installed to BS 5839-1.\nTimelines: Install during fit-out, before opening.\nImportant: Category depends on risk assessment — most dental practices need L2 or L3 systems. Weekly alarm tests required. Annual service and maintenance by competent engineer. Keep a fire log book."
+    },
+    {
+      "cat": "Fire Safety",
+      "name": "Fire Extinguishers and Equipment",
+      "desc": "Appropriate fire extinguishers, fire blankets, signage",
+      "price": 500,
+      "required": true,
+      "note": "Purpose: Provision of first-aid firefighting equipment.\nWhere: Fire safety suppliers (e.g., Chubb, CheckFire, Safelincs).\nTimelines: Before opening. Annual servicing required.\nImportant: Minimum one extinguisher per 200 sqm. Water, CO2, and foam types typically needed. Fire blanket in any kitchen area. Annual professional service plus monthly visual checks by staff."
+    },
+    {
+      "cat": "Fire Safety",
+      "name": "Emergency Lighting",
+      "desc": "Emergency escape lighting per BS 5266",
+      "price": 1500,
+      "required": true,
+      "note": "Purpose: Illuminate escape routes in the event of power failure.\nWhere: Electrical contractor — installed to BS 5266-1.\nTimelines: Install during fit-out.\nImportant: Must illuminate all escape routes, exit signs, and changes in direction or level. Monthly function test (flick test), annual full-duration test (3 hours). Maintain test records."
+    },
+    {
+      "cat": "Fire Safety",
+      "name": "Fire Safety Training",
+      "desc": "Staff fire safety training — annual refresher",
+      "price": 400,
+      "required": true,
+      "note": "Purpose: All staff must receive fire safety training including evacuation procedures.\nWhere: In-house by responsible person or external fire safety trainer.\nTimelines: All new staff on induction. Annual refresher for all staff. Fire drills at least annually.\nImportant: Cover fire prevention, action on discovering fire, evacuation procedures, assembly points, use of extinguishers. Record all training. Consider patients with mobility issues in PEEP (Personal Emergency Evacuation Plans)."
+    },
+    {
+      "cat": "Data Protection",
+      "name": "ICO Registration (Data Protection Fee)",
+      "desc": "Annual registration with the Information Commissioner's Office",
+      "price": 60,
+      "required": true,
+      "note": "Purpose: Legal requirement under the Data Protection Act 2018 to pay an annual data protection fee to the ICO.\nWhere: Information Commissioner's Office — ico.org.uk.\nTimelines: Register before processing personal data. Renew annually.\nImportant: Fee is GBP 40-60 for most dental practices (depends on turnover and staff numbers). Failure to register is a criminal offence with fines up to GBP 4,350."
+    },
+    {
+      "cat": "Data Protection",
+      "name": "UK GDPR Compliance Documentation",
+      "desc": "Privacy notices, DPIA, records of processing, lawful basis",
+      "price": 2500,
+      "required": true,
+      "note": "Purpose: Full compliance with UK General Data Protection Regulation and Data Protection Act 2018.\nWhere: Data protection consultant or dental compliance provider.\nTimelines: All documentation must be in place before processing patient data.\nImportant: Includes: privacy notice (patients and staff), Records of Processing Activities (Article 30), Data Protection Impact Assessment for health data, lawful basis documentation, data retention schedule, breach notification procedure."
+    },
+    {
+      "cat": "Data Protection",
+      "name": "Data Protection Officer Assessment",
+      "desc": "Determine if DPO appointment is required; document the decision",
+      "price": 0,
+      "required": true,
+      "note": "Purpose: Assess whether a Data Protection Officer must be appointed under UK GDPR Article 37.\nWhere: Internal assessment documented in compliance records.\nTimelines: Before commencing data processing activities.\nImportant: A DPO is required if core activities involve large-scale processing of special category data (health data). Most dental practices processing health records at scale should appoint a DPO. Can be external. Budget GBP 1,500-3,000/year if needed."
+    },
+    {
+      "cat": "Data Protection",
+      "name": "Data Processing Agreements",
+      "desc": "Contracts with all processors — labs, cloud, IT, payroll",
+      "price": 1000,
+      "required": true,
+      "note": "Purpose: UK GDPR Article 28 requires written contracts with all data processors.\nWhere: Prepared by solicitor or data protection consultant.\nTimelines: Must be in place before sharing data with any third-party processor.\nImportant: Covers dental labs, cloud software providers, IT support, payroll providers, marketing platforms. Must specify processing scope, security measures, sub-processors, breach notification, data return/deletion."
+    },
+    {
+      "cat": "Data Protection",
+      "name": "Caldicott Guardian",
+      "desc": "Senior person responsible for patient information governance",
+      "price": 0,
+      "required": true,
+      "note": "Purpose: NHS requirement (and best practice for private) to have a Caldicott Guardian for patient information.\nWhere: Appointed internally — typically a senior clinician.\nTimelines: Appoint before treating patients.\nImportant: The Caldicott Guardian oversees patient information sharing, ensures Caldicott Principles are followed, and advises on information governance. Mandatory for NHS providers, strongly recommended for all dental practices."
+    },
+    {
+      "cat": "Data Protection",
+      "name": "Staff Data Protection Training",
+      "desc": "Annual GDPR and information governance training for all staff",
+      "price": 500,
+      "required": true,
+      "note": "Purpose: All staff handling personal data must be trained on data protection obligations.\nWhere: Online training providers (e.g., Blue Stream Academy, The Dental Defence Union, COPDEND).\nTimelines: On induction for new staff. Annual refresher for all staff.\nImportant: Cover: confidentiality, data breach procedures, subject access requests, social media policy, secure communications. Document completion with certificates."
+    },
+    {
+      "cat": "Insurance",
+      "name": "Dental Indemnity Insurance",
+      "desc": "Professional indemnity for each dentist — GDC requirement",
+      "price": 5000,
+      "required": true,
+      "note": "Purpose: Professional indemnity is a legal requirement for all practising dentists under the Dentists Act 1984.\nWhere: Dental Defence Union (DDU), Medical Defence Union (MDU), Medical Protection Society (MPS), or commercial insurers.\nTimelines: Must be in place before treating any patients. Renew annually.\nImportant: Cover level depends on scope of practice. GBP 3,000-8,000/year per dentist depending on specialty and NHS/private mix. Occurrence-based vs claims-made policies — understand the difference."
+    },
+    {
+      "cat": "Insurance",
+      "name": "Employer's Liability Insurance",
+      "desc": "Compulsory insurance — Employers' Liability Act 1969",
+      "price": 1500,
+      "required": true,
+      "note": "Purpose: Legal requirement under Employers' Liability (Compulsory Insurance) Act 1969 if you employ anyone.\nWhere: Business insurance providers (e.g., Dental Elite Insurance, Lloyd & Whyte, Wesleyan).\nTimelines: Must be in place from the day you employ your first member of staff.\nImportant: Minimum cover GBP 5 million. Fine of GBP 2,500 per day without valid insurance. Display certificate in the workplace or make it accessible electronically. Applies even if employing only one person."
+    },
+    {
+      "cat": "Insurance",
+      "name": "Public Liability Insurance",
+      "desc": "Cover for injury or damage to patients and visitors on premises",
+      "price": 800,
+      "required": false,
+      "note": "Purpose: Protection against claims from patients, visitors, or members of the public who suffer injury or property damage on your premises.\nWhere: Business insurance providers — often bundled with employer's liability.\nTimelines: Before opening to the public.\nImportant: Not legally required but strongly recommended. Typical cover GBP 2-5 million. Covers slips, trips, falls in waiting room, car park incidents. Landlords often require it in the lease."
+    },
+    {
+      "cat": "Insurance",
+      "name": "Buildings and Contents Insurance",
+      "desc": "Cover for practice fit-out, equipment, and stock",
+      "price": 2000,
+      "required": true,
+      "note": "Purpose: Protect the significant investment in dental equipment, fit-out, and consumables.\nWhere: Specialist dental insurers (e.g., Lloyd & Whyte, Wesleyan, DPAS).\nTimelines: From the date equipment is delivered or fit-out begins.\nImportant: Ensure cover for dental equipment specifically — standard business policies may exclude. Include all-risks cover, accidental damage, business interruption. Equipment alone can exceed GBP 200,000."
+    },
+    {
+      "cat": "Insurance",
+      "name": "Cyber Insurance",
+      "desc": "Cover for data breaches, ransomware, ICO fines",
+      "price": 1200,
+      "required": false,
+      "note": "Purpose: Protection against cyber attacks targeting patient health data.\nWhere: Specialist cyber insurers (e.g., CyberEdge, Hiscox, Beazley).\nTimelines: Before going live with electronic patient records.\nImportant: Health data is a prime target. Covers: data breach notification costs, ICO investigation, ransomware recovery, business interruption from cyber incidents. Average dental data breach cost is GBP 30,000-50,000."
+    },
+    {
+      "cat": "Staff and Employment",
+      "name": "Right to Work Checks",
+      "desc": "Verify immigration status for every employee before they start",
+      "price": 0,
+      "required": true,
+      "note": "Purpose: Legal requirement under Immigration, Asylum and Nationality Act 2006 to verify right to work.\nWhere: Check original documents or use Home Office online checking service.\nTimelines: Must be completed before the person's first day of work. Repeat for time-limited permission.\nImportant: Civil penalty of up to GBP 60,000 per illegal worker (2025). Keep copies of documents for duration of employment plus 2 years. Acceptable documents listed in Home Office guidance."
+    },
+    {
+      "cat": "Staff and Employment",
+      "name": "DBS Enhanced Checks",
+      "desc": "Enhanced Disclosure and Barring Service check for all clinical staff",
+      "price": 50,
+      "required": true,
+      "note": "Purpose: Safeguarding requirement — enhanced DBS check for anyone working with vulnerable groups.\nWhere: Apply through an umbrella body (e.g., Personnel Checks, uCheck) or the DBS update service.\nTimelines: Apply before employment starts. Standard processing 2-4 weeks, can take longer.\nImportant: GBP 42-50 per check. Clinical staff require enhanced with barred list check. Non-clinical staff in contact with patients need enhanced check. Encourage staff to join DBS Update Service (GBP 13/year) to avoid repeat checks."
+    },
+    {
+      "cat": "Staff and Employment",
+      "name": "Occupational Health Assessment",
+      "desc": "Pre-employment health check including Hepatitis B status",
+      "price": 300,
+      "required": true,
+      "note": "Purpose: Ensure clinical staff are fit for duty and not a risk to patients.\nWhere: Occupational health providers (e.g., BUPA, OH Direct, NHS Occupational Health).\nTimelines: Before clinical staff start treating patients.\nImportant: Must include Hepatitis B, C, and HIV status for those performing exposure-prone procedures. Hepatitis B vaccination and confirmed immunity required. Staff who are carriers of certain bloodborne viruses may be restricted from EPPs."
+    },
+    {
+      "cat": "Staff and Employment",
+      "name": "Employment Contracts",
+      "desc": "Written statement of employment terms — day one right",
+      "price": 1500,
+      "required": true,
+      "note": "Purpose: Legal requirement under Employment Rights Act 1996 to provide written terms from day one.\nWhere: Employment solicitor or HR consultant specialising in dental.\nTimelines: Must be provided on or before the first day of employment.\nImportant: Must include: pay, hours, holiday, sick pay, pension, notice period, job description. For dental associates, use BDA model associate contract. Distinguish between employed and self-employed status carefully — HMRC scrutiny of dental associate status is increasing."
+    },
+    {
+      "cat": "Staff and Employment",
+      "name": "Staff Handbook and HR Policies",
+      "desc": "Disciplinary, grievance, absence, whistleblowing, equal opportunities",
+      "price": 1200,
+      "required": true,
+      "note": "Purpose: Legal and CQC compliance — demonstrate well-led practice with robust employment policies.\nWhere: HR consultant or dental-specific providers (e.g., Peninsula, Dental Protection, FTA Law).\nTimelines: Must be in place when employing staff.\nImportant: Must include: disciplinary and grievance procedures (ACAS Code of Practice), absence management, whistleblowing (Public Interest Disclosure Act 1998), equal opportunities, social media policy, health and safety."
+    },
+    {
+      "cat": "Staff and Employment",
+      "name": "Safeguarding Training (Adults and Children)",
+      "desc": "Level 2 safeguarding training for all clinical staff",
+      "price": 400,
+      "required": true,
+      "note": "Purpose: CQC requirement and professional duty to recognise and report safeguarding concerns.\nWhere: Online training (e.g., Blue Stream Academy, e-Learning for Healthcare) or local safeguarding boards.\nTimelines: All staff before treating patients. Annual refresher.\nImportant: Clinical staff need Level 2 minimum. Safeguarding lead needs Level 3. Covers child abuse recognition, adult safeguarding, FGM mandatory reporting, domestic violence, referral pathways. Named safeguarding lead required."
+    },
+    {
+      "cat": "Staff and Employment",
+      "name": "Medical Emergencies Training",
+      "desc": "Annual training per GDC and Resuscitation Council UK guidelines",
+      "price": 600,
+      "required": true,
+      "note": "Purpose: GDC requirement and CQC standard — all clinical staff trained in medical emergencies.\nWhere: Training providers (e.g., Simulated Patients, Blue Stream Academy, local BLS providers).\nTimelines: All clinical staff before treating patients. Annual refresher required.\nImportant: Must cover: BLS/AED, anaphylaxis, cardiac arrest, hypoglycaemia, syncope, asthma attack, seizures. Practice must have emergency drugs kit, oxygen, and AED. Follow Resuscitation Council UK guidelines."
+    },
+    {
+      "cat": "Staff and Employment",
+      "name": "Health and Safety Policy",
+      "desc": "Written H&S policy required for employers with 5+ employees",
+      "price": 800,
+      "required": true,
+      "note": "Purpose: Legal requirement under Health and Safety at Work etc. Act 1974.\nWhere: Prepared internally or with H&S consultant.\nTimelines: Must be in place before employing 5 or more people. Good practice for all.\nImportant: Must include: general statement, organisation (who is responsible for what), arrangements (how risks are managed). Cover COSHH, manual handling, DSE, sharps injuries, lone working. Risk assessments for all significant hazards."
+    },
+    {
+      "cat": "Premises",
+      "name": "Planning Permission (Change of Use)",
+      "desc": "May need planning permission if premises change to D1/E(e) use class",
+      "price": 2000,
+      "required": false,
+      "note": "Purpose: Change of use of premises may require planning permission from the local authority.\nWhere: Local Planning Authority — submit via Planning Portal (planningportal.co.uk).\nTimelines: 8 weeks for standard applications. Pre-application advice takes 4-6 weeks.\nImportant: Dental practices fall under Class E(e) (medical or health services). Change from retail (E(a)) may be permitted development. Change from residential requires full planning permission. Check with local authority before signing a lease."
+    },
+    {
+      "cat": "Premises",
+      "name": "Building Regulations Approval",
+      "desc": "Required for internal alterations, drainage, ventilation changes",
+      "price": 3000,
+      "required": true,
+      "note": "Purpose: Building Regulations approval for fit-out works that affect structure, drainage, ventilation, or fire safety.\nWhere: Local Authority Building Control or an Approved Inspector.\nTimelines: Apply before commencing works. Inspection during and after works.\nImportant: Most dental fit-outs require building control sign-off. Covers: structural changes, new drainage (suction systems), ventilation, electrical work (Part P), fire safety, disability access. Completion certificate required before opening."
+    },
+    {
+      "cat": "Premises",
+      "name": "Dental Practice Design and Fit-Out",
+      "desc": "Specialist dental design: surgery layout, decontamination room, services",
+      "price": 15000,
+      "required": true,
+      "note": "Purpose: Professional design of the dental practice to comply with HTM 01-05, building regs, and CQC standards.\nWhere: Specialist dental practice designers (e.g., Rodericks Design, Practice Plan Design, DHB Architects).\nTimelines: 4-8 weeks for design. Engage before lease signing to confirm viability.\nImportant: Must include: surgery layout (min 13 sqm per surgery), separate decontamination room, clean-dirty workflow, adequate ventilation, disabled access, waiting area, staff areas. Design drives compliance — get it right first."
+    },
+    {
+      "cat": "Premises",
+      "name": "Disability Access (Equality Act 2010)",
+      "desc": "Reasonable adjustments for disabled patients and staff",
+      "price": 5000,
+      "required": true,
+      "note": "Purpose: Legal duty under Equality Act 2010 to make reasonable adjustments for disabled persons.\nWhere: Consider during design phase. Access audit by specialist if needed.\nTimelines: Must be compliant from day one.\nImportant: Covers: step-free access (ramp or lift), accessible WC, hearing loops, clear signage, wide doorways (min 800mm). Anticipatory duty — must plan ahead, not just react to individual requests. Failure to comply is discrimination."
+    },
+    {
+      "cat": "Premises",
+      "name": "Commercial Lease Review",
+      "desc": "Solicitor review of commercial lease terms",
+      "price": 2500,
+      "required": true,
+      "note": "Purpose: Ensure lease terms are favourable and compatible with dental practice requirements.\nWhere: Commercial property solicitor experienced in healthcare premises.\nTimelines: Before signing heads of terms. Allow 4-8 weeks for negotiation.\nImportant: Key points: length of lease (minimum 10-15 years for dental), break clauses, rent reviews, permitted use (medical), signage rights, landlord consent for alterations, service charges, dilapidations liability. A bad lease can undermine the entire business."
+    },
+    {
+      "cat": "Premises",
+      "name": "Electrical Installation Certificate",
+      "desc": "EICR and installation certificate for new/modified electrical works",
+      "price": 800,
+      "required": true,
+      "note": "Purpose: Compliance with BS 7671 (IET Wiring Regulations) and Building Regulations Part P.\nWhere: Registered electrician (NICEIC, NAPIT, or ELECSA registered).\nTimelines: Certificate issued on completion of works. EICR valid for 5 years.\nImportant: Dental surgeries have specific electrical requirements: medical-grade earthing, RCD protection, adequate circuits for compressors and dental units. Must be tested before equipment is connected."
+    },
+    {
+      "cat": "Premises",
+      "name": "Gas Safety Certificate",
+      "desc": "Annual gas safety check — if gas appliances are present",
+      "price": 150,
+      "required": false,
+      "note": "Purpose: Legal requirement under Gas Safety (Installation and Use) Regulations 1998 for commercial premises.\nWhere: Gas Safe registered engineer.\nTimelines: Annual inspection. Certificate must be kept for 2 years.\nImportant: Required if premises have gas boiler, gas heating, or gas appliances. Only needed if gas is present. Many dental practices are all-electric."
+    },
+    {
+      "cat": "Clinical Governance",
+      "name": "Clinical Audit Programme",
+      "desc": "Regular clinical audits — CQC and GDC requirement",
+      "price": 500,
+      "required": true,
+      "note": "Purpose: CQC and GDC require evidence of clinical audit to drive quality improvement.\nWhere: Conducted internally using audit templates (e.g., FGDP clinical audit toolkits).\nTimelines: At least 2 clinical audits per year. Ongoing programme.\nImportant: Common dental audits: record-keeping (FGDP standards), radiograph quality, antibiotic prescribing, infection control compliance. Must complete the audit cycle: measure, change, re-measure. Document findings and actions."
+    },
+    {
+      "cat": "Clinical Governance",
+      "name": "Complaints Procedure",
+      "desc": "Written complaints procedure — CQC Regulation 16",
+      "price": 300,
+      "required": true,
+      "note": "Purpose: CQC Regulation 16 requires a documented complaints procedure.\nWhere: Prepared internally or via compliance consultants.\nTimelines: Must be in place before treating patients.\nImportant: Must include: how to complain, timeframe for acknowledgement (3 working days) and response (usually within 10-20 working days), escalation to NHS England (for NHS) or GDC/Dental Complaints Service (for private). Display information prominently."
+    },
+    {
+      "cat": "Clinical Governance",
+      "name": "Significant Event Analysis (SEA)",
+      "desc": "System for recording and learning from incidents",
+      "price": 0,
+      "required": true,
+      "note": "Purpose: CQC expects evidence of learning from incidents, near-misses, and complaints.\nWhere: Internal process using standardised SEA templates.\nTimelines: Ongoing. Review at regular practice meetings.\nImportant: Record all incidents, near-misses, and complaints. Analyse root causes. Implement and document changes. Share learning with the team. RIDDOR reporting for serious injuries. CQC inspectors will review SEA records."
+    },
+    {
+      "cat": "Clinical Governance",
+      "name": "Consent Forms and Procedures",
+      "desc": "Valid consent processes per Montgomery v Lanarkshire principles",
+      "price": 500,
+      "required": true,
+      "note": "Purpose: Valid informed consent is a legal and ethical requirement for all dental treatment.\nWhere: Prepared by practice using GDC Standards and legal guidance.\nTimelines: Must be in place before treating patients.\nImportant: Follow Montgomery v Lanarkshire (2015) — material risks must be disclosed. Written consent for complex treatments. Separate consent for sedation, extractions, implants. Consider capacity (Mental Capacity Act 2005) and Gillick competence for children."
+    },
+    {
+      "cat": "Clinical Governance",
+      "name": "Dental Record-Keeping Standards",
+      "desc": "Clinical records per FGDP standards and GDC requirements",
+      "price": 0,
+      "required": true,
+      "note": "Purpose: Comprehensive clinical records are a GDC Standard and CQC requirement.\nWhere: Implemented via practice management software and clinical protocols.\nTimelines: From first patient appointment.\nImportant: Follow FGDP Clinical Examination and Record-Keeping guidelines. Include: medical history (updated at each visit), clinical findings, treatment plan, consent, radiograph justification, materials used. Retain records for 10 years (adults) or until age 25 (children)."
+    },
+    {
+      "cat": "Medicines and Prescribing",
+      "name": "Emergency Drugs Kit",
+      "desc": "Standard emergency drugs per Resuscitation Council UK guidelines",
+      "price": 500,
+      "required": true,
+      "note": "Purpose: Every dental practice must have emergency drugs and equipment immediately available.\nWhere: Pharmaceutical suppliers or dental suppliers (e.g., RA Medical, Henry Schein).\nTimelines: Must be in place before treating any patients. Check expiry dates monthly.\nImportant: Must include: adrenaline (epinephrine) 1:1000, aspirin 300mg dispersible, glucagon, GTN spray, salbutamol inhaler, midazolam (buccal), oxygen with mask and bag-valve-mask. Plus AED. Follow BNF and Resuscitation Council UK guidance."
+    },
+    {
+      "cat": "Medicines and Prescribing",
+      "name": "Controlled Drugs Compliance",
+      "desc": "Safe storage and record-keeping for Schedule 2-5 controlled drugs",
+      "price": 300,
+      "required": true,
+      "note": "Purpose: Compliance with the Misuse of Drugs Act 1971 and Misuse of Drugs Regulations 2001.\nWhere: Internal procedures; CD cabinet from medical suppliers.\nTimelines: Before stocking any controlled drugs.\nImportant: Midazolam (Schedule 3) commonly used for sedation. Must be stored in a locked CD cabinet. Maintain a controlled drugs register. Document every administration. Destruction must be witnessed. CQC checks CD compliance during inspections."
+    },
+    {
+      "cat": "Medicines and Prescribing",
+      "name": "COSHH Assessments",
+      "desc": "Control of Substances Hazardous to Health assessments",
+      "price": 400,
+      "required": true,
+      "note": "Purpose: Legal requirement under COSHH Regulations 2002 to assess risks from hazardous substances.\nWhere: Prepared internally using safety data sheets from suppliers.\nTimelines: Before using any hazardous substances. Review annually.\nImportant: Dental-relevant substances: amalgam, impression materials, bonding agents, disinfectants, X-ray chemicals, bleaching agents. For each: identify hazards, assess exposure, implement controls, train staff, monitor health if needed."
+    },
+    {
+      "cat": "Medicines and Prescribing",
+      "name": "Sedation Compliance (if applicable)",
+      "desc": "Conscious sedation per IACSD and CQC additional requirements",
+      "price": 5000,
+      "required": false,
+      "note": "Purpose: Additional regulatory requirements if providing conscious sedation (IV or inhalation).\nWhere: Follow IACSD (Intercollegiate Advisory Committee for Sedation in Dentistry) standards.\nTimelines: Full compliance required before offering sedation services.\nImportant: Requires: trained and accredited sedation team, dedicated recovery area, monitoring equipment (pulse oximetry, capnography for IV), separate CQC notification, emergency equipment, sedation-specific SOPs. IACSD standards are the benchmark."
+    },
+    {
+      "cat": "Accessibility",
+      "name": "Equality Act 2010 Access Audit",
+      "desc": "Assessment of premises for accessibility compliance",
+      "price": 1500,
+      "required": true,
+      "note": "Purpose: Identify barriers to access and plan reasonable adjustments under the Equality Act 2010.\nWhere: Access consultants or organisations like the Centre for Accessible Environments.\nTimelines: Before opening or as early as possible. Review after any changes to premises.\nImportant: The duty is anticipatory — you must plan ahead for disabled patients, not wait for individual requests. Cover: physical access, sensory impairments, cognitive accessibility, communication needs."
+    },
+    {
+      "cat": "Accessibility",
+      "name": "Accessible Information Standard",
+      "desc": "NHS England standard for accessible patient communications",
+      "price": 500,
+      "required": false,
+      "note": "Purpose: NHS England Accessible Information Standard requires identification and meeting of communication needs.\nWhere: Implemented via practice management system and patient processes.\nTimelines: Required for NHS practices from day one. Good practice for all.\nImportant: ASK patients about communication needs, RECORD them, FLAG in records, SHARE with relevant staff, ACT to meet needs. Covers: large print, easy read, BSL interpreters, alternative formats."
+    },
+    {
+      "cat": "Accessibility",
+      "name": "Website Accessibility (WCAG 2.2 AA)",
+      "desc": "Website and digital content accessible per WCAG standards",
+      "price": 2000,
+      "required": false,
+      "note": "Purpose: Public Sector Bodies Accessibility Regulations 2018 (NHS practices) and Equality Act 2010 duties.\nWhere: Web developer with accessibility expertise.\nTimelines: From website launch.\nImportant: Mandatory for NHS providers. Best practice for all. Cover: keyboard navigation, screen reader compatibility, colour contrast, alt text, captions. Include accessibility statement on website. Test with real assistive technology users."
+    },
+    {
+      "cat": "Other",
+      "name": "Practice Signage",
+      "desc": "External signage and internal wayfinding — planning and landlord consent",
+      "price": 2000,
+      "required": true,
+      "note": "Purpose: Identify the practice and provide wayfinding for patients.\nWhere: Sign manufacturer. May need planning consent (Advertisement Consent) and landlord approval.\nTimelines: Order 3-4 weeks before opening. Planning consent takes 8 weeks if required.\nImportant: Check local planning rules — some areas have conservation area restrictions. Illuminated signs may need separate consent. Internal signage: surgery numbers, fire exits, decontamination room, patient information."
+    },
+    {
+      "cat": "Other",
+      "name": "Practice Website",
+      "desc": "Professional website with CQC rating, fees, GDPR privacy notice",
+      "price": 3000,
+      "required": true,
+      "note": "Purpose: Online presence is essential and some content is legally required.\nWhere: Web developer or dental-specific website providers (e.g., Dental Focus, Digimax, Aesthetique Marketing).\nTimelines: Live before or at opening.\nImportant: Must display: CQC registration and rating, fee guide, privacy notice, complaints procedure, practice team and GDC numbers, accessibility statement. Also set up Google Business Profile, NHS Choices listing if NHS practice."
+    },
+    {
+      "cat": "Other",
+      "name": "Telephone and Internet (Annual)",
+      "desc": "Business broadband and phone system — minimum 100 Mbps",
+      "price": 2400,
+      "required": true,
+      "note": "Purpose: Reliable connectivity for practice management software, NHS systems, and patient communication.\nWhere: Business broadband providers (BT, Virgin Media Business, TalkTalk Business).\nTimelines: Install 2-4 weeks before opening. Lead times can be longer for new lines.\nImportant: Minimum 100 Mbps. Consider backup 4G/5G connection for resilience. VoIP phone systems are cost-effective. Cloud-based practice management systems (Dentally) require stable internet. Budget GBP 150-250/month."
+    },
+    {
+      "cat": "Other",
+      "name": "IT Infrastructure and Cybersecurity",
+      "desc": "Network, workstations, servers, backups, NHS DSPT compliance",
+      "price": 8000,
+      "required": true,
+      "note": "Purpose: Secure IT infrastructure for patient data, clinical systems, and communications.\nWhere: IT providers specialising in dental/healthcare (e.g., Surefire IT, Microtech, Redmoor Health).\nTimelines: Set up during fit-out phase, 2-4 weeks before opening.\nImportant: Must include: encrypted workstations, managed firewall, automated backups (daily, offsite), antivirus, patch management. NHS practices must complete the Data Security and Protection Toolkit (DSPT) annually. NHS Digital N3/HSCN connection if NHS."
+    },
+    {
+      "cat": "Other",
+      "name": "NHS Data Security and Protection Toolkit",
+      "desc": "Annual DSPT submission — mandatory for NHS dental providers",
+      "price": 500,
+      "required": false,
+      "note": "Purpose: Annual self-assessment demonstrating compliance with NHS data security standards.\nWhere: dsptoolkit.nhs.uk — online submission.\nTimelines: Submit annually by 30 June. Must be Standards Met.\nImportant: Only mandatory for NHS contract holders. Covers 10 National Data Guardian standards across: leadership, training, managing data, IT security. Failure affects NHS contract status. Private practices should consider completing it as best practice."
+    },
+    {
+      "cat": "Other",
+      "name": "PPL/PRS Music Licence",
+      "desc": "Licence for playing music in the waiting room",
+      "price": 350,
+      "required": false,
+      "note": "Purpose: Playing music in public premises requires licences from PPL and PRS for Music.\nWhere: TheMusicLicence.com — joint licence from PPL PRS Ltd.\nTimelines: Before playing any music.\nImportant: Single joint licence covers both PPL (recording rights) and PRS (songwriting rights). Cost depends on premises size and type. Alternative: use royalty-free music services. Fine for unlicensed use can be significant."
+    },
+    {
+      "cat": "Other",
+      "name": "CCTV System (GDPR Compliant)",
+      "desc": "Security cameras in reception and corridors — not in surgeries",
+      "price": 3000,
+      "required": false,
+      "note": "Purpose: Security monitoring of common areas.\nWhere: CCTV installers (ensure GDPR compliance).\nTimelines: During fit-out.\nImportant: GDPR requirements: DPIA before installation, clear signage, privacy notice, data retention policy (typically max 30 days), subject access request procedures. Never install cameras in treatment rooms or private areas. Register with ICO. Consider impact on patient privacy."
+    },
+    {
+      "cat": "Other",
+      "name": "Intruder Alarm System",
+      "desc": "Security alarm with monitoring — protect high-value equipment",
+      "price": 2000,
+      "required": false,
+      "note": "Purpose: Protect dental equipment (typical value GBP 150,000-300,000) and controlled drugs.\nWhere: NSI or SSAIB approved alarm companies.\nTimelines: Install during fit-out.\nImportant: Consider NSI Gold or SSAIB approved installer for insurance compliance. 24/7 monitoring centre recommended. Budget GBP 30-50/month for monitoring. Many insurers require a monitored alarm as a policy condition."
+    },
+    {
+      "cat": "Other",
+      "name": "Display Energy Certificate (DEC)",
+      "desc": "Energy performance display — required for public buildings over 250 sqm",
+      "price": 500,
+      "required": false,
+      "note": "Purpose: Buildings over 250 sqm used by the public must display energy performance.\nWhere: Accredited energy assessor.\nTimelines: Before opening if applicable. Valid for 1 year (DEC), 10 years (advisory report).\nImportant: Only required if the building exceeds 250 sqm of useful floor area and is frequently visited by the public. Most smaller dental practices are exempt. An EPC (Energy Performance Certificate) may be required separately for the lease."
+    }
+  ]
+}

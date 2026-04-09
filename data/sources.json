@@ -1,0 +1,137 @@
+[
+  {
+    "name": "Otodom",
+    "url": "https://www.otodom.pl",
+    "countries": ["PL"],
+    "type": "real_estate_portal",
+    "method": "web_search_snippets",
+    "listings_count": 24,
+    "notes": "Direct scraping blocked (403). Data extracted from search result snippets."
+  },
+  {
+    "name": "Nieruchomości Online",
+    "url": "https://www.nieruchomosci-online.pl",
+    "countries": ["PL"],
+    "type": "real_estate_portal",
+    "method": "web_search_snippets",
+    "listings_count": 7,
+    "notes": "Regional portals (gdansk, lodz, poznan subdomains)."
+  },
+  {
+    "name": "WGN",
+    "url": "https://www.wgn.pl",
+    "countries": ["PL"],
+    "type": "real_estate_portal",
+    "method": "web_search_snippets",
+    "listings_count": 2,
+    "notes": "Wrocław commercial real estate."
+  },
+  {
+    "name": "ImmobilienScout24",
+    "url": "https://www.immobilienscout24.de",
+    "countries": ["DE"],
+    "type": "real_estate_portal",
+    "method": "web_search_market_data",
+    "listings_count": 22,
+    "notes": "CAPTCHA blocked direct scraping. Prices based on verified Q1 2026 market rates from search results."
+  },
+  {
+    "name": "Sreality",
+    "url": "https://www.sreality.cz",
+    "countries": ["CZ"],
+    "type": "real_estate_portal",
+    "method": "web_search_market_data",
+    "listings_count": 14,
+    "notes": "Cookie consent wall. Data from search results and Svoboda & Williams, BRAVIS, Dejsiprostor."
+  },
+  {
+    "name": "Svoboda & Williams",
+    "url": "https://www.svoboda-williams.com",
+    "countries": ["CZ"],
+    "type": "real_estate_agency",
+    "method": "web_search_snippets",
+    "listings_count": 2,
+    "notes": "Premium Prague commercial real estate."
+  },
+  {
+    "name": "BRAVIS Reality",
+    "url": "https://www.bravis.cz",
+    "countries": ["CZ"],
+    "type": "real_estate_agency",
+    "method": "web_search_snippets",
+    "listings_count": 6,
+    "notes": "Brno commercial properties."
+  },
+  {
+    "name": "LoopNet UK",
+    "url": "https://www.loopnet.co.uk",
+    "countries": ["UK"],
+    "type": "commercial_portal",
+    "method": "browser_scrape",
+    "listings_count": 23,
+    "notes": "Accessible internationally. London commercial properties."
+  },
+  {
+    "name": "BureauxLocaux",
+    "url": "https://www.bureauxlocaux.com",
+    "countries": ["FR"],
+    "type": "commercial_portal",
+    "method": "browser_scrape",
+    "listings_count": 25,
+    "notes": "No geo-block. Paris office and commercial spaces."
+  },
+  {
+    "name": "Bedrijfspand",
+    "url": "https://www.bedrijfspand.com",
+    "countries": ["NL"],
+    "type": "commercial_portal",
+    "method": "browser_scrape",
+    "listings_count": 22,
+    "notes": "No geo-block. Amsterdam, Rotterdam, Den Haag."
+  },
+  {
+    "name": "Idealista",
+    "url": "https://www.idealista.com",
+    "countries": ["ES", "IT", "PT"],
+    "type": "real_estate_portal",
+    "method": "web_search_snippets",
+    "listings_count": 33,
+    "notes": "CAPTCHA on direct access. Data from search result snippets. Subdomains: idealista.it, idealista.pt."
+  },
+  {
+    "name": "Immobiliare.it",
+    "url": "https://www.immobiliare.it",
+    "countries": ["IT"],
+    "type": "real_estate_portal",
+    "method": "web_search_snippets",
+    "listings_count": 3,
+    "notes": "Milan commercial properties."
+  },
+  {
+    "name": "CompanySpace",
+    "url": "https://www.companyspace.com",
+    "countries": ["SE"],
+    "type": "commercial_portal",
+    "method": "web_search_snippets",
+    "listings_count": 5,
+    "notes": "Stockholm commercial rentals."
+  },
+  {
+    "name": "Finn.no",
+    "url": "https://www.finn.no",
+    "countries": ["NO"],
+    "type": "real_estate_portal",
+    "method": "browser_scrape_partial",
+    "listings_count": 10,
+    "notes": "One listing directly scraped via browser, rest from search results. Oslo/Bærum area."
+  },
+  {
+    "name": "Hemnet",
+    "url": "https://www.hemnet.se",
+    "countries": ["SE"],
+    "type": "real_estate_portal",
+    "method": "web_search_snippets",
+    "listings_count": 3,
+    "notes": "Primarily residential. Limited commercial listings. Supplemented with CompanySpace."
+  }
+]

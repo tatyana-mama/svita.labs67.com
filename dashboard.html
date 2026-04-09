@@ -1455,7 +1455,46 @@ Apple</button>
 <!-- ═══ DATABASES (ADMIN) ═══ -->
 <div class="sec" id="sec-db-premises">
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
-<div class="ph"><div><h2>&#127970; БД Помещений</h2><div class="ph-s">Объекты недвижимости с адресами и характеристиками</div></div><div style="display:flex;gap:6px;align-items:center"><div id="premiseViewToggle" style="display:flex;border:1px solid var(--bd);border-radius:6px;overflow:hidden"><button class="btn sm" onclick="setPremiseView('grid')" id="pvGrid" style="border:none;border-radius:0;padding:4px 8px;font-size:11px" title="Сетка">&#9638;</button><button class="btn sm" onclick="setPremiseView('list')" id="pvList" style="border:none;border-radius:0;padding:4px 8px;font-size:11px" title="Список">&#9776;</button><button class="btn sm" onclick="setPremiseView('compact')" id="pvCompact" style="border:none;border-radius:0;padding:4px 8px;font-size:11px" title="Компакт">&#9632;</button></div><button class="btn sm pr" onclick="openModal('premise')">+ Добавить</button></div></div>
+<div class="ph"><div><h2>&#127970; БД Помещений</h2><div class="ph-s">199 объектов из 11 стран — реальные предложения аренды</div></div><div style="display:flex;gap:6px;align-items:center"><div id="premiseViewToggle" style="display:flex;border:1px solid var(--bd);border-radius:6px;overflow:hidden"><button class="btn sm" onclick="setPremiseView('grid')" id="pvGrid" style="border:none;border-radius:0;padding:4px 8px;font-size:11px" title="Сетка">&#9638;</button><button class="btn sm" onclick="setPremiseView('list')" id="pvList" style="border:none;border-radius:0;padding:4px 8px;font-size:11px" title="Список">&#9776;</button><button class="btn sm" onclick="setPremiseView('compact')" id="pvCompact" style="border:none;border-radius:0;padding:4px 8px;font-size:11px" title="Компакт">&#9632;</button></div><button class="btn sm pr" onclick="openModal('premise')">+ Добавить</button></div></div>
+<div id="premCountryTabs" style="display:flex;gap:4px;flex-wrap:wrap;padding:0 0 10px;margin-bottom:6px;border-bottom:1px solid var(--bd)"></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:0 0 12px;margin-bottom:4px;border-bottom:1px solid var(--bd)">
+<input type="text" id="premSearch" placeholder="Поиск по адресу, городу..." oninput="renderPremises()" style="flex:1;min-width:180px;padding:8px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--sf);color:var(--tx);font-size:12px;font-family:var(--f);outline:none" onfocus="this.style.borderColor='var(--ac2)'" onblur="this.style.borderColor='var(--bd)'">
+<select id="premSortBy" onchange="renderPremises()" style="padding:8px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--sf);color:var(--tx);font-size:11px;font-family:var(--f);cursor:pointer">
+<option value="default">Без сортировки</option>
+<option value="price_asc">Цена ↑</option>
+<option value="price_desc">Цена ↓</option>
+<option value="area_asc">Площадь ↑</option>
+<option value="area_desc">Площадь ↓</option>
+<option value="price_m2_asc">Цена/м² ↑</option>
+<option value="price_m2_desc">Цена/м² ↓</option>
+<option value="city">Город А-Я</option>
+<option value="country">Страна</option>
+</select>
+<select id="premFilterCountry" onchange="renderPremises()" style="padding:8px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--sf);color:var(--tx);font-size:11px;font-family:var(--f);cursor:pointer">
+<option value="">Все страны</option>
+</select>
+<select id="premFilterCity" onchange="renderPremises()" style="padding:8px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--sf);color:var(--tx);font-size:11px;font-family:var(--f);cursor:pointer">
+<option value="">Все города</option>
+</select>
+<select id="premFilterType" onchange="renderPremises()" style="padding:8px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--sf);color:var(--tx);font-size:11px;font-family:var(--f);cursor:pointer">
+<option value="">Все типы</option>
+<option value="office">Офис</option>
+<option value="retail">Торговое</option>
+<option value="commercial">Коммерческое</option>
+<option value="gastro">Общепит</option>
+<option value="medical">Медицина</option>
+<option value="beauty">Красота</option>
+</select>
+<select id="premFilterStatus" onchange="renderPremises()" style="padding:8px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--sf);color:var(--tx);font-size:11px;font-family:var(--f);cursor:pointer">
+<option value="">Все статусы</option>
+<option value="candidate">Кандидат</option>
+<option value="shortlist">Шортлист</option>
+<option value="ordered">Забронировано</option>
+<option value="delivered">Получено</option>
+<option value="rejected">Отклонён</option>
+</select>
+<span id="premCount" style="font-size:10px;color:var(--tx3);white-space:nowrap"></span>
+</div>
 <div id="premiseCards"></div>
 </div>
 
@@ -1484,7 +1523,28 @@ Apple</button>
 <!-- ═══ DB-DOCS: Document catalog ═══ -->
 <div class="sec" id="sec-db-docs">
 <div class="bk" onclick="nav('s7')">&larr; Документация</div>
-<div class="ph"><div><h2>&#128203; Каталог документов</h2><div class="ph-s">Лицензии, согласования, регистрации — добавляйте в проект</div></div><button class="btn sm pr" onclick="addCustomDoc()">+ Свой документ</button></div>
+<div class="ph"><div><h2>&#128203; Каталог документов</h2><div class="ph-s">Лицензии, согласования, регистрации — добавляйте в проект</div></div><div style="display:flex;gap:6px;align-items:center"><select id="docCountrySelect" onchange="loadDocsForCountry(this.value)" style="padding:8px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--sf);color:var(--tx);font-size:11px;font-family:var(--f);cursor:pointer">
+<option value="PL">🇵🇱 Polska</option>
+<option value="CZ">🇨🇿 Česko</option>
+<option value="DE">🇩🇪 Deutschland</option>
+<option value="AT">🇦🇹 Österreich</option>
+<option value="CH">🇨🇭 Schweiz</option>
+<option value="UK">🇬🇧 United Kingdom</option>
+<option value="IE">🇮🇪 Ireland</option>
+<option value="FR">🇫🇷 France</option>
+<option value="ES">🇪🇸 España</option>
+<option value="IT">🇮🇹 Italia</option>
+<option value="PT">🇵🇹 Portugal</option>
+<option value="NL">🇳🇱 Nederland</option>
+<option value="BE">🇧🇪 België</option>
+<option value="SE">🇸🇪 Sverige</option>
+<option value="NO">🇳🇴 Norge</option>
+<option value="DK">🇩🇰 Danmark</option>
+<option value="FI">🇫🇮 Suomi</option>
+<option value="HU">🇭🇺 Magyarország</option>
+<option value="RO">🇷🇴 România</option>
+<option value="BG">🇧🇬 България</option>
+</select><span id="docCountryInfo" style="font-size:10px;color:var(--tx3)"></span><button class="btn sm pr" onclick="addCustomDoc()">+ Свой документ</button></div></div>
 <div id="docCatalogCards"></div>
 </div>
 
@@ -1622,53 +1682,7 @@ Apple</button>
 <div class="sec" id="sec-news">
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
 <div class="ph"><div><h2>Новости</h2><div class="ph-s">AI & Neural Networks — презентации, исследования, инструменты</div></div><a href="news.html" target="_blank" class="btn pr" style="font-size:11px;padding:7px 16px;white-space:nowrap">Все новости &rarr;</a></div>
-<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;padding:0 24px 24px">
-
-<a href="news/vibe-coding.html" target="_blank" style="background:var(--sf);border:1px solid var(--bd);border-radius:14px;overflow:hidden;transition:all .2s;display:block;text-decoration:none;color:inherit">
-<div style="height:120px;background:linear-gradient(135deg,#0a0e14,#161b22);display:flex;align-items:center;justify-content:center;position:relative">
-<div style="text-align:center;color:#58a6ff;font-size:28px;font-weight:800;letter-spacing:2px;opacity:.7">VIBE<br><span style="font-size:16px;color:#adbac7;font-weight:300">CODING</span></div>
-<span style="position:absolute;top:8px;right:8px;font-size:9px;padding:3px 8px;border-radius:6px;background:rgba(59,130,246,.2);color:#58a6ff;font-weight:600">Presentation</span>
-</div>
-<div style="padding:14px">
-<div style="font-size:10px;color:var(--tx3);margin-bottom:4px">April 9, 2026</div>
-<div style="font-size:13px;font-weight:700;margin-bottom:6px">Vibe Coding — The New Era of Building Things</div>
-<div style="font-size:11px;color:var(--tx2);line-height:1.5">11-slide interactive presentation about prompt-driven development and AI agents. EN/RU.</div>
-</div></a>
-
-<a href="principles.html" target="_blank" style="background:var(--sf);border:1px solid var(--bd);border-radius:14px;overflow:hidden;transition:all .2s;display:block;text-decoration:none;color:inherit">
-<div style="height:120px;background:linear-gradient(135deg,#06060c,#141426);display:flex;align-items:center;justify-content:center;position:relative">
-<div style="text-align:center;color:#8b5cf6;font-size:24px;font-weight:800;opacity:.7">CLAUDE<br><span style="font-size:14px;color:#9898b8;font-weight:300">OPUS 4.6</span></div>
-<span style="position:absolute;top:8px;right:8px;font-size:9px;padding:3px 8px;border-radius:6px;background:rgba(139,92,246,.2);color:#a78bfa;font-weight:600">Research</span>
-</div>
-<div style="padding:14px">
-<div style="font-size:10px;color:var(--tx3);margin-bottom:4px">Апрель 2026</div>
-<div style="font-size:13px;font-weight:700;margin-bottom:6px">Claude Opus 4.6 — Фундаментальные принципы</div>
-<div style="font-size:11px;color:var(--tx2);line-height:1.5">Архитектура, рассуждения, ограничения и возможности AI-модели.</div>
-</div></a>
-
-<a href="cognitive-map.html" target="_blank" style="background:var(--sf);border:1px solid var(--bd);border-radius:14px;overflow:hidden;transition:all .2s;display:block;text-decoration:none;color:inherit">
-<div style="height:120px;background:linear-gradient(135deg,#08080f,#161625);display:flex;align-items:center;justify-content:center;position:relative">
-<div style="text-align:center;color:#06b6d4;font-size:22px;font-weight:800;opacity:.7">COGNITIVE<br><span style="font-size:14px;color:#9898b8;font-weight:300">ARCHITECTURE</span></div>
-<span style="position:absolute;top:8px;right:8px;font-size:9px;padding:3px 8px;border-radius:6px;background:rgba(6,182,212,.2);color:#22d3ee;font-weight:600">Research</span>
-</div>
-<div style="padding:14px">
-<div style="font-size:10px;color:var(--tx3);margin-bottom:4px">Апрель 2026</div>
-<div style="font-size:13px;font-weight:700;margin-bottom:6px">Когнитивная архитектура Claude Opus 4.6</div>
-<div style="font-size:11px;color:var(--tx2);line-height:1.5">Карта когнитивных процессов: как модель думает и принимает решения.</div>
-</div></a>
-
-<a href="swot.html" target="_blank" style="background:var(--sf);border:1px solid var(--bd);border-radius:14px;overflow:hidden;transition:all .2s;display:block;text-decoration:none;color:inherit">
-<div style="height:120px;background:linear-gradient(135deg,#0a0a12,#1a1a2e);display:flex;align-items:center;justify-content:center;position:relative">
-<div style="text-align:center;color:#eab308;font-size:24px;font-weight:800;opacity:.7">SWOT<br><span style="font-size:14px;color:#a0a0b8;font-weight:300">ANALYSIS</span></div>
-<span style="position:absolute;top:8px;right:8px;font-size:9px;padding:3px 8px;border-radius:6px;background:rgba(234,179,8,.2);color:#facc15;font-weight:600">Analysis</span>
-</div>
-<div style="padding:14px">
-<div style="font-size:10px;color:var(--tx3);margin-bottom:4px">Апрель 2026</div>
-<div style="font-size:13px;font-weight:700;margin-bottom:6px">SVITA AI — SWOT-анализ</div>
-<div style="font-size:11px;color:var(--tx2);line-height:1.5">Стратегический разбор проекта: сильные/слабые стороны, возможности и угрозы.</div>
-</div></a>
-
-</div>
+<div id="dashNewsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;padding:0 24px 24px"></div>
 </div>
 
 </div><!-- /main -->
@@ -2491,8 +2505,31 @@ async function loadSupabaseData(){
     DB.premises=premisesArr.map(p=>({
       id:p.id,name:p.name,price:p.price_pln||0,status:p.status||'candidate',
       notes:p.notes||'',img:p.images&&p.images.length?p.images[0]:null,
-      source:p.source_url||'',specs:p.specs||{}
+      source:p.source_url||'',specs:p.specs||{},_src:'db'
     }));
+    // Load parsed properties from JSON catalog
+    try{
+      const pRes=await fetch('/data/properties.json');
+      if(pRes.ok){
+        const parsed=await pRes.json();
+        const existing=new Set(DB.premises.map(p=>p.id));
+        parsed.forEach(p=>{
+          if(existing.has(p.id))return;
+          DB.premises.push({
+            id:p.id,name:p.title||p.address||'—',price:p.price_monthly||0,
+            status:'candidate',notes:p.description||'',img:p.photos&&p.photos.length?p.photos[0]:null,
+            source:p.source_url||'',
+            specs:{address:p.address||p.title,city:p.city||'',district:p.district||'',country:p.country||'',
+              area:p.area_m2||0,floor:p.floor!=null?p.floor:'',rooms:p.rooms||0,
+              price_m2:p.price_per_m2||0,type:p.type||'commercial',
+              has_parking:p.features&&p.features.some(f=>/park/i.test(f)),
+              has_ac:p.features&&p.features.some(f=>/klim|airco|ac|cond/i.test(f))},
+            _cur:p.currency||'EUR',_src:'catalog',_lat:p.lat,_lng:p.lng,_features:p.features||[],_sourcePortal:p.source||''
+          });
+        });
+        console.log('Properties catalog:',parsed.length,'loaded, total premises:',DB.premises.length);
+      }
+    }catch(e){console.warn('Properties catalog not loaded:',e)}
 
     // Store category maps
     DB._eqCats=eqCats||[];
@@ -4635,8 +4672,66 @@ function setPremiseView(mode){
   if(btn)btn.style.background='var(--acbg)';
   renderPremises();
 }
+function _premPopulateFilters(){
+  const countries={},cities=new Set();
+  const countryNames={PL:'Польша',DE:'Германия',UK:'Великобритания',FR:'Франция',CZ:'Чехия',NL:'Нидерланды',ES:'Испания',IT:'Италия',PT:'Португалия',NO:'Норвегия',SE:'Швеция',AT:'Австрия',CH:'Швейцария',BE:'Бельгия',DK:'Дания',FI:'Финляндия',IE:'Ирландия',HU:'Венгрия',RO:'Румыния',BG:'Болгария'};
+  DB.premises.forEach(p=>{const sp=p.specs||{};if(sp.country){countries[sp.country]=(countries[sp.country]||0)+1}if(sp.city)cities.add(sp.city)});
+  // Country tabs
+  const tabsEl=document.getElementById('premCountryTabs');
+  if(tabsEl){
+    const fCountry=document.getElementById('premFilterCountry')?.value||'';
+    const sorted=Object.keys(countries).sort((a,b)=>countries[b]-countries[a]);
+    tabsEl.innerHTML='<button onclick="document.getElementById(\'premFilterCountry\').value=\'\';renderPremises()" style="padding:4px 10px;border:1px solid '+(fCountry?'var(--bd)':'var(--ac)')+';border-radius:6px;background:'+(fCountry?'transparent':'var(--ac)')+';color:'+(fCountry?'var(--tx2)':'#fff')+';font-size:10px;font-weight:600;cursor:pointer;font-family:var(--f)">Все <span style="opacity:.6">'+DB.premises.length+'</span></button>'+sorted.map(cc=>{
+      const active=fCountry===cc;
+      return '<button onclick="document.getElementById(\'premFilterCountry\').value=\''+cc+'\';renderPremises()" style="padding:4px 10px;border:1px solid '+(active?'var(--ac)':'var(--bd)')+';border-radius:6px;background:'+(active?'var(--ac)':'transparent')+';color:'+(active?'#fff':'var(--tx2)')+';font-size:10px;font-weight:600;cursor:pointer;font-family:var(--f)">'+cc+' <span style="opacity:.6">'+countries[cc]+'</span></button>';
+    }).join('');
+  }
+  const cSel=document.getElementById('premFilterCountry');
+  const ciSel=document.getElementById('premFilterCity');
+  if(cSel){const v=cSel.value;cSel.innerHTML='<option value="">Все страны</option>'+Object.keys(countries).sort().map(c=>'<option value="'+c+'">'+(countryNames[c]||c)+' ('+countries[c]+')</option>').join('');cSel.value=v}
+  if(ciSel){const fCountry=cSel?.value||'';const filtered=fCountry?[...cities].filter(ci=>DB.premises.some(p=>(p.specs||{}).country===fCountry&&(p.specs||{}).city===ci)):[...cities];const v=ciSel.value;ciSel.innerHTML='<option value="">Все города</option>'+filtered.sort().map(c=>'<option value="'+c+'">'+c+'</option>').join('');ciSel.value=v}
+}
+function _premFiltered(){
+  const q=(document.getElementById('premSearch')?.value||'').toLowerCase().trim();
+  const sortBy=document.getElementById('premSortBy')?.value||'default';
+  const fCountry=document.getElementById('premFilterCountry')?.value||'';
+  const fCity=document.getElementById('premFilterCity')?.value||'';
+  const fStatus=document.getElementById('premFilterStatus')?.value||'';
+  const fType=document.getElementById('premFilterType')?.value||'';
+  let arr=DB.premises.filter(p=>{
+    const sp=p.specs||{};
+    if(fCountry&&(sp.country||'')!==fCountry)return false;
+    if(fCity&&(sp.city||'')!==fCity)return false;
+    if(fStatus&&(p.status||'candidate')!==fStatus)return false;
+    if(fType&&(sp.type||'')!==fType)return false;
+    if(q){
+      const hay=((sp.address||p.name||'')+' '+(sp.city||'')+' '+(sp.district||'')+' '+(sp.country||'')+' '+(p._sourcePortal||'')).toLowerCase();
+      if(!hay.includes(q))return false;
+    }
+    return true;
+  });
+  if(sortBy!=='default'){
+    arr=[...arr];
+    const g=(p,k)=>(p.specs||{})[k]||0;
+    const sorts={
+      price_asc:(a,b)=>(a.price||0)-(b.price||0),
+      price_desc:(a,b)=>(b.price||0)-(a.price||0),
+      area_asc:(a,b)=>g(a,'area')-g(b,'area'),
+      area_desc:(a,b)=>g(b,'area')-g(a,'area'),
+      price_m2_asc:(a,b)=>g(a,'price_m2')-g(b,'price_m2'),
+      price_m2_desc:(a,b)=>g(b,'price_m2')-g(a,'price_m2'),
+      city:(a,b)=>((a.specs||{}).city||'').localeCompare(((b.specs||{}).city||'')),
+      country:(a,b)=>((a.specs||{}).country||'').localeCompare(((b.specs||{}).country||''))
+    };
+    if(sorts[sortBy])arr.sort(sorts[sortBy]);
+  }
+  const cnt=document.getElementById('premCount');
+  if(cnt)cnt.textContent=arr.length+' из '+DB.premises.length;
+  return arr;
+}
 function renderPremises(){
   const c=document.getElementById('premiseCards');if(!c)return;
+  _premPopulateFilters();
   if(!DB.premises.length){c.innerHTML='<div style="padding:32px;text-align:center;color:var(--tx3);font-size:13px">Нет объектов. Добавьте помещение вручную или загрузите из каталога.</div>';return}
   // Highlight active view button
   document.querySelectorAll('#premiseViewToggle button').forEach(b=>b.style.background='transparent');
@@ -4644,7 +4739,9 @@ function renderPremises(){
   if(vBtn)vBtn.style.background='var(--acbg)';
   if(premiseViewMode==='list'){renderPremisesList(c);return}
   if(premiseViewMode==='compact'){renderPremisesCompact(c);return}
-  c.innerHTML=DB.premises.map(p=>{
+  const _filtered=_premFiltered();
+  if(!_filtered.length){c.innerHTML='<div style="padding:32px;text-align:center;color:var(--tx3);font-size:13px">Ничего не найдено по фильтру</div>';return}
+  c.innerHTML=_filtered.map(p=>{
     const sp=p.specs||{};
     const addr=esc(sp.address||p.name||'—');
     const district=esc(sp.district||'');
@@ -4654,8 +4751,9 @@ function renderPremises(){
     const area=sp.area||0;
     const floors=sp.floors||'';
     const floor=sp.floor!=null?sp.floor:'';
-    const priceM2=sp.price_m2?sp.price_m2+' PLN/м²':'';
-    const priceTotal=p.price?p.price.toLocaleString('ru')+' PLN/мес':'—';
+    const cur=p._cur||'PLN';
+    const priceM2=sp.price_m2?sp.price_m2+' '+cur+'/м²':'';
+    const priceTotal=p.price?p.price.toLocaleString('ru')+' '+cur+'/мес':'—';
     const condition=esc(sp.condition||'');
     const purpose=esc(sp.purpose||'');
     const height=sp.height||'';
@@ -4688,25 +4786,30 @@ ${priceM2?`<div class="db-card-field"><div class="db-card-label">Цена/м²</
 ${height?`<div class="db-card-field"><div class="db-card-label">Высота</div><div class="db-card-val">${height} м</div></div>`:''}
 ${rooms?`<div class="db-card-field"><div class="db-card-label">Комнат</div><div class="db-card-val">${rooms}</div></div>`:''}
 </div>
-${condition||purpose?`<div style="padding:2px 16px;display:flex;gap:6px;flex-wrap:wrap">${condition?`<span style="font-size:9px;padding:2px 8px;border-radius:4px;background:var(--sf2);color:var(--tx2)">${condition}</span>`:''}${purpose?`<span style="font-size:9px;padding:2px 8px;border-radius:4px;background:var(--acbg);color:var(--ac2)">${purpose}</span>`:''}</div>`:''}
+${condition||purpose||sp.type?`<div style="padding:2px 16px;display:flex;gap:6px;flex-wrap:wrap">${condition?`<span style="font-size:9px;padding:2px 8px;border-radius:4px;background:var(--sf2);color:var(--tx2)">${condition}</span>`:''}${purpose?`<span style="font-size:9px;padding:2px 8px;border-radius:4px;background:var(--acbg);color:var(--ac2)">${purpose}</span>`:''}${sp.type?`<span style="font-size:9px;padding:2px 8px;border-radius:4px;background:rgba(139,92,246,.08);color:#8b5cf6">${({office:'Офис',retail:'Торговое',commercial:'Коммерч.',gastro:'Общепит',medical:'Медицина',beauty:'Красота'})[sp.type]||sp.type}</span>`:''}</div>`:''}
 ${comms.length?`<div style="padding:4px 16px;font-size:12px;letter-spacing:2px" title="Коммуникации">${comms.join('')}</div>`:''}
+${p._features&&p._features.length?`<div style="padding:2px 16px;display:flex;gap:4px;flex-wrap:wrap">${p._features.slice(0,5).map(f=>'<span style="font-size:8px;padding:2px 6px;border-radius:3px;background:var(--sf2);color:var(--tx3)">'+esc(f)+'</span>').join('')}</div>`:''}
 ${owner||phone?`<div style="padding:4px 16px;display:flex;gap:12px;font-size:10px;color:var(--tx3)">${owner?`<span>👤 ${owner}</span>`:''}${phone?`<span>📞 ${phone}</span>`:''}</div>`:''}
-${p.notes?`<div style="padding:4px 16px 8px;font-size:10px;color:var(--tx3);line-height:1.4">${esc(p.notes)}</div>`:''}
+${p.notes?`<div style="padding:4px 16px 8px;font-size:10px;color:var(--tx3);line-height:1.4">${esc(p.notes).substring(0,120)}</div>`:''}
+${p._sourcePortal?`<div style="padding:2px 16px;font-size:9px;color:var(--tx3)">via ${esc(p._sourcePortal)}</div>`:''}
 <div class="db-card-actions">
 <button class="btn sm pr" onclick="selectPremiseAsProperty('${pid}')">Выбрать → Таб 1</button>
 ${p.source?`<a href="${safeHref(p.source)}" target="_blank" rel="noopener" class="btn sm" style="text-decoration:none;text-align:center">Источник</a>`:''}
-<button class="btn sm" onclick="editPremise('${pid}')">Ред.</button>
-<button class="btn sm" onclick="delPremise('${pid}')">Удалить</button>
+${p._src==='catalog'?'':`<button class="btn sm" onclick="editPremise('${pid}')">Ред.</button>`}
+${p._src==='catalog'?'':`<button class="btn sm" onclick="delPremise('${pid}')">Удалить</button>`}
 </div></div>`;
   }).join('');
 }
 function renderPremisesList(c){
   const statusLabels={candidate:'Кандидат',shortlist:'Шортлист',ordered:'Бронь',delivered:'Получено',rejected:'Отклонён'};
   const statusColors={candidate:'#eab308',shortlist:'#3b82f6',ordered:'#8b5cf6',delivered:'#22c55e',rejected:'#ef4444'};
-  let html='<table class="dt" style="font-size:11px"><thead><tr><th>Адрес</th><th>Район</th><th>Площадь</th><th>Цена/мес</th><th>Этаж</th><th>Статус</th><th></th></tr></thead><tbody>';
-  DB.premises.forEach(p=>{
+  const _filtered=_premFiltered();
+  if(!_filtered.length){c.innerHTML='<div style="padding:32px;text-align:center;color:var(--tx3);font-size:13px">Ничего не найдено по фильтру</div>';return}
+  let html='<table class="dt" style="font-size:11px"><thead><tr><th>Адрес</th><th>Город</th><th>Площадь</th><th>Цена/мес</th><th>Цена/м²</th><th>Этаж</th><th>Статус</th><th></th></tr></thead><tbody>';
+  _filtered.forEach(p=>{
     const sp=p.specs||{};const s=p.status||'candidate';
-    html+=`<tr><td style="font-weight:600">${esc(sp.address||p.name||'—')}</td><td>${esc(sp.district||'')}</td><td>${sp.area||0} м²</td><td style="color:var(--ac);font-weight:600">${p.price?p.price.toLocaleString('ru')+' PLN':'—'}</td><td>${sp.floor!=null?sp.floor:''}</td><td><span style="color:${statusColors[s]};font-weight:600;font-size:10px">${statusLabels[s]||s}</span></td><td style="white-space:nowrap"><button class="btn sm pr" onclick="selectPremiseAsProperty('${p.id}')" style="padding:2px 6px;font-size:9px">→ Таб 1</button> <button class="btn sm" onclick="editPremise('${p.id}')" style="padding:2px 6px;font-size:9px">Ред.</button></td></tr>`;
+    const cur=p._cur||'PLN';
+    html+=`<tr><td style="font-weight:600">${esc(sp.address||p.name||'—')}</td><td>${esc(sp.city||'')}${sp.country?' <span style="color:var(--tx3);font-size:9px">'+esc(sp.country)+'</span>':''}</td><td>${sp.area||0} м²</td><td style="color:var(--ac);font-weight:600">${p.price?p.price.toLocaleString('ru')+' '+cur:'—'}</td><td>${sp.price_m2?sp.price_m2+' '+cur+'/м²':'—'}</td><td>${sp.floor!=null?sp.floor:''}</td><td><span style="color:${statusColors[s]};font-weight:600;font-size:10px">${statusLabels[s]||s}</span></td><td style="white-space:nowrap"><button class="btn sm pr" onclick="selectPremiseAsProperty('${p.id}')" style="padding:2px 6px;font-size:9px">→ Таб 1</button> <button class="btn sm" onclick="editPremise('${p.id}')" style="padding:2px 6px;font-size:9px">Ред.</button></td></tr>`;
   });
   html+='</tbody></table>';
   c.innerHTML=html;
@@ -4714,13 +4817,15 @@ function renderPremisesList(c){
 function renderPremisesCompact(c){
   const statusLabels={candidate:'Кандидат',shortlist:'Шортлист',ordered:'Бронь',delivered:'Получено',rejected:'Отклонён'};
   const statusColors={candidate:'#eab308',shortlist:'#3b82f6',ordered:'#8b5cf6',delivered:'#22c55e',rejected:'#ef4444'};
+  const _filtered=_premFiltered();
+  if(!_filtered.length){c.innerHTML='<div style="padding:32px;text-align:center;color:var(--tx3);font-size:13px">Ничего не найдено по фильтру</div>';return}
   let html='<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px">';
-  DB.premises.forEach(p=>{
+  _filtered.forEach(p=>{
     const sp=p.specs||{};const s=p.status||'candidate';
     html+=`<div style="border:1px solid var(--bd);border-radius:8px;padding:10px;cursor:pointer" onclick="selectPremiseAsProperty('${p.id}')">
 <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:4px"><div style="font-size:12px;font-weight:600;color:var(--tx)">${esc(sp.address||p.name||'—')}</div><span style="font-size:8px;padding:2px 6px;border-radius:4px;background:${statusColors[s]||'#eab308'}22;color:${statusColors[s]||'#eab308'};font-weight:600;white-space:nowrap">${statusLabels[s]||s}</span></div>
 <div style="font-size:10px;color:var(--tx3)">${esc(sp.district||'')}${sp.city?' · '+esc(sp.city):''}</div>
-<div style="display:flex;gap:8px;margin-top:6px;font-size:10px"><span style="color:var(--ac);font-weight:600">${p.price?p.price.toLocaleString('ru')+' PLN':'—'}</span><span>${sp.area||0} м²</span></div>
+<div style="display:flex;gap:8px;margin-top:6px;font-size:10px"><span style="color:var(--ac);font-weight:600">${p.price?p.price.toLocaleString('ru')+' '+(p._cur||'PLN'):'—'}</span><span>${sp.area||0} м²</span></div>
 </div>`;
   });
   html+='</div>';
@@ -4732,7 +4837,8 @@ function selectPremiseAsProperty(id){
   const sp=p.specs||{};
   const area=sp.area||0;
   const side=Math.round(Math.sqrt(area)*10)/10;
-  activeProperty={id:p.id,name:sp.address||p.name,city:sp.city+(sp.district?', '+sp.district:''),area:area,floor:sp.floor||0,floors_total:sp.floors||1,length:side,width:area?Math.round(area/side*10)/10:0,height:sp.height||2.9,type:sp.type||'Коммерческое',purpose:sp.purpose||'usługowy',price_m2:sp.price_m2||(area?Math.round(p.price/area):0),source:p.source||''};
+  const cur=p._cur||'PLN';
+  activeProperty={id:p.id,name:sp.address||p.name,city:(sp.city||'')+(sp.district?', '+sp.district:''),country:sp.country||'',area:area,floor:sp.floor||0,floors_total:sp.floors||1,length:side,width:area?Math.round(area/side*10)/10:0,height:sp.height||2.9,type:sp.type||'Коммерческое',purpose:sp.purpose||'usługowy',price_m2:sp.price_m2||(area?Math.round(p.price/area):0),currency:cur,price_monthly:p.price||0,source:p.source||'',lat:p._lat||0,lng:p._lng||0};
   uSet('svita_property',JSON.stringify(activeProperty));
   renderProperty();buildSidebar();recalc();nav('s1');
 }
@@ -5131,7 +5237,45 @@ function renderSelectedRenovations(){
 // Render picked items inside tabs
 // ═══ ДОКУМЕНТАЦИЯ (sec-docs) ═══
 const DOC_CATS=['Регистрация компании','Медицинская регистрация (RPWDL)','Санэпиднадзор (PSSE)','Пожарная безопасность','Помещение и строительство','Защита данных (RODO)','Отходы и экология (BDO)','Страхование','НФЗ / Частная практика','Персонал и лицензии','Оборудование и сертификация','Радиационная безопасность (RTG)','Фармацевтика и препараты','Доступность','Прочее'];
-const ADMIN_DOC_ITEMS=[
+let ADMIN_DOC_ITEMS=[];
+let _docsCountry='';
+async function loadDocsForCountry(countryCode){
+  if(_docsCountry===countryCode&&ADMIN_DOC_ITEMS.length)return;
+  const sel=document.getElementById('docCountrySelect');
+  const info=document.getElementById('docCountryInfo');
+  try{
+    const res=await fetch('/data/docs/'+countryCode+'.json');
+    if(!res.ok)throw new Error(res.status);
+    const data=await res.json();
+    ADMIN_DOC_ITEMS=data.items||[];
+    _docsCountry=countryCode;
+    if(sel)sel.value=countryCode;
+    if(info)info.textContent=ADMIN_DOC_ITEMS.length+' документов · '+(data.lang||countryCode);
+    renderDocCatalog();renderDocs();
+    _s('sbDocs',ADMIN_DOC_ITEMS.length);
+  }catch(e){
+    if(countryCode!=='PL'){
+      if(info)info.textContent='Нет данных для '+countryCode+', загружаю PL';
+      return loadDocsForCountry('PL');
+    }
+    // Use inline fallback
+    ADMIN_DOC_ITEMS=_PL_DOC_ITEMS;
+    _docsCountry='PL';
+    if(sel)sel.value='PL';
+    if(info)info.textContent=ADMIN_DOC_ITEMS.length+' документов · pl';
+    renderDocCatalog();renderDocs();
+    _s('sbDocs',ADMIN_DOC_ITEMS.length);
+  }
+}
+// Load on startup and when country changes
+const _origEnterApp2=enterApp;
+enterApp=function(){
+  _origEnterApp2.apply(this,arguments);
+  const cc=(activeProperty?.country)||(activeProperty?.city?.match(/Warsz|Krak|Wrocł|Gdań|Pozn|Łód/)?'PL':'PL');
+  loadDocsForCountry(cc);
+};
+// Initial PL data (inline fallback so catalog works without fetch)
+const _PL_DOC_ITEMS=[
 {cat:'Регистрация компании',name:'Регистрация ООО в KRS',desc:'Судебный реестр (KRS) — акт нотариуса, устав, подача',price:1500,required:true,note:'Для чего: юридическая регистрация компании, получение KRS-номера.\nГде: Sąd Rejonowy (районный суд) по месту регистрации или онлайн через S24 (s24.ms.gov.pl).\nСроки: 7–14 рабочих дней (суд), 1 день (S24). Делать первым — без KRS нельзя NIP, REGON, счёт.\nДокументы: устав (umowa spółki), акт нотариуса, заявление KRS-W3.'},
 {cat:'Регистрация компании',name:'Запись в CEIDG (для ИП)',desc:'Центральный реестр — альтернатива KRS, бесплатно онлайн',price:0,required:false,note:'Для чего: регистрация индивидуального предпринимателя (ИП) вместо ООО.\nГде: ceidg.gov.pl или лично в уженде гмины.\nСроки: 1 рабочий день. Бесплатно.\nВажно: ИП отвечает всем имуществом. Для клиники рекомендуется ООО (sp. z o.o.).'},
 {cat:'Регистрация компании',name:'NIP — налоговый номер',desc:'Выдаётся налоговой автоматически при регистрации',price:0,required:true,note:'Для чего: идентификация налогоплательщика, обязателен для счетов и договоров.\nГде: Urząd Skarbowy (налоговая) — выдаётся автоматически при регистрации в KRS/CEIDG.\nСроки: 3–7 дней после KRS. При S24 — в тот же день.\nВажно: без NIP нельзя открыть счёт и начать работу.'},
@@ -5236,6 +5380,7 @@ const ADMIN_DOC_ITEMS=[
 {cat:'Прочее',name:'Музыка в зале ожидания (ZAiKS)',desc:'Абонемент за музыку в публичном помещении',price:600,required:false,note:'Для чего: публичное воспроизведение музыки требует лицензии ZAiKS.\nГде: zaiks.org.pl — заключить договор.\nСроки: до включения музыки.\nВажно: без лицензии — штраф. Альтернатива: royalty-free музыка (Epidemic Sound, Artlist).'},
 {cat:'Прочее',name:'Ящик для жалоб',desc:'Ящик для жалоб — по закону о правах пациента',price:100,required:true,note:'Для чего: по закону о правах пациента клиника обязана обеспечить возможность подачи жалоб.\nГде: купить ящик + разместить в приёмной.\nСроки: до открытия.\nВажно: рядом — информация о правах пациента и данные Rzecznika Praw Pacjenta.'},
 ];
+ADMIN_DOC_ITEMS=_PL_DOC_ITEMS;
 // ═══ DOC CATALOG + PICK SYSTEM ═══
 function togglePickDoc(idx){
   const key='doc_'+idx;
@@ -8146,20 +8291,31 @@ async function sendRpChat(){
   const _bEl=document.getElementById('ovBudget');const _rEl=document.getElementById('ovRevenue');const _eEl=document.getElementById('ovExpenses');
   const _pRIds=Object.keys(DB.pickedRooms||{});const _pSIds=Object.keys(DB.pickedStaff||{});
   const _pEIds=Object.keys(DB.pickedEquip||{});const _pSvIds=Object.keys(DB.pickedServices||{});
+  const _pRnIds=Object.keys(DB.pickedRenovations||{});const _pDocKeys=Object.keys(DB.pickedDocs||{});
+
+  // Full item lists for actions mode (AI needs to know what's already installed)
+  const _fullRooms=_pRIds.length?(DB.rooms||[]).filter(r=>_pRIds.includes(String(r.id))).map(r=>r.name+' ('+r.type+', '+(r.area||'?')+'м²)'):[];
+  const _fullEquip=_pEIds.length?(DB.suppliers||[]).filter(s=>_pEIds.includes(String(s.id))).map(s=>s.name+(s.price?' '+s.price+'PLN':'')+(s.category?' ['+s.category+']':'')):[];
+  const _fullStaff=_pSIds.length?(DB.employees||[]).filter(e=>_pSIds.includes(String(e.id))).map(e=>(e.position||e.name)+' '+(e.salary||'?')+'PLN/мес'+(e.type?' ('+e.type+')':'')):[];
+  const _fullSvc=_pSvIds.length?(DB.services||[]).filter(s=>_pSvIds.includes(String(s.id))).map(s=>s.name+' '+(s.price||'?')+'PLN'+(s.duration?' '+s.duration+'мин':'')+(s.category?' ['+s.category+']':'')):[];
+  const _fullReno=_pRnIds.length?(DB.renovations||[]).filter(r=>_pRnIds.includes(String(r.id))).map(r=>r.name+' '+(r.price||'?')+'PLN'+(r.cat?' ['+r.cat+']':'')):[];
+  const _fullDocs=_pDocKeys.length?_pDocKeys.map(k=>{const d=DB.pickedDocs[k];return d?(d.name+(d.price?' '+d.price+'PLN':'')+(d.cat?' ['+d.cat+']':'')):'?'}).filter(Boolean):[];
+
   const context={
     bizType:currentBizType||'dental',
+    currency:activeProperty?.currency||'PLN',
     section:cur,
     concept:document.getElementById('cBrand')?.value||'',
     rooms:_pRIds.length,
-    roomNames:_pRIds.length?(DB.rooms||[]).filter(r=>_pRIds.includes(String(r.id))).slice(0,10).map(r=>r.name).join(', '):'',
+    roomNames:_fullRooms.slice(0,10).join(', '),
     equipment:_pEIds.length,
-    equipNames:_pEIds.length?(DB.suppliers||[]).filter(s=>_pEIds.includes(String(s.id))).slice(0,10).map(s=>s.name).join(', '):'',
+    equipNames:_fullEquip.slice(0,10).join(', '),
     staff:_pSIds.length,
-    staffNames:_pSIds.length?(DB.employees||[]).filter(e=>_pSIds.includes(String(e.id))).slice(0,10).map(e=>e.position||e.name).join(', '):'',
+    staffNames:_fullStaff.slice(0,10).join(', '),
     services:_pSvIds.length,
-    serviceNames:_pSvIds.length?(DB.services||[]).filter(s=>_pSvIds.includes(String(s.id))).slice(0,10).map(s=>s.name).join(', '):'',
-    renovations:Object.keys(DB.pickedRenovations||{}).length,
-    docs:Object.keys(DB.pickedDocs||{}).length,
+    serviceNames:_fullSvc.slice(0,10).join(', '),
+    renovations:_pRnIds.length,
+    docs:_pDocKeys.length,
     budget:_bEl?_bEl.textContent:'0',
     revenue:_rEl?_rEl.textContent:'0',
     expenses:_eEl?_eEl.textContent:'0'
@@ -8170,18 +8326,62 @@ async function sendRpChat(){
   _aiChatStreaming=true;
   document.getElementById('rpChatSendBtn').style.opacity='0.5';
 
+  // Detect if user wants AI to modify the concept (actions mode)
+  const _actWords=/добав|заполн|сгенер|создай|подбер|предлож|поставь|набор|комплект|нужн[оы]|какое оборуд|каких сотруд|какие услуг|дополни|замени|обнови|рекоменд.*добав|состав.*для|настрой|сформируй|укомплект/i;
+  const _isActionsMode=_actWords.test(text);
+
+  // Build full currentState for actions mode — AI sees EVERYTHING already picked
+  if(_isActionsMode){
+    const parts=[];
+    if(_fullRooms.length)parts.push('ПОМЕЩЕНИЯ ('+_fullRooms.length+'):\n'+_fullRooms.join('\n'));
+    if(_fullEquip.length)parts.push('ОБОРУДОВАНИЕ ('+_fullEquip.length+'):\n'+_fullEquip.join('\n'));
+    if(_fullStaff.length)parts.push('ПЕРСОНАЛ ('+_fullStaff.length+'):\n'+_fullStaff.join('\n'));
+    if(_fullSvc.length)parts.push('УСЛУГИ ('+_fullSvc.length+'):\n'+_fullSvc.join('\n'));
+    if(_fullReno.length)parts.push('РЕМОНТ ('+_fullReno.length+'):\n'+_fullReno.join('\n'));
+    if(_fullDocs.length)parts.push('ДОКУМЕНТЫ ('+_fullDocs.length+'):\n'+_fullDocs.join('\n'));
+    if(context.property)parts.push('ОБЪЕКТ: '+context.property.name+', '+context.property.area+'м², '+context.property.city);
+    if(context.budget&&context.budget!=='0')parts.push('БЮДЖЕТ: '+context.budget+' PLN');
+    if(context.revenue&&context.revenue!=='0')parts.push('ВЫРУЧКА: '+context.revenue+' PLN/мес');
+    context.currentState=parts.length?parts.join('\n\n'):'Концепция пока пустая — ничего не выбрано';
+  }
+
   const CHAT_URL=SB_URL+'/functions/v1/ai-chat';
   try{
     const res=await fetch(CHAT_URL,{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_KEY},
-      body:JSON.stringify({message:text,context,history:_aiChatHistory.slice(-8)})
+      body:JSON.stringify({message:text,context,history:_aiChatHistory.slice(-8),mode:_isActionsMode?'actions':undefined})
     });
     if(!res.ok)throw new Error('HTTP '+res.status);
     const data=await res.json();
     if(!data.reply)throw new Error('Пустой ответ');
     const cleanReply=data.reply.replace(/\[GENERATE_CONCEPT:.*?\]/,'').trim();
-    aiEl.innerHTML=_mdToHtml(cleanReply)+'<span style="display:block;font-size:9px;color:var(--tx3);margin-top:4px">SVITA AI</span>';
+
+    // If AI returned actions — show apply button
+    if(data.actions&&data.actions.length>0){
+      const actId='_aiAct_'+Date.now();
+      window[actId]=data.actions;
+      const secNames={rooms:'Помещения',staff:'Персонал',equipment:'Оборудование',services:'Услуги',renovations:'Ремонт',docs:'Документы'};
+      let preview='<div style="margin-bottom:6px">'+_mdToHtml(cleanReply)+'</div>';
+      preview+='<div style="background:var(--acbg);border:1px solid var(--acbd);border-radius:8px;padding:8px 10px;margin:6px 0;font-size:10px">';
+      preview+='<b style="color:var(--ac2)">Предложенные изменения:</b><br>';
+      data.actions.forEach(function(a){
+        const cnt=Array.isArray(a.data)?a.data.length:1;
+        const label=secNames[a.section]||a.section;
+        const act=a.action==='replace'?'заменить':'добавить';
+        preview+='<div style="margin:2px 0">• '+label+': '+act+' '+cnt+' поз.</div>';
+      });
+      preview+='</div>';
+      preview+='<div style="display:flex;gap:6px;margin-top:8px">';
+      preview+='<button onclick="applyAiActions(window[\''+actId+'\']);this.textContent=\'✓ Применено\';this.disabled=true;this.style.background=\'var(--gn)\';savePicked();buildSidebar();renderAll();recalc()" style="padding:5px 12px;border:none;border-radius:7px;background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;font-size:10px;font-weight:600;cursor:pointer;font-family:var(--f)">✓ Применить</button>';
+      preview+='<button onclick="this.parentNode.parentNode.querySelector(\'.ai-actions-detail\').style.display=this.parentNode.parentNode.querySelector(\'.ai-actions-detail\').style.display===\'none\'?\'block\':\'none\'" style="padding:5px 12px;border:1px solid var(--bd);border-radius:7px;background:var(--sf2);color:var(--tx2);font-size:10px;font-weight:500;cursor:pointer;font-family:var(--f)">Подробнее</button>';
+      preview+='</div>';
+      preview+='<div class="ai-actions-detail" style="display:none;margin-top:8px;font-size:9px;color:var(--tx3);max-height:200px;overflow-y:auto;background:var(--sf2);border-radius:6px;padding:8px"><pre style="white-space:pre-wrap;font-family:var(--f)">'+JSON.stringify(data.actions,null,2).replace(/</g,'&lt;')+'</pre></div>';
+      preview+='<span style="display:block;font-size:9px;color:var(--tx3);margin-top:4px">SVITA AI · actions</span>';
+      aiEl.innerHTML=preview;
+    }else{
+      aiEl.innerHTML=_mdToHtml(cleanReply)+'<span style="display:block;font-size:9px;color:var(--tx3);margin-top:4px">SVITA AI</span>';
+    }
     _aiChatHistory.push({role:'assistant',content:cleanReply});
     _saveChatHistory();
   }catch(e){
@@ -8771,30 +8971,53 @@ function applyPendingConcept(btn){
 function applyAiActions(actions){
   let nextId=Date.now();
   for(const act of actions){
-    if(act.section==='rooms'&&Array.isArray(act.data)){
+    if(!Array.isArray(act.data))continue;
+    const isReplace=act.action==='replace';
+    if(act.section==='rooms'){
+      if(isReplace){DB.rooms=[];DB.pickedRooms={}}
       act.data.forEach(r=>{
-        DB.rooms.push({id:nextId++,name:r.name||'Комната',type:r.type||'Общественная',area:r.area||15});
+        const id=nextId++;
+        DB.rooms.push({id,name:r.name||'Комната',type:r.type||'Общественная',area:r.area||15,zone:r.zone||''});
+        DB.pickedRooms[String(id)]={qty:1};
       });
     }
-    if(act.section==='staff'&&Array.isArray(act.data)){
+    if(act.section==='staff'){
+      if(isReplace){DB.employees=[];DB.pickedStaff={}}
       act.data.forEach(e=>{
         const id=nextId++;
         DB.employees.push({id,position:e.position||'Сотрудник',salary:e.salary||5000,type:e.type||'full',name:e.name||e.position||'Сотрудник'});
         DB.pickedStaff[String(id)]={qty:1};
       });
     }
-    if(act.section==='equipment'&&Array.isArray(act.data)){
+    if(act.section==='equipment'){
+      if(isReplace){DB.suppliers=[];DB.pickedEquip={}}
       act.data.forEach(eq=>{
         const id=nextId++;
-        DB.suppliers.push({id,name:eq.name||'Оборудование',category:eq.category||'Общее',price:eq.price||0,country:'PL'});
+        DB.suppliers.push({id,name:eq.name||'Оборудование',category:eq.category||'Общее',price:eq.price||0,supplier:eq.supplier||'',warranty:eq.warranty||'',country:'PL'});
         DB.pickedEquip[String(id)]={qty:1};
       });
     }
-    if(act.section==='services'&&Array.isArray(act.data)){
+    if(act.section==='services'){
+      if(isReplace){DB.services=[];DB.pickedServices={}}
       act.data.forEach(s=>{
         const id=nextId++;
         DB.services.push({id,name:s.name||'Услуга',category:s.category||'Общее',price:s.price||0,duration:s.duration||30});
         DB.pickedServices[String(id)]={qty:1,customPrice:null};
+      });
+    }
+    if(act.section==='renovations'){
+      if(isReplace){DB.renovations=[];DB.pickedRenovations={}}
+      act.data.forEach(rv=>{
+        const id='ai_'+nextId++;
+        DB.renovations.push({id,name:rv.name||'Работа',cat:rv.cat||'Общие работы',price:rv.price||0});
+        DB.pickedRenovations[String(id)]={qty:1};
+      });
+    }
+    if(act.section==='docs'){
+      if(isReplace){DB.pickedDocs={}}
+      act.data.forEach(d=>{
+        const key='ai_'+nextId++;
+        DB.pickedDocs[key]={name:d.name||'Документ',cat:d.cat||'Прочее',desc:'',price:d.price||0,required:!!d.required,done:false,items:[]};
       });
     }
   }
@@ -9024,6 +9247,27 @@ enterApp=function(){
   _origEnterApp.apply(this,arguments);
   _loadChatSession().then(()=>_restoreRpChat());
 };
+
+// Dynamic news from /news/posts.json
+(function(){
+  var g=document.getElementById('dashNewsGrid');
+  if(!g)return;
+  fetch('/news/posts.json').then(function(r){return r.json()}).then(function(posts){
+    g.innerHTML=posts.map(function(p){
+      var href=p.href.replace(/^\//,'');
+      return '<a href="'+href+'" target="_blank" style="background:var(--sf);border:1px solid var(--bd);border-radius:14px;overflow:hidden;transition:all .2s;display:block;text-decoration:none;color:inherit">'
+        +'<div style="height:120px;background:'+p.thumb_gradient+';display:flex;align-items:center;justify-content:center;position:relative">'
+        +'<div style="text-align:center;color:'+p.thumb_color+';font-size:24px;font-weight:800;opacity:.7">'+p.thumb_text+'<br><span style="font-size:14px;color:'+p.thumb_sub_color+';font-weight:300">'+p.thumb_sub+'</span></div>'
+        +'<span style="position:absolute;top:8px;right:8px;font-size:9px;padding:3px 8px;border-radius:6px;background:'+p.badge_bg+';color:'+p.badge_color+';font-weight:600">'+p.badge+'</span>'
+        +'</div>'
+        +'<div style="padding:14px">'
+        +'<div style="font-size:10px;color:var(--tx3);margin-bottom:4px">'+p.date_ru+'</div>'
+        +'<div style="font-size:13px;font-weight:700;margin-bottom:6px">'+p.title_ru+'</div>'
+        +'<div style="font-size:11px;color:var(--tx2);line-height:1.5">'+p.desc_ru+'</div>'
+        +'</div></a>';
+    }).join('');
+  }).catch(function(){});
+})();
 </script>
 
 <!-- LIGHTBOX -->
