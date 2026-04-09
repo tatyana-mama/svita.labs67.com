@@ -27,15 +27,13 @@ html{scroll-behavior:smooth}
 body{font-family:var(--f);background:var(--bg);color:var(--tx);overflow:hidden;height:100vh;width:100vw;-webkit-font-smoothing:antialiased}
 
 /* ═══ LANG TOGGLE ═══ */
-[data-ru]{display:none}
-body.lang-ru [data-ru]{display:block}
-body.lang-ru [data-en]{display:none}
-span[data-ru],span[data-en]{display:inline}
-body.lang-ru span[data-ru]{display:inline}
-body.lang-ru span[data-en]{display:none}
-p[data-ru],p[data-en]{display:block}
-body.lang-ru p[data-ru]{display:block}
-body.lang-ru p[data-en]{display:none}
+[data-ru]{display:none!important}
+body.lang-ru [data-ru]{display:block!important}
+body.lang-ru [data-en]{display:none!important}
+body.lang-ru span[data-ru]{display:inline!important}
+
+
+
 div[data-ru],div[data-en]{display:block}
 body.lang-ru div[data-ru]{display:block}
 body.lang-ru div[data-en]{display:none}
@@ -44,6 +42,7 @@ body.lang-ru div[data-en]{display:none}
 .lang-btn{padding:4px 10px;cursor:pointer;color:var(--tx3);background:transparent;border:none;font-family:var(--f);font-size:11px;font-weight:600;transition:all .15s;-webkit-tap-highlight-color:transparent}
 .lang-btn:hover{color:var(--tx)}
 .lang-btn.active{background:var(--ac);color:#fff}
+.view-count{font-family:var(--fm);font-size:10px;color:var(--tx3);opacity:.5;margin-left:10px;white-space:nowrap}
 
 /* ═══ SLIDE ENGINE ═══ */
 .deck{position:relative;width:100%;height:100vh;overflow:hidden}
@@ -293,6 +292,7 @@ h4{font-size:13px;font-weight:600;line-height:1.3}
 </div>
 <div class="topbar-dots" id="dots"></div>
 <div class="topbar-num" id="sNum">1 / 5</div>
+<span class="view-count" id="viewCount"></span>
 </nav>
 <div class="progress" id="prog"></div>
 
@@ -712,6 +712,13 @@ document.addEventListener('touchstart',e=>{_tx=e.touches[0].clientX},{passive:tr
 document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-_tx;if(Math.abs(dx)>50){dx<0?nav(1):nav(-1)}},{passive:true});
 
 upd();
+</script>
+<script>
+fetch('https://ctdleobjnzniqkqomlrq.supabase.co/rest/v1/rpc/track_page_view',{
+method:'POST',
+headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZGxlb2JqbnpuaXFrcW9tbHJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMzE4MTEsImV4cCI6MjA4NzgwNzgxMX0.AMHtY7zGPemKYCxMy2bqRTOEAp8trA_Slor9wmg7C38','Content-Type':'application/json'},
+body:JSON.stringify({p_page:location.pathname,p_ua:navigator.userAgent,p_ref:document.referrer||null})
+}).then(r=>r.json()).then(c=>{document.getElementById('viewCount').textContent='\uD83D\uDC41 '+c}).catch(()=>{});
 </script>
 </body>
 </html>

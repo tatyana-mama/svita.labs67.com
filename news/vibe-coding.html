@@ -372,6 +372,8 @@
             color: var(--text-bright);
         }
 
+        .view-count{font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:10px;color:var(--text-main);opacity:.5;margin-left:14px;white-space:nowrap}
+
         /* Language visibility */
         [data-lang="ru"] { display: none; }
         body.lang-ru [data-lang="ru"] { display: revert; }
@@ -906,6 +908,7 @@
     <div class="controls">
         <button id="prevBtn" disabled><span data-lang="en">&larr; Back</span><span data-lang="ru">&larr; Назад</span></button>
         <span class="slide-counter" id="slideCounter">1 / 11</span>
+        <span class="view-count" id="viewCount"></span>
         <button id="nextBtn"><span data-lang="en">Next &rarr;</span><span data-lang="ru">Далее &rarr;</span></button>
     </div>
 </div>
@@ -995,5 +998,12 @@
     setLang(currentLang);
 </script>
 
+<script>
+fetch('https://ctdleobjnzniqkqomlrq.supabase.co/rest/v1/rpc/track_page_view',{
+method:'POST',
+headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZGxlb2JqbnpuaXFrcW9tbHJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMzE4MTEsImV4cCI6MjA4NzgwNzgxMX0.AMHtY7zGPemKYCxMy2bqRTOEAp8trA_Slor9wmg7C38','Content-Type':'application/json'},
+body:JSON.stringify({p_page:location.pathname,p_ua:navigator.userAgent,p_ref:document.referrer||null})
+}).then(r=>r.json()).then(c=>{document.getElementById('viewCount').textContent='\uD83D\uDC41 '+c}).catch(()=>{});
+</script>
 </body>
 </html>

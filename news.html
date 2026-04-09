@@ -51,14 +51,13 @@ a{color:inherit;text-decoration:none}
 .news-tag{font-size:9px;font-weight:600;padding:2px 7px;border-radius:5px;background:var(--sf2);color:var(--tx3)}
 .news-cta{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-size:11px;font-weight:600;color:var(--ac);transition:gap .15s}
 .news-card:hover .news-cta{gap:8px}
+.news-views{font-size:10px;color:var(--tx3);display:flex;align-items:center;gap:4px}
 
-[data-ru]{display:none}
-body.lang-ru [data-ru]{display:block}
-body.lang-ru [data-en]{display:none}
+[data-ru]{display:none!important}
+body.lang-ru [data-ru]{display:block!important}
+body.lang-ru [data-en]{display:none!important}
 /* inline variants */
-span[data-ru],span[data-en]{display:inline}
-body.lang-ru span[data-ru]{display:inline}
-body.lang-ru span[data-en]{display:none}
+body.lang-ru span[data-ru]{display:inline!important}
 
 @media(max-width:640px){
   .header{padding:0 16px}
@@ -98,13 +97,14 @@ body.lang-ru span[data-en]{display:none}
   <div class="news-grid">
 
     <!-- 1. Vibe Coding (EN/RU) -->
-    <a href="/news/vibe-coding.html" class="news-card">
+    <a href="/news/vibe-coding.html" class="news-card" data-page="/news/vibe-coding.html">
       <div class="news-thumb" style="background:linear-gradient(135deg,#0a0e14,#161b22)">
         <div style="text-align:center;color:#58a6ff;font-size:32px;font-weight:800;letter-spacing:2px;opacity:.7">VIBE<br><span style="font-size:18px;color:#adbac7;font-weight:300">CODING</span></div>
         <span class="news-badge badge-presentation">Presentation</span>
       </div>
       <div class="news-body">
         <div class="news-date"><span data-en>April 9, 2026</span><span data-ru>9 апреля 2026</span></div>
+        <div class="news-views">👁 <span class="view-count">&mdash;</span></div>
         <div class="news-title"><span data-en>Vibe Coding — The New Era of Building Things</span><span data-ru>Вайб Кодинг — Новая Эра Создания</span></div>
         <div class="news-desc"><span data-en>11-slide interactive presentation about prompt-driven development, AI agents as extensions of self, and the $616B market. EN/RU.</span><span data-ru>11 интерактивных слайдов о промпт-разработке, AI-агентах как продолжении мышления, и рынке в $616 млрд. EN/RU.</span></div>
         <div class="news-tags">
@@ -118,13 +118,14 @@ body.lang-ru span[data-en]{display:none}
     </a>
 
     <!-- 2. Claude Opus Principles -->
-    <a href="/principles.html" class="news-card">
+    <a href="/principles.html" class="news-card" data-page="/principles.html">
       <div class="news-thumb" style="background:linear-gradient(135deg,#06060c,#141426)">
         <div style="text-align:center;color:#8b5cf6;font-size:28px;font-weight:800;opacity:.7">CLAUDE<br><span style="font-size:16px;color:#9898b8;font-weight:300">OPUS 4.6</span></div>
         <span class="news-badge badge-research">Research</span>
       </div>
       <div class="news-body">
         <div class="news-date"><span data-en>April 2026</span><span data-ru>Апрель 2026</span></div>
+        <div class="news-views">👁 <span class="view-count">&mdash;</span></div>
         <div class="news-title"><span data-en>Claude Opus 4.6 — Fundamental Principles</span><span data-ru>Claude Opus 4.6 — Фундаментальные принципы</span></div>
         <div class="news-desc"><span data-en>Architecture, reasoning, limitations and capabilities of one of the most advanced AI models. Interactive presentation.</span><span data-ru>Архитектура, рассуждения, ограничения и возможности одной из самых продвинутых AI-моделей. Интерактивная презентация.</span></div>
         <div class="news-tags">
@@ -137,13 +138,14 @@ body.lang-ru span[data-en]{display:none}
     </a>
 
     <!-- 3. Cognitive Map -->
-    <a href="/cognitive-map.html" class="news-card">
+    <a href="/cognitive-map.html" class="news-card" data-page="/cognitive-map.html">
       <div class="news-thumb" style="background:linear-gradient(135deg,#08080f,#161625)">
         <div style="text-align:center;color:#06b6d4;font-size:26px;font-weight:800;opacity:.7">COGNITIVE<br><span style="font-size:16px;color:#9898b8;font-weight:300">ARCHITECTURE</span></div>
         <span class="news-badge badge-research">Research</span>
       </div>
       <div class="news-body">
         <div class="news-date"><span data-en>April 2026</span><span data-ru>Апрель 2026</span></div>
+        <div class="news-views">👁 <span class="view-count">&mdash;</span></div>
         <div class="news-title"><span data-en>Cognitive Architecture of Claude Opus 4.6</span><span data-ru>Когнитивная архитектура Claude Opus 4.6</span></div>
         <div class="news-desc"><span data-en>Map of cognitive processes: how the model thinks, structures information, and makes decisions. Visual presentation.</span><span data-ru>Карта когнитивных процессов: как модель думает, структурирует информацию и принимает решения. Визуальная презентация.</span></div>
         <div class="news-tags">
@@ -156,13 +158,14 @@ body.lang-ru span[data-en]{display:none}
     </a>
 
     <!-- 4. SWOT Analysis -->
-    <a href="/swot.html" class="news-card">
+    <a href="/swot.html" class="news-card" data-page="/swot.html">
       <div class="news-thumb" style="background:linear-gradient(135deg,#0a0a12,#1a1a2e)">
         <div style="text-align:center;color:#eab308;font-size:28px;font-weight:800;opacity:.7">SWOT<br><span style="font-size:16px;color:#a0a0b8;font-weight:300">ANALYSIS</span></div>
         <span class="news-badge badge-tool">Analysis</span>
       </div>
       <div class="news-body">
         <div class="news-date"><span data-en>April 2026</span><span data-ru>Апрель 2026</span></div>
+        <div class="news-views">👁 <span class="view-count">&mdash;</span></div>
         <div class="news-title"><span data-en>SVITA AI — SWOT Analysis</span><span data-ru>SVITA AI — SWOT-анализ</span></div>
         <div class="news-desc"><span data-en>Strengths, weaknesses, opportunities, and threats of the SVITA project. Strategic breakdown in interactive slides.</span><span data-ru>Сильные и слабые стороны, возможности и угрозы проекта SVITA. Стратегический разбор на интерактивных слайдах.</span></div>
         <div class="news-tags">
@@ -186,6 +189,24 @@ function setLang(lang){
 (function(){
   const saved=localStorage.getItem('svita_news_lang');
   if(saved)setLang(saved);
+})();
+
+/* View counters via Supabase RPC */
+(function(){
+  const SUPABASE_URL='https://ctdleobjnzniqkqomlrq.supabase.co';
+  const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZGxlb2JqbnpuaXFrcW9tbHJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMzE4MTEsImV4cCI6MjA4NzgwNzgxMX0.AMHtY7zGPemKYCxMy2bqRTOEAp8trA_Slor9wmg7C38';
+  document.querySelectorAll('.news-card[data-page]').forEach(function(card){
+    var page=card.getAttribute('data-page');
+    var el=card.querySelector('.view-count');
+    fetch(SUPABASE_URL+'/rest/v1/rpc/get_page_views',{
+      method:'POST',
+      headers:{'apikey':SUPABASE_KEY,'Content-Type':'application/json'},
+      body:JSON.stringify({p_page:page})
+    })
+    .then(function(r){return r.json()})
+    .then(function(count){el.textContent=typeof count==='number'?count:'0'})
+    .catch(function(){el.textContent='0'});
+  });
 })();
 </script>
 </body>

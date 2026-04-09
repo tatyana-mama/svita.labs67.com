@@ -20,16 +20,15 @@ html{scroll-behavior:smooth}
 body{font-family:var(--f);background:var(--bg);color:var(--tx);overflow-x:hidden;font-size:16px;line-height:1.6}
 
 /* ═══ LANG TOGGLE ═══ */
-[data-ru]{display:none}
-body.lang-ru [data-ru]{display:block}
-body.lang-ru [data-en]{display:none}
-span[data-ru],span[data-en]{display:inline}
-body.lang-ru span[data-ru]{display:inline}
-body.lang-ru span[data-en]{display:none}
+[data-ru]{display:none!important}
+body.lang-ru [data-ru]{display:block!important}
+body.lang-ru [data-en]{display:none!important}
+body.lang-ru span[data-ru]{display:inline!important}
 .lang-toggle{display:flex;border:1px solid var(--bd2);border-radius:6px;overflow:hidden;font-size:11px;font-weight:600}
 .lang-btn{padding:4px 10px;cursor:pointer;color:var(--tx3);background:transparent;border:none;font-family:var(--f);font-size:11px;font-weight:600;transition:all .15s}
 .lang-btn:hover{color:var(--tx)}
 .lang-btn.active{background:var(--ac);color:#fff}
+.view-count{font-family:var(--fm);font-size:10px;color:var(--tx3);opacity:.5;margin-left:10px;white-space:nowrap}
 
 /* ═══ SLIDE SYSTEM ═══ */
 .slide{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:80px 60px;position:relative;opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
@@ -288,6 +287,7 @@ td:first-child{font-weight:600;color:var(--tx);white-space:nowrap}
 </div>
 <div class="pnav-dots" id="dots"></div>
 <div class="pnav-num" id="slideNum">1 / 8</div>
+<span class="view-count" id="viewCount"></span>
 </nav>
 <div class="progress" id="progress"></div>
 
@@ -842,6 +842,13 @@ document.addEventListener('touchend',e=>{
 // Init
 updateNav();
 slides[0].classList.add('vis');
+</script>
+<script>
+fetch('https://ctdleobjnzniqkqomlrq.supabase.co/rest/v1/rpc/track_page_view',{
+method:'POST',
+headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZGxlb2JqbnpuaXFrcW9tbHJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMzE4MTEsImV4cCI6MjA4NzgwNzgxMX0.AMHtY7zGPemKYCxMy2bqRTOEAp8trA_Slor9wmg7C38','Content-Type':'application/json'},
+body:JSON.stringify({p_page:location.pathname,p_ua:navigator.userAgent,p_ref:document.referrer||null})
+}).then(r=>r.json()).then(c=>{document.getElementById('viewCount').textContent='\uD83D\uDC41 '+c}).catch(()=>{});
 </script>
 </body>
 </html>
