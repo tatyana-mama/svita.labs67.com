@@ -3510,6 +3510,8 @@ function switchAuthTab(tab){
 }
 function showLogin(){switchAuthTab('signin')}
 function showRegister(){switchAuthTab('signup')}
+// Auto-switch to signup tab if hash is #signup
+if(location.hash==='#signup'){setTimeout(()=>switchAuthTab('signup'),100)}
 function showForgotPassword(){
   const allPanels=['loginStep1','loginRegister','loginVerify','loginStep2','loginStep25','loginOnboard'];
   allPanels.forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none'});
