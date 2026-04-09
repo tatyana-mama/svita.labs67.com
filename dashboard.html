@@ -16,7 +16,7 @@
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
 <script src="fonts/ptsans-jspdf.js"></script>
 <style>
-:root{--bg:#f8fafc;--sf:#ffffff;--sf2:#f1f5f9;--sf3:#e2e8f0;--bd:rgba(0,0,0,.06);--bd2:rgba(0,0,0,.10);--tx:#1e293b;--tx2:rgba(30,41,59,.6);--tx3:rgba(30,41,59,.35);--ac:#3b82f6;--ac2:#2563eb;--acbg:rgba(59,130,246,.06);--acbd:rgba(59,130,246,.15);--gn:#16a34a;--gnbg:rgba(22,163,74,.06);--yl:#ca8a04;--ylbg:rgba(202,138,4,.06);--rd:#dc2626;--or:#ea580c;--r:12px;--f:'Inter',system-ui,sans-serif;--shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);--shadow-md:0 4px 6px rgba(0,0,0,.04),0 2px 4px rgba(0,0,0,.03)}
+:root{--bg:#f7f8fb;--sf:#ffffff;--sf2:#f0f2f7;--sf3:#e1e4ec;--bd:rgba(0,0,0,.05);--bd2:rgba(0,0,0,.09);--tx:#1a2332;--tx2:rgba(26,35,50,.58);--tx3:rgba(26,35,50,.32);--ac:#4f6ef7;--ac2:#3b5ce4;--acbg:rgba(79,110,247,.05);--acbd:rgba(79,110,247,.14);--gn:#1a9956;--gnbg:rgba(26,153,86,.05);--yl:#c08a10;--ylbg:rgba(192,138,16,.06);--rd:#d63030;--or:#e05c14;--r:14px;--f:'Inter',system-ui,sans-serif;--shadow:0 1px 4px rgba(0,0,0,.05),0 0 1px rgba(0,0,0,.03);--shadow-md:0 4px 12px rgba(0,0,0,.04),0 1px 3px rgba(0,0,0,.03)}
 *{box-sizing:border-box;margin:0;padding:0}body{font-family:var(--f);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}a{color:inherit;text-decoration:none}
 .app{display:flex;min-height:100vh}
 
@@ -36,12 +36,12 @@
 .lr-name{font-size:13px;font-weight:700}.lr-desc{font-size:10px;color:var(--tx3);margin-top:2px}
 
 /* SIDEBAR */
-.side{width:240px;flex-shrink:0;background:var(--sf);border-right:1px solid var(--bd);position:fixed;top:0;left:0;bottom:0;z-index:100;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow)}
+.side{width:240px;flex-shrink:0;background:var(--sf);border-right:1px solid var(--bd);position:fixed;top:0;left:0;bottom:0;z-index:100;display:flex;flex-direction:column;overflow:hidden;box-shadow:1px 0 8px rgba(0,0,0,.03)}
 .side-head{padding:20px 24px 16px;border-bottom:1px solid var(--bd)}
 .side-logo{font-size:20px;font-weight:800;display:flex;align-items:center;gap:10px;color:var(--tx)}.side-logo .d{width:8px;height:8px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 3px var(--acbg)}
 .side-tag{font-size:9px;color:var(--tx3);letter-spacing:2px;text-transform:uppercase;margin-top:4px;font-weight:500}
 .side-nav{flex:1;overflow-y:auto;padding:16px 12px}
-.side-sec{font-size:9px;font-weight:600;color:var(--tx3);letter-spacing:1.5px;text-transform:uppercase;padding:16px 12px 6px}
+.side-sec{font-size:9px;font-weight:700;color:var(--tx2);letter-spacing:1.5px;text-transform:uppercase;padding:18px 12px 6px}
 .si{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--tx2);border:none;transition:all .15s;user-select:none}.si.locked{opacity:.5}
 .si:hover{background:var(--sf2);color:var(--tx)}.si.act{background:var(--acbg);color:var(--ac2);font-weight:600}
 .si.si-clr{border-left:3px solid var(--si-clr);border-radius:0 8px 8px 0}.si.si-clr .sb{background:color-mix(in srgb,var(--si-clr) 12%,transparent);color:var(--si-clr)}.si.si-clr.act{background:color-mix(in srgb,var(--si-clr) 8%,transparent);color:var(--si-clr);border-left-color:var(--si-clr)}
@@ -59,7 +59,7 @@
 .main{flex:1;margin-left:240px;margin-right:320px;min-height:100vh;min-width:0;overflow-x:hidden}
 
 /* RIGHT PANEL */
-.rpanel{width:320px;flex-shrink:0;background:var(--sf);border-left:1px solid var(--bd);position:fixed;top:0;right:0;bottom:0;z-index:100;display:flex;flex-direction:column;overflow:hidden}
+.rpanel{width:320px;flex-shrink:0;background:var(--sf);border-left:1px solid var(--bd);position:fixed;top:0;right:0;bottom:0;z-index:100;display:flex;flex-direction:column;overflow:hidden;box-shadow:-1px 0 8px rgba(0,0,0,.03)}
 .rp-head{padding:10px 8px;border-bottom:1px solid var(--bd);font-size:10px;font-weight:700;color:var(--ac2);text-transform:uppercase;letter-spacing:.5px}
 .rp-sec{padding:8px 8px;border-bottom:1px solid var(--bd)}
 .rp-sec-title{font-size:8px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
@@ -135,13 +135,13 @@
 .t-ok{background:var(--gnbg);color:var(--gn)}.t-wip{background:var(--acbg);color:var(--ac2)}.t-w{background:var(--sf2);color:var(--tx3)}
 
 /* CARDS */
-.c{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:16px;transition:border-color .2s}.c:hover{border-color:var(--bd2)}
+.c{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:16px;transition:all .2s;box-shadow:var(--shadow)}.c:hover{border-color:var(--bd2);box-shadow:var(--shadow-md)}
 .ch{padding:12px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
 .ch h3{font-size:13px;font-weight:700;margin:0}.cb{padding:16px}
 
 /* STATS */
 .sts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
-.st{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:16px}
+.st{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:18px;box-shadow:var(--shadow)}
 .st-l{font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
 .st-v{font-size:24px;font-weight:800;letter-spacing:-1px;line-height:1}.st-s{font-size:11px;color:var(--tx2);margin-top:4px}
 .st-b{height:3px;border-radius:2px;background:var(--bd);margin-top:10px;overflow:hidden}.st-bf{height:100%;border-radius:2px}
@@ -151,9 +151,9 @@
 .g3{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
 
 /* STAGES */
-.stg{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:20px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.stg{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:20px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;box-shadow:var(--shadow)}
 .stg::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;transition:background .2s}
-.stg:hover{border-color:var(--bd2);transform:translateY(-1px)}
+.stg:hover{border-color:var(--bd2);transform:translateY(-1px);box-shadow:var(--shadow-md)}
 .stg.ok::before{background:var(--gn)}.stg.ok{border-color:rgba(34,197,94,.12)}
 .stg.cur::before{background:var(--ac)}.stg.cur{border-color:var(--acbd);background:var(--acbg)}
 .stg-n{font-size:28px;font-weight:800;color:var(--tx3);line-height:1}.stg.ok .stg-n{color:var(--gn)}.stg.cur .stg-n{color:var(--ac2)}
@@ -715,7 +715,7 @@ Apple</button>
 <div class="tab" data-nav="s2" onclick="nav('s2')" style="--tab-clr:#f59e0b"><div class="tab-top"><span class="tab-num">2</span><span class="tab-icon">&#128736;</span>Модернизация</div><span class="tab-cost" id="tabCost2"></span></div>
 <div class="tab" data-nav="s3" onclick="nav('s3')" style="--tab-clr:#8b5cf6"><div class="tab-top"><span class="tab-num">3</span><span class="tab-icon">&#128230;</span>Оснащение</div><span class="tab-cost" id="tabCost3"></span></div>
 <div class="tab" data-nav="s4" onclick="nav('s4')" style="--tab-clr:#06b6d4"><div class="tab-top"><span class="tab-num">4</span><span class="tab-icon">&#129489;</span>Персонал</div><span class="tab-cost" id="tabCost4"></span></div>
-<div class="tab" data-nav="s5" onclick="nav('s5')" style="--tab-clr:#22c55e"><div class="tab-top"><span class="tab-num">5</span><span class="tab-icon">&#129657;</span>Перечень услуг</div><span class="tab-cost" id="tabCost5"></span></div>
+<div class="tab" data-nav="s5" onclick="nav('s5')" style="--tab-clr:#22c55e"><div class="tab-top"><span class="tab-num">5</span><span class="tab-icon">&#129657;</span>Услуги населению</div><span class="tab-cost" id="tabCost5"></span></div>
 <div class="tab" data-nav="s6" onclick="nav('s6')" style="--tab-clr:#ec4899"><div class="tab-top"><span class="tab-num">6</span><span class="tab-icon">&#128200;</span>Концепция</div><span class="tab-cost" id="tabCost6"></span></div>
 <div class="tab" data-nav="s7" onclick="nav('s7')" style="--tab-clr:#ef4444"><div class="tab-top"><span class="tab-num">7</span><span class="tab-icon">&#128203;</span>Документация</div><span class="tab-cost" id="tabCost7"></span></div>
 </div>
@@ -732,7 +732,7 @@ Apple</button>
 <div class="stg" onclick="nav('s2')"><div style="display:flex;justify-content:space-between"><div class="stg-n">02</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Модернизация</div><div class="stg-d">Ремонт помещения: электрика, сантехника, отделка</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
 <div class="stg" onclick="nav('s3')"><div style="display:flex;justify-content:space-between"><div class="stg-n">03</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Оснащение</div><div class="stg-d">Оборудование, инструменты, расходники</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
 <div class="stg" onclick="nav('s4')"><div style="display:flex;justify-content:space-between"><div class="stg-n">04</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Персонал</div><div class="stg-d">Штат, ФОТ, специалисты</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
-<div class="stg" onclick="nav('s5')"><div style="display:flex;justify-content:space-between"><div class="stg-n">05</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Перечень услуг</div><div class="stg-d">Стоматологические услуги, ценообразование</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
+<div class="stg" onclick="nav('s5')"><div style="display:flex;justify-content:space-between"><div class="stg-n">05</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Услуги оказываемые населению</div><div class="stg-d">Стоматологические услуги, ценообразование</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
 <div class="stg" onclick="nav('s6')"><div style="display:flex;justify-content:space-between"><div class="stg-n">06</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Концепция</div><div class="stg-d">Бизнес-модель, рентабельность</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
 <div class="stg" onclick="nav('s7')"><div style="display:flex;justify-content:space-between"><div class="stg-n">07</div><span class="tag t-w">Ожидает</span></div><div class="stg-t">Документация</div><div class="stg-d">Лицензии, санэпиднадзор, RODO, страхование</div><div class="stg-pb"><div class="stg-pf" style="width:0%"></div></div><div class="stg-m"><span></span><strong>0%</strong></div></div>
 </div>
@@ -1123,7 +1123,7 @@ Apple</button>
 
 <!-- ═══ S5: ПРАЙС-ЛИСТ ═══ -->
 <div class="sec" id="sec-s5">
-<div class="ph"><div><h2>05 &middot; Перечень услуг</h2><div class="ph-s">Полный прайс-лист концепции</div></div><button class="btn sm pr" onclick="openModal('service')">+ Добавить услугу</button></div>
+<div class="ph"><div><h2>05 &middot; Услуги оказываемые населению</h2><div class="ph-s">Полный прайс-лист концепции</div></div><button class="btn sm pr" onclick="openModal('service')">+ Добавить услугу</button></div>
 <div class="sts" id="svcStats" style="grid-template-columns:repeat(4,1fr)">
 <div class="st"><div class="st-l">Позиций</div><div class="st-v" id="svcCount">0</div><div class="st-s">в прайсе</div></div>
 <div class="st"><div class="st-l">Категорий</div><div class="st-v" id="svcCats">0</div><div class="st-s">направлений</div></div>
@@ -1137,6 +1137,37 @@ Apple</button>
 <!-- ═══ S6: КОНЦЕПЦИЯ ═══ -->
 <div class="sec" id="sec-s6">
 <div class="ph"><div><h2>06 &middot; Концепция</h2><div class="ph-s">Бизнес-модель, рентабельность, документация</div></div><span class="tag t-wip">В работе</span></div>
+
+<!-- ═══ СВОДНЫЙ БЮДЖЕТ ═══ -->
+<div class="c" style="border-color:var(--acbd);background:linear-gradient(135deg,var(--acbg),var(--sf))"><div class="ch" style="border-bottom-color:var(--acbd)"><h3>&#128176; Сводный бюджет концепции</h3><span style="font-size:10px;color:var(--tx3)">Автосборка из всех этапов</span></div>
+<div class="cb">
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
+<div style="background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px;text-align:center">
+<div style="font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">Общие инвестиции</div>
+<div style="font-size:22px;font-weight:800;color:var(--ac2);margin-top:4px" id="budgetTotal">0</div>
+<div style="font-size:10px;color:var(--tx3)">PLN</div>
+</div>
+<div style="background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px;text-align:center">
+<div style="font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">Ежемесячные расходы</div>
+<div style="font-size:22px;font-weight:800;color:var(--rd);margin-top:4px" id="budgetMonthly">0</div>
+<div style="font-size:10px;color:var(--tx3)">PLN / мес</div>
+</div>
+<div style="background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px;text-align:center">
+<div style="font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">Окупаемость</div>
+<div style="font-size:22px;font-weight:800;color:var(--gn);margin-top:4px" id="budgetPayback">--</div>
+<div style="font-size:10px;color:var(--tx3)">мес</div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr auto;gap:3px 12px;font-size:11px;padding:0 4px">
+<span style="color:var(--tx2)">&#127970; Помещение (аренда × 12 мес.)</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetRent">0 PLN</span>
+<span style="color:var(--tx2)">&#128736; Ремонт и модернизация</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetReno">0 PLN</span>
+<span style="color:var(--tx2)">&#128230; Оборудование</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetEquip">0 PLN</span>
+<span style="color:var(--tx2)">&#129489; ФОТ (первые 3 мес.)</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetStaff">0 PLN</span>
+<span style="color:var(--tx2)">&#128203; Документация и лицензии</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetDocs">0 PLN</span>
+<span style="color:var(--tx2)">&#128200; Маркетинг (запуск)</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetMkt">0 PLN</span>
+<span style="font-weight:800;color:var(--tx);border-top:2px solid var(--acbd);padding-top:6px;margin-top:4px">ИТОГО ИНВЕСТИЦИИ</span><span style="font-weight:800;color:var(--ac2);text-align:right;border-top:2px solid var(--acbd);padding-top:6px;margin-top:4px" id="budgetGrand">0 PLN</span>
+</div>
+</div></div>
 
 <!-- Бизнес-модель -->
 <div class="c"><div class="ch"><h3>&#127973; Бизнес-модель</h3><button class="btn sm gn" id="bmSaveBtn" onclick="saveBusinessModel()">Сохранить</button></div>
@@ -1371,13 +1402,13 @@ Apple</button>
 <div class="ph"><div><h2>&#128736; Модернизация и услуги</h2><div class="ph-s">Ремонтные работы и перечень стоматологических услуг</div></div><button class="btn sm or" onclick="openModal('renovation')">+ Работа</button></div>
 <div class="c"><div class="ch"><h3>&#9889; Ремонтные работы</h3><span style="font-size:10px;color:var(--tx3)">Строительство и отделка</span></div>
 <div class="cb" id="renCatalogCards"></div></div>
-<div class="c" style="margin-top:12px"><div class="ch"><h3>&#129657; Перечень услуг</h3><span style="font-size:10px;color:var(--tx3)">Стоматологические услуги для перечня и экономики</span></div>
+<div class="c" style="margin-top:12px"><div class="ch"><h3>&#129657; Услуги оказываемые населению</h3><span style="font-size:10px;color:var(--tx3)">Стоматологические услуги для перечня и экономики</span></div>
 <div class="cb" id="renServiceCards"></div></div>
 </div>
 
 <div class="sec" id="sec-db-services">
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
-<div class="ph"><div><h2>&#128203; Перечень услуг</h2><div class="ph-s">Услуги и цены текущей концепции</div></div><div style="display:flex;gap:6px"><button class="btn sm pr" onclick="openModal('service')">+ Услуга</button><button class="btn sm" onclick="addServiceCategory()">+ Категория</button></div></div>
+<div class="ph"><div><h2>&#128203; Услуги оказываемые населению</h2><div class="ph-s">Услуги и цены текущей концепции</div></div><div style="display:flex;gap:6px"><button class="btn sm pr" onclick="openModal('service')">+ Услуга</button><button class="btn sm" onclick="addServiceCategory()">+ Категория</button></div></div>
 <div class="sts" id="svcStats" style="grid-template-columns:repeat(4,1fr)">
 <div class="st"><div class="st-l">Всего</div><div class="st-v" id="svcTotalCount">0</div></div>
 <div class="st"><div class="st-l">Категорий</div><div class="st-v" id="svcCatCount">0</div></div>
@@ -1573,7 +1604,7 @@ const I18N={en:{
 'Что открываем?':'What are we opening?','Выберите тип бизнеса':'Choose a business type','Уточните формат':'Specify the format','Начать':'Start',
 'Администратор':'Administrator','Полный доступ ко всем базам и данным':'Full access to all databases and data','Владелец / Заказчик':'Owner / Client','Конструктор клиники: этапы, бюджет':'Clinic constructor: stages, budget','Владелец':'Owner','Подрядчик':'Contractor','Работы и коммерческие предложения':'Works and commercial proposals','Поставщик':'Supplier','Каталог оборудования':'Equipment catalog','Сотрудник':'Employee','Профиль специалиста':'Specialist profile',
 'Конструктор бизнеса':'Business Constructor','Свитлица':'Svitlitsa','Стоматология':'Dentistry','Настройки':'Settings','Обзор':'Overview','Далее':'Next','Выход':'Sign Out','Условия':'Terms','Политика':'Privacy','Пользователь':'User','Роль':'Role','Мои концепции':'My Concepts','Сменить тариф':'Change Plan',
-'Аналитика':'Analytics','Бюджет':'Budget','Рентабельность':'Profitability','Зоны':'Zones','Стоимость кабинетов':'Room Costs','Стоимость помещений':'Premises Costs','Базы данных':'Databases','Помещения':'Premises','Модернизация':'Renovation','Перечень услуг':'Service List','Меню':'Menu','Оборудование':'Equipment','Сотрудники':'Employees','Документация':'Documentation','Подрядчики':'Contractors','Поставщики':'Suppliers','Пользователи':'Users','Администрирование':'Administration','Мои данные':'My Data','Доступные работы':'Available Works','Мои предложения':'My Proposals','Мой каталог':'My Catalog','Мой профиль':'My Profile','Выбрать':'Select','Сохранить концепцию':'Save Concept','Новая концепция':'New Concept',
+'Аналитика':'Analytics','Бюджет':'Budget','Рентабельность':'Profitability','Зоны':'Zones','Стоимость кабинетов':'Room Costs','Стоимость помещений':'Premises Costs','Базы данных':'Databases','Помещения':'Premises','Модернизация':'Renovation','Услуги населению':'Services','Перечень услуг':'Service List','Меню':'Menu','Оборудование':'Equipment','Сотрудники':'Employees','Документация':'Documentation','Подрядчики':'Contractors','Поставщики':'Suppliers','Пользователи':'Users','Администрирование':'Administration','Мои данные':'My Data','Доступные работы':'Available Works','Мои предложения':'My Proposals','Мой каталог':'My Catalog','Мой профиль':'My Profile','Выбрать':'Select','Сохранить концепцию':'Save Concept','Новая концепция':'New Concept',
 'Помещение':'Premises','Оснащение':'Equipment','Персонал':'Staff','Концепция':'Concept',
 'Прогресс':'Progress','Окупаемость':'Payback','Позиций':'Items','выбрано':'selected','месяцев':'months','Этап 1 из 6':'Stage 1 of 6',
 'В работе':'In Progress','Ожидает':'Pending','Готово':'Done','Объект, планировка, характеристики':'Property, layout, characteristics','Ремонт помещения: электрика, сантехника, отделка':'Renovation: electrical, plumbing, finishing','Оборудование, инструменты, расходники':'Equipment, instruments, consumables','Штат, ФОТ, специалисты':'Staff, payroll, specialists','Стоматологические услуги, ценообразование':'Dental services, pricing','Бизнес-модель, рентабельность':'Business model, profitability','Лицензии, санэпиднадзор, RODO, страхование':'Licenses, sanitary inspection, GDPR, insurance',
@@ -3181,8 +3212,9 @@ async function applyAIConcept(){
   // Reset picked
   DB.pickedStaff={};DB.pickedEquip={};DB.pickedServices={};DB.pickedRooms={};
   DB.pickedContractors={};DB.pickedRenovations={};DB.pickedDocs={};
-  // Auto-pick all employees
+  // Auto-pick all employees and services from AI concept
   DB.employees.forEach(e=>{DB.pickedStaff[String(e.id)]={qty:1}});
+  DB.services.forEach(s=>{DB.pickedServices[String(s.id)]={qty:1}});
   savePicked();
   // Save to Supabase
   const cname=_aiConcept.name||'AI концепция';
@@ -3863,7 +3895,7 @@ function buildSidebar(){
     html+='<div class="side-sec">Базы данных</div>';
     html+='<div class="si si-clr" style="--si-clr:#3b82f6" data-nav="db-premises"><span class="ico">&#127970;</span><span class="sl">Помещения</span><span class="sb wip" id="sbPrem">0</span></div>';
     html+='<div class="si si-clr" style="--si-clr:#f59e0b" data-nav="db-renovations"><span class="ico">&#128736;</span><span class="sl">Модернизация</span><span class="sb wip" id="sbReno">0</span></div>';
-    const _svcLabel=currentBizType&&currentBizType!=='dental'?'Меню':'Перечень услуг';
+    const _svcLabel=currentBizType&&currentBizType!=='dental'?'Меню':'Услуги населению';
     const _svcIcon=currentBizType&&currentBizType!=='dental'?'&#127860;':'&#128203;';
     html+='<div class="si si-clr" style="--si-clr:#10b981" data-nav="db-services"><span class="ico">'+_svcIcon+'</span><span class="sl">'+_svcLabel+'</span><span class="sb wip" id="sbSvc">0</span></div>';
     html+='<div class="si si-clr" style="--si-clr:#8b5cf6" data-nav="db-suppliers"><span class="ico">&#128230;</span><span class="sl">Оборудование</span><span class="sb wip" id="sbEquip">0</span></div>';
@@ -3916,7 +3948,7 @@ function updateSidebarBadges(){
 // ═══════════════ NAVIGATION ═══════════════
 function getSecNames(){
   const isCoffee=currentBizType&&currentBizType!=='dental';
-  return{overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:isCoffee?'Меню':'Перечень услуг',s6:'Концепция',s7:'Документация',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны','db-premises':'БД Помещений','db-renovations':'Модернизация и услуги','db-services':isCoffee?'Меню':'Каталог услуг','db-docs':'Каталог документов','db-contractors':'БД Подрядчиков','db-suppliers':'Каталог оборудования','db-employees':'БД Сотрудников','db-vendor-companies':'Поставщики',users:'Пользователи','cabinet-types':isCoffee?'Стоимость помещений':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения'};
+  return{overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:isCoffee?'Меню':'Услуги населению',s6:'Концепция',s7:'Документация',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны','db-premises':'БД Помещений','db-renovations':'Модернизация и услуги','db-services':isCoffee?'Меню':'Каталог услуг','db-docs':'Каталог документов','db-contractors':'БД Подрядчиков','db-suppliers':'Каталог оборудования','db-employees':'БД Сотрудников','db-vendor-companies':'Поставщики',users:'Пользователи','cabinet-types':isCoffee?'Стоимость помещений':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения'};
 }
 const secNames=getSecNames();
 const stageOrder=['s1','s2','s3','s4','s5','s6','s7'];
@@ -6808,28 +6840,41 @@ function renderServices(){
   c.innerHTML=html;
 }
 
-// Selected services in tab 5 (Прайс-лист) — show ALL categories, picked items inside
+// Selected services in tab 5 — show only picked services (empty by default)
 function renderSelectedServices(){
   const c=document.getElementById('serviceCards');
   if(!c)return;
+  const picked=DB.pickedServices||{};
+  const pickedIds=Object.keys(picked);
   const all=DB.services||[];
-  if(!all.length){c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Нет услуг в концепции</div>';return}
+  const items=pickedIds.map(id=>all.find(s=>String(s.id)===String(id))).filter(Boolean);
+
+  if(!items.length){
+    c.innerHTML='<div style="padding:32px;text-align:center;color:var(--tx3);font-size:12px"><div style="font-size:28px;margin-bottom:8px;opacity:.4">&#129657;</div>Нет добавленных услуг<br><span style="font-size:11px">Добавьте через кнопку «+ Добавить услугу» или выберите из каталога в разделе «Базы данных»</span></div>';
+    const el=id=>document.getElementById(id);
+    if(el('svcCount'))el('svcCount').textContent='0';
+    if(el('svcCats'))el('svcCats').textContent='0';
+    if(el('svcAvgPrice'))el('svcAvgPrice').textContent='0';
+    if(el('svcRevenue'))el('svcRevenue').textContent='— / —';
+    if(el('s5Total'))el('s5Total').textContent='0 PLN';
+    return;
+  }
 
   // Group by category
   const cats={};
-  all.forEach(s=>{
+  items.forEach(s=>{
     const cat=s.category||'Основные';
     if(!cats[cat])cats[cat]=[];
     cats[cat].push(s);
   });
 
-  const prices=all.map(s=>s.price||0).filter(p=>p>0);
+  const prices=items.map(s=>s.price||0).filter(p=>p>0);
   const avg=prices.length?Math.round(prices.reduce((a,b)=>a+b,0)/prices.length):0;
   const mn=prices.length?Math.min(...prices):0;
   const mx=prices.length?Math.max(...prices):0;
   const catKeys=Object.keys(cats);
 
-  document.getElementById('svcCount').textContent=all.length;
+  document.getElementById('svcCount').textContent=items.length;
   document.getElementById('svcCats').textContent=catKeys.length;
   document.getElementById('svcAvgPrice').textContent=avg.toLocaleString('ru');
   document.getElementById('svcRevenue').textContent=mn.toLocaleString('ru')+' / '+mx.toLocaleString('ru');
@@ -6837,10 +6882,10 @@ function renderSelectedServices(){
 
   let html='';
   catKeys.forEach(cat=>{
-    const items=cats[cat];
-    const catAvg=Math.round(items.reduce((s,r)=>s+(r.price||0),0)/items.length);
-    html+=`<div class="c"><div class="ch"><h3>${cat}</h3><span style="font-size:10px;color:var(--tx3)">${items.length} услуг · ср. ${catAvg.toLocaleString('ru')} PLN</span></div><div class="cb">`;
-    items.forEach(r=>{
+    const itms=cats[cat];
+    const catAvg=Math.round(itms.reduce((s,r)=>s+(r.price||0),0)/itms.length);
+    html+=`<div class="c"><div class="ch"><h3>${cat}</h3><span style="font-size:10px;color:var(--tx3)">${itms.length} услуг · ср. ${catAvg.toLocaleString('ru')} PLN</span></div><div class="cb">`;
+    itms.forEach(r=>{
       html+=`<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--bd)">
 <div style="flex:1;min-width:0">
 <div style="font-size:12px;font-weight:600">${esc(r.name)}</div>
@@ -6850,7 +6895,7 @@ function renderSelectedServices(){
 <input type="number" value="${r.price||0}" onchange="updateSvcPrice(${r.id},this.value)" style="width:60px;font-size:12px;font-weight:700;color:var(--ac2);text-align:right;border:1px solid var(--bd);border-radius:6px;padding:4px 6px;background:var(--sf)">
 <span style="font-size:10px;color:var(--tx3)">PLN</span>
 </div>
-<button class="btn sm" onclick="deleteSvc(${r.id})" style="color:var(--rd);font-size:10px;padding:4px 6px;flex-shrink:0" title="Удалить">✕</button>
+<button class="btn sm" onclick="removeSvcFromList(${r.id})" style="color:var(--rd);font-size:10px;padding:4px 6px;flex-shrink:0" title="Убрать из списка">✕</button>
 </div>`;
     });
     html+='</div></div>';
@@ -6866,7 +6911,12 @@ function updateSvcPrice(id,val){
 }
 function deleteSvc(id){
   DB.services=DB.services.filter(x=>x.id!=id);
-  renderSelectedServices();recalc();
+  if(DB.pickedServices)delete DB.pickedServices[id];
+  savePicked();renderSelectedServices();recalc();
+}
+function removeSvcFromList(id){
+  if(DB.pickedServices)delete DB.pickedServices[id];
+  savePicked();renderServices();renderSelectedServices();renderRenServices();recalc();
 }
 function toggleSvcPick(id){
   if(!DB.pickedServices)DB.pickedServices={};
@@ -7388,6 +7438,12 @@ function saveModal(){
     DB.pickedStaff[obj.id]={qty:1,...obj};
     savePicked();
   }
+  // Auto-pick new services so they appear in S5
+  if(modalMode==='service'){
+    if(!DB.pickedServices)DB.pickedServices={};
+    DB.pickedServices[obj.id]={qty:1};
+    savePicked();
+  }
   editingId=null;
   closeModal();
   renderAll();buildSidebar();recalc();
@@ -7438,6 +7494,26 @@ function calcTotals(){
   if(renDisp)renDisp.textContent=renovation.toLocaleString('ru');
   return{rent,renovation,eng,equip,docs,staff,fot,grand,revenue,expenses,chairs,ppc,wd,avgCheck,rentMonth};
 }
+function updateBudgetSummary(t){
+  const f=n=>n.toLocaleString('ru')+' PLN';
+  const rentYear=t.rentMonth*12;
+  const staffQ=t.staff*3;
+  const mkt=parseInt(document.getElementById('prMarketing')?.value||0);
+  const totalInvest=rentYear+t.renovation+t.eng+t.equip+staffQ+t.docs+mkt;
+  const profit=t.revenue-t.expenses;
+  const payback=profit>0&&totalInvest>0?Math.ceil(totalInvest/profit):'--';
+  const el=id=>document.getElementById(id);
+  if(el('budgetRent'))el('budgetRent').textContent=f(rentYear);
+  if(el('budgetReno'))el('budgetReno').textContent=f(t.renovation+t.eng);
+  if(el('budgetEquip'))el('budgetEquip').textContent=f(t.equip);
+  if(el('budgetStaff'))el('budgetStaff').textContent=f(staffQ);
+  if(el('budgetDocs'))el('budgetDocs').textContent=f(t.docs);
+  if(el('budgetMkt'))el('budgetMkt').textContent=f(mkt);
+  if(el('budgetGrand'))el('budgetGrand').textContent=f(totalInvest);
+  if(el('budgetTotal'))el('budgetTotal').textContent=totalInvest.toLocaleString('ru');
+  if(el('budgetMonthly'))el('budgetMonthly').textContent=t.expenses.toLocaleString('ru');
+  if(el('budgetPayback'))el('budgetPayback').textContent=payback;
+}
 function getVal2(costKey){
   const el=document.querySelector('[data-cost="'+costKey+'"]');
   return parseInt(el?.value)||0;
@@ -7446,7 +7522,7 @@ function getVal2(costKey){
 let _recalcTimer;
 function recalc(){
   clearTimeout(_recalcTimer);
-  _recalcTimer=setTimeout(_recalcNow,50);
+  _recalcTimer=setTimeout(()=>{_recalcNow();saveLoadParams()},50);
 }
 function _recalcNow(){
   const t=calcTotals();
@@ -7465,6 +7541,7 @@ function _recalcNow(){
   if(cur==='s6')updateFormulaDisplay();
   updateTabCosts(t);
   updateAchievements();
+  updateBudgetSummary(t);
 }
 function updateTabCosts(t){
   // Tab 1: Помещение — аренда + депозит
@@ -7561,7 +7638,7 @@ function updateOverviewStats(){
   const s4prog=staffPicked>0?Math.min(100,Math.round(staffPicked/5*100)):0;
   updateStage(stages[3],s4prog,staffPicked+' сотр.');
 
-  // S5: Перечень услуг
+  // S5: Услуги оказываемые населению
   const svcPicked=Object.keys(DB.pickedServices||{}).length;
   const s5prog=svcPicked>0?Math.min(100,Math.round(svcPicked/10*100)):0;
   updateStage(stages[4],s5prog,svcPicked+' услуг');
@@ -8051,7 +8128,7 @@ function exportPDF(){
   } else { addText('Персонал не выбран'); }
 
   // ══════ УСЛУГИ ══════
-  addSectionTitle('Перечень услуг','🦷');
+  addSectionTitle('Услуги оказываемые населению','🦷');
   const pickedSvc=Object.entries(DB.pickedServices||{});
   if(pickedSvc.length){
     setFont(8,'bold',GRAY);
