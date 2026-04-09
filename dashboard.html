@@ -1556,6 +1556,16 @@ Apple</button>
 <option value="HU">🇭🇺 Magyarország</option>
 <option value="RO">🇷🇴 România</option>
 <option value="BG">🇧🇬 България</option>
+<option value="HR">🇭🇷 Hrvatska</option>
+<option value="SI">🇸🇮 Slovenija</option>
+<option value="SK">🇸🇰 Slovensko</option>
+<option value="LU">🇱🇺 Luxembourg</option>
+<option value="EE">🇪🇪 Eesti</option>
+<option value="LV">🇱🇻 Latvija</option>
+<option value="LT">🇱🇹 Lietuva</option>
+<option value="CY">🇨🇾 Κύπρος</option>
+<option value="MT">🇲🇹 Malta</option>
+<option value="GR">🇬🇷 Ελλάδα</option>
 </select><span id="docCountryInfo" style="font-size:10px;color:var(--tx3)"></span><button class="btn sm pr" onclick="addCustomDoc()">+ Свой документ</button></div></div>
 <div id="docCatalogCards"></div>
 </div>
@@ -3679,6 +3689,8 @@ async function registerUser(){
   if(!pass){err.textContent='Введите пароль';return}
   if(pass.length<8){err.textContent='Пароль минимум 8 символов';return}
   if(pass!==pass2){err.textContent='Пароли не совпадают';return}
+  const agreeBox=document.getElementById('regAgree');
+  if(agreeBox&&!agreeBox.checked){err.textContent='Примите условия использования';return}
   if(!sb){err.textContent='Supabase не загружен';return}
   if(!rateLimit('register',3,600000)){err.textContent='Слишком много попыток. Подождите 10 минут.';return}
   const btn=document.getElementById('regBtn');
@@ -3999,6 +4011,8 @@ function enterApp(){
 
 async function logout(){
   logAction('logout','auth');
+  // Sign out from Supabase to invalidate server session
+  if(sb)try{await sb.auth.signOut()}catch(e){console.error('signOut:',e)}
   currentUser=null;currentRole=null;
   // Clear in-memory data to prevent bleed between accounts
   PICKED_KEYS.forEach(k=>{DB[k]={}});
@@ -4008,6 +4022,7 @@ async function logout(){
   window._currentConceptId=null;window._currentConceptName=null;
   localStorage.removeItem('svita_role');
   localStorage.removeItem('svita_session');
+  localStorage.removeItem('svita_chat_session_id');
   document.getElementById('loginScreen').classList.remove('hidden');
   document.getElementById('appContainer').style.display='none';
   showLogin();
@@ -4099,6 +4114,31 @@ document.addEventListener('click',function(e){
 // Auto-restore session from localStorage — with server re-validation
 (async function restoreSession(){
   try{
+    // Check Supabase auth state first (handles OAuth redirect + existing session)
+    if(sb){
+      try{
+        const{data:{session}}=await sb.auth.getSession();
+        if(session?.user&&!localStorage.getItem('svita_session')){
+          // OAuth redirect landed — Supabase has session but app doesn't know yet
+          const su=session.user;
+          const email=su.email;
+          const name=su.user_metadata?.name||su.user_metadata?.full_name||email.split('@')[0];
+          // Check profile in DB
+          const{data:prof}=await sb.from('profiles').select('id,email,name,role').eq('email',email).single();
+          const isAdmin=prof?.role==='superadmin'||prof?.role==='admin';
+          currentUser={email,name:prof?.name||name,isAdmin,emailConfirmed:true,id:prof?.id||su.id};
+          localStorage.setItem('svita_session',JSON.stringify(currentUser));
+          // Clean OAuth hash from URL
+          if(window.location.hash.includes('access_token'))history.replaceState(null,'',location.pathname);
+          if(!prof){
+            // New OAuth user — create profile
+            await sb.from('profiles').upsert({id:su.id,email,name,role:'owner'},{onConflict:'email'});
+          }
+          setTimeout(()=>{proceedToRoleSelect()},50);
+          return;
+        }
+      }catch(e){/* Supabase check failed — fall through to localStorage */}
+    }
     const saved=localStorage.getItem('svita_session');
     if(!saved)return;
     const u=JSON.parse(saved);
@@ -4279,16 +4319,16 @@ async function renderAccount(){
   document.getElementById('acc_city').value=u.city||'';
   // Auth method
   const am=document.getElementById('accAuthMethod');
-  if(am){
-    const{data:{session}}=await sb.auth.getSession();
+  if(am&&sb){
+    try{const{data:{session}}=await sb.auth.getSession();
     const provider=session?.user?.app_metadata?.provider||'email';
-    am.textContent=provider==='email'?'Email + пароль':provider.charAt(0).toUpperCase()+provider.slice(1)+' (OAuth)';
+    am.textContent=provider==='email'?'Email + пароль':provider.charAt(0).toUpperCase()+provider.slice(1)+' (OAuth)';}catch(e){am.textContent='—'}
   }
   // Last login
   const ll=document.getElementById('accLastLogin');
-  if(ll){
-    const{data:prof}=await sb.from('profiles').select('last_login').eq('email',u.email).single();
-    ll.textContent=prof?.last_login?new Date(prof.last_login).toLocaleString('ru'):'—';
+  if(ll&&sb){
+    try{const{data:prof}=await sb.from('profiles').select('last_login').eq('email',u.email).single();
+    ll.textContent=prof?.last_login?new Date(prof.last_login).toLocaleString('ru'):'—';}catch(e){ll.textContent='—'}
   }
   // Load subscription
   if(sb&&u.id){
@@ -5293,7 +5333,7 @@ async function loadDocsForCountry(countryCode){
     if(sel)sel.value=countryCode;
     if(info)info.textContent=ADMIN_DOC_ITEMS.length+' документов · '+(data.lang||countryCode);
     renderDocCatalog();renderDocs();
-    _s('sbDocs',ADMIN_DOC_ITEMS.length);
+    {const _el=document.getElementById('sbDocs');if(_el)_el.textContent=ADMIN_DOC_ITEMS.length;}
   }catch(e){
     if(countryCode!=='PL'){
       if(info)info.textContent='Нет данных для '+countryCode+', загружаю PL';
@@ -5305,7 +5345,7 @@ async function loadDocsForCountry(countryCode){
     if(sel)sel.value='PL';
     if(info)info.textContent=ADMIN_DOC_ITEMS.length+' документов · pl';
     renderDocCatalog();renderDocs();
-    _s('sbDocs',ADMIN_DOC_ITEMS.length);
+    {const _el=document.getElementById('sbDocs');if(_el)_el.textContent=ADMIN_DOC_ITEMS.length;}
   }
 }
 // Load on startup and when country changes
@@ -5514,7 +5554,7 @@ function showDocNote(el,idx){
   const tip=document.createElement('div');
   tip.id='docNoteTip';
   tip.style.cssText='position:fixed;z-index:9999;max-width:360px;padding:12px 14px;background:var(--sf);border:1px solid var(--bd);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.15);font-size:11px;line-height:1.6;color:var(--tx);pointer-events:none';
-  tip.innerHTML=d.note.replace(/\n/g,'<br>').replace(/^(Для чего|Где|Сроки|Важно|Содержание|Включает|Документы|Требования|Норма|Тесты|Состав|Минимум|Покрывает|Взнос|Проверяется):/gm,'<b style="color:var(--ac2)">$1:</b>');
+  tip.innerHTML=esc(d.note).replace(/\n/g,'<br>').replace(/^(Для чего|Где|Сроки|Важно|Содержание|Включает|Документы|Требования|Норма|Тесты|Состав|Минимум|Покрывает|Взнос|Проверяется):/gm,'<b style="color:var(--ac2)">$1:</b>');
   document.body.appendChild(tip);
   const r=el.getBoundingClientRect();
   tip.style.left=Math.min(r.left,window.innerWidth-380)+'px';
@@ -7237,7 +7277,8 @@ function editStaff(id){
 
 function deleteStaff(id){
   DB.employees=DB.employees.filter(e=>e.id!=id);
-  renderStaff();buildSidebar();recalc();
+  delete DB.pickedStaff[id];
+  savePicked();renderStaff();buildSidebar();recalc();
 }
 
 // DB catalog of all services (sidebar БД Процедур)
