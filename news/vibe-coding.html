@@ -1005,5 +1005,6 @@ headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIs
 body:JSON.stringify({p_page:location.pathname,p_ua:navigator.userAgent,p_ref:document.referrer||null})
 }).then(r=>r.json()).then(c=>{document.getElementById('viewCount').textContent='\uD83D\uDC41 '+c}).catch(()=>{});
 </script>
+<script src="/js/news-edit.js"></script>
 </body>
 </html>
