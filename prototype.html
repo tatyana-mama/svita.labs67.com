@@ -433,7 +433,7 @@ function switchStage(n) {
   document.getElementById('sidebar'+n).style.display='';
   const ai = document.getElementById('aiSidebar');
   const main = document.getElementById('mainContent');
-  const showAi = n === 2 || n === 3;
+  const showAi = true;
   ai.style.display = showAi ? '' : 'none';
   main.classList.toggle('no-ai', !showAi);
 }
