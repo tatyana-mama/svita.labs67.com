@@ -4477,6 +4477,62 @@ window._conceptAutoSaveId=setInterval(()=>{if(window._currentConceptId&&document
 
 function showUpgradeModal(){
   document.getElementById('topUser').classList.remove('open');
+  const r=currentRole;
+  const isOwner=r==='admin'||r==='owner';
+  const isContr=r==='contractor';
+  const isSupp=r==='supplier';
+  const cp=userSubscription.plan;
+  const mk=(p)=>cp===p?'✓ Текущий':p==='trial'?'Выбрать':p==='pro'?'Перейти на Pro':'Перейти на Unlimited';
+  const ck='<span style="color:var(--gn);font-weight:700">✓</span>';
+  const no='<span style="color:var(--tx3)">—</span>';
+
+  let feat='';
+  if(isOwner){
+    feat=`<div style="font-size:11px;font-weight:700;color:var(--tx2);margin:12px 0 6px;text-transform:uppercase;letter-spacing:.5px">Для владельца бизнеса</div>
+<table style="width:100%;font-size:10px;border-collapse:collapse;color:var(--tx2)">
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px;font-weight:600">Функция</td><td style="text-align:center;font-weight:600;color:var(--tx3)">Trial</td><td style="text-align:center;font-weight:600;color:var(--ac2)">Pro</td><td style="text-align:center;font-weight:600;color:#c9a96e">Unlimited</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Концепции</td><td style="text-align:center">1</td><td style="text-align:center">5</td><td style="text-align:center">∞</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Этапы конструктора (7 табов)</td><td style="text-align:center">${ck}</td><td style="text-align:center">${ck}</td><td style="text-align:center">${ck}</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Базы данных (помещения, оборудование, персонал, услуги, документы)</td><td style="text-align:center">${ck}</td><td style="text-align:center">${ck}</td><td style="text-align:center">${ck}</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Бюджет и рентабельность</td><td style="text-align:center">${ck}</td><td style="text-align:center">${ck}</td><td style="text-align:center">${ck}</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">AI-чат (анализ концепции)</td><td style="text-align:center">5 / день</td><td style="text-align:center">50 / день</td><td style="text-align:center">∞</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">AI-генерация концепции</td><td style="text-align:center">${no}</td><td style="text-align:center">${ck}</td><td style="text-align:center">${ck}</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Экспорт PDF / JSON</td><td style="text-align:center">${no}</td><td style="text-align:center">${ck}</td><td style="text-align:center">${ck}</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Доступ к подрядчикам</td><td style="text-align:center">${no}</td><td style="text-align:center">${no}</td><td style="text-align:center">${ck}</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Доступ к поставщикам</td><td style="text-align:center">${no}</td><td style="text-align:center">${no}</td><td style="text-align:center">${ck}</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Коммерческие предложения (КП)</td><td style="text-align:center">${no}</td><td style="text-align:center">${no}</td><td style="text-align:center">${ck}</td></tr>
+<tr><td style="padding:5px 4px">Приоритетная поддержка</td><td style="text-align:center">${no}</td><td style="text-align:center">${no}</td><td style="text-align:center">${ck}</td></tr>
+</table>`;
+  } else if(isContr){
+    feat=`<div style="font-size:11px;font-weight:700;color:var(--tx2);margin:12px 0 6px;text-transform:uppercase;letter-spacing:.5px">Для подрядчика</div>
+<table style="width:100%;font-size:10px;border-collapse:collapse;color:var(--tx2)">
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px;font-weight:600">Функция</td><td style="text-align:center;font-weight:600;color:var(--tx3)">Trial</td><td style="text-align:center;font-weight:600;color:var(--ac2)">Pro</td><td style="text-align:center;font-weight:600;color:#c9a96e">Unlimited</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Просмотр доступных работ</td><td style="text-align:center">${ck}</td><td style="text-align:center">${ck}</td><td style="text-align:center">${ck}</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Отклики на заявки</td><td style="text-align:center">3 / мес</td><td style="text-align:center">20 / мес</td><td style="text-align:center">∞</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Профиль с портфолио</td><td style="text-align:center">базовый</td><td style="text-align:center">${ck}</td><td style="text-align:center">${ck}</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Прямые контакты владельцев</td><td style="text-align:center">${no}</td><td style="text-align:center">${ck}</td><td style="text-align:center">${ck}</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Формирование КП</td><td style="text-align:center">${no}</td><td style="text-align:center">${ck}</td><td style="text-align:center">${ck}</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Рейтинг и отзывы</td><td style="text-align:center">${no}</td><td style="text-align:center">${ck}</td><td style="text-align:center">${ck}</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Приоритет в выдаче</td><td style="text-align:center">${no}</td><td style="text-align:center">${no}</td><td style="text-align:center">${ck}</td></tr>
+<tr><td style="padding:5px 4px">Верификация (бейдж)</td><td style="text-align:center">${no}</td><td style="text-align:center">${no}</td><td style="text-align:center">${ck}</td></tr>
+</table>`;
+  } else if(isSupp){
+    feat=`<div style="font-size:11px;font-weight:700;color:var(--tx2);margin:12px 0 6px;text-transform:uppercase;letter-spacing:.5px">Для поставщика</div>
+<table style="width:100%;font-size:10px;border-collapse:collapse;color:var(--tx2)">
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px;font-weight:600">Функция</td><td style="text-align:center;font-weight:600;color:var(--tx3)">Trial</td><td style="text-align:center;font-weight:600;color:var(--ac2)">Pro</td><td style="text-align:center;font-weight:600;color:#c9a96e">Unlimited</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Позиций в каталоге</td><td style="text-align:center">10</td><td style="text-align:center">100</td><td style="text-align:center">∞</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Карточки товаров (фото, ТХ)</td><td style="text-align:center">базовые</td><td style="text-align:center">${ck}</td><td style="text-align:center">${ck}</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Видимость для владельцев</td><td style="text-align:center">${ck}</td><td style="text-align:center">${ck}</td><td style="text-align:center">${ck}</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Прямые контакты владельцев</td><td style="text-align:center">${no}</td><td style="text-align:center">${ck}</td><td style="text-align:center">${ck}</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Аналитика просмотров</td><td style="text-align:center">${no}</td><td style="text-align:center">${ck}</td><td style="text-align:center">${ck}</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Промо-баннер в каталоге</td><td style="text-align:center">${no}</td><td style="text-align:center">${no}</td><td style="text-align:center">${ck}</td></tr>
+<tr style="border-bottom:1px solid var(--bd)"><td style="padding:5px 4px">Приоритет в выдаче</td><td style="text-align:center">${no}</td><td style="text-align:center">${no}</td><td style="text-align:center">${ck}</td></tr>
+<tr><td style="padding:5px 4px">Верификация (бейдж)</td><td style="text-align:center">${no}</td><td style="text-align:center">${no}</td><td style="text-align:center">${ck}</td></tr>
+</table>`;
+  } else {
+    feat=`<div style="font-size:10px;color:var(--tx3);margin-top:8px">Тарифные планы зависят от роли. Выберите роль для просмотра функций.</div>`;
+  }
+
   const html=`<div style="text-align:center;padding:8px 0 16px">
 <div style="font-size:24px;margin-bottom:8px">&#9889;</div>
 <div style="font-size:14px;font-weight:700;color:var(--tx);margin-bottom:4px">Тарифные планы SVITA</div>
@@ -4485,22 +4541,23 @@ function showUpgradeModal(){
 <div style="padding:12px;border:1px solid var(--bd);border-radius:10px;background:var(--sf2);display:flex;flex-direction:column">
 <div style="font-size:11px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">Trial</div>
 <div style="font-size:18px;font-weight:800;color:var(--tx);margin:4px 0">Бесплатно</div>
-<div style="font-size:10px;color:var(--tx3);line-height:1.5;flex:1">1 концепция<br>Базовые функции<br>Без подрядчиков</div>
-<button onclick="selectPlan('trial')" style="margin-top:10px;width:100%;padding:8px;border-radius:8px;border:1px solid var(--bd);background:var(--sf);color:var(--tx2);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--f);transition:all .15s" onmouseover="this.style.background='var(--sf2)'" onmouseout="this.style.background='var(--sf)'">${userSubscription.plan==='trial'?'✓ Текущий':'Выбрать'}</button>
+<div style="font-size:10px;color:var(--tx3);line-height:1.5;flex:1">${isOwner?'1 концепция<br>7 этапов<br>AI-чат 5/день':isContr?'3 отклика/мес<br>Базовый профиль':isSupp?'10 позиций<br>Базовые карточки':'Базовые функции'}</div>
+<button onclick="selectPlan('trial')" style="margin-top:10px;width:100%;padding:8px;border-radius:8px;border:1px solid var(--bd);background:var(--sf);color:var(--tx2);font-size:11px;font-weight:600;cursor:pointer;font-family:var(--f);transition:all .15s" onmouseover="this.style.background='var(--sf2)'" onmouseout="this.style.background='var(--sf)'">${mk('trial')}</button>
 </div>
 <div style="padding:12px;border:2px solid var(--ac);border-radius:10px;background:var(--acbg);display:flex;flex-direction:column">
 <div style="font-size:11px;font-weight:700;color:var(--ac2);text-transform:uppercase;letter-spacing:.5px">Pro</div>
-<div style="font-size:18px;font-weight:800;color:var(--tx);margin:4px 0">99 PLN<span style="font-size:10px;color:var(--tx3)">/мес</span></div>
-<div style="font-size:10px;color:var(--tx3);line-height:1.5;flex:1">5 концепций<br>Полный прайс-лист<br>Без подрядчиков</div>
-<button onclick="selectPlan('pro')" style="margin-top:10px;width:100%;padding:8px;border-radius:8px;border:none;background:var(--ac);color:#fff;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--f);transition:all .15s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='none'">${userSubscription.plan==='pro'?'✓ Текущий':'Перейти на Pro'}</button>
+<div style="font-size:18px;font-weight:800;color:var(--tx);margin:4px 0">${isOwner?'99':isContr?'79':isSupp?'69':99} <span style="font-size:11px;font-weight:600;color:var(--tx3)">EUR/мес</span></div>
+<div style="font-size:10px;color:var(--tx3);line-height:1.5;flex:1">${isOwner?'5 концепций<br>AI 50/день<br>Экспорт PDF/JSON':isContr?'20 откликов/мес<br>КП + портфолио<br>Контакты владельцев':isSupp?'100 позиций<br>Полные карточки<br>Аналитика':'Расширенные функции'}</div>
+<button onclick="selectPlan('pro')" style="margin-top:10px;width:100%;padding:8px;border-radius:8px;border:none;background:var(--ac);color:#fff;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--f);transition:all .15s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='none'">${mk('pro')}</button>
 </div>
 <div style="padding:12px;border:2px solid #c9a96e;border-radius:10px;background:rgba(201,169,110,.08);display:flex;flex-direction:column">
 <div style="font-size:11px;font-weight:700;color:#c9a96e;text-transform:uppercase;letter-spacing:.5px">Unlimited</div>
-<div style="font-size:18px;font-weight:800;color:var(--tx);margin:4px 0">299 PLN<span style="font-size:10px;color:var(--tx3)">/мес</span></div>
-<div style="font-size:10px;color:var(--tx3);line-height:1.5;flex:1">∞ концепций<br>Все функции<br>Подрядчики и КП</div>
-<button onclick="selectPlan('unlimited')" style="margin-top:10px;width:100%;padding:8px;border-radius:8px;border:none;background:linear-gradient(135deg,#c9a96e,#e8c97a);color:#000;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--f);transition:all .15s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='none'">${userSubscription.plan==='unlimited'?'✓ Текущий':'Перейти на Unlimited'}</button>
+<div style="font-size:18px;font-weight:800;color:var(--tx);margin:4px 0">${isOwner?'249':isContr?'149':isSupp?'129':249} <span style="font-size:11px;font-weight:600;color:var(--tx3)">EUR/мес</span></div>
+<div style="font-size:10px;color:var(--tx3);line-height:1.5;flex:1">${isOwner?'∞ концепций<br>∞ AI-чат<br>Подрядчики + КП':isContr?'∞ откликов<br>Приоритет + бейдж<br>Все функции':isSupp?'∞ позиций<br>Промо-баннер + бейдж<br>Приоритет':'Все функции'}</div>
+<button onclick="selectPlan('unlimited')" style="margin-top:10px;width:100%;padding:8px;border-radius:8px;border:none;background:linear-gradient(135deg,#c9a96e,#e8c97a);color:#000;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--f);transition:all .15s" onmouseover="this.style.filter='brightness(1.1)'" onmouseout="this.style.filter='none'">${mk('unlimited')}</button>
 </div>
 </div>
+${feat}
 </div>`;
   document.getElementById('modalTitle').textContent='Тарифы';
   document.getElementById('modalFields').innerHTML=html;
