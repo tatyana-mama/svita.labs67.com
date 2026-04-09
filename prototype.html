@@ -462,31 +462,67 @@ const sb = supabase.createClient(SB_URL, SB_KEY);
 
 // ══════ STATE ══════
 const state = {
-  premises: [], equipment: [], services: [],
+  premises: null, equipment: null, services: null,
   premisesCat: [], equipmentCat: [], servicesCat: [],
-  selected: { premises: [], equipment: [], services: [] },
+  selected: JSON.parse(localStorage.getItem('svita_selected') || '{"premises":[],"equipment":[],"services":[]}'),
   currentStep: null, currentCat: 'all'
 };
 
-// ══════ LOAD DATA ══════
-async function loadAll() {
-  const [p, e, s, ec, sc] = await Promise.all([
-    sb.from('premises').select('id,name,district,area_m2,rent_pln,rooms,score,status,has_water,has_sewage,has_ventilation,sanepid_ready').eq('status','active').order('score',{ascending:false}),
-    sb.from('equipment').select('id,name,brand,price_pln,category,category_id,supplier_name,status').not('price_pln','is',null).order('price_pln',{ascending:true}),
-    sb.from('services').select('id,name,category_id,price_min,price_max,currency,price_unit').order('name'),
-    sb.from('equipment_categories').select('id,slug,name,icon,sort_order').order('sort_order'),
-    sb.from('service_categories').select('id,slug,name,icon,sort_order').order('sort_order')
-  ]);
-  state.premises = p.data || [];
-  state.equipment = e.data || [];
-  state.services = s.data || [];
-  state.equipmentCat = ec.data || [];
-  state.servicesCat = sc.data || [];
+function saveSelection() {
+  localStorage.setItem('svita_selected', JSON.stringify(state.selected));
+}
 
-  document.getElementById('cnt-premises').textContent = state.premises.length;
-  document.getElementById('cnt-equipment').textContent = state.equipment.length;
-  document.getElementById('cnt-services').textContent = state.services.length;
-  updateTotals();
+// ══════ LOAD COUNTS (lightweight, on init) ══════
+async function loadCounts() {
+  const [p, e, s] = await Promise.all([
+    sb.from('premises').select('id', {count:'exact',head:true}).eq('status','active'),
+    sb.from('equipment').select('id', {count:'exact',head:true}).not('price_pln','is',null),
+    sb.from('services').select('id', {count:'exact',head:true})
+  ]);
+  document.getElementById('cnt-premises').textContent = p.count || 0;
+  document.getElementById('cnt-equipment').textContent = e.count || 0;
+  document.getElementById('cnt-services').textContent = s.count || 0;
+  // Restore selected items costs
+  await restoreSelectionCosts();
+}
+
+// ══════ LOAD STEP DATA (lazy, on click) ══════
+async function loadStep(step) {
+  if (state[step]) return; // already loaded
+  const list = document.getElementById('dpList');
+  list.innerHTML = '<div class="loading">Загрузка...</div>';
+
+  if (step === 'premises') {
+    const [d, c] = await Promise.all([
+      sb.from('premises').select('id,name,district,area_m2,rent_pln,rooms,score,has_water,has_sewage,has_ventilation,sanepid_ready').eq('status','active').order('score',{ascending:false}),
+      Promise.resolve({data:[]})
+    ]);
+    state.premises = d.data || [];
+  } else if (step === 'equipment') {
+    const [d, c] = await Promise.all([
+      sb.from('equipment').select('id,name,brand,price_pln,category,category_id,supplier_name').not('price_pln','is',null).order('price_pln',{ascending:true}),
+      sb.from('equipment_categories').select('id,slug,name,icon,sort_order').order('sort_order')
+    ]);
+    state.equipment = d.data || [];
+    state.equipmentCat = c.data || [];
+  } else if (step === 'services') {
+    const [d, c] = await Promise.all([
+      sb.from('services').select('id,name,category_id,price_min,price_max,currency,price_unit').order('name'),
+      sb.from('service_categories').select('id,slug,name,icon,sort_order').order('sort_order')
+    ]);
+    state.services = d.data || [];
+    state.servicesCat = c.data || [];
+  }
+}
+
+// ══════ RESTORE COSTS for previously selected items ══════
+async function restoreSelectionCosts() {
+  const sel = state.selected;
+  const tasks = [];
+  if (sel.premises.length) tasks.push(sb.from('premises').select('id,rent_pln').in('id', sel.premises).then(r => { state.premises = r.data || []; }));
+  if (sel.equipment.length) tasks.push(sb.from('equipment').select('id,price_pln').in('id', sel.equipment).then(r => { state.equipment = r.data || []; }));
+  if (sel.services.length) tasks.push(sb.from('services').select('id,price_min').in('id', sel.services).then(r => { state.services = r.data || []; }));
+  if (tasks.length) { await Promise.all(tasks); updateTotals(); }
 }
 
 // ══════ FORMATTING ══════
@@ -497,9 +533,12 @@ function updateTotals() {
   const sp = state.selected.premises;
   const se = state.selected.equipment;
   const ss = state.selected.services;
-  const costP = sp.reduce((s,id) => { const r = state.premises.find(x=>x.id===id); return s + (r ? Number(r.rent_pln||0) : 0); }, 0);
-  const costE = se.reduce((s,id) => { const r = state.equipment.find(x=>x.id===id); return s + (r ? Number(r.price_pln||0) : 0); }, 0);
-  const costS = ss.reduce((s,id) => { const r = state.services.find(x=>x.id===id); return s + (r ? Number(r.price_min||0) : 0); }, 0);
+  const pData = state.premises || [];
+  const eData = state.equipment || [];
+  const sData = state.services || [];
+  const costP = sp.reduce((s,id) => { const r = pData.find(x=>x.id===id); return s + (r ? Number(r.rent_pln||0) : 0); }, 0);
+  const costE = se.reduce((s,id) => { const r = eData.find(x=>x.id===id); return s + (r ? Number(r.price_pln||0) : 0); }, 0);
+  const costS = ss.reduce((s,id) => { const r = sData.find(x=>x.id===id); return s + (r ? Number(r.price_min||0) : 0); }, 0);
   document.getElementById('cost-premises').textContent = fmt(costP) + ' PLN/мес';
   document.getElementById('cost-equipment').textContent = fmt(costE) + ' PLN';
   document.getElementById('cost-services').textContent = fmt(costS) + ' PLN';
@@ -532,13 +571,19 @@ function updateTotals() {
 }
 
 // ══════ OPEN STEP ══════
-function openStep(step) {
+async function openStep(step) {
   state.currentStep = step;
   state.currentCat = 'all';
   const panel = document.getElementById('detailPanel');
   const titles = { premises: 'Помещения', equipment: 'Оснащение', services: 'Модернизация' };
   document.getElementById('dpTitle').textContent = titles[step];
   document.getElementById('dpSearch').value = '';
+
+  panel.classList.add('open');
+  panel.scrollIntoView({behavior:'smooth', block:'start'});
+
+  // Lazy load
+  await loadStep(step);
 
   // Build tabs
   const tabs = document.getElementById('dpTabs');
@@ -550,8 +595,6 @@ function openStep(step) {
   });
 
   renderItems();
-  panel.classList.add('open');
-  panel.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 function closeDetail() {
@@ -620,6 +663,7 @@ function toggleItem(step, id) {
   const sel = state.selected[step];
   const idx = sel.indexOf(id);
   if (idx >= 0) sel.splice(idx, 1); else sel.push(id);
+  saveSelection();
   renderItems();
   updateTotals();
 }
@@ -682,7 +726,7 @@ function aiSend() {
 }
 
 // ══════ INIT ══════
-loadAll();
+loadCounts();
 </script>
 </body>
 </html>
