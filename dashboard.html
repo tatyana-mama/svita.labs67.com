@@ -6833,8 +6833,12 @@ function renderServices(){
     html+=`<div class="c"><div class="ch"><h3>${esc(cat)}</h3><span style="font-size:10px;color:${pickedCnt?'var(--gn)':'var(--tx3)'};font-weight:${pickedCnt?'600':'400'}">${pickedCnt} / ${items.length} добавлено</span></div><div class="cb">`;
     items.forEach(r=>{
       const isPicked=!!picked[r.id];
+      const p=picked[r.id]||{};
+      const zn=(DB.zones||[]).find(z=>z.id===p.zone);
+      const zoneBadge=zn?`<span style="font-size:9px;padding:1px 5px;border-radius:4px;background:${zn.color};color:#fff;flex-shrink:0">${zn.icon} ${zn.name}</span>`:'';
       html+=`<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--bd);${isPicked?'background:var(--acbg);margin:0 -12px;padding-left:12px;padding-right:12px;border-radius:8px':''}">
 <div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:${isPicked?'700':'500'}">${esc(r.name)}</div><div style="font-size:10px;color:var(--tx3)">${esc(r.time||'')}</div></div>
+${zoneBadge}
 <div style="font-size:12px;font-weight:700;color:var(--ac2);flex-shrink:0;margin-right:6px">${(r.price||0).toLocaleString('ru')} PLN</div>
 <button class="btn sm ${isPicked?'gn':'pr'}" style="flex-shrink:0;min-width:90px;font-size:10px" onclick="toggleSvcPick('${r.id}')">${isPicked?'✓ Добавлено':'+ В перечень'}</button>
 </div>`;
@@ -6892,10 +6896,14 @@ function renderSelectedServices(){
     itms.forEach(r=>{
       const p=picked[r.id]||{};
       const roomId=p.room||'';
+      const zoneId=p.zone||'';
       const qty=p.qty||1;
+      const zones=DB.zones||[];
+      const zoneOpts=zones.map(z=>`<option value="${z.id}" ${z.id===zoneId?'selected':''}>${z.icon} ${z.name}</option>`).join('');
       const roomOpts=getPickedRoomsList().map(rm=>`<option value="${rm.id}" ${rm.id==roomId?'selected':''}>${rm.name}</option>`).join('');
       html+=`<div class="ci cost-row" style="flex-wrap:nowrap;padding:8px 0;border-bottom:1px solid var(--bd)">
 <div class="ct" style="flex:1;min-width:0"><div style="font-size:12px;font-weight:600">${esc(r.name)}</div><div class="ct-sub" style="font-size:10px;color:var(--tx3)">${esc(r.time||r.duration?r.duration+'мин':'')}</div></div>
+<select onchange="assignSvcZone('${r.id}',this.value)" style="font-size:10px;padding:3px 6px;border:1px solid var(--bd);border-radius:6px;background:var(--sf);color:var(--tx);max-width:120px;flex-shrink:0"><option value="">— зона</option>${zoneOpts}</select>
 <select onchange="assignSvcRoom('${r.id}',this.value)" style="font-size:10px;padding:3px 6px;border:1px solid var(--bd);border-radius:6px;background:var(--sf);color:var(--tx);max-width:130px;flex-shrink:0"><option value="">— кабинет</option>${roomOpts}</select>
 <div class="sel-qty" style="margin:0 4px"><button onclick="svcSelQty('${r.id}',-1)">−</button><span id="sq_${r.id}">${qty}</span><button onclick="svcSelQty('${r.id}',1)">+</button></div>
 <div style="display:flex;align-items:center;gap:2px;min-width:90px;justify-content:flex-end"><input type="number" value="${r.price||0}" onchange="updateSvcPrice(${r.id},this.value)" style="width:60px;font-size:11px;font-weight:700;color:var(--ac2);text-align:right;border:1px solid var(--bd);border-radius:4px;padding:2px 4px;background:var(--sf)"><span style="font-size:10px;color:var(--tx3)">PLN</span></div>
@@ -6931,6 +6939,11 @@ function toggleSvcPick(id){
 function removeSvcPick(id){
   if(DB.pickedServices)delete DB.pickedServices[id];
   savePicked();renderServices();renderSelectedServices();recalc();
+}
+function assignSvcZone(id,zoneId){
+  if(!DB.pickedServices||!DB.pickedServices[id])return;
+  DB.pickedServices[id].zone=zoneId;
+  savePicked();
 }
 function assignSvcRoom(id,roomId){
   if(!DB.pickedServices||!DB.pickedServices[id])return;
