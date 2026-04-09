@@ -1,0 +1,214 @@
+{
+  "country": "IE",
+  "lang": "en",
+  "currency": "EUR",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "Ltd (LTD) — Private Company Limited by Shares",
+      "desc": "Мин. капитал: No statutory minimum (€1 typical). 5–10 working days (online)",
+      "price": 50,
+      "required": true,
+      "note": "Ответственность: Limited to share capital\nСроки: 5–10 working days (online)\nСтоимость: €50 CRO filing fee (online); €100 paper filing\nШаги регистрации:\nChoose and reserve company name with CRO (€25, optional)\nPrepare Constitution (single-document format under Companies Act 2014)\nFile Form A1 via CORE online portal with CRO\nAppoint at least 1 director (2 if no company secretary bond) and 1 secretary\nProvide registered office address in Ireland\nRegister for Corporation Tax, VAT, and employer PAYE/PRSI with Revenue\nObtain a Tax Clearance Certificate"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "DAC — Designated Activity Company",
+      "desc": "Мин. капитал: No statutory minimum. 5–10 working days",
+      "price": 50,
+      "required": true,
+      "note": "Ответственность: Limited to share capital\nСроки: 5–10 working days\nСтоимость: €50 CRO filing fee\nШаги регистрации:\nPrepare Memorandum and Articles of Association (two-document constitution)\nObjects clause defines permitted activities\nFile Form A1 with CRO\nAppoint minimum 2 directors and 1 company secretary\nRegister with Revenue for taxes"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "N/A — Sole Trader",
+      "desc": "Мин. капитал: None. 1–5 working days",
+      "price": 20,
+      "required": true,
+      "note": "Ответственность: Unlimited personal liability\nСроки: 1–5 working days\nСтоимость: €20 business name registration; Revenue registration free\nШаги регистрации:\nRegister business name with CRO (if trading under a name other than own)\nRegister with Revenue for Income Tax and VAT (Form TR1)\nObtain a PPS number if not already held\nRegister for PRSI (self-employed Class S contributions)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Planning Permission (Change of Use)",
+      "desc": "[Розничная торговля] Local Authority Planning Department",
+      "price": 65,
+      "required": true,
+      "note": "Выдаёт: Local Authority Planning Department\nТребования:\n• Application required for material change of use\n• Compliance with local development plan zoning\n• Public notice requirements (site notice + newspaper)\nСрок действия: 8 weeks (standard decision)\nСтоимость: €65–€600 depending on development type"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Fire Safety Certificate",
+      "desc": "[Розничная торговля] Local Authority Building Control",
+      "price": 125,
+      "required": true,
+      "note": "Выдаёт: Local Authority Building Control\nТребования:\n• Required for new buildings, material alterations, change of use\n• Fire safety assessment and compliance report\n• Building Control Amendment Regulations 2014 compliance\nСрок действия: One-off (valid for building)\nСтоимость: €125 per application"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Disability Access Certificate",
+      "desc": "[Розничная торговля] Local Authority Building Control",
+      "price": 125,
+      "required": true,
+      "note": "Выдаёт: Local Authority Building Control\nТребования:\n• Required for new non-residential buildings and certain alterations\n• Compliance with Part M of Building Regulations\n• Access audit and compliance documentation\nСрок действия: One-off\nСтоимость: €125 per application"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Publican's On-Licence (Full Licence)",
+      "desc": "[HoReCa (общепит)] District Court / Revenue Commissioners",
+      "price": 250,
+      "required": true,
+      "note": "Выдаёт: District Court / Revenue Commissioners\nТребования:\n• Application to District Court (annual licensing sessions, usually September)\n• Certificate of suitability of premises from fire officer and planning authority\n• Revenue tax clearance\n• Garda (police) notification — no objections\n• Licence transfer or new licence requires extinguishment of existing licence in most cases\nСрок действия: Annual (1 October – 30 September)\nСтоимость: €250–€3,805 (Revenue excise duty, based on turnover); court costs €500–€2,000; solicitor fees €1,500–€3,000"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Special Restaurant Licence",
+      "desc": "[HoReCa (общепит)] District Court / Revenue Commissioners",
+      "price": 250,
+      "required": true,
+      "note": "Выдаёт: District Court / Revenue Commissioners\nТребования:\n• Premises must be a bona fide restaurant (no bar counter)\n• Alcohol served only with substantial meals\n• Non-alcoholic beverages must be available\n• Court application with supporting documentation\nСрок действия: Annual\nСтоимость: €250+ excise duty + court and legal fees"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Food Business Registration",
+      "desc": "[HoReCa (общепит)] HSE Environmental Health Service",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: HSE Environmental Health Service\nТребования:\n• Notify HSE at least 14 days before opening\n• Comply with EC Regulation 852/2004 (food hygiene)\n• HACCP-based food safety management system\n• Staff food safety training\nСрок действия: Ongoing\nСтоимость: Free"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Fáilte Ireland Registration (Hotels & Guest Houses)",
+      "desc": "[HoReCa (общепит)] Fáilte Ireland",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Fáilte Ireland\nТребования:\n• Mandatory registration for hotels and guest houses\n• Compliance with quality standards and classification criteria\n• Annual inspection\nСрок действия: Annual\nСтоимость: Varies by establishment size"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Registered Electrical Contractor (REC)",
+      "desc": "[Услуги и ремёсла] Commission for Regulation of Utilities (CRU) / Safe Electric",
+      "price": 600,
+      "required": true,
+      "note": "Выдаёт: Commission for Regulation of Utilities (CRU) / Safe Electric\nТребования:\n• Qualified electrician with relevant certification\n• Registered with Safe Electric programme\n• Compliance with National Rules for Electrical Installations (ET 101)\nСрок действия: Annual\nСтоимость: €600–€1,200/year"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Registered Gas Installer (RGI)",
+      "desc": "[Услуги и ремёсла] Commission for Regulation of Utilities (CRU) / Register of Gas Installers of Ireland (RGII)",
+      "price": 400,
+      "required": true,
+      "note": "Выдаёт: Commission for Regulation of Utilities (CRU) / Register of Gas Installers of Ireland (RGII)\nТребования:\n• Appropriate gas installation qualifications\n• Annual assessment and verification\n• Public liability insurance\nСрок действия: Annual\nСтоимость: €400–€900/year"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Construction Industry Registration",
+      "desc": "[Услуги и ремёсла] Construction Industry Register Ireland (CIRI)",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Construction Industry Register Ireland (CIRI)\nТребования:\n• Voluntary but increasingly required for public contracts\n• Demonstration of competence, insurance, and tax compliance\nСрок действия: Annual\nСтоимость: €200–€500"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Industrial Emissions Licence (IEL)",
+      "desc": "[Производство] Environmental Protection Agency (EPA)",
+      "price": 2500,
+      "required": true,
+      "note": "Выдаёт: Environmental Protection Agency (EPA)\nТребования:\n• Required for activities listed in First Schedule of EPA Act\n• Environmental Impact Assessment\n• Best Available Techniques (BAT) compliance\n• Public consultation period\nСрок действия: Reviewed periodically\nСтоимость: €2,500–€25,000+ (application fee varies by activity class)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "CE Marking (EU Conformity)",
+      "desc": "[Производство] EU Notified Bodies / Health and Safety Authority",
+      "price": 1000,
+      "required": true,
+      "note": "Выдаёт: EU Notified Bodies / Health and Safety Authority\nТребования:\n• Mandatory for products sold in EU/EEA markets\n• Conformity assessment procedures per relevant EU Directive\n• Technical documentation and Declaration of Conformity\nСрок действия: Product-specific\nСтоимость: €1,000–€15,000+ depending on product"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "IDA Ireland / Enterprise Ireland Grant Eligibility",
+      "desc": "[Производство] IDA Ireland (foreign) / Enterprise Ireland (indigenous)",
+      "price": 50000,
+      "required": true,
+      "note": "Выдаёт: IDA Ireland (foreign) / Enterprise Ireland (indigenous)\nТребования:\n• Business plan demonstrating export potential and job creation\n• Capital investment and employment commitments\n• High Potential Start-Up (HPSU) programme for qualifying companies\nСрок действия: Project-based\nСтоимость: Free to apply; grants from €50,000 to several million"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Road Haulage Operator Licence",
+      "desc": "[Логистика и склад] Department of Transport",
+      "price": 250,
+      "required": true,
+      "note": "Выдаёт: Department of Transport\nТребования:\n• Professional competence (Transport Manager CPC)\n• Financial standing: €9,000 for first vehicle + €5,000 per additional vehicle\n• Good repute\n• Appropriate operating centre\nСрок действия: 5 years (renewable)\nСтоимость: €250–€500 application fee"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Driver CPC (Certificate of Professional Competence)",
+      "desc": "[Логистика и склад] Road Safety Authority (RSA)",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Road Safety Authority (RSA)\nТребования:\n• Initial CPC qualification for professional drivers\n• 35 hours periodic training every 5 years\n• Driver Qualification Card issued by RSA\nСрок действия: 5 years\nСтоимость: €50 card fee + training costs"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Customs / AEO Authorisation",
+      "desc": "[Логистика и склад] Revenue Commissioners",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Revenue Commissioners\nТребования:\n• EU-wide Authorised Economic Operator status\n• Full customs compliance record\n• Financial solvency and security standards\nСрок действия: Ongoing (subject to reassessment)\nСтоимость: Free to apply"
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 23%\nvat_reduced: 13.5% (building services, certain goods); 9% (hospitality, newspapers, sports facilities); 4.8% (livestock, greyhounds); 0% (most food, children's clothing, oral medicines)\ncorporate_tax: 12.5% (trading income); 25% (passive/non-trading income); 15% minimum effective rate for multinationals with >€750M global revenue (Pillar Two)\nnotes: Ireland's 12.5% trading rate applies to over 99% of businesses (Pillar Two 15% applies only to large multinationals). R&D tax credit increased to 35% from 2025. Employment Investment Incentive (EII) scheme for equity investors. Knowledge Development Box: 6.25% on qualifying IP income. PRSI employer contribution 11.05%. VAT registration threshold: €80,000 (goods), €40,000 (services)."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 23%\nvat_reduced: 9% (restaurant meals, hotel accommodation, catering — extended through 2026 for hospitality from 1 July 2026); 13.5% (certain catering supplies)\ncorporate_tax: 12.5% (trading income); 25% (non-trading income)\nnotes: The 9% VAT rate for hospitality has been re-extended. Tips and gratuities: Payment of Wages (Amendment) (Tips and Gratuities) Act 2022 requires fair distribution. Employer PRSI 11.05%. Tourism Marketing Fund grants available via Fáilte Ireland."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 23%\nvat_reduced: 13.5% (building and construction services, repair services); 0% on certain professional services exported\ncorporate_tax: 12.5% (trading income); 25% (non-trading income)\nnotes: Relevant Contracts Tax (RCT) applies to construction, forestry, and meat processing subcontractors. Professional services withholding tax (PSWT) at 20% on certain payments by state bodies. Small benefit exemption: €1,000 tax-free per employee per year."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 23%\nvat_reduced: 0% on exports outside EU; 13.5% on certain manufactured goods for domestic supply\ncorporate_tax: 12.5% (trading/manufacturing income); 25% (non-trading); 6.25% (Knowledge Development Box for qualifying IP)\nnotes: R&D tax credit 35% (increased from 30% in 2025). Accelerated capital allowances for energy-efficient equipment. IDA Ireland grants for foreign direct investment in manufacturing. Ireland is a member of the EU — full access to EU Single Market and customs union with no tariffs on intra-EU trade."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 23%\nvat_reduced: 0% on international transport of goods; 23% on domestic transport services\ncorporate_tax: 12.5% (trading income); 25% (non-trading income)\nnotes: EU Single Market and Customs Union membership: no customs duties or border checks on intra-EU goods movement. EU Community Licence required for international road haulage. Carbon tax on fuel (currently €56/tonne CO2). Diesel rebate scheme for qualifying hauliers."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — Ireland",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "Ирландия: регистрация Ltd через CRO (портал CORE) — €50. Налог на прибыль 12.5% (торговый доход), 25% (пассивный). НДС 23% стандартный, 9% для HoReCa. Pillar Two (15%) касается только мультинационалов с оборотом >€750M. Лицензия на алкоголь через District Court — €250–€3,805 + судебные расходы. Член ЕС: свободный доступ к единому рынку без таможенных пошлин. R&D кредит 35%. Порог НДС: €80K (товары), €40K (услуги)."
+    }
+  ]
+}

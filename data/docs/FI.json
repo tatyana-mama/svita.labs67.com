@@ -1,0 +1,206 @@
+{
+  "country": "FI",
+  "lang": "fi",
+  "currency": "EUR",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "Oy — Osakeyhtiö (yksityinen)",
+      "desc": "Мин. капитал: Ei vähimmäispääomavaatimusta (poistettu 1.7.2019). 1–3 arkipäivää (sähköinen ilmoitus)",
+      "price": 280,
+      "required": true,
+      "note": "Ответственность: Rajoitettu vastuu (osakepääoman määrään asti)\nСроки: 1–3 arkipäivää (sähköinen ilmoitus)\nСтоимость: 280 € (ohjattu perustamispaketti) tai 370 € (sähköinen perustamisilmoitus)\nШаги регистрации:\nLaadi perustamissopimus ja yhtiöjärjestys\nTee perustamisilmoitus YTJ-palvelussa (ytj.fi) tai PRH:lle\nMaksa rekisteröintimaksu\nVastaanota Y-tunnus\nRekisteröidy arvonlisäverovelvolliseksi Verohallinnossa\nRekisteröidy työnantajaksi (jos työntekijöitä)"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "Oyj — Julkinen osakeyhtiö",
+      "desc": "Мин. капитал: 80.000 €. 2–4 viikkoa",
+      "price": 370,
+      "required": true,
+      "note": "Ответственность: Rajoitettu vastuu\nСроки: 2–4 viikkoa\nСтоимость: 370 € (rekisteröinti) + asianajaja/tilintarkastaja 5.000–20.000 €\nШаги регистрации:\nLaadi perustamissopimus ja yhtiöjärjestys\nMaksa osakepääoma (min. 80.000 €)\nTilintarkastajan lausunto osakepääomasta\nPerustamisilmoitus PRH:lle\nRekisteröinti Verohallinnossa"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "Tmi — Toiminimi (yksityinen elinkeinonharjoittaja)",
+      "desc": "Мин. капитал: Ei vaatimusta. 1–3 arkipäivää",
+      "price": 60,
+      "required": true,
+      "note": "Ответственность: Rajaton henkilökohtainen vastuu\nСроки: 1–3 arkipäivää\nСтоимость: 60 € (kaupparekisteri-ilmoitus)\nШаги регистрации:\nPerustamisilmoitus YTJ-palvelussa\nVastaanota Y-tunnus\nALV-rekisteröinti (liikevaihto yli 15.000 €/vuosi)"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "Ay — Avoin yhtiö",
+      "desc": "Мин. капитал: Ei vaatimusta. 1–3 arkipäivää",
+      "price": 240,
+      "required": true,
+      "note": "Ответственность: Yhteisvastuullinen ja rajaton henkilökohtainen vastuu\nСроки: 1–3 arkipäivää\nСтоимость: 240 € (rekisteröinti)\nШаги регистрации:\nLaadi yhtiösopimus\nPerustamisilmoitus PRH:lle ja Verohallintoon\nVastaanota Y-tunnus"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "Ky — Kommandiittiyhtiö",
+      "desc": "Мин. капитал: Ei vaatimusta (äänetön yhtiömies: panos sovitaan sopimuksessa). 1–3 arkipäivää",
+      "price": 240,
+      "required": true,
+      "note": "Ответственность: Vastuunalainen yhtiömies: rajaton; äänetön yhtiömies: panoksen määrään asti\nСроки: 1–3 arkipäivää\nСтоимость: 240 € (rekisteröinti)\nШаги регистрации:\nLaadi yhtiösopimus\nPerustamisilmoitus PRH:lle ja Verohallintoon\nVastaanota Y-tunnus"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Rakennuslupa (liiketilan muutos)",
+      "desc": "[Розничная торговля] Kunta (rakennusvalvonta)",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: Kunta (rakennusvalvonta)\nТребования:\n• Hakemus kuntaan\n• Asemakaavan mukaisuus\n• Paloturvallisuusvaatimukset\nСрок действия: Pysyvä (käyttötarkoitukseen sidottu)\nСтоимость: 500–5.000 €"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Anniskelulupa",
+      "desc": "[HoReCa (общепит)] Aluehallintovirasto (AVI)",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: Aluehallintovirasto (AVI)\nТребования:\n• Anniskelupassi (vastaavan hoitajan pätevyys)\n• Riittävä ammattitaito ja kokemus\n• Luotettavuus (ei rikosrekisteriä)\n• Liiketilan soveltuvuus anniskeluun\n• Omavalvontasuunnitelma\nСрок действия: Toistaiseksi voimassa (tai määräaikainen)\nСтоимость: 500–2.000 € (käsittelymaksu)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Elintarvikehuoneistoilmoitus",
+      "desc": "[HoReCa (общепит)] Kunnan terveystarkastaja / elintarvikevalvonta",
+      "price": 150,
+      "required": true,
+      "note": "Выдаёт: Kunnan terveystarkastaja / elintarvikevalvonta\nТребования:\n• Ilmoitus 4 viikkoa ennen toiminnan aloittamista\n• Omavalvontasuunnitelma (HACCP-periaatteet)\n• Hygieniapassi henkilökunnalle\nСрок действия: Jatkuva (valvontamaksut vuosittain)\nСтоимость: Ilmoitus ilmainen; vuosittainen valvontamaksu 150–500 €"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Hygieniapassi",
+      "desc": "[HoReCa (общепит)] Ruokavirasto (hyväksytyt testaajat)",
+      "price": 30,
+      "required": true,
+      "note": "Выдаёт: Ruokavirasto (hyväksytyt testaajat)\nТребования:\n• Hygieniaosaamistestin läpäisy\nСрок действия: Pysyvä\nСтоимость: 30–50 € per henkilö"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Sähköurakoitsijan pätevyystodistus",
+      "desc": "[Услуги и ремёсла] Tukes (Turvallisuus- ja kemikaalivirasto)",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Tukes (Turvallisuus- ja kemikaalivirasto)\nТребования:\n• Sähköalan tutkinto\n• Riittävä työkokemus\n• Sähkötyöturvallisuustutkinto\nСрок действия: Jatkuva (Tukes valvoo)\nСтоимость: 200–1.000 €"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Vastuuvakuutus (ammatillinen)",
+      "desc": "[Услуги и ремёсла] Vakuutusyhtiö (suositeltava/pakollinen tietyissä ammateissa)",
+      "price": 300,
+      "required": true,
+      "note": "Выдаёт: Vakuutusyhtiö (suositeltava/pakollinen tietyissä ammateissa)\nТребования:\n• Ammatillisen vastuuvakuutuksen ottaminen\nСрок действия: Vuosittainen\nСтоимость: 300–2.000 € vuodessa"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Kotitalousvähennys (asiakaspohjainen etu)",
+      "desc": "[Услуги и ремёсла] Verohallinto",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Verohallinto\nТребования:\n• Yritys ennakkoperintärekisterissä\n• Työ tehdään asiakkaan kotona\nСрок действия: Jatkuva\nСтоимость: Ei kustannusta yritykselle (verovähennys asiakkaalle)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Ympäristölupa",
+      "desc": "[Производство] Aluehallintovirasto (AVI) tai kunnan ympäristöviranomainen",
+      "price": 2000,
+      "required": true,
+      "note": "Выдаёт: Aluehallintovirasto (AVI) tai kunnan ympäristöviranomainen\nТребования:\n• Ympäristövaikutusten arviointi (YVA) tarvittaessa\n• Ympäristönsuojelulain vaatimusten täyttäminen\n• Päästöraja-arvojen noudattaminen\nСрок действия: Toistaiseksi voimassa (tarkistusmenettely)\nСтоимость: 2.000–50.000 € (riippuen toiminnan laajuudesta)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "CE-merkintä (tuoteturvallisuus)",
+      "desc": "[Производство] EU / Tukes",
+      "price": 1000,
+      "required": true,
+      "note": "Выдаёт: EU / Tukes\nТребования:\n• EU-direktiivien noudattaminen\n• Tekninen asiakirja\n• Vaatimustenmukaisuusvakuutus\nСрок действия: Jatkuva\nСтоимость: 1.000–20.000 € per tuotekategoria"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "REACH-rekisteröinti (kemikaalit)",
+      "desc": "[Производство] ECHA / Tukes",
+      "price": 1600,
+      "required": true,
+      "note": "Выдаёт: ECHA / Tukes\nТребования:\n• Kemiallisten aineiden rekisteröinti >1 tonni/vuosi\n• Käyttöturvallisuustiedote\nСрок действия: Jatkuva\nСтоимость: 1.600–31.000 € (tonnimäärästä riippuen)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Liikennelupa (tavara-/henkilöliikenne)",
+      "desc": "[Логистика и склад] Traficom (Liikenne- ja viestintävirasto)",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: Traficom (Liikenne- ja viestintävirasto)\nТребования:\n• Ammatillinen pätevyys (liikenneyrittäjäkoe)\n• Taloudelliset voimavarat (min. 9.000 € ensimmäinen ajoneuvo, 5.000 € lisäajoneuvo)\n• Hyvämaineisuus (rikosrekisteriote)\n• Kiinteä toimipaikka Suomessa\nСрок действия: Toistaiseksi voimassa (valvonta jatkuva)\nСтоимость: 500–2.000 € (käsittelymaksu)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "EU-yhteisölupa (kansainvälinen liikenne)",
+      "desc": "[Логистика и склад] Traficom",
+      "price": 300,
+      "required": true,
+      "note": "Выдаёт: Traficom\nТребования:\n• Voimassa oleva kansallinen liikennelupa\n• EU-asetuksen 1071/2009, 1072/2009 noudattaminen\nСрок действия: Enintään 10 vuotta\nСтоимость: 300–1.000 € per kopio"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "AEO-valtuutus (tulli)",
+      "desc": "[Логистика и склад] Tulli",
+      "price": 2000,
+      "required": true,
+      "note": "Выдаёт: Tulli\nТребования:\n• Tullilainsäädännön noudattaminen\n• Kirjanpitojärjestelmä\n• Taloudellinen vakavaraisuus\nСрок действия: Toistaiseksi voimassa (määräaikaistarkastus)\nСтоимость: 2.000–10.000 € (konsulttipalvelut)"
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 25,5% (ALV, yleinen verokanta)\nvat_reduced: 13,5% (elintarvikkeet, ravintolat, majoitus, kirjat, lääkkeet, kulttuuri, liikunta) / 10% (sanoma- ja aikakauslehdet)\ncorporate_tax: 20% (yhteisövero)\nnotes: ALV-alaraja: liikevaihto alle 15.000 €/vuosi vapautettu ALV:sta. Yhteisövero laskee 18%:iin tilikausilta jotka päättyvät 2027. Tappioiden vähennys: 25 vuotta (2026 alkaen vahvistetut tappiot)."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 25,5% (ALV)\nvat_reduced: 13,5% (ravintola- ja ateriapalvelut, majoitus) / 10% (sanomalehdet)\ncorporate_tax: 20% (yhteisövero)\nnotes: Ravintola- ja ateriapalvelut: 13,5% ALV (1.1.2026 alkaen, aiemmin 14%). Alkoholijuomat ravintolassa: 25,5% ALV. Majoituspalvelut: 13,5%."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 25,5% (ALV)\nvat_reduced: Ei alennettua kantaa palveluille (pääsääntö)\ncorporate_tax: 20% (yhteisövero)\nnotes: Kotitalousvähennys: asiakas saa vähentää 40% työkorvauksesta (max 3.500 €/vuosi). Ennakkoperintärekisteri pakollinen alihankintatöissä."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 25,5% (ALV)\nvat_reduced: Ei alennettua kantaa teollisuustuotteille\ncorporate_tax: 20% (yhteisövero)\nnotes: T&K-verovähennys saatavilla. Business Finland tarjoaa rahoitusta innovaatioihin. Yhteisövero laskee 18%:iin tilikausilta jotka päättyvät 2027."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 25,5% (ALV)\nvat_reduced: 10% (henkilökuljetus kotimaa)\ncorporate_tax: 20% (yhteisövero)\nnotes: Kansainvälinen tavaraliikenne: ALV 0% (vienti). Polttoaineverot merkittävät kustannustekijät. Yhteisövero laskee 18%:iin tilikausilta 2027."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — Suomi",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "Финляндия: Oy — без минимального капитала (отменён в 2019), регистрация через YTJ/PRH (280–370 €). НДС (ALV) 25,5%/13,5%/10%. Налог на прибыль (yhteisövero) 20% в 2026 (снижение до 18% с 2027). С 1.1.2026 пониженная ставка ALV снижена с 14% до 13,5%. Обязательная электронная подача с 2026. Для HoReCa — anniskelulupa от AVI + hygieniapassi. Транспорт — liikennelupa от Traficom."
+    }
+  ]
+}

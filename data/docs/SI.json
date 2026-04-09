@@ -1,0 +1,158 @@
+{
+  "country": "SI",
+  "lang": "sl",
+  "currency": "EUR",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "d.o.o. — Družba z omejeno odgovornostjo",
+      "desc": "Мин. капитал: 7.500 EUR. 3–7 delovnih dni (prek SPOT/VEM); do 2 tedna (prek notarja)",
+      "price": 200,
+      "required": true,
+      "note": "Ответственность: Omejena na višino vloženega osnovnega kapitala\nСроки: 3–7 delovnih dni (prek SPOT/VEM); do 2 tedna (prek notarja)\nСтоимость: Brezplačno prek SPOT točke (e-VEM) za enostavne ustanovitve / 200–500 EUR (notarske storitve za kompleksnejše primere) + 7.500 EUR osnovni kapital\nШаги регистрации:\nPreverjanje in rezervacija firme (imena) na portalu AJPES ali SPOT (VEM) točki\nPriprava družbene pogodbe (akt o ustanovitvi za enoosebno d.o.o.)\nVplačilo osnovnega kapitala na začasni bančni račun ali pri notarju\nVpis v Sodni register preko SPOT točke ali notarja\nPridobitev matične številke in davčne številke\nPrijava na FURS (Finančna uprava RS) za davčne obveznosti\nAvtomatičen vpis v Poslovni register AJPES\nOdprtje poslovnega transakcijskega računa"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "d.d. — Delniška družba",
+      "desc": "Мин. капитал: 25.000 EUR. 2–4 tedne",
+      "price": 1000,
+      "required": true,
+      "note": "Ответственность: Omejena na vrednost delnic\nСроки: 2–4 tedne\nСтоимость: 1.000–3.000 EUR stroški + 25.000 EUR kapital\nШаги регистрации:\nUstanovitvena skupščina (min. 1 ustanovitelj)\nSprejetje statuta družbe\nVplačilo osnovnega kapitala (min. 1/4 pred vpisom)\nImenovanje uprave in nadzornega sveta\nVpis v Sodni register\nObjava v Uradnem listu RS"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "s.p. — Samostojni podjetnik posameznik",
+      "desc": "Мин. капитал: Ni potreben. 1–3 delovni dni (pogosto isti dan prek e-VEM)",
+      "price": 0,
+      "required": true,
+      "note": "Ответственность: Neomejena — z vsem osebnim premoženjem\nСроки: 1–3 delovni dni (pogosto isti dan prek e-VEM)\nСтоимость: Brezplačno (prek SPOT/e-VEM točke)\nШаги регистрации:\nPrijava na SPOT (VEM) točki ali prek portala e-VEM\nVpis v Poslovni register Slovenije (AJPES)\nPridobitev davčne številke\nPrijava na FURS"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Prijava obratovalnega časa prodajalne",
+      "desc": "[Розничная торговля] Občina (lokalna skupnost)",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Občina (lokalna skupnost)\nТребования:\n• Vpis v Poslovni register (AJPES)\n• Najemna pogodba ali lastništvo poslovnega prostora\n• Uporabno dovoljenje za prostor\n• Skladnost s predpisi o varnosti in zdravju pri delu\nСрок действия: Nedoločen čas\nСтоимость: 50–200 EUR (občinska taksa)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Registracija živilskega obrata",
+      "desc": "[Розничная торговля] Uprava RS za varno hrano, veterinarstvo in varstvo rastlin (UVHVVR)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Uprava RS za varno hrano, veterinarstvo in varstvo rastlin (UVHVVR)\nТребования:\n• Registracija obrata pred začetkom dejavnosti\n• Vzpostavljen sistem HACCP\n• Zdravstvena spričevala zaposlenih\n• Pogodbe za DDD storitve\nСрок действия: Nedoločen čas\nСтоимость: Brezplačno (registracija); stroški vzpostavitve HACCP"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Dovoljenje za opravljanje gostinske dejavnosti",
+      "desc": "[HoReCa (общепит)] Upravna enota (po sedežu obrata)",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Upravna enota (po sedežu obrata)\nТребования:\n• Vpis v Poslovni register\n• Uporabno dovoljenje za gostinski lokal\n• Izpolnjevanje minimalnih tehničnih pogojev za gostinski obrat\n• Ustrezna strokovna izobrazba ali delovne izkušnje\n• Požarnovarnostni načrt\nСрок действия: Nedoločen čas\nСтоимость: 100–300 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Kategorizacija nastanitvenih obratov",
+      "desc": "[HoReCa (общепит)] Ministrstvo za gospodarstvo, turizem in šport",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Ministrstvo za gospodarstvo, turizem in šport\nТребования:\n• Izpolnjevanje standardov za kategorijo (zvezdice)\n• Inšpekcijski pregled\n• Dokumentacija o kapaciteti in opremljenosti\nСрок действия: 5 let\nСтоимость: 200–500 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Obrtno dovoljenje (za regulirane obrti)",
+      "desc": "[Услуги и ремёсла] Obrtno-podjetniška zbornica Slovenije (OZS)",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Obrtno-podjetniška zbornica Slovenije (OZS)\nТребования:\n• Ustrezna poklicna kvalifikacija (mojstrski izpit za regulirane obrti)\n• Vpis v Obrtni register\n• Delovne izkušnje v stroki\nСрок действия: Nedoločen čas\nСтоимость: 50–200 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Okoljevarstveno dovoljenje",
+      "desc": "[Производство] Agencija RS za okolje (ARSO)",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: Agencija RS za okolje (ARSO)\nТребования:\n• Presoja vplivov na okolje (PVO)\n• Načrt ravnanja z odpadki\n• Skladnost z emisijskimi normami\n• Tehnična dokumentacija proizvodnega procesa\nСрок действия: Nedoločen čas (s periodičnim nadzorom)\nСтоимость: 500–5.000 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Uporabno dovoljenje za proizvodni objekt",
+      "desc": "[Производство] Upravna enota (gradbeni inšpektorat)",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Upravna enota (gradbeni inšpektorat)\nТребования:\n• Gradbeno dovoljenje\n• Tehnični pregled objekta\n• Skladnost s predpisi o varnosti in zdravju pri delu\nСрок действия: Nedoločen čas\nСтоимость: 200–1.000 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licenca za opravljanje prevozov v cestnem prometu",
+      "desc": "[Логистика и склад] Direkcija RS za infrastrukturo",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Direkcija RS za infrastrukturo\nТребования:\n• Finančna sposobnost (9.000 EUR za prvo vozilo, 5.000 EUR za vsako naslednje)\n• Strokovna usposobljenost (certifikat za upravljavca prevozov)\n• Dober ugled (potrdilo o nekaznovanosti)\n• Dejansko in stalno poslovno sredstvo na ozemlju RS\nСрок действия: 10 let\nСтоимость: 200–500 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licenca Skupnosti za mednarodni prevoz",
+      "desc": "[Логистика и склад] Direkcija RS za infrastrukturo",
+      "price": 300,
+      "required": true,
+      "note": "Выдаёт: Direkcija RS za infrastrukturo\nТребования:\n• Veljavna nacionalna licenca\n• Skladnost z Uredbo (ES) 1071/2009\n• Vozila standarda Euro 6\nСрок действия: 10 let\nСтоимость: 300–800 EUR"
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 22% (DDV)\nvat_reduced: 9,5% (živila, zdravila, prevoz potnikov, nastanitev, kulturni dogodki); 5% (knjige in e-knjige)\ncorporate_tax: 19% davek od dohodkov pravnih oseb (DDPO)\nnotes: Davek na dividende: 25% (dohodnina za fizične osebe) ali 0% za pravne osebe znotraj EU (direktiva o matičnih in odvisnih družbah). Prag za obvezno registracijo za DDV: 50.000 EUR letnega prometa. S.p. plačuje dohodnino po progresivni lestvici (16%–50%) ali normirane stroške (prihodki do 50.000 EUR ali 100.000 EUR z zaposlenim)."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 22%\nvat_reduced: 9,5% (nastanitev, priprava hrane in pijač v gostinskih obratih)\ncorporate_tax: 19%\nnotes: Gostinske storitve priprave hrane in pijač se obdavčijo po znižani stopnji 9,5%. Nastanitev prav tako 9,5%. Alkoholne pijače v gostinstvu — 22%."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 22%\nvat_reduced: 9,5% / 5% (odvisno od vrste storitve)\ncorporate_tax: 19%\nnotes: S.p. z normiranimi stroški: normirani odhodki 80% prihodkov (do 50.000 EUR) ali 80% (do 100.000 EUR z zaposlenim), davek 20% od razlike. Regulirane poklicne dejavnosti zahtevajo dodatna dovoljenja (npr. arhitekti, odvetniki)."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 22%\nvat_reduced: 9,5% / 5%\ncorporate_tax: 19%\nnotes: Davčne olajšave za naložbe v raziskave in razvoj (R&R) — do 100% zneska naložbe. Olajšave za zaposlovanje invalidov. Posebne ekonomske cone za določene regije."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 22%\nvat_reduced: 9,5% (javni prevoz potnikov)\ncorporate_tax: 19%\nnotes: Mednarodni prevoz blaga se obdavči po stopnji 0% DDV (izvoz/znotraj EU). Trošarine na goriva se zaračunavajo dodatno. Slovenija ima strateško lokacijo za logistiko (pristanišče Koper)."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — Slovenija",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "Словения 2026: d.o.o. — мин. капитал 7.500 EUR, регистрация через SPOT (VEM) точки — бесплатно для простых форм, 3–7 дней. d.d. — мин. 25.000 EUR. s.p. — без капитала, неограниченная ответственность, регистрация бесплатна через e-VEM. Корпоративный налог 19%. НДС (DDV): стандартный 22%, сниженные 9,5% и 5% (книги). Дивиденды для физлиц — 25%. Порог НДС: 50.000 EUR. Автоматическая регистрация в AJPES при создании компании."
+    }
+  ]
+}

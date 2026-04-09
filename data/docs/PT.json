@@ -1,0 +1,206 @@
+{
+  "country": "PT",
+  "lang": "pt",
+  "currency": "EUR",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "Lda — Sociedade por Quotas",
+      "desc": "Мин. капитал: €1 (sem mínimo legal obrigatório desde 2011). 1-5 dias úteis (Empresa na Hora: constituição em menos de 1 hora)",
+      "price": 220,
+      "required": true,
+      "note": "Ответственность: Limitada ao capital social subscrito\nСроки: 1-5 dias úteis (Empresa na Hora: constituição em menos de 1 hora)\nСтоимость: €220 (Empresa na Hora com pacto pré-aprovado) ou €360 (com pacto personalizado). Custos adicionais: contabilista certificado obrigatório (~€100-300/mês)\nШаги регистрации:\nObter o Certificado de Admissibilidade de Firma no RNPC (Registo Nacional de Pessoas Coletivas) ou através do serviço Empresa na Hora\nConstituição da sociedade: via Empresa na Hora (balcão presencial) ou Empresa Online (portal online)\nDepósito do capital social em conta bancária da sociedade (até 5 dias após a constituição)\nObtenção do NIPC (Número de Identificação de Pessoa Coletiva) — atribuído automaticamente na constituição\nInscrição na Autoridade Tributária e Aduaneira para efeitos de IVA e IRC\nInscrição na Segurança Social (comunicação automática via Empresa na Hora)\nComunicação da abertura do estabelecimento à Câmara Municipal (Licença de Utilização)\nInício de atividade junto da Autoridade Tributária"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "SA — Sociedade Anónima",
+      "desc": "Мин. капитал: €50.000 (mínimo 5 acionistas). 5-15 dias úteis",
+      "price": 500,
+      "required": true,
+      "note": "Ответственность: Limitada ao valor das ações subscritas\nСроки: 5-15 dias úteis\nСтоимость: €500 - €2.000 (notário + registo + publicação)\nШаги регистрации:\nCertificado de Admissibilidade de Firma\nEscritura pública de constituição ou Empresa na Hora\nDepósito do capital social\nRegisto na Conservatória do Registo Comercial\nInscrição na Autoridade Tributária\nInscrição na Segurança Social\nNomeação de Conselho de Administração e Fiscal Único / ROC"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "ENI — Empresário em Nome Individual",
+      "desc": "Мин. капитал: Sem mínimo. 1-3 dias úteis",
+      "price": 0,
+      "required": true,
+      "note": "Ответственность: Ilimitada — o empresário responde com todo o seu património pessoal\nСроки: 1-3 dias úteis\nСтоимость: €0 - €100 (sem custos de constituição obrigatórios)\nШаги регистрации:\nDeclaração de início de atividade na Autoridade Tributária (presencial ou via Portal das Finanças)\nInscrição na Segurança Social (regime dos trabalhadores independentes)\nComunicação à Câmara Municipal (se houver estabelecimento físico)\nObtenção de licenças e autorizações específicas para a atividade"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "EIRL — Estabelecimento Individual de Responsabilidade Limitada",
+      "desc": "Мин. капитал: €5.000 (mínimo 1/3 em dinheiro). 5-10 dias úteis",
+      "price": 300,
+      "required": true,
+      "note": "Ответственность: Limitada ao património afeto ao estabelecimento\nСроки: 5-10 dias úteis\nСтоимость: €300 - €700\nШаги регистрации:\nConstituição por escritura pública ou documento particular autenticado\nRegisto na Conservatória do Registo Comercial\nInscrição na Autoridade Tributária\nInscrição na Segurança Social"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licença de Utilização do Espaço Comercial",
+      "desc": "[Розничная торговля] Câmara Municipal",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Câmara Municipal\nТребования:\n• Alvará de utilização do imóvel compatível com comércio\n• Projeto de arquitetura aprovado (se houver alterações)\n• Conformidade com o Regulamento Geral das Edificações Urbanas\n• Acessibilidade para pessoas com mobilidade reduzida\nСрок действия: 15-30 dias\nСтоимость: €50 - €500 (taxa municipal variável)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Mera Comunicação Prévia para comércio a retalho",
+      "desc": "[Розничная торговля] Câmara Municipal (via Balcão do Empreendedor)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Câmara Municipal (via Balcão do Empreendedor)\nТребования:\n• Título de utilização do espaço válido\n• Seguro de responsabilidade civil (se aplicável)\n• Declaração de conformidade com normas de segurança e higiene\nСрок действия: Início imediato após comunicação\nСтоимость: €0 - €100"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorização de Utilização para Restauração e Bebidas",
+      "desc": "[HoReCa (общепит)] Câmara Municipal",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Câmara Municipal\nТребования:\n• Alvará de utilização compatível com restauração\n• Projeto de segurança contra incêndios (SCIE)\n• Condições de higiene e segurança alimentar\n• Acessibilidade\n• Licença de ocupação do espaço público (para esplanada)\nСрок действия: 30-60 dias\nСтоимость: €200 - €1.000"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Registo de Empreendimentos Turísticos",
+      "desc": "[HoReCa (общепит)] Turismo de Portugal / Câmara Municipal",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Turismo de Portugal / Câmara Municipal\nТребования:\n• Comunicação prévia com prazo (30 dias) ao Turismo de Portugal\n• Classificação do empreendimento (estrelas)\n• Requisitos mínimos de instalações conforme a tipologia\n• Livro de reclamações obrigatório\nСрок действия: 30-60 dias\nСтоимость: €100 - €500"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Registo de Alojamento Local (AL)",
+      "desc": "[HoReCa (общепит)] Câmara Municipal (via Balcão do Empreendedor)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Câmara Municipal (via Balcão do Empreendedor)\nТребования:\n• Comunicação prévia à Câmara Municipal\n• Autorização do condomínio (se aplicável, conforme regulamento municipal)\n• Seguro de responsabilidade civil\n• Caderneta predial e certidão do registo predial\n• Livro de reclamações\nСрок действия: Imediato após comunicação (vistoria posterior)\nСтоимость: €0 - €200"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Comunicação Prévia para prestação de serviços",
+      "desc": "[Услуги и ремёсла] Câmara Municipal (via Balcão do Empreendedor)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Câmara Municipal (via Balcão do Empreendedor)\nТребования:\n• Licença de utilização do espaço compatível\n• Cumprimento das normas de segurança e higiene\n• Seguro de responsabilidade civil profissional (para atividades reguladas)\nСрок действия: Início imediato\nСтоимость: €0 - €100"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Inscrição na Ordem Profissional (atividades reguladas)",
+      "desc": "[Услуги и ремёсла] Ordem Profissional competente (ex.: Ordem dos Médicos, Advogados, Engenheiros, etc.)",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Ordem Profissional competente (ex.: Ordem dos Médicos, Advogados, Engenheiros, etc.)\nТребования:\n• Habilitação académica reconhecida\n• Estágio profissional (se exigido)\n• Seguro de responsabilidade civil\nСрок действия: 30-90 dias\nСтоимость: €200 - €800/ano (quota anual variável)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Carta de Artesão / Unidade Produtiva Artesanal",
+      "desc": "[Услуги и ремёсла] Comissão Nacional para a Promoção dos Ofícios e das Microempresas Artesanais (CEARTE)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Comissão Nacional para a Promoção dos Ofícios e das Microempresas Artesanais (CEARTE)\nТребования:\n• Exercício de atividade artesanal comprovado\n• Produção de caráter predominantemente manual\n• Registo no Registo Nacional do Artesanato\nСрок действия: 30-60 dias\nСтоимость: Gratuito"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Título de Exercício de Atividade Industrial (REAI)",
+      "desc": "[Производство] Direção Regional de Economia / Câmara Municipal (conforme tipologia)",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Direção Regional de Economia / Câmara Municipal (conforme tipologia)\nТребования:\n• Classificação da atividade industrial (Tipo 1, 2 ou 3 conforme risco)\n• Tipo 3 (baixo risco): mera comunicação prévia\n• Tipo 2 (risco médio): registo\n• Tipo 1 (alto risco): autorização prévia com vistoria\nСрок действия: Tipo 3: imediato. Tipo 2: 20 dias. Tipo 1: 30-90 dias\nСтоимость: €100 - €2.500 (conforme tipologia)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licença Ambiental (PCIP — Prevenção e Controlo Integrado da Poluição)",
+      "desc": "[Производство] Agência Portuguesa do Ambiente (APA)",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: Agência Portuguesa do Ambiente (APA)\nТребования:\n• Estudo de impacte ambiental (para instalações de grande dimensão)\n• Plano de gestão de resíduos industriais\n• Plano de emissões atmosféricas\n• Plano de gestão de efluentes\nСрок действия: 60-180 dias\nСтоимость: €500 - €5.000"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Marcação CE (produtos regulamentados)",
+      "desc": "[Производство] Organismo Notificado acreditado pelo IPAC",
+      "price": 1000,
+      "required": true,
+      "note": "Выдаёт: Organismo Notificado acreditado pelo IPAC\nТребования:\n• Avaliação de conformidade do produto\n• Dossiê técnico completo\n• Declaração de conformidade UE\nСрок действия: 30-120 dias\nСтоимость: €1.000 - €10.000"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licença para Transporte Público de Mercadorias",
+      "desc": "[Логистика и склад] IMT — Instituto da Mobilidade e dos Transportes",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: IMT — Instituto da Mobilidade e dos Transportes\nТребования:\n• Idoneidade (certificado de registo criminal)\n• Capacidade financeira (€9.000 primeiro veículo, €5.000 cada adicional)\n• Capacidade profissional (Certificado de Aptidão Profissional — CAP)\n• Estabelecimento efetivo e estável em Portugal\nСрок действия: 15-30 dias\nСтоимость: €200 - €500"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licença Comunitária para transporte internacional",
+      "desc": "[Логистика и склад] IMT",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: IMT\nТребования:\n• Licença nacional de transporte de mercadorias vigente\n• Veículos com PBT superior a 3.500 kg\n• Capacidade financeira comprovada\nСрок действия: 15-30 dias\nСтоимость: €100 - €300"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licenciamento de armazém / centro logístico",
+      "desc": "[Логистика и склад] Câmara Municipal",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Câmara Municipal\nТребования:\n• Licença de utilização compatível com armazenagem\n• Conformidade com o RJSCIE (segurança contra incêndios)\n• Normas ambientais (se aplicável)\n• Acessibilidade para veículos pesados\nСрок действия: 15-45 dias\nСтоимость: €100 - €500"
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 23% (IVA — taxa normal, Continente)\nvat_reduced: 13% (taxa intermédia: restauração, alguns alimentos), 6% (taxa reduzida: bens essenciais, livros, medicamentos)\ncorporate_tax: IRC 17% (taxa geral 2026). PME e Small Mid-Cap: 15% sobre os primeiros €50.000 de matéria coletável, 17% sobre o restante. Derrama municipal até 1,5%\nnotes: IVA reduzido nos Açores: 16%/9%/4%. IVA na Madeira: 22%/12%/5%. Regime simplificado de IRC disponível para empresas com volume de negócios até €200.000. Contabilista Certificado (CC) obrigatório para todas as sociedades."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 23%\nvat_reduced: 13% (serviços de alimentação e bebidas em restauração), 6% (produtos alimentares essenciais)\ncorporate_tax: IRC 17%; PME: 15% sobre primeiros €50.000\nnotes: O IVA na restauração é de 13% para alimentação e bebidas (exceto bebidas alcoólicas: 23%). Taxa turística municipal aplicável em Lisboa (€2/noite), Porto (€2/noite) e outros municípios. O Alojamento Local tem regulamentação cada vez mais restritiva em zonas de contenção."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 23%\nvat_reduced: 6% (reparação de bicicletas, calçado, artigos de couro; serviços médicos privados com IVA a 6%)\ncorporate_tax: IRC 17%; PME: 15% sobre primeiros €50.000\nnotes: Regime simplificado de IRS para trabalhadores independentes com rendimento até €200.000 (coeficientes por tipo de atividade). Contribuição para a Segurança Social: 21,4% sobre o rendimento relevante para trabalhadores independentes."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 23%\nvat_reduced: 13% (alguns produtos alimentares transformados), 6% (bens essenciais)\ncorporate_tax: IRC 17%; PME: 15% sobre primeiros €50.000. Derrama municipal até 1,5%. Derrama estadual: 3% (€1,5M-€7,5M), 5% (€7,5M-€35M), 9% (>€35M)\nnotes: SIFIDE II: dedução fiscal de 32,5%-50% para investimentos em I&D. RFAI: benefícios fiscais para investimento produtivo em regiões elegíveis (dedução até 25% do investimento). DLRR: Dedução por Lucros Retidos e Reinvestidos."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 23%\nvat_reduced: 6% (transporte urbano de passageiros). Transporte internacional de mercadorias: isento (art. 14.º do CIVA)\ncorporate_tax: IRC 17%; PME: 15% sobre primeiros €50.000\nnotes: Isenção de IVA no transporte internacional de mercadorias. Dedutibilidade de custos de combustível com fatura. Portugal tem posição estratégica como hub logístico para a Península Ibérica e rotas atlânticas (porto de Sines). Incentivos fiscais para investimento em zonas do interior (RFAI majorado)."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — Portugal",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "Португалия: основные формы — Lda (от €1), SA (€50.000), ENI (без мин. капитала), EIRL (€5.000). Регистрация через Empresa na Hora — менее 1 часа, стоимость €220-360. IRC снижен до 17% в 2026 (план — до 17% к 2028), для МСП — 15% на первые €50.000. IVA: 23%/13%/6% (Азоры: 16%/9%/4%, Мадейра: 22%/12%/5%). Обязателен сертифицированный бухгалтер (Contabilista Certificado). Портал ePortugal централизует лицензирование. Страна — один из самых простых в ЕС для регистрации бизнеса. Значительные налоговые стимулы для R&D (SIFIDE II) и производственных инвестиций (RFAI)."
+    }
+  ]
+}

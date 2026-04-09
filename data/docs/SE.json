@@ -1,0 +1,198 @@
+{
+  "country": "SE",
+  "lang": "sv",
+  "currency": "SEK",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "AB — Aktiebolag (privat)",
+      "desc": "Мин. капитал: 25.000 SEK. 2–4 veckor",
+      "price": 1900,
+      "required": true,
+      "note": "Ответственность: Begränsat ansvar (upp till insatt kapital)\nСроки: 2–4 veckor\nСтоимость: 1.900–2.200 SEK (registreringsavgift Bolagsverket) + 25.000 SEK aktiekapital\nШаги регистрации:\nUpprätta stiftelseurkund och bolagsordning\nBetala in aktiekapital (min. 25.000 SEK) på bankkonto\nRegistrera bolaget hos Bolagsverket\nErhålla organisationsnummer\nRegistrera för moms och F-skatt hos Skatteverket\nRegistrera som arbetsgivare (vid anställda)"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "Enskild firma",
+      "desc": "Мин. капитал: Inget. 1–2 veckor",
+      "price": 1100,
+      "required": true,
+      "note": "Ответственность: Obegränsat personligt ansvar\nСроки: 1–2 veckor\nСтоимость: 1.100 SEK (Bolagsverket namnregistrering)\nШаги регистрации:\nAnmälan till Bolagsverket för registrering av företagsnamn\nAnsökan om F-skatt och momsregistrering hos Skatteverket"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "HB — Handelsbolag",
+      "desc": "Мин. капитал: Inget. 1–2 veckor",
+      "price": 1100,
+      "required": true,
+      "note": "Ответственность: Solidariskt och obegränsat personligt ansvar\nСроки: 1–2 veckor\nСтоимость: 1.100 SEK (registrering)\nШаги регистрации:\nUpprätta bolagsavtal\nAnmälan till Bolagsverket\nRegistrering hos Skatteverket"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "KB — Kommanditbolag",
+      "desc": "Мин. капитал: Inget. 1–2 veckor",
+      "price": 1100,
+      "required": true,
+      "note": "Ответственность: Komplementär: obegränsat ansvar; kommanditdelägare: begränsat till insats\nСроки: 1–2 veckor\nСтоимость: 1.100 SEK\nШаги регистрации:\nUpprätta bolagsavtal\nAnmälan till Bolagsverket\nRegistrering hos Skatteverket"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Bygglov (vid ombyggnad av lokal)",
+      "desc": "[Розничная торговля] Kommunen (Byggnadsnämnden)",
+      "price": 5000,
+      "required": true,
+      "note": "Выдаёт: Kommunen (Byggnadsnämnden)\nТребования:\n• Ansökan vid ändrad användning av lokal\n• Överensstämmelse med detaljplan\nСрок действия: Permanent (för aktuell användning)\nСтоимость: 5.000–50.000 SEK"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Serveringstillstånd (alkoholservering)",
+      "desc": "[HoReCa (общепит)] Kommunen (Tillståndsenheten)",
+      "price": 5000,
+      "required": true,
+      "note": "Выдаёт: Kommunen (Tillståndsenheten)\nТребования:\n• Kunskapsprov i alkohollagstiftning (Folkhälsomyndighetens prov)\n• Ekonomisk lämplighet (inga skatteskulder)\n• Personlig lämplighet (utdrag ur belastningsregistret)\n• Lokalen uppfyller krav på brandsäkerhet\n• Fr.o.m. juni 2026: matkravet slopas — eget kök ej längre obligatoriskt\nСрок действия: Tillsvidare eller tidsbegränsat (beroende på typ)\nСтоимость: 5.000–15.000 SEK (handläggningsavgift, varierar per kommun)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Registrering av livsmedelsanläggning",
+      "desc": "[HoReCa (общепит)] Kommunen (Miljöförvaltningen)",
+      "price": 1500,
+      "required": true,
+      "note": "Выдаёт: Kommunen (Miljöförvaltningen)\nТребования:\n• Anmälan senast 2 veckor före verksamhetsstart\n• Egenkontrollprogram (HACCP-baserat)\n• Livsmedelslokal som uppfyller hygienföreskrifter\nСрок действия: Löpande (årlig kontrollavgift)\nСтоимость: 1.500–5.000 SEK per år (kontrollavgift)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Kassaregister (certifierat)",
+      "desc": "[HoReCa (общепит)] Skatteverket",
+      "price": 5000,
+      "required": true,
+      "note": "Выдаёт: Skatteverket\nТребования:\n• Certifierat kassaregister med kontrollenhet\n• Anmälan till Skatteverket\nСрок действия: Löpande\nСтоимость: 5.000–15.000 SEK (inköp av kassasystem)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Auktorisation (el, VVS, ventilation)",
+      "desc": "[Услуги и ремёсла] Elsäkerhetsverket / Boverket",
+      "price": 2000,
+      "required": true,
+      "note": "Выдаёт: Elsäkerhetsverket / Boverket\nТребования:\n• Relevant yrkesutbildning och erfarenhet\n• Auktorisationsprov\n• Ansvarsförsäkring\nСрок действия: Löpande (tillsyn)\nСтоимость: 2.000–10.000 SEK"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Ansvarsförsäkring (yrkesförsäkring)",
+      "desc": "[Услуги и ремёсла] Försäkringsbolag (rekommenderas/krävs för vissa yrken)",
+      "price": 3000,
+      "required": true,
+      "note": "Выдаёт: Försäkringsbolag (rekommenderas/krävs för vissa yrken)\nТребования:\n• Tecknande av yrkes- och ansvarsförsäkring\nСрок действия: Årlig\nСтоимость: 3.000–15.000 SEK per år"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "ROT-avdrag (kundbaserat)",
+      "desc": "[Услуги и ремёсла] Skatteverket",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Skatteverket\nТребования:\n• Företaget har F-skatt\n• Arbete utförs i kundens bostad\nСрок действия: Löpande\nСтоимость: Inget (skattelättnad för kunden; företaget fakturerar nettopris)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Miljötillstånd",
+      "desc": "[Производство] Länsstyrelsen / Mark- och miljödomstolen",
+      "price": 50000,
+      "required": true,
+      "note": "Выдаёт: Länsstyrelsen / Mark- och miljödomstolen\nТребования:\n• Miljökonsekvensbeskrivning (MKB)\n• Uppfylla villkor i miljöbalken\n• Samråd med berörda myndigheter och allmänhet\nСрок действия: Tillsvidare (med villkor)\nСтоимость: 50.000–500.000 SEK (konsult + ansökningsavgift)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "CE-märkning (produktsäkerhet)",
+      "desc": "[Производство] EU / Marknadskontrollmyndigheter (bl.a. Elsäkerhetsverket, Arbetsmiljöverket)",
+      "price": 10000,
+      "required": true,
+      "note": "Выдаёт: EU / Marknadskontrollmyndigheter (bl.a. Elsäkerhetsverket, Arbetsmiljöverket)\nТребования:\n• Överensstämmelse med EU-direktiv\n• Teknisk dokumentation\n• Försäkran om överensstämmelse\nСрок действия: Löpande\nСтоимость: 10.000–100.000 SEK per produktkategori"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "REACH-registrering (kemikalier)",
+      "desc": "[Производство] ECHA / Kemikalieinspektionen",
+      "price": 15000,
+      "required": true,
+      "note": "Выдаёт: ECHA / Kemikalieinspektionen\nТребования:\n• Registrering av kemiska ämnen >1 ton/år\n• Säkerhetsdatablad\nСрок действия: Löpande\nСтоимость: 15.000–300.000 SEK"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Yrkestrafiktillstånd (gods- eller persontrafik)",
+      "desc": "[Логистика и склад] Transportstyrelsen",
+      "price": 5000,
+      "required": true,
+      "note": "Выдаёт: Transportstyrelsen\nТребования:\n• Yrkeskunnande (godkänt prov eller utbildning)\n• Ekonomiska resurser (min. 9.000 EUR första fordon, 5.000 EUR per ytterligare)\n• Gott anseende (utdrag ur belastningsregistret)\n• Fast driftställe i Sverige\n• Trafikansvarig person utsedd\nСрок действия: Tillsvidare (löpande tillsyn)\nСтоимость: 5.000–10.000 SEK"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "EU-gemenskapstillstånd (internationell transport)",
+      "desc": "[Логистика и склад] Transportstyrelsen",
+      "price": 3000,
+      "required": true,
+      "note": "Выдаёт: Transportstyrelsen\nТребования:\n• Giltigt nationellt yrkestrafiktillstånd\n• EU-förordning 1071/2009, 1072/2009\nСрок действия: Upp till 10 år\nСтоимость: 3.000–8.000 SEK"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "AEO-certifiering (tull)",
+      "desc": "[Логистика и склад] Tullverket",
+      "price": 10000,
+      "required": true,
+      "note": "Выдаёт: Tullverket\nТребования:\n• Tullefterlevnad\n• Redovisningssystem\n• Finansiell soliditet\nСрок действия: Tillsvidare (periodisk omprövning)\nСтоимость: 10.000–50.000 SEK (rådgivning)"
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 25% (moms)\nvat_reduced: 12% (livsmedel, hotell, restaurang) / 6% (böcker, tidningar, kultur, kollektivtrafik)\ncorporate_tax: 20,6% (bolagsskatt)\nnotes: Fr.o.m. april 2026: tillfällig sänkning till 6% moms på livsmedel (till december 2027). F-skatt krävs för näringsverksamhet."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 25% (moms)\nvat_reduced: 12% (restaurang- och cateringtjänster, hotellövernattning) / 6% (livsmedel fr.o.m. april 2026)\ncorporate_tax: 20,6% (bolagsskatt)\nnotes: Alkohol som serveras på restaurang: 12% moms (ingår i restaurangtjänsten). Från juni 2026 slopas matkravet för serveringstillstånd — barer kan servera alkohol utan att erbjuda lagad mat."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 25% (moms)\nvat_reduced: Ingen reducerad sats för tjänster i normalfallet\ncorporate_tax: 20,6% (bolagsskatt)\nnotes: ROT-avdrag: kunder får 30% skattereduktion på arbetskostnad (max 50.000 SEK/person/år). F-skatt obligatoriskt för att bedriva näringsverksamhet."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 25% (moms)\nvat_reduced: Ingen reducerad sats för industrivaror\ncorporate_tax: 20,6% (bolagsskatt)\nnotes: Forskningsavdrag: nedsättning av arbetsgivaravgifter för FoU-personal. Väsentliga investeringar i grön teknik kan ge investeringsstöd."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 25% (moms)\nvat_reduced: 6% (inrikes kollektivtrafik / persontransport)\ncorporate_tax: 20,6% (bolagsskatt)\nnotes: Internationell godstransport: momsfri (export). Vägslitageskatt planeras för tunga fordon. Trängselskatt i Stockholm och Göteborg."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — Sverige",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "Швеция: AB — мин. капитал 25.000 SEK, регистрация в Bolagsverket (1.900–2.200 SEK). НДС (moms) 25%/12%/6%. Налог на прибыль (bolagsskatt) 20,6%. С апреля 2026 — временное снижение НДС на продукты до 6%. С июня 2026 — отмена требования кухни для алкогольной лицензии. Транспорт требует yrkestrafiktillstånd от Transportstyrelsen. Обязателен сертифицированный кассовый аппарат."
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "country": "LV",
+  "lang": "lv",
+  "currency": "EUR",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "SIA — Sabiedrība ar ierobežotu atbildību",
+      "desc": "Мин. капитал: 2.800 EUR (standarta) vai 1 EUR (mazkapitāla SIA, līdz 2.799 EUR, maks. 5 fiziskas personas). 3–5 darba dienas (standarta), 1 darba diena (paātrināta)",
+      "price": 150,
+      "required": true,
+      "note": "Ответственность: Ierobežota atbildība dalībnieku ieguldījuma apmērā\nСроки: 3–5 darba dienas (standarta), 1 darba diena (paātrināta)\nСтоимость: 150–350 EUR (valsts nodeva: 150 EUR standarta / 50 EUR elektroniski)\nШаги регистрации:\nFirmas nosaukuma pārbaude Uzņēmumu reģistrā (UR)\nDibināšanas dokumentu sagatavošana (statūti, dibināšanas līgums)\nPamatkapitāla iemaksa bankas kontā\nPieteikuma iesniegšana Uzņēmumu reģistrā\nReģistrācija Valsts ieņēmumu dienestā (VID)\nPVN maksātāja reģistrācija (ja apgrozījums > 40.000 EUR)\nReģistrācija Valsts sociālās apdrošināšanas aģentūrā (VSAA)"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "AS — Akciju sabiedrība",
+      "desc": "Мин. капитал: 35.000 EUR. 5–10 darba dienas",
+      "price": 1000,
+      "required": true,
+      "note": "Ответственность: Ierobežota atbildība akcionāru ieguldījuma apmērā\nСроки: 5–10 darba dienas\nСтоимость: 1.000–3.000 EUR\nШаги регистрации:\nDibināšanas sapulce ar notariālu apstiprinājumu\nStatūtu un dibināšanas dokumentu sagatavošana\nPamatkapitāla iemaksa (min 35.000 EUR)\nReģistrācija Uzņēmumu reģistrā\nVID un PVN reģistrācija"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "IK — Individuālais komersants",
+      "desc": "Мин. капитал: 0 EUR. 1–3 darba dienas",
+      "price": 20,
+      "required": true,
+      "note": "Ответственность: Neierobežota personīgā atbildība\nСроки: 1–3 darba dienas\nСтоимость: 20–50 EUR\nШаги регистрации:\nPieteikuma iesniegšana Uzņēmumu reģistrā\nVID reģistrācija\nPVN reģistrācija (ja nepieciešams)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Speciālā atļauja (licence) mazumtirdzniecībai",
+      "desc": "[Розничная торговля] Pašvaldība / Patērētāju tiesību aizsardzības centrs (PTAC)",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Pašvaldība / Patērētāju tiesību aizsardzības centrs (PTAC)\nТребования:\n• Reģistrēts komersants\n• Telpu atbilstība ugunsdrošības prasībām\n• Higiēnas prasību izpilde (pārtikas tirdzniecībai)\n• Nomas vai īpašuma apliecinājums\nСрок действия: Beztermiņa (ar periodiskām pārbaudēm)\nСтоимость: 50–300 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Pārtikas uzņēmuma reģistrācija",
+      "desc": "[HoReCa (общепит)] Pārtikas un veterinārais dienests (PVD)",
+      "price": 30,
+      "required": true,
+      "note": "Выдаёт: Pārtikas un veterinārais dienests (PVD)\nТребования:\n• HACCP paškontroles sistēma\n• Pārtikas higiēnas prasību izpilde\n• Darbinieku apmācība pārtikas drošībā\n• Telpu atbilstība sanitārajām prasībām\nСрок действия: Beztermiņa (ar regulārām pārbaudēm)\nСтоимость: Bez maksas (reģistrācija) vai 30–100 EUR (atzīšana)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Alkoholisko dzērienu tirdzniecības licence",
+      "desc": "[HoReCa (общепит)] Pašvaldība",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Pašvaldība\nТребования:\n• Reģistrēts pārtikas uzņēmums\n• Telpu atbilstība\n• Sodāmības reģistra izziņa\nСрок действия: Ikgadēja atjaunošana\nСтоимость: 50–500 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Tūrisma mītņu reģistrācija",
+      "desc": "[HoReCa (общепит)] Ekonomikas ministrija / pašvaldība",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Ekonomikas ministrija / pašvaldība\nТребования:\n• Telpu atbilstība klasifikācijas prasībām\n• Ugunsdrošības prasību izpilde\n• Drošības prasības\nСрок действия: Beztermiņa\nСтоимость: 50–300 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Profesionālās darbības licence / sertifikāts",
+      "desc": "[Услуги и ремёсла] Atbilstošā nozares iestāde",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Atbilstošā nozares iestāde\nТребования:\n• Profesionālā kvalifikācija\n• Izglītības apliecinājums\n• Profesionālā apdrošināšana (noteiktām profesijām)\nСрок действия: Atkarīgs no profesijas\nСтоимость: 50–500 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Ražošanas uzņēmuma darbības atļauja / vides atļauja",
+      "desc": "[Производство] Valsts vides dienests (VVD) / pašvaldība",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Valsts vides dienests (VVD) / pašvaldība\nТребования:\n• Ietekmes uz vidi novērtējums (ja nepieciešams)\n• Ugunsdrošības prasību izpilde\n• Atkritumu apsaimniekošanas plāns\n• Būvatļauja ražošanas telpām\nСрок действия: Beztermiņa (ar periodiskām pārbaudēm)\nСтоимость: 200–5.000 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autopārvadājumu licence",
+      "desc": "[Логистика и склад] Autotransporta direkcija",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Autotransporta direkcija\nТребования:\n• Profesionālās kompetences sertifikāts (PCS)\n• Finansiālā stabilitāte\n• Transportlīdzekļu apdrošināšana\n• Laba reputācija\nСрок действия: 5 gadi (atjaunojama)\nСтоимость: 100–500 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Noliktavas / loģistikas centra atļauja",
+      "desc": "[Логистика и склад] Pašvaldība / Valsts vides dienests",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Pašvaldība / Valsts vides dienests\nТребования:\n• Būvatļauja komerciālām telpām\n• Ugunsdrošības prasību izpilde\n• Muitas noliktavas atļauja (ja nepieciešams)\nСрок действия: Beztermiņa\nСтоимость: 200–1.000 EUR"
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21%\nvat_reduced: 12% (medikamenti, grāmatas, periodika), 5% (noteikti lauksaimniecības produkti)\ncorporate_tax: 20% no sadalītās peļņas (0% nesadalītai peļņai)\nnotes: Kopš 2018.gada UIN tiek piemērots tikai sadalītajai peļņai (dividendēm). Efektīvā likme: 20/80 = 25% no neto dividendes. No 2026.gada SIA, kuru dalībnieki ir tikai fiziskas personas, var piemērot samazinātu 15% likmi ar 6% IIN ieturējumu no dividendēm."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21%\nvat_reduced: 12% (noteikti pārtikas produkti), 5%\ncorporate_tax: 20% sadalītai peļņai / 0% nesadalītai\nnotes: PVN 21% ēdināšanas pakalpojumiem. Tūrisma naktsmītņu pakalpojumiem piemērojams standarta PVN 21%."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21%\nvat_reduced: 12%, 5%\ncorporate_tax: 20% sadalītai peļņai / 0% nesadalītai\nnotes: Mikrouzņēmumu nodoklis (MUN): 25% no apgrozījuma (līdz 40.000 EUR). Alternatīva maziem uzņēmumiem."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21%\nvat_reduced: 12%, 5%\ncorporate_tax: 20% sadalītai peļņai / 0% nesadalītai\nnotes: LIAA (Latvijas Investīciju un attīstības aģentūra) piedāvā investīciju atbalstu un grantu programmas ražošanas uzņēmumiem. Speciālās ekonomiskās zonas (SEZ) ar nodokļu atvieglojumiem."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21%\nvat_reduced: 0% (starptautiskie pārvadājumi)\ncorporate_tax: 20% sadalītai peļņai / 0% nesadalītai\nnotes: Rīgas brīvosta un speciālās ekonomiskās zonas (Liepājas SEZ, Rēzeknes SEZ u.c.) piedāvā nodokļu atvieglojumus. PVN atbrīvojums starptautiskajiem kravu pārvadājumiem."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — Latvija",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "Латвия: Налог на прибыль 20% только на распределённую прибыль (0% на нераспределённую, аналогично Эстонии). С 2026 — льготная ставка 15% для SIA с физлицами-участниками + 6% НДФЛ. SIA — основная форма (капитал 2.800 EUR стандартный или от 1 EUR малокапитальная). Регистрация в Uzņēmumu reģistrs за 3–5 дней. НДС 21%/12%/5%. Порог НДС: 40.000 EUR/год. Особые экономические зоны (Лиепая, Резекне и др.) с налоговыми льготами. Рижский свободный порт."
+    }
+  ]
+}

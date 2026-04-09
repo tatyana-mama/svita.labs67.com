@@ -1,0 +1,158 @@
+{
+  "country": "MT",
+  "lang": "en",
+  "currency": "EUR",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "Ltd — Private Limited Liability Company",
+      "desc": "Мин. капитал: EUR 1,164.69 (minimum issued share capital). 3–5 business days",
+      "price": 1000,
+      "required": true,
+      "note": "Ответственность: Limited to share capital\nСроки: 3–5 business days\nСтоимость: EUR 1,000–2,500 (registration fees, legal, accounting)\nШаги регистрации:\nReserve company name with the Malta Business Registry (MBR)\nPrepare Memorandum and Articles of Association\nSubmit incorporation documents to MBR\nDeposit minimum share capital in a bank account\nObtain Tax Identification Number (TIN) from Commissioner for Revenue\nRegister for VAT with the VAT Department\nRegister with Employment and Training Corporation (Jobsplus)"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "Soc. in accomandita — Partnership en commandite",
+      "desc": "Мин. капитал: No minimum. 3–5 business days",
+      "price": 500,
+      "required": true,
+      "note": "Ответственность: At least one general partner with unlimited liability; limited partners liable up to contribution\nСроки: 3–5 business days\nСтоимость: EUR 500–1,500\nШаги регистрации:\nDraft partnership deed\nRegister with MBR\nObtain TIN\nRegister for VAT if applicable"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "Soc. in nome collettivo — Partnership en nom collectif",
+      "desc": "Мин. капитал: No minimum. 3–5 business days",
+      "price": 500,
+      "required": true,
+      "note": "Ответственность: All partners jointly and severally liable\nСроки: 3–5 business days\nСтоимость: EUR 500–1,500\nШаги регистрации:\nDraft partnership deed\nRegister with MBR\nObtain TIN\nRegister for VAT"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Trading Licence",
+      "desc": "[Розничная торговля] Malta Competition and Consumer Affairs Authority (MCCAA)",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Malta Competition and Consumer Affairs Authority (MCCAA)\nТребования:\n• Registered business entity\n• Premises compliant with health and safety regulations\n• Valid identification documents\nСрок действия: Annual renewal\nСтоимость: EUR 100–500"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Catering Establishment Licence",
+      "desc": "[HoReCa (общепит)] Malta Tourism Authority (MTA)",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Malta Tourism Authority (MTA)\nТребования:\n• Compliant premises (fire safety, sanitation)\n• Food safety management system (HACCP)\n• Health certificate for food handlers\n• Planning Authority (PA) permit for commercial use\nСрок действия: Annual renewal\nСтоимость: EUR 200–1,500"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Hotel/Accommodation Licence",
+      "desc": "[HoReCa (общепит)] Malta Tourism Authority (MTA)",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: Malta Tourism Authority (MTA)\nТребования:\n• Property classification and grading\n• Fire safety certificate\n• Health and safety compliance\n• PA permit\nСрок действия: Annual renewal\nСтоимость: EUR 500–3,000"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Liquor Licence",
+      "desc": "[HoReCa (общепит)] Commissioner of Police",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Commissioner of Police\nТребования:\n• Clean criminal record\n• Premises compliance\n• Neighbourhood notification\nСрок действия: Annual\nСтоимость: EUR 100–300"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Professional Warrant / Trade Licence",
+      "desc": "[Услуги и ремёсла] Relevant professional body / MCCAA",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Relevant professional body / MCCAA\nТребования:\n• Recognised qualifications\n• Professional indemnity insurance (where applicable)\n• Registration with relevant professional council\nСрок действия: Varies by profession\nСтоимость: EUR 50–500"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Development Planning Permit (industrial premises)",
+      "desc": "[Производство] Planning Authority (PA)",
+      "price": 1000,
+      "required": true,
+      "note": "Выдаёт: Planning Authority (PA)\nТребования:\n• Architectural and engineering plans\n• Environmental Impact Assessment (where required)\n• Fire safety compliance\n• Waste management plan\nСрок действия: Indefinite (subject to conditions)\nСтоимость: EUR 1,000–10,000"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "IPPC Permit (for larger installations)",
+      "desc": "[Производство] Environment and Resources Authority (ERA)",
+      "price": 2000,
+      "required": true,
+      "note": "Выдаёт: Environment and Resources Authority (ERA)\nТребования:\n• Environmental impact assessment\n• Emissions monitoring plan\n• Best Available Techniques (BAT) compliance\nСрок действия: Periodic review\nСтоимость: EUR 2,000–10,000"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Road Transport Operator Licence",
+      "desc": "[Логистика и склад] Transport Malta",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Transport Malta\nТребования:\n• Certificate of Professional Competence (CPC)\n• Financial standing evidence\n• Adequate vehicle insurance\n• Good repute declaration\nСрок действия: 5 years (renewable)\nСтоимость: EUR 200–1,000"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Warehouse / Logistics Centre Permit",
+      "desc": "[Логистика и склад] Planning Authority (PA)",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: Planning Authority (PA)\nТребования:\n• Planning permit for commercial/industrial use\n• Fire safety certificate\n• Customs warehouse authorisation (if applicable)\nСрок действия: Indefinite (subject to conditions)\nСтоимость: EUR 500–3,000"
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 18%\nvat_reduced: 7% (accommodation, sporting facilities), 5% (electricity, artworks, medical equipment)\ncorporate_tax: 35% (statutory), effective 5% after shareholder refund system (6/7ths refund)\nnotes: Malta's imputation system allows shareholders to claim a 6/7ths refund on tax paid by the company, reducing the effective rate to ~5%. This applies to trading income. The refund must be claimed by the shareholder after dividend distribution."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 18%\nvat_reduced: 7% (accommodation), 5% (electricity)\ncorporate_tax: 35% (statutory) / 5% effective with refund\nnotes: Accommodation services taxed at reduced 7% VAT. Eco-contribution may apply to certain tourism services."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 18%\nvat_reduced: 7%, 5%\ncorporate_tax: 35% / 5% effective\nnotes: Micro Invest Tax Credit scheme: tax credits up to EUR 50,000 for micro and small enterprises. Self-employed individuals taxed on progressive scale (0%–35%)."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 18%\nvat_reduced: 5% (certain supplies)\ncorporate_tax: 35% / 5% effective\nnotes: Malta Enterprise incentives: tax credits, soft loans, and grants for manufacturing investment. SmartCity Malta special economic zone."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 18%\nvat_reduced: 0% (international transport services)\ncorporate_tax: 35% / 5% effective\nnotes: Freeport zones available. Malta is a major EU transhipment hub (Mediterranean). VAT exempt on international freight transport."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — Malta",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "Мальта: Номинальный корпоративный налог 35%, но эффективная ставка ~5% благодаря системе возврата 6/7 налога акционерам. НДС 18%/7%/5%. Основная форма — Private Ltd (минимальный капитал 1.164,69 EUR). Регистрация в Malta Business Registry за 3–5 дней. Malta Enterprise предоставляет налоговые кредиты, гранты и мягкие кредиты. Micro Invest: налоговые кредиты до 50.000 EUR для малого бизнеса. Свободные зоны (Freeport). Мальта — крупный транзитный хаб ЕС в Средиземноморье."
+    }
+  ]
+}

@@ -1,0 +1,278 @@
+{
+  "country": "AT",
+  "lang": "de",
+  "currency": "EUR",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "GmbH — Gesellschaft mit beschränkter Haftung (GmbH)",
+      "desc": "Мин. капитал: 10.000 EUR (davon mind. 5.000 EUR bar einzuzahlen). 2–4 Wochen (bei vollständigen Unterlagen)",
+      "price": 2500,
+      "required": true,
+      "note": "Ответственность: Beschränkt auf die Stammeinlage; Gesellschafter haften nicht persönlich\nСроки: 2–4 Wochen (bei vollständigen Unterlagen)\nСтоимость: 2.500–5.000 EUR (Notar ca. 600–1.500 EUR, Firmenbucheintragung ca. 493 EUR, Gewerbeanmeldung ca. 50 EUR, Steuerberatung ca. 500–1.000 EUR); zzgl. Stammkapital 10.000 EUR. NeuFöG-Befreiung kann bis zu 493 EUR Firmenbuchgebühren einsparen.\nШаги регистрации:\n1. Gesellschaftsvertrag durch Notariatsakt errichten (oder vereinfachte Gründung bei Ein-Personen-GmbH)\n2. Firmenbuchanmeldung beim zuständigen Landesgericht vorbereiten\n3. Stammkapital auf ein Bankkonto der Gesellschaft in Gründung einzahlen (mind. 5.000 EUR bar)\n4. Bankbestätigung über die Einzahlung einholen\n5. Eintragung ins Firmenbuch beim zuständigen Firmenbuchgericht beantragen\n6. Gewerbeberechtigung bei der Bezirksverwaltungsbehörde (Bezirkshauptmannschaft/Magistrat) anmelden\n7. Steuerliche Erfassung beim Finanzamt (Steuernummer, UID-Nummer beantragen)\n8. Anmeldung bei der SVS (Sozialversicherung der Selbständigen) bzw. ÖGK für Dienstnehmer\n9. WKO-Mitgliedschaft wird automatisch mit Gewerbeanmeldung begründet"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "FlexCo — Flexible Kapitalgesellschaft (FlexCo)",
+      "desc": "Мин. капитал: 10.000 EUR (davon mind. 5.000 EUR bar einzuzahlen; Mindesteinlage pro Gesellschafter: 1 EUR). 2–4 Wochen",
+      "price": 2000,
+      "required": true,
+      "note": "Ответственность: Beschränkt auf die Stammeinlage; keine persönliche Haftung der Gesellschafter\nСроки: 2–4 Wochen\nСтоимость: 2.000–4.500 EUR (flexiblere Übertragungsregelungen reduzieren laufende Notarkosten bei Anteilsübertragungen). Anteilsübertragung per Rechtsanwaltsvertrag möglich (nicht zwingend Notariatsakt).\nШаги регистрации:\n1. Gesellschaftsvertrag als Notariatsakt oder Rechtsanwaltsvertrag errichten\n2. Optional: Unternehmenswertanteile (UWA) im Gesellschaftsvertrag vorsehen\n3. Stammkapital einzahlen (mind. 5.000 EUR bar)\n4. Bankbestätigung einholen\n5. Firmenbucheintragung beantragen (Eintragung als FlexCo/FlexKapG)\n6. Gewerbeberechtigung anmelden\n7. Steuerliche Erfassung beim Finanzamt\n8. SVS/ÖGK-Anmeldung\n9. WKO-Mitgliedschaft (automatisch)"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "e.U. — Einzelunternehmen",
+      "desc": "Мин. капитал: Kein Mindestkapital erforderlich. 1–2 Wochen (bei freiem Gewerbe sofort nach Anmeldung)",
+      "price": 100,
+      "required": true,
+      "note": "Ответственность: Unbeschränkte persönliche Haftung mit dem gesamten Privatvermögen\nСроки: 1–2 Wochen (bei freiem Gewerbe sofort nach Anmeldung)\nСтоимость: 100–500 EUR (Gewerbeanmeldung ca. 50 EUR, optional Firmenbucheintragung ca. 100–200 EUR, Steuerberatung optional)\nШаги регистрации:\n1. Gewerbeberechtigung bei der Bezirksverwaltungsbehörde anmelden\n2. Firmenbucheintragung nur bei Umsatz > 700.000 EUR oder freiwillig (dann mit Zusatz 'e.U.')\n3. Steuerliche Erfassung beim Finanzamt\n4. Anmeldung bei der SVS (Sozialversicherung der Selbständigen)\n5. WKO-Mitgliedschaft (automatisch mit Gewerbeanmeldung)"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "OG — Offene Gesellschaft (OG)",
+      "desc": "Мин. капитал: Kein Mindestkapital erforderlich. 2–3 Wochen",
+      "price": 500,
+      "required": true,
+      "note": "Ответственность: Alle Gesellschafter haften unbeschränkt, solidarisch und persönlich\nСроки: 2–3 Wochen\nСтоимость: 500–1.500 EUR (Firmenbucheintragung, Rechtsberatung, Gewerbeanmeldung)\nШаги регистрации:\n1. Gesellschaftsvertrag schriftlich abschließen (kein Notariatsakt erforderlich, aber empfohlen)\n2. Firmenbucheintragung beantragen (konstitutiv erforderlich)\n3. Gewerbeberechtigung anmelden (gewerberechtlicher Geschäftsführer benennen)\n4. Steuerliche Erfassung beim Finanzamt\n5. SVS-Anmeldung für alle Gesellschafter\n6. WKO-Mitgliedschaft (automatisch)"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "KG — Kommanditgesellschaft (KG)",
+      "desc": "Мин. капитал: Kein Mindestkapital; Haftsumme des Kommanditisten wird im Firmenbuch eingetragen. 2–3 Wochen",
+      "price": 500,
+      "required": true,
+      "note": "Ответственность: Komplementär: unbeschränkte Haftung; Kommanditist: beschränkt auf die Haftsumme\nСроки: 2–3 Wochen\nСтоимость: 500–1.500 EUR\nШаги регистрации:\n1. Gesellschaftsvertrag abschließen (Komplementär und Kommanditist festlegen)\n2. Firmenbucheintragung beantragen (Haftsumme des Kommanditisten angeben)\n3. Gewerbeberechtigung anmelden\n4. Steuerliche Erfassung beim Finanzamt\n5. SVS-Anmeldung (Komplementär pflichtversichert, Kommanditist je nach Beteiligung)\n6. WKO-Mitgliedschaft (automatisch)"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "AG — Aktiengesellschaft (AG)",
+      "desc": "Мин. капитал: 70.000 EUR (davon mind. 25% = 17.500 EUR bar einzuzahlen). 4–8 Wochen",
+      "price": 5000,
+      "required": true,
+      "note": "Ответственность: Beschränkt auf die Aktieneinlage; keine persönliche Haftung der Aktionäre\nСроки: 4–8 Wochen\nСтоимость: 5.000–15.000 EUR (Notar, Gründungsprüfer, Firmenbuch, Rechtsberatung); zzgl. Grundkapital 70.000 EUR\nШаги регистрации:\n1. Satzung durch Notariatsakt errichten\n2. Gründungsprüfung (bei Sacheinlagen: durch Gründungsprüfer)\n3. Vorstand und Aufsichtsrat bestellen\n4. Grundkapital einzahlen (mind. 25% bar)\n5. Bankbestätigung einholen\n6. Firmenbucheintragung beantragen\n7. Gewerbeberechtigung anmelden\n8. Steuerliche Erfassung beim Finanzamt\n9. ÖGK-Anmeldung für Dienstnehmer, SVS für Vorstandsmitglieder"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "GesbR — Gesellschaft bürgerlichen Rechts (GesbR)",
+      "desc": "Мин. капитал: Kein Mindestkapital erforderlich. 1–2 Wochen",
+      "price": 100,
+      "required": true,
+      "note": "Ответственность: Alle Gesellschafter haften unbeschränkt, solidarisch und persönlich; keine eigene Rechtspersönlichkeit\nСроки: 1–2 Wochen\nСтоимость: 100–500 EUR (Rechtsberatung optional, Gewerbeanmeldungen)\nШаги регистрации:\n1. Gesellschaftsvertrag abschließen (formfrei, schriftlich empfohlen)\n2. Keine Firmenbucheintragung möglich (GesbR ist keine juristische Person)\n3. Jeder Gesellschafter meldet individuell Gewerbeberechtigung an\n4. Steuerliche Erfassung beim Finanzamt (einheitliche und gesonderte Gewinnfeststellung)\n5. SVS-Anmeldung für jeden Gesellschafter\n6. WKO-Mitgliedschaft (jeder Gesellschafter einzeln)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Gewerbeberechtigung — Freies Gewerbe",
+      "desc": "[Розничная торговля] Bezirkshauptmannschaft oder Magistrat",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Bezirkshauptmannschaft oder Magistrat\nТребования:\n• Eigenberechtigung (Volljährigkeit)\n• Österreichische/EU/EWR-Staatsbürgerschaft oder gültige Aufenthaltsberechtigung\n• Keine Gewerbeausschlussgründe (z.B. bestimmte Verurteilungen, Insolvenz)\n• Betriebsanlagengenehmigung (falls erforderlich für den Standort)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Gewerbeberechtigung — Reglementiertes Gewerbe",
+      "desc": "[Розничная торговля] Bezirkshauptmannschaft oder Magistrat",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Bezirkshauptmannschaft oder Magistrat\nТребования:\n• Alle Voraussetzungen des freien Gewerbes\n• Befähigungsnachweis gemäß jeweiliger Gewerbe-Zugangsverordnung\n• Ggf. Prüfung bei der WKO oder Nachweis einschlägiger Berufserfahrung"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Betriebsanlagengenehmigung",
+      "desc": "[Розничная торговля] Bezirkshauptmannschaft oder Magistrat (Gewerbebehörde)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Bezirkshauptmannschaft oder Magistrat (Gewerbebehörde)\nТребования:\n• Einreichung von Betriebsbeschreibung und Plänen\n• Ggf. Gutachten (Lärm, Emissionen, Brandschutz)\n• Anrainerbeteiligung im Genehmigungsverfahren"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Gastgewerbeberechtigung",
+      "desc": "[HoReCa (общепит)] Bezirkshauptmannschaft oder Magistrat",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Bezirkshauptmannschaft oder Magistrat\nТребования:\n• Befähigungsnachweis: Lehrabschlussprüfung Koch/Kellner/Hotelfach ODER Fachschule ODER Unternehmerprüfung + einschlägige Praxis\n• Alternativ: individuelle Befähigung (Nachweis gleichwertiger Qualifikation)\n• Zuverlässigkeit (kein Gewerbeausschluss)\n• Geeigneter Standort mit Betriebsanlagengenehmigung"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Betriebsanlagengenehmigung (Gastgewerbe)",
+      "desc": "[HoReCa (общепит)] Bezirkshauptmannschaft oder Magistrat",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Bezirkshauptmannschaft oder Magistrat\nТребования:\n• Betriebsbeschreibung und Grundrisspläne\n• Brandschutzkonzept\n• Schalltechnisches Gutachten (bei Musik, Gastgarten)\n• Hygienekonzept gemäß LMSVG und EU-Verordnung 852/2004\n• Anrainerbeteiligung"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Lebensmittelrechtliche Registrierung",
+      "desc": "[HoReCa (общепит)] Bezirksverwaltungsbehörde / Lebensmittelaufsicht",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Bezirksverwaltungsbehörde / Lebensmittelaufsicht\nТребования:\n• HACCP-Konzept\n• Hygieneschulung aller Mitarbeiter\n• Rückverfolgbarkeit der Lebensmittel\n• Allergeninformation gemäß EU-Verordnung 1169/2011"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Alkoholausschank",
+      "desc": "[HoReCa (общепит)] Enthalten in der Gastgewerbeberechtigung",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Enthalten in der Gastgewerbeberechtigung"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Sperrstundenregelung",
+      "desc": "[HoReCa (общепит)] Landesregierung / Gemeinde",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Landesregierung / Gemeinde"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Freies Gewerbe",
+      "desc": "[Услуги и ремёсла] Bezirkshauptmannschaft oder Magistrat",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Bezirkshauptmannschaft oder Magistrat\nТребования:\n• Eigenberechtigung\n• Keine Gewerbeausschlussgründe\n• Genaue Bezeichnung der Tätigkeit gemäß der bundeseinheitlichen Liste"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Reglementiertes Gewerbe (Handwerk)",
+      "desc": "[Услуги и ремёсла] Bezirkshauptmannschaft oder Magistrat",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Bezirkshauptmannschaft oder Magistrat\nТребования:\n• Befähigungsnachweis: Meisterprüfung ODER Lehrabschluss + Praxis ODER Fachschule/Studium + Praxis\n• Alternativ: individuelle Befähigung (§ 19 GewO) — Nachweis gleichwertiger Qualifikation\n• Gewerberechtlicher Geschäftsführer bei juristischen Personen (GmbH, FlexCo, AG)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Freie Berufe (keine Gewerbeberechtigung)",
+      "desc": "[Услуги и ремёсла] Jeweilige Berufskammer",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Jeweilige Berufskammer\nТребования:\n• Abschluss des jeweiligen Studiums/Ausbildung\n• Berufsprüfung/Praxisjahre gemäß Berufsgesetz\n• Eintragung in die jeweilige Berufskammer"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Gewerbeberechtigung (Produktion)",
+      "desc": "[Производство] Bezirkshauptmannschaft oder Magistrat",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Bezirkshauptmannschaft oder Magistrat"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Betriebsanlagengenehmigung (Produktion)",
+      "desc": "[Производство] Bezirkshauptmannschaft oder Magistrat",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Bezirkshauptmannschaft oder Magistrat"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Umweltverträglichkeitsprüfung (UVP)",
+      "desc": "[Производство] Landesregierung (UVP-Behörde)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Landesregierung (UVP-Behörde)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "CE-Kennzeichnung",
+      "desc": "[Производство] Marktüberwachungsbehörde (BMAW)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Marktüberwachungsbehörde (BMAW)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Güterbeförderungsgewerbe-Konzession",
+      "desc": "[Логистика и склад] Landeshauptmann (in der Praxis: Bezirkshauptmannschaft)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Landeshauptmann (in der Praxis: Bezirkshauptmannschaft)\nТребования:\n• Fachliche Eignung: Prüfung bei der WKO (Verkehrsleiterprüfung)\n• Persönliche Zuverlässigkeit (keine einschlägigen Vorstrafen)\n• Finanzielle Leistungsfähigkeit: 9.000 EUR für 1. Fahrzeug, 5.000 EUR für jedes weitere (Bankgarantie oder Eigenkapitalnachweis)\n• Niederlassung im Inland mit Unterlagen und Fahrzeugen"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Speditionsgewerbe",
+      "desc": "[Логистика и склад] Bezirkshauptmannschaft oder Magistrat",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Bezirkshauptmannschaft oder Magistrat\nТребования:\n• Befähigungsnachweis gemäß Speditions-Zugangsverordnung\n• Oder individuelle Befähigung"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Personenbeförderungsgewerbe (Taxi, Mietwagen)",
+      "desc": "[Логистика и склад] Landeshauptmann / Bezirksverwaltungsbehörde",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Landeshauptmann / Bezirksverwaltungsbehörde\nТребования:\n• Fachliche Eignung (Prüfung)\n• Persönliche Zuverlässigkeit\n• Finanzielle Leistungsfähigkeit\n• Fahrzeuge mit gültigem Prüfgutachten"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Lagerhaus-/Logistikbetrieb",
+      "desc": "[Логистика и склад] Bezirkshauptmannschaft oder Magistrat",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Bezirkshauptmannschaft oder Magistrat"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Gefahrguttransport (ADR)",
+      "desc": "[Логистика и склад] BMVIT / Bezirksverwaltungsbehörde",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: BMVIT / Bezirksverwaltungsbehörde"
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 20% (Normalsteuersatz)\nvat_reduced: 10% (ermäßigt: Lebensmittel, Bücher, Personenbeförderung) / 13% (ermäßigt: Blumen, Kunst, Kino, landwirtschaftliche Erzeugnisse)\ncorporate_tax: 23% KöSt (seit 2024); Mindestkörperschaftsteuer: 500 EUR/Jahr (GmbH), 875 EUR/Jahr (AG)\nincome_tax: Einkommensteuer progressiv: 0% bis 11.693 EUR, 20% bis 19.134 EUR, 30% bis 32.075 EUR, 40% bis 62.080 EUR, 48% bis 93.120 EUR, 50% bis 1.000.000 EUR, 55% darüber\nmunicipal_tax: Kommunalsteuer: 3% der Bruttolohnsumme aller Dienstnehmer\nsocial_security: SVS für Selbständige: ca. 26,83% der Beitragsgrundlage (PV 18,5%, KV 6,8%, UV pauschal 12,95 EUR/Monat, Selbständigenvorsorge 1,53%)\nother_taxes: Dienstgeberbeitrag zum FLAF: 3,7% der Bruttolohnsumme; Zuschlag zum DB (DZ): 0,32–0,42% (je nach Bundesland); Kammerumlage (KU1): ca. 0,29–0,44%\nnotes: Kleinunternehmerregelung (USt-Befreiung) bei Jahresumsatz bis 42.000 EUR netto. Gewinnfreibetrag bis 33.000 EUR (15% bzw. 13% gestaffelt). Neugründungsförderung (NeuFöG) befreit von Firmenbuchgebühren, Stempelgebühren und Lohnnebenkosten im ersten Jahr."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 20% (Normalsteuersatz auf Getränke, Alkohol)\nvat_reduced: 10% (Speisen zum Verzehr an Ort und Stelle, Beherbergung)\ncorporate_tax: 23% KöSt (Kapitalgesellschaften) bzw. ESt progressiv (Einzelunternehmen, Personengesellschaften)\nmunicipal_tax: Kommunalsteuer: 3% der Bruttolohnsumme\nother_taxes: Tourismusabgabe/Ortstaxe: je nach Bundesland und Gemeinde (z.B. Wien: 3,2% des Nächtigungsentgelts); Werbeabgabe: 5% bei Werbung in Österreich\nnotes: Registrierkassenpflicht ab 15.000 EUR Jahresumsatz und 7.500 EUR Barumsatz. Trinkgelder sind einkommensteuerfrei für Dienstnehmer (§ 3 EStG). Gastro-Pauschalierung möglich."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 20%\nvat_reduced: 10% / 13% (nur für bestimmte Leistungen, z.B. Personenbeförderung, kulturelle Dienstleistungen)\ncorporate_tax: 23% KöSt (Kapitalgesellschaften) bzw. ESt progressiv (Einzelunternehmen)\nmunicipal_tax: Kommunalsteuer: 3% der Bruttolohnsumme\nsocial_security: SVS: ca. 26,83%; Mindestbeitragsgrundlage 551,10 EUR/Monat; Versicherungsgrenze 6.613,20 EUR/Jahr\nnotes: Kleinunternehmerregelung bis 42.000 EUR Nettoumsatz. Basispauschalierung möglich (12% bzw. 6% des Umsatzes als Betriebsausgaben). Neue Selbständige (z.B. Vortragende, Autoren) ohne Gewerbeberechtigung — SVS-Pflicht ab Überschreiten der Versicherungsgrenze."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 20%\nvat_reduced: 10% / 13%\ncorporate_tax: 23% KöSt\nmunicipal_tax: Kommunalsteuer: 3% der Bruttolohnsumme\nother_taxes: DB: 3,7%, DZ: ca. 0,32–0,42%\nnotes: Forschungsprämie: 14% der F&E-Aufwendungen (Gutschrift gegen Steuerschuld). Investitionsfreibetrag (IFB): 10% (bzw. 15% bei ökologischen Investitionen) der Anschaffungskosten abzugsfähig. Internationale Schachtelbeteiligung: KöSt-Befreiung bei Beteiligungen ≥10% an ausländischen Kapitalgesellschaften für mind. 1 Jahr."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 20%\nvat_reduced: 10% (Personenbeförderung im Inland)\ncorporate_tax: 23% KöSt\nmunicipal_tax: Kommunalsteuer: 3% der Bruttolohnsumme\nother_taxes: Kraftfahrzeugsteuer (KFZ-Steuer) für LKW über 3,5t; Normverbrauchsabgabe (NoVA) bei PKW-Anschaffung; motorbezogene Versicherungssteuer\nnotes: Mautpflicht: GO-Maut (LKW über 3,5t auf Autobahnen/Schnellstraßen), Vignettenpflicht für PKW/Transporter bis 3,5t. Lenkzeitvorschriften gemäß EU-VO 561/2006 und Arbeitszeitgesetz."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — Österreich",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "АВСТРИЯ — РЕГИСТРАЦИЯ БИЗНЕСА (обзор)\n\nОсновные формы: GmbH (уставной капитал 10.000 EUR с 2024 г., ранее 35.000 EUR), FlexCo (новая форма с 2024 г., идеальна для стартапов, капитал 10.000 EUR, упрощённая передача долей), Einzelunternehmen (ИП, без минимального капитала), OG/KG (полное/коммандитное товарищество), AG (70.000 EUR), GesbR (простое товарищество без юрлица).\n\nЛицензирование: все предприниматели обязаны получить Gewerbeberechtigung (разрешение на ведение промысла). Свободные промыслы (freie Gewerbe, 400+ видов) — без экзамена. Регулируемые промыслы (reglementierte Gewerbe) — требуется Befähigungsnachweis (квалификационный экзамен/мастерский диплом). Гастрономия, транспорт, ряд ремёсел — регулируемые.\n\nНалоги: корпоративный налог (KöSt) 23% с 2024 г., НДС (USt) 20% (стандарт), 10%/13% (льготный), коммунальный налог 3% от ФОТ, взнос в фонд семьи (FLAF) 3,7%. Торгового налога (Gewerbesteuer), в отличие от Германии, нет.\n\nСоцстрахование: самозанятые страхуются в SVS (~26,83% от базы). Обязательное членство в WKO (торгово-промышленная палата) — автоматически при регистрации промысла.\n\nОсобенности: развитая система палат (Kammer), строгий контроль квалификации через Befähigungsnachweis, разрешение на эксплуатацию помещений (Betriebsanlagengenehmigung) для всех физических бизнесов. Льготы для новых предприятий по NeuFöG (освобождение от госпошлин в первый год). Исследовательская премия 14% от затрат на R&D."
+    }
+  ]
+}

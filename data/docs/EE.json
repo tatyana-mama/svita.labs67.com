@@ -1,0 +1,142 @@
+{
+  "country": "EE",
+  "lang": "et",
+  "currency": "EUR",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "OÜ — Osaühing",
+      "desc": "Мин. капитал: 0,01 EUR (miinimum osakapital kaotatud alates 01.02.2023). 1–3 tööpäeva (e-äriregister), kuni 14 tööpäeva (volitusega)",
+      "price": 190,
+      "required": true,
+      "note": "Ответственность: Piiratud vastutus osanike sissemakse ulatuses\nСроки: 1–3 tööpäeva (e-äriregister), kuni 14 tööpäeva (volitusega)\nСтоимость: 190–265 EUR (riigilõiv) + notaritasu vajadusel\nШаги регистрации:\nÄrinime kontrollimine ja broneerimine äriregistris\nAsutamisleping ja põhikirja koostamine\nOsakapitali sissemakse (min 0,01 EUR)\nAvalduse esitamine Äriregistrile (ettevõtjaportaal või notar)\nÄriregistrisse kandmine\nMaksu- ja Tolliametis registreerimine (EMTA)\nKäibemaksukohustuslaseks registreerimine (kui käive > 40.000 EUR)"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "AS — Aktsiaselts",
+      "desc": "Мин. капитал: 25.000 EUR. 5–10 tööpäeva",
+      "price": 1000,
+      "required": true,
+      "note": "Ответственность: Piiratud vastutus aktsionäride sissemakse ulatuses\nСроки: 5–10 tööpäeva\nСтоимость: 1.000–3.000 EUR (riigilõiv, notar, jurist)\nШаги регистрации:\nAsutamisleping ja põhikirja koostamine notari juures\nAktsiakapitali sissemakse (min 25.000 EUR)\nÄriregistri avalduse esitamine\nÄriregistrisse kandmine\nEMTA registreerimine"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Majandustegevusteade kauplustegevuse kohta",
+      "desc": "[Розничная торговля] Kohalik omavalitsus / Majandustegevuse register (MTR)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Kohalik omavalitsus / Majandustegevuse register (MTR)\nТребования:\n• Registreeritud äriühing\n• Nõuetekohased äriruumid\n• Tuleohutuse nõuete täitmine\n• Tervisekaitse nõuded (toidukaupade puhul)\nСрок действия: Tähtajatu\nСтоимость: Tasuta (majandustegevusteade)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Toitlustusettevõtte tegevusluba",
+      "desc": "[HoReCa (общепит)] Veterinaar- ja Toiduamet (VTA)",
+      "price": 10,
+      "required": true,
+      "note": "Выдаёт: Veterinaar- ja Toiduamet (VTA)\nТребования:\n• HACCP enesekontrolliplaan\n• Toiduhügieeni koolitus personalile\n• Nõuetekohased ruumid ja seadmed\n• Tervisekaitse nõuete täitmine\nСрок действия: Tähtajatu (regulaarsed kontrollid)\nСтоимость: Tasuta (majandustegevusteade) või 10–100 EUR (tegevusluba)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Alkoholi jaemüügi tegevusluba",
+      "desc": "[HoReCa (общепит)] Kohalik omavalitsus",
+      "price": 10,
+      "required": true,
+      "note": "Выдаёт: Kohalik omavalitsus\nТребования:\n• Registreeritud müügikoht\n• Alkoholi müügi tingimuste täitmine\n• Personalikoolitus\nСрок действия: Tähtajatu\nСтоимость: 10–100 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Majutusettevõtte tegevusluba",
+      "desc": "[HoReCa (общепит)] MTR (Majandustegevuse register)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: MTR (Majandustegevuse register)\nТребования:\n• Nõuetekohased ruumid\n• Tuleohutuse nõuded\n• Kategooria määramine\nСрок действия: Tähtajatu\nСтоимость: Tasuta (majandustegevusteade)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Kutsetunnistus / tegevusluba",
+      "desc": "[Услуги и ремёсла] Vastav kutseorgan / MTR",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Vastav kutseorgan / MTR\nТребования:\n• Kutsekvalifikatsiooni tõendamine\n• Erialane haridus või kogemus\nСрок действия: Sõltub kutsealast\nСтоимость: 50–300 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Tootmise tegevusluba / keskkonnaluba",
+      "desc": "[Производство] Keskkonnaamet / kohalik omavalitsus",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Keskkonnaamet / kohalik omavalitsus\nТребования:\n• Keskkonnamõju hindamine (vajadusel)\n• Tuleohutuse nõuded\n• Jäätmekäitluskava\n• Ehitusluba tootmisruumidele\nСрок действия: Tähtajatu (regulaarsed kontrollid)\nСтоимость: 100–5.000 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Veoluba (autovedu)",
+      "desc": "[Логистика и склад] Transpordiamet",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Transpordiamet\nТребования:\n• Veokorraldusjuhi pädevustunnistus\n• Finantssuutlikkuse tõendamine\n• Veokindlustus\n• Hea maine nõue\nСрок действия: 5 aastat (pikendatav)\nСтоимость: 100–500 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Laotegevuse majandustegevusteade",
+      "desc": "[Логистика и склад] MTR",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: MTR\nТребования:\n• Nõuetekohased laoruumid\n• Tuleohutuse nõuded\n• Tollilao luba (vajadusel)\nСрок действия: Tähtajatu\nСтоимость: Tasuta (majandustegevusteade)"
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 24% (alates 01.07.2025)\nvat_reduced: 13% (majutusteenused), 9% (ravimid, raamatud, perioodika)\ncorporate_tax: 24% jaotatud kasumilt (alates 01.01.2026); 0% jaotamata kasumilt\nnotes: Eesti unikaalne süsteem: ettevõtte tulumaks 0% jaotamata kasumile. Maks rakendub ainult dividendide jaotamisel (24/76 netodividendist). Kaitsemaks 2026–2028 tühistati Riigikogu poolt. e-Residentsus võimaldab välismaalastel ettevõtet kaugjuhtida."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 24%\nvat_reduced: 13% (majutusteenused), 9% (perioodika, ravimid)\ncorporate_tax: 24% jaotatud kasumilt / 0% jaotamata\nnotes: Majutusteenuste käibemaks 13% (alates 01.01.2025). Toitlustus standardmääraga 24%."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 24%\nvat_reduced: 9%\ncorporate_tax: 24% jaotatud kasumilt / 0% jaotamata\nnotes: FIE: sotsiaalmaks 33% + tulumaks 20% netotulult. OÜ: ainult jaotatud kasumilt 24%."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 24%\nvat_reduced: 9%\ncorporate_tax: 24% jaotatud kasumilt / 0% jaotamata\nnotes: EAS (Ettevõtluse ja Innovatsiooni SA) investeeringutoetused tootmisettevõtetele. 0% tulumaks jaotamata kasumile soodustab reinvesteerimist."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 24%\nvat_reduced: 0% (rahvusvaheline vedu)\ncorporate_tax: 24% jaotatud kasumilt / 0% jaotamata\nnotes: Eesti on Euroopa digitaalseim riik — e-äriregister, e-residentsus, e-tollideklaratsioonid. Rahvusvaheline veoteenus käibemaksuvaba."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — Eesti",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "Эстония: Уникальная система — налог на прибыль 0% на нераспределённую прибыль, 24% только на распределённую (дивиденды) с 01.01.2026 (ранее 22%). Запланированный оборонный налог 2% отменён парламентом. OÜ — основная форма, минимальный капитал отменён с 01.02.2023 (мин. 0,01 EUR). Регистрация в Äriregister за 1–3 дня. e-Residency для удалённого управления. Käibemaks (НДС) 24%/13%/9%. Порог регистрации НДС: 40.000 EUR/год. Самая цифровая страна Европы."
+    }
+  ]
+}

@@ -1,0 +1,278 @@
+{
+  "country": "CH",
+  "lang": "de",
+  "currency": "CHF",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "Einzelfirma — Einzelunternehmen / Entreprise individuelle",
+      "desc": "Мин. капитал: Kein Mindestkapital. 1–5 Arbeitstage (sofortige Aufnahme möglich, HR-Eintrag 1–2 Wochen)",
+      "price": 120,
+      "required": true,
+      "note": "Ответственность: Unbeschränkte persönliche Haftung mit dem gesamten Privat- und Geschäftsvermögen\nСроки: 1–5 Arbeitstage (sofortige Aufnahme möglich, HR-Eintrag 1–2 Wochen)\nСтоимость: CHF 120–400 (Handelsregistereintrag); AHV-Anmeldung kostenlos; ggf. CHF 200–500 für Beratung\nШаги регистрации:\n1. Geschäftstätigkeit aufnehmen (formlose Gründung möglich)\n2. Anmeldung bei der kantonalen AHV-Ausgleichskasse als Selbständigerwerbende(r)\n3. Ab CHF 100'000 Jahresumsatz: Eintragung im Handelsregisteramt (darunter freiwillig)\n4. Ab CHF 100'000 Jahresumsatz: Anmeldung bei der ESTV für die Mehrwertsteuer (MWST-Nummer beantragen)\n5. Geschäftskonto bei einer Schweizer Bank eröffnen\n6. Buchhaltung einrichten (vereinfacht bis CHF 500'000 Umsatz, darüber ordentliche Buchführung)\n7. Branchenspezifische Bewilligungen prüfen (kantonale Gewerbepolizei)"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "GmbH / Sàrl — Gesellschaft mit beschränkter Haftung (GmbH) / Société à responsabilité limitée (Sàrl)",
+      "desc": "Мин. капитал: CHF 20'000 (muss bei Gründung vollständig liberiert sein). 2–4 Wochen (Express in einigen Kantonen: 5–10 Arbeitstage)",
+      "price": 3,
+      "required": true,
+      "note": "Ответственность: Haftung beschränkt auf das Gesellschaftsvermögen; Gesellschafter haften nur bis zur Höhe ihrer Stammeinlage (Nachschusspflicht möglich gemäss Statuten bis max. zum Doppelten der Stammeinlage)\nСроки: 2–4 Wochen (Express in einigen Kantonen: 5–10 Arbeitstage)\nСтоимость: CHF 3'000–6'000 total (Notar CHF 800–1'500, Handelsregister CHF 600–800, Bankgebühren CHF 200–500, SHAB-Publikation CHF 50–100, Beratung/Treuhänder CHF 1'000–3'000)\nШаги регистрации:\n1. Firmenname prüfen und reservieren (Zefix/Regix-Abfrage beim Handelsregisteramt)\n2. Statuten (Gesellschaftsvertrag) erstellen mit Zweckbestimmung, Stammkapital und Geschäftsführung\n3. Kapitaleinzahlung von CHF 20'000 auf ein Sperrkonto (Kapitaleinzahlungskonto) bei einer Schweizer Bank\n4. Öffentliche Beurkundung der Gründung beim Notar (notarielle Errichtungsurkunde)\n5. Anmeldung beim kantonalen Handelsregisteramt mit: Statuten, Beurkundungsurkunde, Bankbescheinigung, Annahmeerklärung der Geschäftsführer, Ausweis der wirtschaftlich Berechtigten\n6. Publikation im Schweizerischen Handelsamtsblatt (SHAB)\n7. Eintragung im Handelsregister und Zuteilung der UID-Nummer\n8. Anmeldung bei der AHV-Ausgleichskasse, Pensionskasse (BVG), Unfallversicherung (UVG)\n9. MWST-Registrierung bei der ESTV (ab CHF 100'000 Umsatz obligatorisch)\n10. Freigabe des Sperrkontos nach Handelsregistereintrag"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "AG / SA — Aktiengesellschaft (AG) / Société anonyme (SA)",
+      "desc": "Мин. капитал: CHF 100'000 (mindestens CHF 50'000 oder 20% des Aktienkapitals bei Gründung liberiert, je nachdem welcher Betrag höher ist). 2–6 Wochen",
+      "price": 5,
+      "required": true,
+      "note": "Ответственность: Haftung beschränkt auf das Gesellschaftsvermögen; Aktionäre haften nicht persönlich\nСроки: 2–6 Wochen\nСтоимость: CHF 5'000–15'000 total (Notar CHF 1'500–3'000, Handelsregister CHF 600–800, Revisionsstelle ab CHF 2'000/Jahr, Beratung CHF 2'000–8'000)\nШаги регистрации:\n1. Firmenname prüfen (Zefix-Datenbank)\n2. Statuten ausarbeiten (Zweck, Aktienkapital, Aktienart, Verwaltungsrat, Revisionsstelle)\n3. Kapitaleinzahlung auf Sperrkonto (mind. CHF 50'000)\n4. Öffentliche Beurkundung beim Notar (Errichtungsakt mit Sacheinlagegründung falls zutreffend)\n5. Einreichung beim Handelsregisteramt (Statuten, Gründungsprotokoll, Bankbescheinigung, Annahmeerklärung VR, Ausweis wirtschaftlich Berechtigte)\n6. Publikation im SHAB und Eintragung im Handelsregister\n7. Bestellung der Revisionsstelle (eingeschränkte Revision oder Opting-out bei Kleinunternehmen <10 VZÄ)\n8. Sozialversicherungsanmeldungen (AHV/IV/EO, BVG, UVG, KTG)\n9. MWST-Registrierung (obligatorisch ab CHF 100'000 Umsatz)\n10. Freigabe des Sperrkontos"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Kantonale Gewerbebewilligung",
+      "desc": "[Розничная торговля] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Lebensmittelbewilligung",
+      "desc": "[Розничная торговля] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Alkohol-Handelsbewilligung",
+      "desc": "[Розничная торговля] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Wirtepatent / Fähigkeitsausweis für Gastwirtschaft (fr: Patent/Certificat de capacité de restaurateur; it: Patente d'esercizio)",
+      "desc": "[HoReCa (общепит)] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Betriebsbewilligung für Gastwirtschaft",
+      "desc": "[HoReCa (общепит)] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Alkoholausschankbewilligung",
+      "desc": "[HoReCa (общепит)] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Lebensmittelbewilligung / Selbstkontrollkonzept (HACCP)",
+      "desc": "[HoReCa (общепит)] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Bau- und Nutzungsbewilligung",
+      "desc": "[HoReCa (общепит)] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Terrassen-/Aussenwirtschaftsbewilligung",
+      "desc": "[HoReCa (общепит)] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Niederspannungs-Installationsbewilligung (NIV)",
+      "desc": "[Услуги и ремёсла] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Installationsbewilligung Sanitär/Heizung",
+      "desc": "[Услуги и ремёсла] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Reglementierte Berufe (Medizin, Recht, Treuhand)",
+      "desc": "[Услуги и ремёсла] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Meisterprüfung / Höhere Fachprüfung (HFP)",
+      "desc": "[Услуги и ремёсла] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Umweltverträglichkeitsprüfung (UVP)",
+      "desc": "[Производство] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Betriebsbewilligung für Lebensmittelproduktion",
+      "desc": "[Производство] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Chemikalienbewilligung / Störfallvorsorge",
+      "desc": "[Производство] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Swissmedic-Zulassung (Pharma/Medizinprodukte)",
+      "desc": "[Производство] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "CE/CH-Konformität",
+      "desc": "[Производство] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Lizenz für den gewerblichen Strassentransport",
+      "desc": "[Логистика и склад] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "CZV-Fähigkeitsausweis (Chauffeurzulassungsverordnung)",
+      "desc": "[Логистика и склад] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "LSVA-Registrierung",
+      "desc": "[Логистика и склад] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "ADR-Bewilligung (Gefahrguttransport)",
+      "desc": "[Логистика и склад] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Zollbewilligung / Zugelassener Wirtschaftsbeteiligter (AEO)",
+      "desc": "[Логистика и склад] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Lagerhausbewilligung",
+      "desc": "[Логистика и склад] ",
+      "price": 0,
+      "required": true,
+      "note": ""
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 8.1% (Normalsatz, seit 01.01.2024)\nvat_reduced: 2.6% (reduzierter Satz: Lebensmittel, Medikamente, Bücher, Zeitungen)\nvat_special: 3.8% (Sondersatz: Beherbergungsleistungen)\nvat_threshold: CHF 100'000 Jahresumsatz (darunter freiwillige Registrierung möglich)\ncorporate_tax_federal: 8.5% auf den Reingewinn nach Steuern (effektiv ca. 7.83% auf Vorsteuergewinn)\ncorporate_tax_cantonal: Variiert stark: 11.9%–21% effektiv kombiniert (Bund + Kanton + Gemeinde)\nZug: ca. 11.9% (tiefster Satz der Schweiz)\nLuzern: ca. 12.3%\nNidwalden: ca. 12.7%\nZürich_Stadt: ca. 19.7%\nGenève: ca. 14.7%\nBasel_Stadt: ca. 13.0%\ncapital_tax: Kantonale Kapitalsteuer auf das Eigenkapital (0.01%–0.5% je nach Kanton)\nnotes: Die Schweiz hat kein einheitliches Steuerrecht. Steuern werden auf drei Ebenen erhoben: Bund, Kanton, Gemeinde. Der Steuerwettbewerb zwischen den Kantonen führt zu erheblichen Unterschieden. Einzelunternehmen und Personengesellschaften werden über die persönliche Einkommensteuer besteuert, nicht über die Gewinnsteuer."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 8.1% (auf Speisen und Getränke im Restaurant)\nvat_reduced: 2.6% (auf Take-away-Speisen und Lebensmittelverkauf zum Mitnehmen)\nvat_special: 3.8% (auf Beherbergungsleistungen / Hotelübernachtungen)\ncorporate_tax_federal: 8.5% auf Reingewinn nach Steuern\ncorporate_tax_cantonal: 11.9%–21% effektiv kombiniert\nnotes: Wichtige Unterscheidung: Speisen vor Ort = 8.1% MWST, Speisen zum Mitnehmen = 2.6% MWST. Hotel-Übernachtung = 3.8%. L-GAV (Landes-Gesamtarbeitsvertrag des Gastgewerbes) regelt Mindestlöhne und Arbeitsbedingungen."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 8.1%\nvat_reduced: 2.6% (bestimmte medizinische Leistungen, Bildung)\nvat_exempt: Von der MWST ausgenommen: Gesundheitsleistungen (Ärzte, Zahnärzte), Bildungsleistungen, Versicherungsumsätze, Finanzdienstleistungen, Vermietung von Immobilien\ncorporate_tax_federal: 8.5% auf Reingewinn (nur bei juristischen Personen)\ncorporate_tax_cantonal: 11.9%–21% effektiv kombiniert\nnotes: Einzelunternehmen und Personengesellschaften: Gewinn wird als persönliches Einkommen besteuert (progressive Einkommensteuer). Diverse Dienstleistungen sind von der MWST ausgenommen (Art. 21 MWSTG), nicht nur befreit."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 8.1%\nvat_reduced: 2.6% (Nahrungsmittel, Medikamente, Druckerzeugnisse)\ncorporate_tax_federal: 8.5% auf Reingewinn\ncorporate_tax_cantonal: 11.9%–21% effektiv kombiniert\ntax_incentives: Patentbox: Bis 90% Entlastung auf Erträge aus qualifizierenden Patenten (kantonal umgesetzt). Zusätzlicher F&E-Abzug: Bis 150% der F&E-Aufwendungen (kantonal). Gesamtentlastungslimite: Mindestbesteuerung von 30% des steuerbaren Gewinns vor Anwendung der Ermässigungen\nnotes: Produktionsunternehmen profitieren besonders von der Patentbox-Regelung (STAF, seit 2020) und dem erhöhten F&E-Abzug. Standortwahl entscheidend: Steuervorteil in ZG, NW, LU, AI gegenüber ZH, GE, BS."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 8.1%\nvat_reduced: 2.6% (nicht direkt auf Transportleistungen anwendbar)\nvat_export: 0% (Exportleistungen: grenzüberschreitender Gütertransport ist von der MWST befreit mit Vorsteuerabzugsrecht)\ncorporate_tax_federal: 8.5% auf Reingewinn\ncorporate_tax_cantonal: 11.9%–21% effektiv kombiniert\nlsva: Leistungsabhängige Schwerverkehrsabgabe: laufende Betriebskosten, steuerlich absetzbar\nnotes: Grenzüberschreitende Transportleistungen sind MWST-befreit (echte Befreiung mit Vorsteuerabzug). Schweiz als Transitland: wichtige Rolle der Gotthard- und Lötschberg-Achse. Verlagerungspolitik Strasse-Schiene: Subventionen für kombinierten Verkehr."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — Schweiz",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "Швейцария — федеративное государство с 26 кантонами, каждый из которых имеет значительную автономию в налоговом и предпринимательском праве. Основные формы бизнеса: Einzelunternehmen (ИП, без минимального капитала, неограниченная ответственность), GmbH/Sàrl (аналог ООО, минимальный капитал CHF 20'000, ограниченная ответственность), AG/SA (аналог АО, минимальный капитал CHF 100'000). Регистрация в Торговом реестре (Handelsregister) обязательна для юридических лиц, для ИП — с оборота CHF 100'000. НДС (MWST): стандартная ставка 8.1%, сниженная 2.6% (продукты, лекарства), специальная 3.8% (гостиницы). Налог на прибыль: федеральный 8.5% + кантональный/муниципальный, итого от ~12% (Цуг) до ~21% (некоторые города). Для общепита (HoReCa) обязателен Wirtepatent (лицензия ресторатора) — кантональный экзамен. Социальное страхование: AHV/IV/EO (пенсия/инвалидность) 10.6%, BVG (профессиональная пенсия) по возрасту, UVG (страхование от несчастных случаев) — ставки по отрасли. Общая нагрузка работодателя на соцстрахование: 14–18% от зарплаты. Налоговая конкуренция между кантонами — ключевой фактор выбора локации. Кантоны Цуг, Нидвальден, Люцерн — самые выгодные по налогам. Процесс регистрации GmbH: 2–4 недели, стоимость CHF 3'000–6'000."
+    }
+  ]
+}

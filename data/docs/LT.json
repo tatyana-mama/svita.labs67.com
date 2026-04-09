@@ -1,0 +1,166 @@
+{
+  "country": "LT",
+  "lang": "lt",
+  "currency": "EUR",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "UAB — Uždaroji akcinė bendrovė",
+      "desc": "Мин. капитал: 1.000 EUR (min. 25% apmokama steigiant). 3–5 darbo dienos",
+      "price": 200,
+      "required": true,
+      "note": "Ответственность: Ribota atsakomybė iki įnašo dydžio\nСроки: 3–5 darbo dienos\nСтоимость: 200–500 EUR (registracijos mokestis, notaras)\nШаги регистрации:\nPavadinimo patikrinimas ir rezervavimas Juridinių asmenų registre (JAR)\nSteigimo akto ir įstatų parengimas\nĮstatinio kapitalo įnašas į laikinąją banko sąskaitą\nDokumentų tvirtinimas pas notarą\nRegistracijos paraiškos pateikimas JAR\nRegistracija Valstybinėje mokesčių inspekcijoje (VMI)\nPVM mokėtojo registracija (jei apyvarta > 45.000 EUR)\nRegistracija Sodros"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "AB — Akcinė bendrovė",
+      "desc": "Мин. капитал: 40.000 EUR. 5–10 darbo dienų",
+      "price": 1000,
+      "required": true,
+      "note": "Ответственность: Ribota akcininkų atsakomybė\nСроки: 5–10 darbo dienų\nСтоимость: 1.000–3.000 EUR\nШаги регистрации:\nSteigimo akto ir įstatų parengimas\nNotarinis tvirtinimas\nĮstatinio kapitalo įnašas (min 40.000 EUR)\nRegistracija JAR\nVMI ir Sodros registracija"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "MB — Mažoji bendrija",
+      "desc": "Мин. капитал: 0 EUR (nereikalaujama). 3–5 darbo dienos",
+      "price": 100,
+      "required": true,
+      "note": "Ответственность: Ribota atsakomybė narių iki įnašo\nСроки: 3–5 darbo dienos\nСтоимость: 100–300 EUR\nШаги регистрации:\nPavadinimo patikrinimas JAR\nSteigimo sandorio ir nuostatų parengimas\nRegistracija JAR\nVMI registracija"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "IĮ — Individuali įmonė",
+      "desc": "Мин. капитал: 0 EUR. 1–3 darbo dienos",
+      "price": 50,
+      "required": true,
+      "note": "Ответственность: Neribota asmeninė atsakomybė\nСроки: 1–3 darbo dienos\nСтоимость: 50–100 EUR\nШаги регистрации:\nPavadinimo patikrinimas\nRegistracija JAR\nVMI registracija"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Mažmeninės prekybos licencija / leidimas",
+      "desc": "[Розничная торговля] Savivaldybės administracija",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Savivaldybės administracija\nТребования:\n• Registruotas verslo subjektas\n• Patalpų atitiktis priešgaisrinės saugos reikalavimams\n• Higienos normos (maisto prekybai)\n• Nuomos sutartis arba nuosavybės dokumentai\nСрок действия: Neterminuota (su periodinėmis patikromis)\nСтоимость: 50–300 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Maisto tvarkymo subjekto patvirtinimas / registracija",
+      "desc": "[HoReCa (общепит)] Valstybinė maisto ir veterinarijos tarnyba (VMVT)",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Valstybinė maisto ir veterinarijos tarnyba (VMVT)\nТребования:\n• RVASVT (HACCP) savikontrolės sistema\n• Maisto higienos mokymai personalui\n• Patalpų atitiktis sanitariniams reikalavimams\n• Maisto saugos dokumentacija\nСрок действия: Neterminuota (su reguliariomis patikromis)\nСтоимость: Nemokama (registracija) arba 50–200 EUR (patvirtinimas)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Alkoholinių gėrimų prekybos licencija",
+      "desc": "[HoReCa (общепит)] Savivaldybės administracija",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Savivaldybės administracija\nТребования:\n• Registruotas maisto tvarkymo subjektas\n• Patalpų atitiktis\n• Nepriekaištinga reputacija\nСрок действия: Kasmetinis atnaujinimas\nСтоимость: 100–500 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Apgyvendinimo paslaugų veiklos leidimas",
+      "desc": "[HoReCa (общепит)] Savivaldybė / Turizmo departamentas",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Savivaldybė / Turizmo departamentas\nТребования:\n• Patalpų atitiktis klasifikavimo reikalavimams\n• Priešgaisrinė sauga\n• Higienos normos\nСрок действия: Neterminuota\nСтоимость: 50–300 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Verslo liudijimas / individualios veiklos pažyma",
+      "desc": "[Услуги и ремёсла] VMI (Valstybinė mokesčių inspekcija)",
+      "price": 20,
+      "required": true,
+      "note": "Выдаёт: VMI (Valstybinė mokesčių inspekcija)\nТребования:\n• Registruotas fizinis asmuo\n• Veiklos rūšies nurodymas\nСрок действия: Iki 12 mėnesių (atnaujinamas)\nСтоимость: 20–200 EUR (priklausomai nuo veiklos rūšies)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Profesinės kvalifikacijos pripažinimas",
+      "desc": "[Услуги и ремёсла] Atitinkama profesinė institucija",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Atitinkama profesinė institucija\nТребования:\n• Kvalifikaciją patvirtinantys dokumentai\n• Profesinė patirtis\nСрок действия: Pagal profesiją\nСтоимость: 50–500 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Taršos integruotos prevencijos ir kontrolės (TIPK) leidimas",
+      "desc": "[Производство] Aplinkos apsaugos agentūra",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Aplinkos apsaugos agentūra\nТребования:\n• Poveikio aplinkai vertinimas\n• Atliekų tvarkymo planas\n• Priešgaisrinės saugos reikalavimai\n• Statybos leidimas gamybinėms patalpoms\nСрок действия: Neterminuota (su periodinėmis patikromis)\nСтоимость: 200–5.000 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Kelių transporto veiklos licencija",
+      "desc": "[Логистика и склад] Lietuvos transporto saugos administracija (LTSA)",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Lietuvos transporto saugos administracija (LTSA)\nТребования:\n• Transporto vadybininko profesinės kompetencijos pažymėjimas\n• Finansinis pajėgumas\n• Transporto priemonių draudimas\n• Nepriekaištinga reputacija\nСрок действия: 5 metai (atnaujinama)\nСтоимость: 100–500 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Sandėliavimo / logistikos centro leidimas",
+      "desc": "[Логистика и склад] Savivaldybė / Aplinkos apsaugos agentūra",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Savivaldybė / Aplinkos apsaugos agentūra\nТребования:\n• Statybos leidimas komercinėms patalpoms\n• Priešgaisrinės saugos reikalavimai\n• Muitinės sandėlio leidimas (jei taikoma)\nСрок действия: Neterminuota\nСтоимость: 200–1.000 EUR"
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21%\nvat_reduced: 9% (knygos, periodika, šildymas), 5% (vaistai, med. priemonės)\ncorporate_tax: 17% (nuo 01.01.2026, buvo 16%); 7% mažoms įmonėms (apyvarta < 300.000 EUR); 0% pirmus 2 metus naujoms mažoms įmonėms\nnotes: Pelno mokesčio padidinimas nuo 16% iki 17% nuo 2026 m. sausio 1 d. Kredito įstaigoms taikoma 22% (17% + 5%) nuo pelno > 2 mln. EUR."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21%\nvat_reduced: 9% (apgyvendinimo paslaugos), 5%\ncorporate_tax: 17% (7% mažoms įmonėms)\nnotes: Maitinimo paslaugoms taikomas standartinis 21% PVM tarifas. Apgyvendinimo paslaugoms — lengvatinis 9% PVM."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21%\nvat_reduced: 9%, 5%\ncorporate_tax: 17% (7% mažoms įmonėms)\nnotes: Individualios veiklos mokestis: 5%–15% nuo pajamų (priklausomai nuo rūšies). Verslo liudijimas: fiksuotas mokestis."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21%\nvat_reduced: 9%, 5%\ncorporate_tax: 17% (7% mažoms įmonėms)\nnotes: Investuok Lietuvoje (Invest Lithuania) teikia paramą gamybos investicijoms. Laisvosios ekonominės zonos (LEZ): Kauno, Klaipėdos, Šiaulių — pelno mokesčio lengvatos (0% pirmus 10 metų, 7,5% toliau)."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21%\nvat_reduced: 0% (tarptautinis krovinių gabenimas)\ncorporate_tax: 17% (7% mažoms įmonėms)\nnotes: Lietuva — svarbus tranzito koridorius tarp Vakarų Europos ir NVS šalių. Klaipėdos uostas — didžiausias Baltijos šalyse. PVM lengvata tarptautiniam transportui."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — Lietuva",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "Литва: Налог на прибыль повышен с 16% до 17% с 01.01.2026. Для малых предприятий (оборот < 300.000 EUR) — 7%, для новых малых — 0% первые 2 года. UAB — основная форма (мин. капитал 1.000 EUR). MB (малое товарищество) — без минимального капитала. Регистрация в Juridinių asmenų registras за 3–5 дней. НДС 21%/9%/5%. Порог НДС: 45.000 EUR/год. Свободные экономические зоны (Каунас, Клайпеда, Шяуляй): налог на прибыль 0% первые 10 лет, затем 7,5%. Клайпедский порт — крупнейший в Балтии."
+    }
+  ]
+}
