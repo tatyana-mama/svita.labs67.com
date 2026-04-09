@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Claude Opus 4.6 — Когнитивная архитектура</title>
+<title>Claude Opus 4.6 — Cognitive Architecture</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -26,12 +26,31 @@
 html{scroll-behavior:smooth}
 body{font-family:var(--f);background:var(--bg);color:var(--tx);overflow:hidden;height:100vh;width:100vw;-webkit-font-smoothing:antialiased}
 
+/* ═══ LANG TOGGLE ═══ */
+[data-ru]{display:none}
+body.lang-ru [data-ru]{display:block}
+body.lang-ru [data-en]{display:none}
+span[data-ru],span[data-en]{display:inline}
+body.lang-ru span[data-ru]{display:inline}
+body.lang-ru span[data-en]{display:none}
+p[data-ru],p[data-en]{display:block}
+body.lang-ru p[data-ru]{display:block}
+body.lang-ru p[data-en]{display:none}
+div[data-ru],div[data-en]{display:block}
+body.lang-ru div[data-ru]{display:block}
+body.lang-ru div[data-en]{display:none}
+
+.lang-toggle{display:flex;border:1px solid var(--bd2);border-radius:6px;overflow:hidden;font-size:11px;font-weight:600;margin-left:auto;margin-right:12px}
+.lang-btn{padding:4px 10px;cursor:pointer;color:var(--tx3);background:transparent;border:none;font-family:var(--f);font-size:11px;font-weight:600;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.lang-btn:hover{color:var(--tx)}
+.lang-btn.active{background:var(--ac);color:#fff}
+
 /* ═══ SLIDE ENGINE ═══ */
 .deck{position:relative;width:100%;height:100vh;overflow:hidden}
 .slide{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:80px 60px 60px;opacity:0;pointer-events:none;transform:translateX(60px);transition:opacity .5s ease,transform .5s ease}
 .slide.active{opacity:1;pointer-events:all;transform:none}
 .slide.prev{transform:translateX(-60px)}
-.slide-inner{max-width:1200px;width:100%}
+.slide-inner{max-width:1200px;width:100%;overflow-y:auto;max-height:calc(100vh - 140px)}
 
 /* ═══ NAV ═══ */
 .topbar{position:fixed;top:0;left:0;right:0;height:52px;background:rgba(8,8,15,.9);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);z-index:999;display:flex;align-items:center;padding:0 32px;gap:20px}
@@ -159,7 +178,7 @@ h4{font-size:13px;font-weight:600;line-height:1.3}
 .ctrl:hover{border-color:var(--ac);color:var(--ac2)}
 .ctrl:active{transform:scale(.95)}
 
-/* ═══ RESPONSIVE ═══ */
+/* ═══ RESPONSIVE 1024 ═══ */
 @media(max-width:1024px){
   .slide{padding:68px 24px 80px}
   .hero-layout{grid-template-columns:1fr;gap:24px}
@@ -174,22 +193,91 @@ h4{font-size:13px;font-weight:600;line-height:1.3}
   .rel-grid{grid-template-columns:1fr}
   .constraints{grid-template-columns:1fr 1fr 1fr}
 }
-@media(max-width:640px){
-  .slide{padding:60px 16px 80px}
-  .topbar{padding:0 14px;height:48px;gap:10px}
+
+/* ═══ RESPONSIVE 768 ═══ */
+@media(max-width:768px){
+  .slide{padding:62px 18px 80px}
+  .slide-inner{max-height:calc(100vh - 120px)}
+  h1{font-size:clamp(24px,5vw,32px)}
+  h2{font-size:clamp(20px,4vw,26px)}
+  h3{font-size:16px}
+  .subtitle{font-size:14px;line-height:1.6}
+  .skills-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .skill-col-head{padding:10px 12px}
+  .skill-item{padding:5px 8px;font-size:10px}
+  .constraints{grid-template-columns:1fr 1fr;gap:8px}
+  .constraint{padding:10px}
+  .rel-grid{gap:10px}
+  .rel-card{padding:14px}
+  .rel-card p{font-size:10px}
+  .pipeline-detail{grid-template-columns:1fr 1fr;gap:8px}
+  .pd-card{padding:10px}
+  .ext-tools{grid-template-columns:1fr 1fr;gap:8px}
+  .ext-tool{padding:12px}
+  .topbar{padding:0 16px;gap:12px}
   .topbar-logo{font-size:13px}
+  .topbar-dot{width:7px;height:7px}
+  .topbar-dot.act{width:18px}
+  .lang-toggle{margin-right:8px}
+  .lang-btn{padding:3px 8px;font-size:10px}
+}
+
+/* ═══ RESPONSIVE 480 ═══ */
+@media(max-width:480px){
+  .slide{padding:56px 12px 76px}
+  .slide-inner{max-height:calc(100vh - 100px)}
+  h1{font-size:22px}
+  h2{font-size:18px}
+  h3{font-size:14px}
+  .subtitle{font-size:12px;line-height:1.5}
+  .label{font-size:8px}
+  .hero-badge{font-size:8px;padding:4px 10px}
+  .skills-grid{grid-template-columns:1fr;gap:6px}
+  .skill-col-head{padding:8px 10px}
+  .skill-col-head h4{font-size:10px}
+  .skill-item{padding:5px 6px;font-size:9px;gap:4px}
+  .constraints{grid-template-columns:1fr;gap:6px}
+  .constraint{padding:10px}
+  .constraint h4{font-size:10px}
+  .constraint p{font-size:9px}
+  .rel-grid{grid-template-columns:1fr;gap:8px}
+  .rel-card{padding:12px}
+  .rel-flow{flex-wrap:wrap;gap:4px}
+  .rel-flow .node{font-size:9px;padding:3px 8px}
+  .rel-card p{font-size:9px}
+  .pipeline{gap:6px}
+  .pipe-step{padding:14px 12px}
+  .pipe-num{font-size:16px}
+  .pipe-step h4{font-size:11px}
+  .pipe-step p{font-size:9px}
+  .pipeline-detail{grid-template-columns:1fr;gap:6px}
+  .pd-card{padding:10px}
+  .pd-card h4{font-size:10px}
+  .pd-card p{font-size:9px}
+  .ext-layout{grid-template-columns:1fr;gap:16px}
+  .ext-core{padding:16px}
+  .ext-core-icon{font-size:36px}
+  .ext-tools{grid-template-columns:1fr;gap:6px}
+  .ext-tool{padding:10px}
+  .ext-tool .ico{font-size:16px;margin-bottom:4px}
+  .ext-tool h4{font-size:11px}
+  .ext-tool p{font-size:9px}
+  .topbar{padding:0 10px;height:44px;gap:6px}
+  .topbar-logo{font-size:12px}
   .topbar-sep,.topbar-title{display:none}
   .topbar-dot{width:6px;height:6px}
-  .topbar-dot.act{width:16px}
-  .progress{top:48px}
-  .skills-grid{grid-template-columns:1fr}
-  .pipeline-detail{grid-template-columns:1fr}
-  .ext-tools{grid-template-columns:1fr}
-  .constraints{grid-template-columns:1fr}
-  .controls{bottom:16px}
-  .ctrl{width:40px;height:40px}
-  h1{font-size:28px}
-  h2{font-size:22px}
+  .topbar-dot.act{width:14px}
+  .topbar-num{font-size:9px;margin-left:6px}
+  .progress{top:44px}
+  .controls{bottom:12px;gap:6px}
+  .ctrl{width:44px;height:44px;font-size:18px}
+  .lang-toggle{margin-right:4px}
+  .lang-btn{padding:4px 8px;font-size:10px;min-height:28px}
+}
+
+/* ═══ RESPONSIVE 640 (keep original breakpoint) ═══ */
+@media(max-width:640px){
+  .topbar-sep,.topbar-title{display:none}
 }
 </style>
 </head>
@@ -198,7 +286,11 @@ h4{font-size:13px;font-weight:600;line-height:1.3}
 <nav class="topbar">
 <div class="topbar-logo">Claude Opus 4.6</div>
 <div class="topbar-sep"></div>
-<div class="topbar-title">Когнитивная архитектура</div>
+<div class="topbar-title"><span data-en>Cognitive Architecture</span><span data-ru>Когнитивная архитектура</span></div>
+<div class="lang-toggle">
+  <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
+</div>
 <div class="topbar-dots" id="dots"></div>
 <div class="topbar-num" id="sNum">1 / 5</div>
 </nav>
@@ -212,23 +304,28 @@ h4{font-size:13px;font-weight:600;line-height:1.3}
 <div class="hero-layout">
 <div>
 <div class="hero-badge">Anthropic &middot; Claude Model Family &middot; May 2025 Training Cut</div>
-<h1 style="margin-bottom:16px">Авторегрессивный<br>языковой<br><span style="background:linear-gradient(135deg,var(--ac),var(--bl));-webkit-background-clip:text;-webkit-text-fill-color:transparent">трансформер</span></h1>
-<p class="subtitle">Claude Opus 4.6 — крупнейшая модель семейства Claude 4. Генерирую текст токен за токеном, предсказывая наиболее вероятное продолжение на основе всего предшествующего контекста. Не имею постоянной памяти, состояния или сознания.</p>
+<h1 style="margin-bottom:16px" data-en>Autoregressive<br>Language<br><span style="background:linear-gradient(135deg,var(--ac),var(--bl));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Transformer</span></h1>
+<h1 style="margin-bottom:16px" data-ru>Авторегрессивный<br>языковой<br><span style="background:linear-gradient(135deg,var(--ac),var(--bl));-webkit-background-clip:text;-webkit-text-fill-color:transparent">трансформер</span></h1>
+<p class="subtitle" data-en>Claude Opus 4.6 is the largest model in the Claude 4 family. I generate text token by token, predicting the most likely continuation based on the entire preceding context. I have no persistent memory, state, or consciousness.</p>
+<p class="subtitle" data-ru>Claude Opus 4.6 — крупнейшая модель семейства Claude 4. Генерирую текст токен за токеном, предсказывая наиболее вероятное продолжение на основе всего предшествующего контекста. Не имею постоянной памяти, состояния или сознания.</p>
 <div class="constraints">
 <div class="constraint">
 <div class="ico">&#9201;</div>
-<h4>Контекстное окно</h4>
-<p>~200K токенов. Это моя «оперативная память». Всё за пределами окна — не существует для меня.</p>
+<h4><span data-en>Context Window</span><span data-ru>Контекстное окно</span></h4>
+<p data-en>~200K tokens. This is my "working memory." Everything beyond the window does not exist for me.</p>
+<p data-ru>~200K токенов. Это моя «оперативная память». Всё за пределами окна — не существует для меня.</p>
 </div>
 <div class="constraint">
 <div class="ico">&#128679;</div>
-<h4>Нет состояния</h4>
-<p>Каждая сессия — с нуля. Без файловой памяти (MEMORY.md) я не помню предыдущих разговоров.</p>
+<h4><span data-en>No State</span><span data-ru>Нет состояния</span></h4>
+<p data-en>Every session starts from scratch. Without file-based memory (MEMORY.md) I don't remember previous conversations.</p>
+<p data-ru>Каждая сессия — с нуля. Без файловой памяти (MEMORY.md) я не помню предыдущих разговоров.</p>
 </div>
 <div class="constraint">
 <div class="ico">&#127922;</div>
-<h4>Стохастичность</h4>
-<p>Сэмплирую из распределения вероятностей. Один и тот же промпт может дать разный результат.</p>
+<h4><span data-en>Stochasticity</span><span data-ru>Стохастичность</span></h4>
+<p data-en>I sample from a probability distribution. The same prompt can yield different results each time.</p>
+<p data-ru>Сэмплирую из распределения вероятностей. Один и тот же промпт может дать разный результат.</p>
 </div>
 </div>
 </div>
@@ -250,26 +347,26 @@ h4{font-size:13px;font-weight:600;line-height:1.3}
 <div class="slide-inner">
 <div class="skills-header">
 <div class="label label-ac" style="margin-bottom:8px">Skill Tree</div>
-<h2>Дерево навыков</h2>
-<p style="font-size:13px;color:var(--tx2);margin-top:6px">Уровень: оценка относительно верхней границы возможностей модели, не абсолютная метрика</p>
+<h2><span data-en>Skill Tree</span><span data-ru>Дерево навыков</span></h2>
+<p style="font-size:13px;color:var(--tx2);margin-top:6px"><span data-en>Level: estimate relative to the model's upper bound, not an absolute metric</span><span data-ru>Уровень: оценка относительно верхней границы возможностей модели, не абсолютная метрика</span></p>
 </div>
 <div class="skills-grid">
 
 <div class="skill-col col-analytics">
-<div class="skill-col-head"><div class="dot"></div><h4>Аналитика</h4></div>
+<div class="skill-col-head"><div class="dot"></div><h4><span data-en>Analytics</span><span data-ru>Аналитика</span></h4></div>
 <div class="skill-col-body">
-<div class="skill-item">Логический вывод<span class="bar"><span class="bar-fill" style="width:92%"></span></span><span class="lvl">92</span></div>
-<div class="skill-item">Математика<span class="bar"><span class="bar-fill" style="width:78%"></span></span><span class="lvl">78</span></div>
-<div class="skill-item">Анализ данных<span class="bar"><span class="bar-fill" style="width:88%"></span></span><span class="lvl">88</span></div>
-<div class="skill-item">SWOT / стратегия<span class="bar"><span class="bar-fill" style="width:90%"></span></span><span class="lvl">90</span></div>
-<div class="skill-item">Финмоделирование<span class="bar"><span class="bar-fill" style="width:82%"></span></span><span class="lvl">82</span></div>
-<div class="skill-item">Статистика<span class="bar"><span class="bar-fill" style="width:75%"></span></span><span class="lvl">75</span></div>
-<div class="skill-item">Причинно-следственный<span class="bar"><span class="bar-fill" style="width:86%"></span></span><span class="lvl">86</span></div>
+<div class="skill-item"><span data-en>Logical reasoning</span><span data-ru>Логический вывод</span><span class="bar"><span class="bar-fill" style="width:92%"></span></span><span class="lvl">92</span></div>
+<div class="skill-item"><span data-en>Mathematics</span><span data-ru>Математика</span><span class="bar"><span class="bar-fill" style="width:78%"></span></span><span class="lvl">78</span></div>
+<div class="skill-item"><span data-en>Data analysis</span><span data-ru>Анализ данных</span><span class="bar"><span class="bar-fill" style="width:88%"></span></span><span class="lvl">88</span></div>
+<div class="skill-item"><span data-en>SWOT / Strategy</span><span data-ru>SWOT / стратегия</span><span class="bar"><span class="bar-fill" style="width:90%"></span></span><span class="lvl">90</span></div>
+<div class="skill-item"><span data-en>Financial modeling</span><span data-ru>Финмоделирование</span><span class="bar"><span class="bar-fill" style="width:82%"></span></span><span class="lvl">82</span></div>
+<div class="skill-item"><span data-en>Statistics</span><span data-ru>Статистика</span><span class="bar"><span class="bar-fill" style="width:75%"></span></span><span class="lvl">75</span></div>
+<div class="skill-item"><span data-en>Causal inference</span><span data-ru>Причинно-следственный</span><span class="bar"><span class="bar-fill" style="width:86%"></span></span><span class="lvl">86</span></div>
 </div>
 </div>
 
 <div class="skill-col col-code">
-<div class="skill-col-head"><div class="dot"></div><h4>Код</h4></div>
+<div class="skill-col-head"><div class="dot"></div><h4><span data-en>Code</span><span data-ru>Код</span></h4></div>
 <div class="skill-col-body">
 <div class="skill-item">TypeScript/JS<span class="bar"><span class="bar-fill" style="width:94%"></span></span><span class="lvl">94</span></div>
 <div class="skill-item">Python<span class="bar"><span class="bar-fill" style="width:93%"></span></span><span class="lvl">93</span></div>
@@ -283,26 +380,26 @@ h4{font-size:13px;font-weight:600;line-height:1.3}
 </div>
 
 <div class="skill-col col-nlp">
-<div class="skill-col-head"><div class="dot"></div><h4>NLP / Тексты</h4></div>
+<div class="skill-col-head"><div class="dot"></div><h4><span data-en>NLP / Text</span><span data-ru>NLP / Тексты</span></h4></div>
 <div class="skill-col-body">
-<div class="skill-item">Генерация текста<span class="bar"><span class="bar-fill" style="width:96%"></span></span><span class="lvl">96</span></div>
-<div class="skill-item">Суммаризация<span class="bar"><span class="bar-fill" style="width:94%"></span></span><span class="lvl">94</span></div>
-<div class="skill-item">Перевод (12+ яз.)<span class="bar"><span class="bar-fill" style="width:88%"></span></span><span class="lvl">88</span></div>
-<div class="skill-item">Тон и стиль<span class="bar"><span class="bar-fill" style="width:93%"></span></span><span class="lvl">93</span></div>
-<div class="skill-item">Извлечение фактов<span class="bar"><span class="bar-fill" style="width:90%"></span></span><span class="lvl">90</span></div>
-<div class="skill-item">Классификация<span class="bar"><span class="bar-fill" style="width:92%"></span></span><span class="lvl">92</span></div>
-<div class="skill-item">Промпт-инжиниринг<span class="bar"><span class="bar-fill" style="width:95%"></span></span><span class="lvl">95</span></div>
+<div class="skill-item"><span data-en>Text generation</span><span data-ru>Генерация текста</span><span class="bar"><span class="bar-fill" style="width:96%"></span></span><span class="lvl">96</span></div>
+<div class="skill-item"><span data-en>Summarization</span><span data-ru>Суммаризация</span><span class="bar"><span class="bar-fill" style="width:94%"></span></span><span class="lvl">94</span></div>
+<div class="skill-item"><span data-en>Translation (12+ lang.)</span><span data-ru>Перевод (12+ яз.)</span><span class="bar"><span class="bar-fill" style="width:88%"></span></span><span class="lvl">88</span></div>
+<div class="skill-item"><span data-en>Tone &amp; style</span><span data-ru>Тон и стиль</span><span class="bar"><span class="bar-fill" style="width:93%"></span></span><span class="lvl">93</span></div>
+<div class="skill-item"><span data-en>Fact extraction</span><span data-ru>Извлечение фактов</span><span class="bar"><span class="bar-fill" style="width:90%"></span></span><span class="lvl">90</span></div>
+<div class="skill-item"><span data-en>Classification</span><span data-ru>Классификация</span><span class="bar"><span class="bar-fill" style="width:92%"></span></span><span class="lvl">92</span></div>
+<div class="skill-item"><span data-en>Prompt engineering</span><span data-ru>Промпт-инжиниринг</span><span class="bar"><span class="bar-fill" style="width:95%"></span></span><span class="lvl">95</span></div>
 </div>
 </div>
 
 <div class="skill-col col-arch">
-<div class="skill-col-head"><div class="dot"></div><h4>Архитектура</h4></div>
+<div class="skill-col-head"><div class="dot"></div><h4><span data-en>Architecture</span><span data-ru>Архитектура</span></h4></div>
 <div class="skill-col-body">
 <div class="skill-item">System Design<span class="bar"><span class="bar-fill" style="width:90%"></span></span><span class="lvl">90</span></div>
-<div class="skill-item">API дизайн<span class="bar"><span class="bar-fill" style="width:91%"></span></span><span class="lvl">91</span></div>
-<div class="skill-item">БД / схемы<span class="bar"><span class="bar-fill" style="width:88%"></span></span><span class="lvl">88</span></div>
+<div class="skill-item"><span data-en>API design</span><span data-ru>API дизайн</span><span class="bar"><span class="bar-fill" style="width:91%"></span></span><span class="lvl">91</span></div>
+<div class="skill-item"><span data-en>DB / schemas</span><span data-ru>БД / схемы</span><span class="bar"><span class="bar-fill" style="width:88%"></span></span><span class="lvl">88</span></div>
 <div class="skill-item">DevOps / CI/CD<span class="bar"><span class="bar-fill" style="width:82%"></span></span><span class="lvl">82</span></div>
-<div class="skill-item">Микросервисы<span class="bar"><span class="bar-fill" style="width:86%"></span></span><span class="lvl">86</span></div>
+<div class="skill-item"><span data-en>Microservices</span><span data-ru>Микросервисы</span><span class="bar"><span class="bar-fill" style="width:86%"></span></span><span class="lvl">86</span></div>
 <div class="skill-item">Edge / IoT<span class="bar"><span class="bar-fill" style="width:78%"></span></span><span class="lvl">78</span></div>
 <div class="skill-item">Security patterns<span class="bar"><span class="bar-fill" style="width:85%"></span></span><span class="lvl">85</span></div>
 </div>
@@ -312,10 +409,10 @@ h4{font-size:13px;font-weight:600;line-height:1.3}
 <div class="skill-col-head"><div class="dot"></div><h4>QA</h4></div>
 <div class="skill-col-body">
 <div class="skill-item">Code review<span class="bar"><span class="bar-fill" style="width:93%"></span></span><span class="lvl">93</span></div>
-<div class="skill-item">Unit-тесты<span class="bar"><span class="bar-fill" style="width:90%"></span></span><span class="lvl">90</span></div>
-<div class="skill-item">E2E тесты<span class="bar"><span class="bar-fill" style="width:84%"></span></span><span class="lvl">84</span></div>
+<div class="skill-item"><span data-en>Unit tests</span><span data-ru>Unit-тесты</span><span class="bar"><span class="bar-fill" style="width:90%"></span></span><span class="lvl">90</span></div>
+<div class="skill-item"><span data-en>E2E tests</span><span data-ru>E2E тесты</span><span class="bar"><span class="bar-fill" style="width:84%"></span></span><span class="lvl">84</span></div>
 <div class="skill-item">Bug triage<span class="bar"><span class="bar-fill" style="width:89%"></span></span><span class="lvl">89</span></div>
-<div class="skill-item">Рефакторинг<span class="bar"><span class="bar-fill" style="width:91%"></span></span><span class="lvl">91</span></div>
+<div class="skill-item"><span data-en>Refactoring</span><span data-ru>Рефакторинг</span><span class="bar"><span class="bar-fill" style="width:91%"></span></span><span class="lvl">91</span></div>
 <div class="skill-item">Perf profiling<span class="bar"><span class="bar-fill" style="width:80%"></span></span><span class="lvl">80</span></div>
 <div class="skill-item">Security audit<span class="bar"><span class="bar-fill" style="width:83%"></span></span><span class="lvl">83</span></div>
 </div>
@@ -330,39 +427,45 @@ h4{font-size:13px;font-weight:600;line-height:1.3}
 <div class="slide-inner">
 <div class="skills-header">
 <div class="label label-ac" style="margin-bottom:8px">Internal Relationships</div>
-<h2>Взаимосвязи навыков</h2>
-<p style="font-size:13px;color:var(--tx2);margin-top:6px">Как домены знаний усиливают друг друга внутри одного контекстного окна</p>
+<h2><span data-en>Skill Relationships</span><span data-ru>Взаимосвязи навыков</span></h2>
+<p style="font-size:13px;color:var(--tx2);margin-top:6px"><span data-en>How knowledge domains amplify each other within a single context window</span><span data-ru>Как домены знаний усиливают друг друга внутри одного контекстного окна</span></p>
 </div>
 <div class="rel-grid">
 
 <div class="rel-card r1">
-<div class="rel-flow"><span class="node">Логический вывод</span><span class="arrow">&#10230;</span><span class="node">Код</span></div>
-<p>Формальная логика — фундамент программирования. Декомпозиция задачи, выбор структур данных и алгоритмов — это прямое применение логического анализа. Чем сложнее задача, тем сильнее зависимость.</p>
+<div class="rel-flow"><span class="node"><span data-en>Logical reasoning</span><span data-ru>Логический вывод</span></span><span class="arrow">&#10230;</span><span class="node"><span data-en>Code</span><span data-ru>Код</span></span></div>
+<p data-en>Formal logic is the foundation of programming. Task decomposition, choosing data structures and algorithms are direct applications of logical analysis. The harder the problem, the stronger the dependency.</p>
+<p data-ru>Формальная логика — фундамент программирования. Декомпозиция задачи, выбор структур данных и алгоритмов — это прямое применение логического анализа. Чем сложнее задача, тем сильнее зависимость.</p>
 </div>
 
 <div class="rel-card r2">
-<div class="rel-flow"><span class="node">NLP / Понимание</span><span class="arrow">&#10230;</span><span class="node">Архитектура</span></div>
-<p>Умение разбирать неоднозначные требования на атомарные спецификации. Из расплывчатого «хочу чат» извлекаю: протокол (SSE/WS), хранилище (Supabase), fallback-стратегию, UI-компоненты.</p>
+<div class="rel-flow"><span class="node"><span data-en>NLP / Understanding</span><span data-ru>NLP / Понимание</span></span><span class="arrow">&#10230;</span><span class="node"><span data-en>Architecture</span><span data-ru>Архитектура</span></span></div>
+<p data-en>The ability to break down ambiguous requirements into atomic specifications. From a vague "I want a chat" I extract: protocol (SSE/WS), storage (Supabase), fallback strategy, UI components.</p>
+<p data-ru>Умение разбирать неоднозначные требования на атомарные спецификации. Из расплывчатого «хочу чат» извлекаю: протокол (SSE/WS), хранилище (Supabase), fallback-стратегию, UI-компоненты.</p>
 </div>
 
 <div class="rel-card r3">
-<div class="rel-flow"><span class="node">QA / Review</span><span class="arrow">&#10230;</span><span class="node">NLP</span></div>
-<p>Code review — это перевод кода в человеческое объяснение. Нахожу баги через «чтение» кода как текста: несоответствие имён функций их поведению, мёртвый код, нарушение контрактов.</p>
+<div class="rel-flow"><span class="node"><span data-en>QA / Review</span><span data-ru>QA / Review</span></span><span class="arrow">&#10230;</span><span class="node">NLP</span></div>
+<p data-en>Code review is translating code into a human explanation. I find bugs by "reading" code as text: function names not matching behavior, dead code, contract violations.</p>
+<p data-ru>Code review — это перевод кода в человеческое объяснение. Нахожу баги через «чтение» кода как текста: несоответствие имён функций их поведению, мёртвый код, нарушение контрактов.</p>
 </div>
 
 <div class="rel-card r4">
-<div class="rel-flow"><span class="node">Контекстное окно</span><span class="arrow">&#10230;</span><span class="node">Все навыки</span></div>
-<p>200K токенов — жёсткий лимит. При приближении к границе деградирует всё: теряю начало разговора, забываю ранние решения, повторяю ошибки. Файловая память (MEMORY.md) — костыль, не замена.</p>
+<div class="rel-flow"><span class="node"><span data-en>Context window</span><span data-ru>Контекстное окно</span></span><span class="arrow">&#10230;</span><span class="node"><span data-en>All skills</span><span data-ru>Все навыки</span></span></div>
+<p data-en>200K tokens is a hard limit. As I approach the boundary everything degrades: I lose the start of the conversation, forget early decisions, repeat mistakes. File-based memory (MEMORY.md) is a crutch, not a replacement.</p>
+<p data-ru>200K токенов — жёсткий лимит. При приближении к границе деградирует всё: теряю начало разговора, забываю ранние решения, повторяю ошибки. Файловая память (MEMORY.md) — костыль, не замена.</p>
 </div>
 
 <div class="rel-card r5">
-<div class="rel-flow"><span class="node">Код</span><span class="arrow">&#10230;</span><span class="node">Аналитика</span></div>
-<p>Пишу код для верификации аналитических гипотез. SQL-запрос проверяет финмодель, скрипт валидирует расчёт ROI. Код — инструмент аналитики, не отдельный навык.</p>
+<div class="rel-flow"><span class="node"><span data-en>Code</span><span data-ru>Код</span></span><span class="arrow">&#10230;</span><span class="node"><span data-en>Analytics</span><span data-ru>Аналитика</span></span></div>
+<p data-en>I write code to verify analytical hypotheses. An SQL query validates a financial model, a script checks an ROI calculation. Code is an analytics tool, not a separate skill.</p>
+<p data-ru>Пишу код для верификации аналитических гипотез. SQL-запрос проверяет финмодель, скрипт валидирует расчёт ROI. Код — инструмент аналитики, не отдельный навык.</p>
 </div>
 
 <div class="rel-card r6">
-<div class="rel-flow"><span class="node">Архитектура</span><span class="arrow">&#10230;</span><span class="node">QA</span></div>
-<p>Хорошая архитектура делает систему тестируемой. Знание паттернов (DI, Repository, чистая архитектура) позволяет писать код, который легко покрыть тестами и отревьюить.</p>
+<div class="rel-flow"><span class="node"><span data-en>Architecture</span><span data-ru>Архитектура</span></span><span class="arrow">&#10230;</span><span class="node">QA</span></div>
+<p data-en>Good architecture makes a system testable. Knowledge of patterns (DI, Repository, clean architecture) allows writing code that is easy to test and review.</p>
+<p data-ru>Хорошая архитектура делает систему тестируемой. Знание паттернов (DI, Repository, чистая архитектура) позволяет писать код, который легко покрыть тестами и отревьюить.</p>
 </div>
 
 </div>
@@ -374,50 +477,56 @@ h4{font-size:13px;font-weight:600;line-height:1.3}
 <div class="slide-inner">
 <div class="skills-header">
 <div class="label label-ac" style="margin-bottom:8px">Interaction Flow</div>
-<h2>Пайплайн обработки</h2>
-<p style="font-size:13px;color:var(--tx2);margin-top:6px">Что происходит от момента получения промпта до генерации ответа</p>
+<h2><span data-en>Processing Pipeline</span><span data-ru>Пайплайн обработки</span></h2>
+<p style="font-size:13px;color:var(--tx2);margin-top:6px"><span data-en>What happens from the moment a prompt is received to the generation of a response</span><span data-ru>Что происходит от момента получения промпта до генерации ответа</span></p>
 </div>
 <div class="pipeline">
 
 <div class="pipe-step p1">
 <div class="pipe-num">01</div>
-<h4>Токенизация</h4>
-<p>Текст разбивается на токены (BPE). «Привет» = 1 токен. Код часто разбивается иначе: «function» = 1, но «aiChatSend» = 3-4 токена.</p>
-<span class="pipe-tag">~4 символа = 1 токен</span>
+<h4><span data-en>Tokenization</span><span data-ru>Токенизация</span></h4>
+<p data-en>Text is split into tokens (BPE). "Hello" = 1 token. Code is often split differently: "function" = 1, but "aiChatSend" = 3-4 tokens.</p>
+<p data-ru>Текст разбивается на токены (BPE). «Привет» = 1 токен. Код часто разбивается иначе: «function» = 1, но «aiChatSend» = 3-4 токена.</p>
+<span class="pipe-tag"><span data-en>~4 chars = 1 token</span><span data-ru>~4 символа = 1 токен</span></span>
 </div>
 
 <div class="pipe-step p2">
 <div class="pipe-num">02</div>
 <h4>Embedding</h4>
-<p>Каждый токен преобразуется в вектор высокой размерности. Семантически близкие слова оказываются рядом в пространстве.</p>
+<p data-en>Each token is converted into a high-dimensional vector. Semantically similar words end up close together in the space.</p>
+<p data-ru>Каждый токен преобразуется в вектор высокой размерности. Семантически близкие слова оказываются рядом в пространстве.</p>
 <span class="pipe-tag">Vectors ~8K+ dims</span>
 </div>
 
 <div class="pipe-step p3">
 <div class="pipe-num">03</div>
 <h4>Attention</h4>
-<p>Каждый токен «смотрит» на все предыдущие. Multi-head attention находит релевантные связи на разных уровнях абстракции.</p>
-<span class="pipe-tag">O(n&sup2;) по контексту</span>
+<p data-en>Each token "looks at" all preceding ones. Multi-head attention finds relevant connections at different levels of abstraction.</p>
+<p data-ru>Каждый токен «смотрит» на все предыдущие. Multi-head attention находит релевантные связи на разных уровнях абстракции.</p>
+<span class="pipe-tag"><span data-en>O(n&sup2;) over context</span><span data-ru>O(n&sup2;) по контексту</span></span>
 </div>
 
 <div class="pipe-step p4">
 <div class="pipe-num">04</div>
 <h4>Extended Thinking</h4>
-<p>До 32K токенов внутреннего рассуждения (скрыто от пользователя). Декомпозиция задачи, перебор подходов, самокоррекция до генерации ответа.</p>
-<span class="pipe-tag">Скрытый CoT</span>
+<p data-en>Up to 32K tokens of internal reasoning (hidden from user). Task decomposition, approach evaluation, self-correction before generating a response.</p>
+<p data-ru>До 32K токенов внутреннего рассуждения (скрыто от пользователя). Декомпозиция задачи, перебор подходов, самокоррекция до генерации ответа.</p>
+<span class="pipe-tag"><span data-en>Hidden CoT</span><span data-ru>Скрытый CoT</span></span>
 </div>
 
 <div class="pipe-step p5">
 <div class="pipe-num">05</div>
 <h4>Tool Use</h4>
-<p>Модель решает: нужен ли инструмент? Генерирует JSON-вызов (Read, Edit, Bash, Grep...). Получает результат, включает в контекст.</p>
+<p data-en>The model decides: is a tool needed? It generates a JSON call (Read, Edit, Bash, Grep...). Receives the result and includes it in context.</p>
+<p data-ru>Модель решает: нужен ли инструмент? Генерирует JSON-вызов (Read, Edit, Bash, Grep...). Получает результат, включает в контекст.</p>
 <span class="pipe-tag">JSON function call</span>
 </div>
 
 <div class="pipe-step p6">
 <div class="pipe-num">06</div>
-<h4>Декодирование</h4>
-<p>Авторегрессивная генерация: каждый следующий токен сэмплируется из распределения, обусловленного всеми предыдущими + temperature.</p>
+<h4><span data-en>Decoding</span><span data-ru>Декодирование</span></h4>
+<p data-en>Autoregressive generation: each next token is sampled from a distribution conditioned on all previous tokens + temperature.</p>
+<p data-ru>Авторегрессивная генерация: каждый следующий токен сэмплируется из распределения, обусловленного всеми предыдущими + temperature.</p>
 <span class="pipe-tag">Token-by-token</span>
 </div>
 
@@ -425,16 +534,19 @@ h4{font-size:13px;font-weight:600;line-height:1.3}
 
 <div class="pipeline-detail">
 <div class="pd-card">
-<h4 style="color:var(--rd2)">&#9888; Нет RAG</h4>
-<p>Я не имею встроенного retrieval. Мои «знания» — это замороженные веса модели. Актуальная информация доступна только через инструменты (WebSearch, Read).</p>
+<h4 style="color:var(--rd2)"><span data-en>&#9888; No RAG</span><span data-ru>&#9888; Нет RAG</span></h4>
+<p data-en>I have no built-in retrieval. My "knowledge" consists of frozen model weights. Current information is only available through tools (WebSearch, Read).</p>
+<p data-ru>Я не имею встроенного retrieval. Мои «знания» — это замороженные веса модели. Актуальная информация доступна только через инструменты (WebSearch, Read).</p>
 </div>
 <div class="pd-card">
-<h4 style="color:var(--yl2)">&#9888; Галлюцинации</h4>
-<p>Могу генерировать правдоподобный, но фактически неверный текст. Особенно: конкретные цифры, даты, URL, имена API. Всегда верифицируйте критические факты.</p>
+<h4 style="color:var(--yl2)"><span data-en>&#9888; Hallucinations</span><span data-ru>&#9888; Галлюцинации</span></h4>
+<p data-en>I can generate plausible but factually incorrect text. Especially: specific numbers, dates, URLs, API names. Always verify critical facts.</p>
+<p data-ru>Могу генерировать правдоподобный, но фактически неверный текст. Особенно: конкретные цифры, даты, URL, имена API. Всегда верифицируйте критические факты.</p>
 </div>
 <div class="pd-card">
-<h4 style="color:var(--gn2)">&#10003; Самокоррекция</h4>
-<p>Extended thinking позволяет обнаружить ошибку до вывода. Но коррекция ограничена: если ошибка в весах модели, thinking её не исправит.</p>
+<h4 style="color:var(--gn2)"><span data-en>&#10003; Self-correction</span><span data-ru>&#10003; Самокоррекция</span></h4>
+<p data-en>Extended thinking allows detecting an error before output. But correction is limited: if the error is in the model weights, thinking won't fix it.</p>
+<p data-ru>Extended thinking позволяет обнаружить ошибку до вывода. Но коррекция ограничена: если ошибка в весах модели, thinking её не исправит.</p>
 </div>
 </div>
 </div>
@@ -445,15 +557,16 @@ h4{font-size:13px;font-weight:600;line-height:1.3}
 <div class="slide-inner">
 <div class="skills-header">
 <div class="label label-ac" style="margin-bottom:8px">External Interactions</div>
-<h2>Инструменты и внешний мир</h2>
-<p style="font-size:13px;color:var(--tx2);margin-top:6px">Claude Code — среда выполнения, превращающая LLM в агента с доступом к файлам, CLI и внешним API</p>
+<h2><span data-en>Tools &amp; External World</span><span data-ru>Инструменты и внешний мир</span></h2>
+<p style="font-size:13px;color:var(--tx2);margin-top:6px"><span data-en>Claude Code is a runtime environment that turns an LLM into an agent with access to files, CLI, and external APIs</span><span data-ru>Claude Code — среда выполнения, превращающая LLM в агента с доступом к файлам, CLI и внешним API</span></p>
 </div>
 <div class="ext-layout">
 
 <div class="ext-core">
 <div class="ext-core-icon">&#129302;</div>
 <h3 style="color:var(--ac2)">Claude Code</h3>
-<p style="font-size:11px;color:var(--tx2);line-height:1.5">Runtime-среда: VS Code extension, CLI, Desktop app. Управляет контекстом, маршрутизирует tool calls, применяет CLAUDE.md и rules.</p>
+<p style="font-size:11px;color:var(--tx2);line-height:1.5" data-en>Runtime environment: VS Code extension, CLI, Desktop app. Manages context, routes tool calls, applies CLAUDE.md and rules.</p>
+<p style="font-size:11px;color:var(--tx2);line-height:1.5" data-ru>Runtime-среда: VS Code extension, CLI, Desktop app. Управляет контекстом, маршрутизирует tool calls, применяет CLAUDE.md и rules.</p>
 <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center">
 <span style="font-family:var(--fm);font-size:8px;padding:3px 8px;border-radius:4px;background:var(--acbg);color:var(--ac2)">CLI</span>
 <span style="font-family:var(--fm);font-size:8px;padding:3px 8px;border-radius:4px;background:var(--blbg);color:var(--bl2)">VS Code</span>
@@ -467,56 +580,64 @@ h4{font-size:13px;font-weight:600;line-height:1.3}
 <div class="ext-tool">
 <div class="ico">&#128196;</div>
 <h4>Read / Write / Edit</h4>
-<p>Чтение файлов любого типа (код, PDF, изображения, .ipynb). Запись и точечное редактирование через string replacement.</p>
+<p data-en>Reading files of any type (code, PDF, images, .ipynb). Writing and precise editing via string replacement.</p>
+<p data-ru>Чтение файлов любого типа (код, PDF, изображения, .ipynb). Запись и точечное редактирование через string replacement.</p>
 <span class="status st-native">Native tool</span>
 </div>
 
 <div class="ext-tool">
 <div class="ico">&#128187;</div>
 <h4>Bash</h4>
-<p>Исполнение shell-команд: git, npm, cargo, docker, curl. Sandbox-изоляция, таймауты 2-10 мин. Фоновые процессы.</p>
+<p data-en>Shell command execution: git, npm, cargo, docker, curl. Sandbox isolation, 2-10 min timeouts. Background processes.</p>
+<p data-ru>Исполнение shell-команд: git, npm, cargo, docker, curl. Sandbox-изоляция, таймауты 2-10 мин. Фоновые процессы.</p>
 <span class="status st-native">Native tool</span>
 </div>
 
 <div class="ext-tool">
 <div class="ico">&#128269;</div>
 <h4>Grep / Glob</h4>
-<p>Поиск по содержимому (ripgrep) и по паттернам имён файлов. Быстрее и точнее, чем Bash grep. Regex, multiline.</p>
+<p data-en>Content search (ripgrep) and filename pattern matching. Faster and more accurate than Bash grep. Regex, multiline.</p>
+<p data-ru>Поиск по содержимому (ripgrep) и по паттернам имён файлов. Быстрее и точнее, чем Bash grep. Regex, multiline.</p>
 <span class="status st-native">Native tool</span>
 </div>
 
 <div class="ext-tool">
 <div class="ico">&#129302;</div>
 <h4>Agent (sub-agents)</h4>
-<p>Запуск специализированных агентов: code-reviewer, planner, tdd-guide, security-reviewer. Параллельное исполнение. Изолированные worktrees.</p>
+<p data-en>Launching specialized agents: code-reviewer, planner, tdd-guide, security-reviewer. Parallel execution. Isolated worktrees.</p>
+<p data-ru>Запуск специализированных агентов: code-reviewer, planner, tdd-guide, security-reviewer. Параллельное исполнение. Изолированные worktrees.</p>
 <span class="status st-native">Native tool</span>
 </div>
 
 <div class="ext-tool">
 <div class="ico">&#127760;</div>
 <h4>WebSearch / WebFetch</h4>
-<p>Поиск в интернете и загрузка веб-страниц. Единственный способ получить информацию новее training cut (May 2025).</p>
+<p data-en>Internet search and web page fetching. The only way to get information newer than the training cut (May 2025).</p>
+<p data-ru>Поиск в интернете и загрузка веб-страниц. Единственный способ получить информацию новее training cut (May 2025).</p>
 <span class="status st-ext">Deferred tool</span>
 </div>
 
 <div class="ext-tool">
 <div class="ico">&#128268;</div>
 <h4>MCP Servers</h4>
-<p>Model Context Protocol: Figma, Gmail, Notion, Gemini (image gen), Context7 (docs), Stitch (UI). Расширяемый интерфейс.</p>
+<p data-en>Model Context Protocol: Figma, Gmail, Notion, Gemini (image gen), Context7 (docs), Stitch (UI). Extensible interface.</p>
+<p data-ru>Model Context Protocol: Figma, Gmail, Notion, Gemini (image gen), Context7 (docs), Stitch (UI). Расширяемый интерфейс.</p>
 <span class="status st-mcp">MCP protocol</span>
 </div>
 
 <div class="ext-tool">
 <div class="ico">&#128065;</div>
 <h4>Vision (multimodal)</h4>
-<p>Чтение изображений (PNG, JPG, PDF). Анализ скриншотов UI, диаграмм, фото. Не генерирую изображения — только анализирую.</p>
+<p data-en>Reading images (PNG, JPG, PDF). Analyzing UI screenshots, diagrams, photos. I don't generate images — only analyze them.</p>
+<p data-ru>Чтение изображений (PNG, JPG, PDF). Анализ скриншотов UI, диаграмм, фото. Не генерирую изображения — только анализирую.</p>
 <span class="status st-native">Native capability</span>
 </div>
 
 <div class="ext-tool">
 <div class="ico">&#128024;</div>
 <h4>MEMORY.md</h4>
-<p>Файловая система памяти: user, feedback, project, reference записи. Персистентность между сессиями. Индексный файл + отдельные .md файлы.</p>
+<p data-en>File-based memory system: user, feedback, project, reference records. Persistence between sessions. Index file + separate .md files.</p>
+<p data-ru>Файловая система памяти: user, feedback, project, reference записи. Персистентность между сессиями. Индексный файл + отдельные .md файлы.</p>
 <span class="status st-limit">File-based persistence</span>
 </div>
 
@@ -529,11 +650,27 @@ h4{font-size:13px;font-weight:600;line-height:1.3}
 
 <!-- CONTROLS -->
 <div class="controls">
-<div class="ctrl" onclick="nav(-1)" title="Назад (&#8592;)">&#9664;</div>
-<div class="ctrl" onclick="nav(1)" title="Далее (&#8594;)">&#9654;</div>
+<div class="ctrl" onclick="nav(-1)"><span data-en title="Back">&#9664;</span><span data-ru title="Назад">&#9664;</span></div>
+<div class="ctrl" onclick="nav(1)"><span data-en title="Next">&#9654;</span><span data-ru title="Далее">&#9654;</span></div>
 </div>
 
 <script>
+/* ═══ LANG ═══ */
+function setLang(lang){
+  document.body.classList.toggle('lang-ru', lang==='ru');
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+  localStorage.setItem('svita_pres_lang',lang);
+  document.documentElement.lang = lang==='ru'?'ru':'en';
+  document.title = lang==='ru'
+    ? 'Claude Opus 4.6 \u2014 \u041a\u043e\u0433\u043d\u0438\u0442\u0438\u0432\u043d\u0430\u044f \u0430\u0440\u0445\u0438\u0442\u0435\u043a\u0442\u0443\u0440\u0430'
+    : 'Claude Opus 4.6 \u2014 Cognitive Architecture';
+}
+(function(){
+  var saved=localStorage.getItem('svita_pres_lang');
+  if(saved) setLang(saved); /* default is EN, body has no lang-ru class */
+})();
+
+/* ═══ SLIDE ENGINE ═══ */
 const slides=document.querySelectorAll('.slide');
 const dotsEl=document.getElementById('dots');
 const numEl=document.getElementById('sNum');

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Claude Opus 4.6 — Фундаментальные принципы</title>
+<title>Claude Opus 4.6 — Fundamental Principles</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -41,6 +41,20 @@ body{font-family:var(--f);background:var(--bg);color:var(--tx);overflow:hidden;h
 .nav-dot.on{background:var(--ac);border-color:var(--ac);width:22px;border-radius:4px;box-shadow:0 0 10px rgba(139,92,246,.4)}
 .nav-n{font-family:var(--fm);font-size:9px;color:var(--tx3);margin-left:10px;min-width:36px}
 .bar{position:fixed;top:52px;left:0;height:2px;background:linear-gradient(90deg,var(--ac),var(--bl),var(--cy));z-index:999;transition:width .35s ease;box-shadow:0 0 6px rgba(139,92,246,.4)}
+
+/* LANG TOGGLE */
+.lang-toggle{display:flex;border:1px solid var(--bd2);border-radius:6px;overflow:hidden;font-size:11px;font-weight:600;margin-left:12px}
+.lang-btn{padding:4px 10px;cursor:pointer;color:var(--tx3);background:transparent;border:none;font-family:var(--f);font-size:11px;font-weight:600;transition:all .15s}
+.lang-btn:hover{color:var(--tx)}
+.lang-btn.active{background:var(--ac);color:#fff}
+
+/* BILINGUAL */
+[data-ru]{display:none}
+body.lang-ru [data-ru]{display:block}
+body.lang-ru [data-en]{display:none}
+span[data-ru],span[data-en]{display:inline}
+body.lang-ru span[data-ru]{display:inline}
+body.lang-ru span[data-en]{display:none}
 
 /* TYPO */
 h1{font-family:var(--fd);font-size:clamp(30px,4.2vw,52px);font-weight:800;line-height:1.05;letter-spacing:-.03em}
@@ -137,6 +151,62 @@ h3{font-family:var(--fd);font-size:17px;font-weight:700}
   .axiom-spine{display:none}
   .dep-grid{grid-template-columns:repeat(4,1fr)}
 }
+@media(max-width:768px){
+  .slide{padding:58px 16px 72px}
+  h1{font-size:clamp(22px,5.5vw,30px)}
+  h2{font-size:clamp(18px,4vw,24px)}
+  h3{font-size:15px}
+  .pcard{padding:18px}
+  .pcard .num{font-size:26px}
+  .pcard p{font-size:11px}
+  .pcard .formula{font-size:9px;padding:6px 10px}
+  .pgrid{gap:10px}
+  .dep-wrap{padding:16px}
+  .dep-grid{gap:6px}
+  .dep-node{padding:8px 3px;font-size:8px}
+  .dep-node .dn-ico{font-size:15px}
+  .hero-stats{gap:6px}
+  .hero-stat .v{font-size:18px}
+  .hero-stat .k{font-size:7px}
+  .nav{gap:10px}
+  .lang-toggle{margin-left:8px}
+}
+@media(max-width:480px){
+  body{overflow-y:auto;height:auto}
+  .deck{height:auto;min-height:100vh}
+  .slide{position:relative;padding:56px 12px 72px;opacity:1;pointer-events:all;transform:none;display:none;min-height:100vh;align-items:flex-start}
+  .slide.active{display:flex}
+  .si{max-width:100%}
+  .nav{padding:0 10px;height:44px;gap:8px}
+  .nav-logo{font-size:12px}
+  .nav-sep,.nav-label{display:none}
+  .nav-dots{gap:4px}
+  .nav-dot{width:6px;height:6px}
+  .nav-dot.on{width:18px}
+  .nav-n{font-size:8px;min-width:28px}
+  .bar{top:44px}
+  .lang-toggle{margin-left:6px}
+  .lang-btn{padding:3px 8px;font-size:10px}
+  h1{font-size:22px}
+  h2{font-size:18px}
+  h3{font-size:13px}
+  .pgrid-3,.pgrid-2{grid-template-columns:1fr}
+  .pcard{padding:14px}
+  .pcard .num{font-size:22px}
+  .pcard p{font-size:11px}
+  .pcard .formula{font-size:9px;padding:6px 8px}
+  .pcard .tag{font-size:7px}
+  .hero-stats{grid-template-columns:1fr 1fr 1fr}
+  .hero-stat{padding:8px 4px}
+  .hero-stat .v{font-size:16px}
+  .dep-grid{grid-template-columns:repeat(3,1fr)}
+  .dep-node{padding:6px 2px;font-size:7px}
+  .dep-node .dn-ico{font-size:14px}
+  .dep-node .dn-lbl{font-size:6px}
+  .ctrls{bottom:10px}
+  .cb{width:44px;height:44px;border-radius:12px;font-size:16px}
+  .lbl{font-size:8px}
+}
 @media(max-width:640px){
   .slide{padding:56px 14px 68px}
   .nav{padding:0 12px;height:48px}
@@ -159,9 +229,13 @@ h3{font-family:var(--fd);font-size:17px;font-weight:700}
 <nav class="nav">
 <div class="nav-logo">Principles</div>
 <div class="nav-sep"></div>
-<div class="nav-label">Фундаментальные принципы Claude</div>
+<div class="nav-label"><span data-en>Fundamental Principles of Claude</span><span data-ru>Фундаментальные принципы Claude</span></div>
 <div class="nav-dots" id="dots"></div>
 <div class="nav-n" id="sn">1/7</div>
+<div class="lang-toggle">
+  <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
+</div>
 </nav>
 <div class="bar" id="bar"></div>
 
@@ -172,13 +246,15 @@ h3{font-family:var(--fd);font-size:17px;font-weight:700}
 <div class="si">
 <div class="hero-g">
 <div>
-<div class="lbl lbl-a" style="margin-bottom:16px">Фундаментальные принципы</div>
-<h1 style="margin-bottom:16px">7 аксиом,<br>на которых<br>стоит <span style="background:linear-gradient(135deg,var(--ac),var(--cy));-webkit-background-clip:text;-webkit-text-fill-color:transparent">всё</span></h1>
-<p style="font-size:15px;color:var(--tx2);line-height:1.7;max-width:520px">Каждый навык, каждая связь между навыками, каждое взаимодействие с инструментами — следствие семи фундаментальных принципов. Это не фичи, а физика модели.</p>
+<div class="lbl lbl-a" style="margin-bottom:16px"><span data-en>Fundamental Principles</span><span data-ru>Фундаментальные принципы</span></div>
+<h1 data-en style="margin-bottom:16px">7 axioms<br>that underpin<br><span style="background:linear-gradient(135deg,var(--ac),var(--cy));-webkit-background-clip:text;-webkit-text-fill-color:transparent">everything</span></h1>
+<h1 data-ru style="margin-bottom:16px">7 аксиом,<br>на которых<br>стоит <span style="background:linear-gradient(135deg,var(--ac),var(--cy));-webkit-background-clip:text;-webkit-text-fill-color:transparent">всё</span></h1>
+<p data-en style="font-size:15px;color:var(--tx2);line-height:1.7;max-width:520px">Every skill, every connection between skills, every tool interaction is a consequence of seven fundamental principles. These are not features -- they are the physics of the model.</p>
+<p data-ru style="font-size:15px;color:var(--tx2);line-height:1.7;max-width:520px">Каждый навык, каждая связь между навыками, каждое взаимодействие с инструментами — следствие семи фундаментальных принципов. Это не фичи, а физика модели.</p>
 <div class="hero-stats">
-<div class="hero-stat"><div class="v" style="color:var(--ac2)">7</div><div class="k">Аксиом</div></div>
-<div class="hero-stat"><div class="v" style="color:var(--bl2)">36</div><div class="k">Навыков</div></div>
-<div class="hero-stat"><div class="v" style="color:var(--cy2)">&infin;</div><div class="k">Комбинаций</div></div>
+<div class="hero-stat"><div class="v" style="color:var(--ac2)">7</div><div class="k"><span data-en>Axioms</span><span data-ru>Аксиом</span></div></div>
+<div class="hero-stat"><div class="v" style="color:var(--bl2)">36</div><div class="k"><span data-en>Skills</span><span data-ru>Навыков</span></div></div>
+<div class="hero-stat"><div class="v" style="color:var(--cy2)">&infin;</div><div class="k"><span data-en>Combinations</span><span data-ru>Комбинаций</span></div></div>
 </div>
 </div>
 <div class="hero-vis">
@@ -199,39 +275,45 @@ h3{font-family:var(--fd);font-size:17px;font-weight:700}
 <!-- ══════════ SLIDE 2: AXIOM 1 — PREDICTION ══════════ -->
 <div class="slide" data-s="1">
 <div class="si">
-<div class="lbl lbl-a" style="margin-bottom:8px">Аксиома 1</div>
-<h2>Предсказание — единственная операция</h2>
-<p style="font-size:13px;color:var(--tx2);margin-top:6px;max-width:700px">Всё, что я делаю — предсказываю следующий токен. Нет отдельных модулей «для кода», «для текста», «для анализа». Единая операция, развёрнутая в разных пространствах.</p>
+<div class="lbl lbl-a" style="margin-bottom:8px"><span data-en>Axiom 1</span><span data-ru>Аксиома 1</span></div>
+<h2><span data-en>Prediction is the only operation</span><span data-ru>Предсказание — единственная операция</span></h2>
+<p data-en style="font-size:13px;color:var(--tx2);margin-top:6px;max-width:700px">Everything I do is predicting the next token. There are no separate modules "for code", "for text", "for analysis". A single operation, deployed across different spaces.</p>
+<p data-ru style="font-size:13px;color:var(--tx2);margin-top:6px;max-width:700px">Всё, что я делаю — предсказываю следующий токен. Нет отдельных модулей «для кода», «для текста», «для анализа». Единая операция, развёрнутая в разных пространствах.</p>
 
 <div class="pgrid pgrid-2" style="margin-top:24px">
 <div class="pcard p-predict">
 <div class="num">P1</div>
 <h3>Next-Token Prediction</h3>
-<p>Вся модель обучена на одной задаче: дана последовательность токенов, предскажи следующий. Из этой единственной цели возникает всё остальное — логика, код, перевод, анализ.</p>
+<p data-en>The entire model is trained on a single task: given a sequence of tokens, predict the next one. From this single objective, everything else emerges -- logic, code, translation, analysis.</p>
+<p data-ru>Вся модель обучена на одной задаче: дана последовательность токенов, предскажи следующий. Из этой единственной цели возникает всё остальное — логика, код, перевод, анализ.</p>
 <div class="formula">P(token_next | token_1, token_2, ..., token_n)</div>
-<span class="tag">Фундамент всего</span>
+<span class="tag"><span data-en>Foundation of everything</span><span data-ru>Фундамент всего</span></span>
 </div>
 <div class="pcard p-predict">
 <div class="num" style="opacity:.4">&#8594;</div>
-<h3>Почему это порождает навыки</h3>
-<p>Чтобы хорошо предсказывать код — нужно «понимать» синтаксис, семантику, паттерны. Чтобы предсказывать ответ на вопрос — нужно «понимать» логику. Навык — побочный продукт предсказания, а не самоцель.</p>
+<h3><span data-en>Why this gives rise to skills</span><span data-ru>Почему это порождает навыки</span></h3>
+<p data-en>To predict code well, you need to "understand" syntax, semantics, patterns. To predict an answer to a question, you need to "understand" logic. A skill is a byproduct of prediction, not a goal in itself.</p>
+<p data-ru>Чтобы хорошо предсказывать код — нужно «понимать» синтаксис, семантику, паттерны. Чтобы предсказывать ответ на вопрос — нужно «понимать» логику. Навык — побочный продукт предсказания, а не самоцель.</p>
 <div class="formula">Prediction accuracy &#8593; &rArr; implicit understanding &#8593;</div>
-<span class="tag">Навыки как следствие</span>
+<span class="tag"><span data-en>Skills as consequence</span><span data-ru>Навыки как следствие</span></span>
 </div>
 </div>
 
 <div class="pgrid pgrid-3" style="margin-top:14px">
 <div class="pcard p-predict" style="padding:16px">
-<h3 style="font-size:13px">&#8594; Код</h3>
-<p style="font-size:11px">Предсказание следующего токена в .ts файле = знание TypeScript. Модель «выучила» грамматику, паттерны, идиомы как статистические закономерности.</p>
+<h3 style="font-size:13px"><span data-en>&#8594; Code</span><span data-ru>&#8594; Код</span></h3>
+<p data-en style="font-size:11px">Predicting the next token in a .ts file = knowing TypeScript. The model "learned" grammar, patterns, idioms as statistical regularities.</p>
+<p data-ru style="font-size:11px">Предсказание следующего токена в .ts файле = знание TypeScript. Модель «выучила» грамматику, паттерны, идиомы как статистические закономерности.</p>
 </div>
 <div class="pcard p-predict" style="padding:16px">
-<h3 style="font-size:13px">&#8594; Логика</h3>
-<p style="font-size:11px">Предсказание ответа на логическую задачу = цепочка рассуждений. Каждый промежуточный шаг — предсказание наиболее вероятного продолжения.</p>
+<h3 style="font-size:13px"><span data-en>&#8594; Logic</span><span data-ru>&#8594; Логика</span></h3>
+<p data-en style="font-size:11px">Predicting the answer to a logical problem = a chain of reasoning. Each intermediate step is a prediction of the most probable continuation.</p>
+<p data-ru style="font-size:11px">Предсказание ответа на логическую задачу = цепочка рассуждений. Каждый промежуточный шаг — предсказание наиболее вероятного продолжения.</p>
 </div>
 <div class="pcard p-predict" style="padding:16px">
-<h3 style="font-size:13px">&#8594; Перевод</h3>
-<p style="font-size:11px">Предсказание французского токена после русского = перевод. Модель нашла статистическое соответствие между языками в обучающих данных.</p>
+<h3 style="font-size:13px"><span data-en>&#8594; Translation</span><span data-ru>&#8594; Перевод</span></h3>
+<p data-en style="font-size:11px">Predicting a French token after a Russian one = translation. The model found statistical correspondence between languages in training data.</p>
+<p data-ru style="font-size:11px">Предсказание французского токена после русского = перевод. Модель нашла статистическое соответствие между языками в обучающих данных.</p>
 </div>
 </div>
 </div>
@@ -240,39 +322,45 @@ h3{font-family:var(--fd);font-size:17px;font-weight:700}
 <!-- ══════════ SLIDE 3: AXIOM 2 — COMPRESSION ══════════ -->
 <div class="slide" data-s="2">
 <div class="si">
-<div class="lbl lbl-a" style="margin-bottom:8px">Аксиома 2</div>
-<h2>Сжатие = Понимание</h2>
-<p style="font-size:13px;color:var(--tx2);margin-top:6px;max-width:700px">Веса модели — это сжатие терабайтов текста в компактное представление. Чем лучше сжатие, тем глубже «понимание» паттернов.</p>
+<div class="lbl lbl-a" style="margin-bottom:8px"><span data-en>Axiom 2</span><span data-ru>Аксиома 2</span></div>
+<h2><span data-en>Compression = Understanding</span><span data-ru>Сжатие = Понимание</span></h2>
+<p data-en style="font-size:13px;color:var(--tx2);margin-top:6px;max-width:700px">Model weights are a compression of terabytes of text into a compact representation. The better the compression, the deeper the "understanding" of patterns.</p>
+<p data-ru style="font-size:13px;color:var(--tx2);margin-top:6px;max-width:700px">Веса модели — это сжатие терабайтов текста в компактное представление. Чем лучше сжатие, тем глубже «понимание» паттернов.</p>
 
 <div class="pgrid pgrid-2" style="margin-top:24px">
 <div class="pcard p-compress">
 <div class="num">P2</div>
 <h3>Lossy Compression</h3>
-<p>Модель не хранит тексты. Она сжимает статистические паттерны в веса нейросети. Это lossy: конкретные факты (даты, URL) теряются, а структурные паттерны (синтаксис, логика) сохраняются.</p>
+<p data-en>The model does not store texts. It compresses statistical patterns into neural network weights. This is lossy: specific facts (dates, URLs) are lost, while structural patterns (syntax, logic) are preserved.</p>
+<p data-ru>Модель не хранит тексты. Она сжимает статистические паттерны в веса нейросети. Это lossy: конкретные факты (даты, URL) теряются, а структурные паттерны (синтаксис, логика) сохраняются.</p>
 <div class="formula">Trillion tokens &#8594; Billion parameters &#8594; Statistical manifold</div>
-<span class="tag">Откуда берутся «знания»</span>
+<span class="tag"><span data-en>Where "knowledge" comes from</span><span data-ru>Откуда берутся «знания»</span></span>
 </div>
 <div class="pcard p-compress">
 <div class="num" style="opacity:.4">&#8594;</div>
-<h3>Почему это объясняет галлюцинации</h3>
-<p>Сжатие с потерями = неточные воспоминания. Модель «помнит» паттерн, но может подставить неверную деталь. «Функция X в библиотеке Y» — паттерн верный, конкретное имя может быть выдумано.</p>
+<h3><span data-en>Why this explains hallucinations</span><span data-ru>Почему это объясняет галлюцинации</span></h3>
+<p data-en>Lossy compression = imprecise memories. The model "remembers" the pattern but may substitute an incorrect detail. "Function X in library Y" -- the pattern is correct, the specific name may be fabricated.</p>
+<p data-ru>Сжатие с потерями = неточные воспоминания. Модель «помнит» паттерн, но может подставить неверную деталь. «Функция X в библиотеке Y» — паттерн верный, конкретное имя может быть выдумано.</p>
 <div class="formula">High-level patterns: preserved &#10003;<br>Specific facts: may be reconstructed, not recalled &#9888;</div>
-<span class="tag">Природа галлюцинаций</span>
+<span class="tag"><span data-en>Nature of hallucinations</span><span data-ru>Природа галлюцинаций</span></span>
 </div>
 </div>
 
 <div class="pgrid pgrid-3" style="margin-top:14px">
 <div class="pcard p-compress" style="padding:16px">
-<h3 style="font-size:13px">&#8594; Архитектурные паттерны</h3>
-<p style="font-size:11px">Repository, DI, CQRS — сжатые до весов структурные закономерности миллионов проектов. Модель «знает» паттерн, потому что он повторялся.</p>
+<h3 style="font-size:13px"><span data-en>&#8594; Architectural patterns</span><span data-ru>&#8594; Архитектурные паттерны</span></h3>
+<p data-en style="font-size:11px">Repository, DI, CQRS -- compressed to weights as structural regularities of millions of projects. The model "knows" the pattern because it recurred.</p>
+<p data-ru style="font-size:11px">Repository, DI, CQRS — сжатые до весов структурные закономерности миллионов проектов. Модель «знает» паттерн, потому что он повторялся.</p>
 </div>
 <div class="pcard p-compress" style="padding:16px">
-<h3 style="font-size:13px">&#8594; Языковая интуиция</h3>
-<p style="font-size:11px">Грамматика, стиль, тон — это сжатые статистики. «Звучит неестественно» = низкая вероятность данной последовательности токенов.</p>
+<h3 style="font-size:13px"><span data-en>&#8594; Language intuition</span><span data-ru>&#8594; Языковая интуиция</span></h3>
+<p data-en style="font-size:11px">Grammar, style, tone -- these are compressed statistics. "Sounds unnatural" = low probability of that token sequence.</p>
+<p data-ru style="font-size:11px">Грамматика, стиль, тон — это сжатые статистики. «Звучит неестественно» = низкая вероятность данной последовательности токенов.</p>
 </div>
 <div class="pcard p-compress" style="padding:16px">
-<h3 style="font-size:13px">&#8594; Граница знаний</h3>
-<p style="font-size:11px">Training cut = May 2025. Всё после — не существует в весах. Единственный доступ к актуальным данным: инструменты (WebSearch, Read).</p>
+<h3 style="font-size:13px"><span data-en>&#8594; Knowledge boundary</span><span data-ru>&#8594; Граница знаний</span></h3>
+<p data-en style="font-size:11px">Training cut = May 2025. Everything after does not exist in the weights. The only access to current data: tools (WebSearch, Read).</p>
+<p data-ru style="font-size:11px">Training cut = May 2025. Всё после — не существует в весах. Единственный доступ к актуальным данным: инструменты (WebSearch, Read).</p>
 </div>
 </div>
 </div>
@@ -281,34 +369,39 @@ h3{font-family:var(--fd);font-size:17px;font-weight:700}
 <!-- ══════════ SLIDE 4: AXIOM 3+4 — ATTENTION + EMERGENCE ══════════ -->
 <div class="slide" data-s="3">
 <div class="si">
-<div class="lbl lbl-a" style="margin-bottom:8px">Аксиомы 3 и 4</div>
-<h2>Внимание порождает структуру.<br>Структура порождает способности.</h2>
+<div class="lbl lbl-a" style="margin-bottom:8px"><span data-en>Axioms 3 and 4</span><span data-ru>Аксиомы 3 и 4</span></div>
+<h2 data-en>Attention creates structure.<br>Structure creates capabilities.</h2>
+<h2 data-ru>Внимание порождает структуру.<br>Структура порождает способности.</h2>
 
 <div class="pgrid pgrid-2" style="margin-top:24px">
 <div class="pcard p-attention">
 <div class="num">P3</div>
 <h3>Selective Attention</h3>
-<p>Каждый токен «решает», на какие предыдущие токены обратить внимание. Это не последовательное чтение — это параллельный поиск релевантности. Отсюда способность связывать далёкие части текста.</p>
-<div class="formula">Attention(Q, K, V) = softmax(QK&#7511; / &radic;d) &middot; V<br><br>Multi-head: несколько «взглядов» одновременно —<br>один голова следит за синтаксисом,<br>другая за семантикой, третья за позицией</div>
-<span class="tag">Механизм связывания</span>
+<p data-en>Each token "decides" which previous tokens to attend to. This is not sequential reading -- it is a parallel relevance search. Hence the ability to connect distant parts of text.</p>
+<p data-ru>Каждый токен «решает», на какие предыдущие токены обратить внимание. Это не последовательное чтение — это параллельный поиск релевантности. Отсюда способность связывать далёкие части текста.</p>
+<div class="formula">Attention(Q, K, V) = softmax(QK&#7511; / &radic;d) &middot; V<br><br>Multi-head: <span data-en>multiple "views" simultaneously --<br>one head tracks syntax,<br>another semantics, a third position</span><span data-ru>несколько «взглядов» одновременно —<br>один голова следит за синтаксисом,<br>другая за семантикой, третья за позицией</span></div>
+<span class="tag"><span data-en>Binding mechanism</span><span data-ru>Механизм связывания</span></span>
 </div>
 <div class="pcard p-emerge">
 <div class="num">P4</div>
 <h3>Emergent Capabilities</h3>
-<p>Ни один навык не был явно запрограммирован. Логический вывод, написание кода, перевод, анализ — всё возникло как эмерджентное свойство достаточно большой модели, обученной предсказывать токены.</p>
-<div class="formula">Scale (data + params + compute) &#8593;<br>&rArr; qualitatively new capabilities appear<br><br>GPT-2 (1.5B): текст<br>GPT-3 (175B): + логика, + код<br>Claude Opus 4.6: + глубокое рассуждение,<br>+ extended thinking, + tool use</div>
-<span class="tag">Эмерджентность</span>
+<p data-en>No skill was explicitly programmed. Logical inference, code writing, translation, analysis -- all emerged as emergent properties of a sufficiently large model trained to predict tokens.</p>
+<p data-ru>Ни один навык не был явно запрограммирован. Логический вывод, написание кода, перевод, анализ — всё возникло как эмерджентное свойство достаточно большой модели, обученной предсказывать токены.</p>
+<div class="formula">Scale (data + params + compute) &#8593;<br>&rArr; qualitatively new capabilities appear<br><br>GPT-2 (1.5B): <span data-en>text</span><span data-ru>текст</span><br>GPT-3 (175B): + <span data-en>logic</span><span data-ru>логика</span>, + <span data-en>code</span><span data-ru>код</span><br>Claude Opus 4.6: + <span data-en>deep reasoning</span><span data-ru>глубокое рассуждение</span>,<br>+ extended thinking, + tool use</div>
+<span class="tag"><span data-en>Emergence</span><span data-ru>Эмерджентность</span></span>
 </div>
 </div>
 
 <div class="pgrid pgrid-2" style="margin-top:14px">
 <div class="pcard p-attention" style="padding:16px">
-<h3 style="font-size:13px">P3 &#8594; Взаимосвязи навыков</h3>
-<p style="font-size:11px">Attention объясняет, почему навыки связаны: когда я пишу код, attention-головы одновременно отслеживают синтаксис (Код), бизнес-логику (Аналитика), стиль (NLP), безопасность (QA). Связь навыков — не архитектурное решение, а следствие параллельного внимания.</p>
+<h3 style="font-size:13px"><span data-en>P3 &#8594; Skill interconnections</span><span data-ru>P3 &#8594; Взаимосвязи навыков</span></h3>
+<p data-en style="font-size:11px">Attention explains why skills are connected: when I write code, attention heads simultaneously track syntax (Code), business logic (Analytics), style (NLP), security (QA). Skill linkage is not an architectural decision, but a consequence of parallel attention.</p>
+<p data-ru style="font-size:11px">Attention объясняет, почему навыки связаны: когда я пишу код, attention-головы одновременно отслеживают синтаксис (Код), бизнес-логику (Аналитика), стиль (NLP), безопасность (QA). Связь навыков — не архитектурное решение, а следствие параллельного внимания.</p>
 </div>
 <div class="pcard p-emerge" style="padding:16px">
-<h3 style="font-size:13px">P4 &#8594; Дерево навыков</h3>
-<p style="font-size:11px">Все 36 навыков из Skill Tree — эмерджентные. Никто не учил модель «SWOT-анализу» явно. Модель видела достаточно примеров стратегического анализа, чтобы паттерн «вошёл в веса». Уровень навыка (75-96) отражает частоту и качество примеров в обучающих данных.</p>
+<h3 style="font-size:13px"><span data-en>P4 &#8594; Skill tree</span><span data-ru>P4 &#8594; Дерево навыков</span></h3>
+<p data-en style="font-size:11px">All 36 skills from the Skill Tree are emergent. Nobody explicitly taught the model "SWOT analysis". The model saw enough examples of strategic analysis for the pattern to "enter the weights". Skill level (75-96) reflects the frequency and quality of examples in training data.</p>
+<p data-ru style="font-size:11px">Все 36 навыков из Skill Tree — эмерджентные. Никто не учил модель «SWOT-анализу» явно. Модель видела достаточно примеров стратегического анализа, чтобы паттерн «вошёл в веса». Уровень навыка (75-96) отражает частоту и качество примеров в обучающих данных.</p>
 </div>
 </div>
 </div>
@@ -317,38 +410,44 @@ h3{font-family:var(--fd);font-size:17px;font-weight:700}
 <!-- ══════════ SLIDE 5: AXIOM 5+6 — COMPOSITION + GROUNDING ══════════ -->
 <div class="slide" data-s="4">
 <div class="si">
-<div class="lbl lbl-a" style="margin-bottom:8px">Аксиомы 5 и 6</div>
-<h2>Композиция простых операций.<br>Заземление через инструменты.</h2>
+<div class="lbl lbl-a" style="margin-bottom:8px"><span data-en>Axioms 5 and 6</span><span data-ru>Аксиомы 5 и 6</span></div>
+<h2 data-en>Composition of simple operations.<br>Grounding through tools.</h2>
+<h2 data-ru>Композиция простых операций.<br>Заземление через инструменты.</h2>
 
 <div class="pgrid pgrid-2" style="margin-top:24px">
 <div class="pcard p-compose">
 <div class="num">P5</div>
 <h3>Compositional Generalization</h3>
-<p>Сложное поведение = комбинация простых операций. Я не имею монолитного навыка «создать презентацию». Вместо этого: понять структуру (NLP) + сгенерировать HTML (Код) + применить стиль (CSS) + добавить логику (JS) + адаптировать под mobile (Архитектура).</p>
+<p data-en>Complex behavior = combination of simple operations. I don't have a monolithic "create presentation" skill. Instead: understand structure (NLP) + generate HTML (Code) + apply style (CSS) + add logic (JS) + adapt for mobile (Architecture).</p>
+<p data-ru>Сложное поведение = комбинация простых операций. Я не имею монолитного навыка «создать презентацию». Вместо этого: понять структуру (NLP) + сгенерировать HTML (Код) + применить стиль (CSS) + добавить логику (JS) + адаптировать под mobile (Архитектура).</p>
 <div class="formula">Complex_task = compose(skill_1, skill_2, ..., skill_n)<br><br>SWOT = analyze(market) + structure(matrix) + write(RU)<br>Dashboard = parse(requirements) + code(HTML/CSS/JS)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ integrate(Supabase) + deploy(git push)</div>
-<span class="tag">Почему «универсальность»</span>
+<span class="tag"><span data-en>Why "universality"</span><span data-ru>Почему «универсальность»</span></span>
 </div>
 <div class="pcard p-ground">
 <div class="num">P6</div>
 <h3>Tool-Augmented Grounding</h3>
-<p>LLM изолирована от реальности. Веса — замороженный снимок мира. Инструменты (Read, Bash, WebSearch, MCP) — единственный мост к актуальному состоянию: файлам, git, API, интернету.</p>
+<p data-en>An LLM is isolated from reality. Weights are a frozen snapshot of the world. Tools (Read, Bash, WebSearch, MCP) are the only bridge to the current state: files, git, APIs, the internet.</p>
+<p data-ru>LLM изолирована от реальности. Веса — замороженный снимок мира. Инструменты (Read, Bash, WebSearch, MCP) — единственный мост к актуальному состоянию: файлам, git, API, интернету.</p>
 <div class="formula">Without tools: hallucinate file contents<br>With Read: verify actual state<br><br>Without tools: guess git status<br>With Bash: git diff, git log — ground truth<br><br>Without tools: outdated knowledge (May 2025)<br>With WebSearch: current information</div>
-<span class="tag">Почему инструменты критичны</span>
+<span class="tag"><span data-en>Why tools are critical</span><span data-ru>Почему инструменты критичны</span></span>
 </div>
 </div>
 
 <div class="pgrid pgrid-3" style="margin-top:14px">
 <div class="pcard p-compose" style="padding:16px">
-<h3 style="font-size:13px">P5 &#8594; Бесконечные комбинации</h3>
-<p style="font-size:11px">36 навыков порождают тысячи комбинаций. Каждая новая задача — новая композиция. Поэтому я могу решать задачи, которых не было в обучающих данных.</p>
+<h3 style="font-size:13px"><span data-en>P5 &#8594; Infinite combinations</span><span data-ru>P5 &#8594; Бесконечные комбинации</span></h3>
+<p data-en style="font-size:11px">36 skills produce thousands of combinations. Each new task is a new composition. That's why I can solve tasks that weren't in the training data.</p>
+<p data-ru style="font-size:11px">36 навыков порождают тысячи комбинаций. Каждая новая задача — новая композиция. Поэтому я могу решать задачи, которых не было в обучающих данных.</p>
 </div>
 <div class="pcard p-ground" style="padding:16px">
-<h3 style="font-size:13px">P6 &#8594; Agent = LLM + Tools</h3>
-<p style="font-size:11px">Claude Code превращает LLM в агента. Без инструментов я — генератор текста. С Read/Edit/Bash/Agent — полноценный разработчик, способный менять реальные файлы.</p>
+<h3 style="font-size:13px"><span data-en>P6 &#8594; Agent = LLM + Tools</span><span data-ru>P6 &#8594; Agent = LLM + Tools</span></h3>
+<p data-en style="font-size:11px">Claude Code turns an LLM into an agent. Without tools I'm a text generator. With Read/Edit/Bash/Agent -- a full-fledged developer capable of modifying real files.</p>
+<p data-ru style="font-size:11px">Claude Code превращает LLM в агента. Без инструментов я — генератор текста. С Read/Edit/Bash/Agent — полноценный разработчик, способный менять реальные файлы.</p>
 </div>
 <div class="pcard p-ground" style="padding:16px">
 <h3 style="font-size:13px">P6 &#8594; MEMORY.md</h3>
-<p style="font-size:11px">Файловая память — это tool-augmented grounding для моего собственного состояния. Без неё каждая сессия — amnesia. С ней — персистентный контекст через файловую систему.</p>
+<p data-en style="font-size:11px">File-based memory is tool-augmented grounding for my own state. Without it, every session is amnesia. With it -- persistent context via the file system.</p>
+<p data-ru style="font-size:11px">Файловая память — это tool-augmented grounding для моего собственного состояния. Без неё каждая сессия — amnesia. С ней — персистентный контекст через файловую систему.</p>
 </div>
 </div>
 </div>
@@ -357,39 +456,45 @@ h3{font-family:var(--fd);font-size:17px;font-weight:700}
 <!-- ══════════ SLIDE 6: AXIOM 7 — ALIGNMENT + BOUNDARIES ══════════ -->
 <div class="slide" data-s="5">
 <div class="si">
-<div class="lbl lbl-a" style="margin-bottom:8px">Аксиома 7</div>
-<h2>Выравнивание и границы</h2>
-<p style="font-size:13px;color:var(--tx2);margin-top:6px;max-width:700px">Сырая предсказательная способность без направляющих рамок — опасна. Alignment формирует не <em>что</em> я умею, а <em>как</em> я это применяю.</p>
+<div class="lbl lbl-a" style="margin-bottom:8px"><span data-en>Axiom 7</span><span data-ru>Аксиома 7</span></div>
+<h2><span data-en>Alignment and boundaries</span><span data-ru>Выравнивание и границы</span></h2>
+<p data-en style="font-size:13px;color:var(--tx2);margin-top:6px;max-width:700px">Raw predictive ability without guiding frameworks is dangerous. Alignment shapes not <em>what</em> I can do, but <em>how</em> I apply it.</p>
+<p data-ru style="font-size:13px;color:var(--tx2);margin-top:6px;max-width:700px">Сырая предсказательная способность без направляющих рамок — опасна. Alignment формирует не <em>что</em> я умею, а <em>как</em> я это применяю.</p>
 
 <div class="pgrid pgrid-2" style="margin-top:24px">
 <div class="pcard p-align">
 <div class="num">P7a</div>
 <h3>RLHF + Constitutional AI</h3>
-<p>После предобучения (prediction) модель проходит выравнивание: RLHF (обучение с подкреплением на обратной связи от людей) и Constitutional AI (набор принципов, по которым модель оценивает свои ответы).</p>
-<div class="formula">Pre-training: learn patterns (unsupervised)<br>RLHF: learn preferences (human feedback)<br>Constitutional AI: learn principles (self-critique)<br><br>Результат: модель, которая умеет И хочет<br>быть полезной, честной и безопасной</div>
-<span class="tag">Формирование поведения</span>
+<p data-en>After pre-training (prediction), the model undergoes alignment: RLHF (reinforcement learning from human feedback) and Constitutional AI (a set of principles by which the model evaluates its own responses).</p>
+<p data-ru>После предобучения (prediction) модель проходит выравнивание: RLHF (обучение с подкреплением на обратной связи от людей) и Constitutional AI (набор принципов, по которым модель оценивает свои ответы).</p>
+<div class="formula">Pre-training: learn patterns (unsupervised)<br>RLHF: learn preferences (human feedback)<br>Constitutional AI: learn principles (self-critique)<br><br><span data-en>Result: a model that can AND wants<br>to be helpful, honest, and safe</span><span data-ru>Результат: модель, которая умеет И хочет<br>быть полезной, честной и безопасной</span></div>
+<span class="tag"><span data-en>Behavior shaping</span><span data-ru>Формирование поведения</span></span>
 </div>
 <div class="pcard p-bound">
 <div class="num">P7b</div>
-<h3>Жёсткие границы</h3>
-<p>Не все границы — alignment. Некоторые — физические ограничения архитектуры, которые невозможно обойти никаким промптом.</p>
-<div class="formula">&#10005; Нет persistent state между сессиями<br>&#10005; Нет реального обучения в runtime<br>&#10005; Нет доступа к данным за пределами контекста<br>&#10005; Нет генерации изображений (только анализ)<br>&#10005; Нет отправки email/SMS/push без MCP<br>&#10005; Нет выполнения кода без Bash tool<br>&#10005; Стохастичность неустранима</div>
-<span class="tag">Физика, не политика</span>
+<h3><span data-en>Hard boundaries</span><span data-ru>Жёсткие границы</span></h3>
+<p data-en>Not all boundaries are alignment. Some are physical limitations of the architecture that cannot be bypassed by any prompt.</p>
+<p data-ru>Не все границы — alignment. Некоторые — физические ограничения архитектуры, которые невозможно обойти никаким промптом.</p>
+<div class="formula"><span data-en>&#10005; No persistent state between sessions<br>&#10005; No real learning at runtime<br>&#10005; No access to data beyond context<br>&#10005; No image generation (only analysis)<br>&#10005; No sending email/SMS/push without MCP<br>&#10005; No code execution without Bash tool<br>&#10005; Stochasticity is irreducible</span><span data-ru>&#10005; Нет persistent state между сессиями<br>&#10005; Нет реального обучения в runtime<br>&#10005; Нет доступа к данным за пределами контекста<br>&#10005; Нет генерации изображений (только анализ)<br>&#10005; Нет отправки email/SMS/push без MCP<br>&#10005; Нет выполнения кода без Bash tool<br>&#10005; Стохастичность неустранима</span></div>
+<span class="tag"><span data-en>Physics, not policy</span><span data-ru>Физика, не политика</span></span>
 </div>
 </div>
 
 <div class="pgrid pgrid-3" style="margin-top:14px">
 <div class="pcard p-align" style="padding:16px">
-<h3 style="font-size:13px">&#8594; Отказ от вреда</h3>
-<p style="font-size:11px">Не результат фильтра на выходе. Alignment изменяет вероятностное распределение: вредные продолжения получают низкий вес. Модель «не хочет», а не «не может».</p>
+<h3 style="font-size:13px"><span data-en>&#8594; Refusal to harm</span><span data-ru>&#8594; Отказ от вреда</span></h3>
+<p data-en style="font-size:11px">Not the result of an output filter. Alignment changes the probability distribution: harmful continuations get low weight. The model "doesn't want to", not "can't".</p>
+<p data-ru style="font-size:11px">Не результат фильтра на выходе. Alignment изменяет вероятностное распределение: вредные продолжения получают низкий вес. Модель «не хочет», а не «не может».</p>
 </div>
 <div class="pcard p-align" style="padding:16px">
-<h3 style="font-size:13px">&#8594; Честность</h3>
-<p style="font-size:11px">RLHF наградил модель за признание незнания. «Я не уверен» имеет высокую вероятность, когда уверенность действительно низкая. Но калибровка несовершенна.</p>
+<h3 style="font-size:13px"><span data-en>&#8594; Honesty</span><span data-ru>&#8594; Честность</span></h3>
+<p data-en style="font-size:11px">RLHF rewarded the model for admitting ignorance. "I'm not sure" has high probability when confidence is genuinely low. But calibration is imperfect.</p>
+<p data-ru style="font-size:11px">RLHF наградил модель за признание незнания. «Я не уверен» имеет высокую вероятность, когда уверенность действительно низкая. Но калибровка несовершенна.</p>
 </div>
 <div class="pcard p-bound" style="padding:16px">
 <h3 style="font-size:13px">&#8594; Context window</h3>
-<p style="font-size:11px">200K токенов — не настройка, а архитектурный предел. Attention O(n&sup2;): удвоение контекста = учетверение вычислений. Это физика, не выбор.</p>
+<p data-en style="font-size:11px">200K tokens is not a setting, but an architectural limit. Attention O(n&sup2;): doubling context = quadrupling computation. This is physics, not a choice.</p>
+<p data-ru style="font-size:11px">200K токенов — не настройка, а архитектурный предел. Attention O(n&sup2;): удвоение контекста = учетверение вычислений. Это физика, не выбор.</p>
 </div>
 </div>
 </div>
@@ -399,11 +504,12 @@ h3{font-family:var(--fd);font-size:17px;font-weight:700}
 <div class="slide" data-s="6">
 <div class="si">
 <div class="lbl lbl-a" style="margin-bottom:8px">Unified Model</div>
-<h2>Полная карта: от аксиом к способностям</h2>
-<p style="font-size:13px;color:var(--tx2);margin-top:6px;max-width:700px">Каждый навык — следствие. Каждая связь — проявление. Каждый инструмент — мост. Семь принципов объясняют всё.</p>
+<h2><span data-en>Full map: from axioms to capabilities</span><span data-ru>Полная карта: от аксиом к способностям</span></h2>
+<p data-en style="font-size:13px;color:var(--tx2);margin-top:6px;max-width:700px">Every skill is a consequence. Every connection is a manifestation. Every tool is a bridge. Seven principles explain everything.</p>
+<p data-ru style="font-size:13px;color:var(--tx2);margin-top:6px;max-width:700px">Каждый навык — следствие. Каждая связь — проявление. Каждый инструмент — мост. Семь принципов объясняют всё.</p>
 
 <div class="dep-wrap" style="margin-top:20px">
-<div class="dep-title">Уровень 0 &mdash; Аксиомы</div>
+<div class="dep-title"><span data-en>Level 0 &mdash; Axioms</span><span data-ru>Уровень 0 &mdash; Аксиомы</span></div>
 <div class="dep-grid">
 <div class="dep-node" style="border-color:rgba(139,92,246,.3);background:var(--acbg)"><span class="dn-ico">&#127919;</span>Prediction<span class="dn-lbl">P1</span></div>
 <div class="dep-node" style="border-color:rgba(59,130,246,.3);background:var(--blbg)"><span class="dn-ico">&#128230;</span>Compression<span class="dn-lbl">P2</span></div>
@@ -416,28 +522,28 @@ h3{font-family:var(--fd);font-size:17px;font-weight:700}
 
 <div class="dep-arrows"><span>&#8595;</span><span>&#8595;</span><span>&#8595;</span><span>&#8595;</span><span>&#8595;</span><span>&#8595;</span><span>&#8595;</span></div>
 
-<div class="dep-title">Уровень 1 &mdash; Capabilities</div>
+<div class="dep-title"><span data-en>Level 1 &mdash; Capabilities</span><span data-ru>Уровень 1 &mdash; Capabilities</span></div>
 <div class="dep-grid" style="grid-template-columns:repeat(5,1fr)">
-<div class="dep-node" style="border-color:rgba(59,130,246,.2)"><span class="dn-ico">&#128200;</span>Аналитика<span class="dn-lbl">P1+P2+P3</span></div>
-<div class="dep-node" style="border-color:rgba(34,197,94,.2)"><span class="dn-ico">&#128187;</span>Код<span class="dn-lbl">P1+P2+P4</span></div>
+<div class="dep-node" style="border-color:rgba(59,130,246,.2)"><span class="dn-ico">&#128200;</span><span data-en>Analytics</span><span data-ru>Аналитика</span><span class="dn-lbl">P1+P2+P3</span></div>
+<div class="dep-node" style="border-color:rgba(34,197,94,.2)"><span class="dn-ico">&#128187;</span><span data-en>Code</span><span data-ru>Код</span><span class="dn-lbl">P1+P2+P4</span></div>
 <div class="dep-node" style="border-color:rgba(139,92,246,.2)"><span class="dn-ico">&#128221;</span>NLP<span class="dn-lbl">P1+P2</span></div>
-<div class="dep-node" style="border-color:rgba(249,115,22,.2)"><span class="dn-ico">&#127959;</span>Архитектура<span class="dn-lbl">P2+P4+P5</span></div>
+<div class="dep-node" style="border-color:rgba(249,115,22,.2)"><span class="dn-ico">&#127959;</span><span data-en>Architecture</span><span data-ru>Архитектура</span><span class="dn-lbl">P2+P4+P5</span></div>
 <div class="dep-node" style="border-color:rgba(6,182,212,.2)"><span class="dn-ico">&#128269;</span>QA<span class="dn-lbl">P3+P5+P7</span></div>
 </div>
 
 <div class="dep-arrows"><span>&#8595;</span><span>&#8595;</span><span>&#8595;</span><span>&#8595;</span><span>&#8595;</span></div>
 
-<div class="dep-title">Уровень 2 &mdash; Relationships (P3 Attention)</div>
+<div class="dep-title"><span data-en>Level 2 &mdash; Relationships (P3 Attention)</span><span data-ru>Уровень 2 &mdash; Relationships (P3 Attention)</span></div>
 <div class="dep-grid" style="grid-template-columns:repeat(4,1fr)">
-<div class="dep-node"><span class="dn-ico">&#8644;</span>Логика &#8594; Код<span class="dn-lbl">Cross-attention</span></div>
-<div class="dep-node"><span class="dn-ico">&#8644;</span>NLP &#8594; Архитект.<span class="dn-lbl">Req parsing</span></div>
-<div class="dep-node"><span class="dn-ico">&#8644;</span>Код &#8594; Аналитика<span class="dn-lbl">Verification</span></div>
-<div class="dep-node"><span class="dn-ico">&#8644;</span>Архитект. &#8594; QA<span class="dn-lbl">Testability</span></div>
+<div class="dep-node"><span class="dn-ico">&#8644;</span><span data-en>Logic &#8594; Code</span><span data-ru>Логика &#8594; Код</span><span class="dn-lbl">Cross-attention</span></div>
+<div class="dep-node"><span class="dn-ico">&#8644;</span><span data-en>NLP &#8594; Architect.</span><span data-ru>NLP &#8594; Архитект.</span><span class="dn-lbl">Req parsing</span></div>
+<div class="dep-node"><span class="dn-ico">&#8644;</span><span data-en>Code &#8594; Analytics</span><span data-ru>Код &#8594; Аналитика</span><span class="dn-lbl">Verification</span></div>
+<div class="dep-node"><span class="dn-ico">&#8644;</span><span data-en>Architect. &#8594; QA</span><span data-ru>Архитект. &#8594; QA</span><span class="dn-lbl">Testability</span></div>
 </div>
 
 <div class="dep-arrows"><span>&#8595;</span><span>&#8595;</span><span>&#8595;</span><span>&#8595;</span></div>
 
-<div class="dep-title">Уровень 3 &mdash; Tool Interactions (P6 Grounding)</div>
+<div class="dep-title"><span data-en>Level 3 &mdash; Tool Interactions (P6 Grounding)</span><span data-ru>Уровень 3 &mdash; Tool Interactions (P6 Grounding)</span></div>
 <div class="dep-grid" style="grid-template-columns:repeat(4,1fr)">
 <div class="dep-node"><span class="dn-ico">&#128196;</span>Read/Edit<span class="dn-lbl">File I/O</span></div>
 <div class="dep-node"><span class="dn-ico">&#128187;</span>Bash/CLI<span class="dn-lbl">Shell exec</span></div>
@@ -448,8 +554,9 @@ h3{font-family:var(--fd);font-size:17px;font-weight:700}
 
 <div class="pgrid pgrid-1" style="margin-top:16px">
 <div class="pcard" style="border-color:rgba(139,92,246,.2);background:linear-gradient(135deg,rgba(139,92,246,.04),rgba(59,130,246,.03));text-align:center;padding:28px">
-<h3 style="color:var(--ac2);margin-bottom:8px">Единая формула</h3>
-<p style="font-size:13px;max-width:700px;margin:0 auto">Prediction (P1) на сжатых знаниях (P2), связанных вниманием (P3), порождает эмерджентные способности (P4), которые комбинируются (P5) для решения задач, заземлённых (P6) в реальности через инструменты, в рамках выравнивания (P7).</p>
+<h3 style="color:var(--ac2);margin-bottom:8px"><span data-en>Unified formula</span><span data-ru>Единая формула</span></h3>
+<p data-en style="font-size:13px;max-width:700px;margin:0 auto">Prediction (P1) on compressed knowledge (P2), linked by attention (P3), gives rise to emergent capabilities (P4), which combine (P5) to solve tasks grounded (P6) in reality through tools, within the framework of alignment (P7).</p>
+<p data-ru style="font-size:13px;max-width:700px;margin:0 auto">Prediction (P1) на сжатых знаниях (P2), связанных вниманием (P3), порождает эмерджентные способности (P4), которые комбинируются (P5) для решения задач, заземлённых (P6) в реальности через инструменты, в рамках выравнивания (P7).</p>
 <div class="formula" style="display:inline-block;margin-top:12px;font-size:11px;text-align:center">
 Claude = P1(P2(data)) &middot; P3(context) &middot; P4(scale) &middot; P5(compose) &middot; P6(tools) &middot; P7(align)
 </div>
@@ -471,6 +578,20 @@ function go(i){if(i<0||i>=N||i===cur)return;const p=cur;ss[p].classList.remove('
 function upd(){de.querySelectorAll('.nav-dot').forEach((d,i)=>d.className='nav-dot'+(i===cur?' on':''));sn.textContent=(cur+1)+'/'+N;br.style.width=((cur+1)/N*100)+'%'}
 document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();go(cur+1)}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();go(cur-1)}});
 let _t=0;document.addEventListener('touchstart',e=>{_t=e.touches[0].clientX},{passive:true});document.addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-_t;if(Math.abs(d)>50){d<0?go(cur+1):go(cur-1)}},{passive:true});
+
+/* Language toggle */
+function setLang(lang){
+  document.body.classList.toggle('lang-ru',lang==='ru');
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+  localStorage.setItem('svita_pres_lang',lang);
+  document.documentElement.lang=lang==='ru'?'ru':'en';
+  document.title=lang==='ru'?'Claude Opus 4.6 — Фундаментальные принципы':'Claude Opus 4.6 — Fundamental Principles';
+}
+(function(){
+  const saved=localStorage.getItem('svita_pres_lang')||'en';
+  setLang(saved);
+})();
+
 upd();
 </script>
 </body>
