@@ -507,7 +507,10 @@
 </div>
 <div class="modal-field" style="text-align:left;margin-bottom:6px">
 <label>Пароль</label>
-<input id="loginPass" type="password" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" autocomplete="current-password" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%" onkeydown="if(event.key==='Enter')loginCheck()">
+<div style="position:relative">
+<input id="loginPass" type="password" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" autocomplete="current-password" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;padding-right:40px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%" onkeydown="if(event.key==='Enter')loginCheck()">
+<span onclick="togglePassVis('loginPass',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:14px;color:var(--tx3);user-select:none;opacity:.5">&#128065;</span>
+</div>
 </div>
 <div style="text-align:right;margin-bottom:10px"><span style="font-size:10px;color:var(--ac2);cursor:pointer" onclick="showForgotPassword()">Забыли пароль?</span></div>
 <div id="loginError" style="font-size:11px;color:var(--rd);min-height:20px;margin-bottom:10px"></div>
@@ -553,7 +556,10 @@ Apple</button>
 </div>
 <div class="modal-field" style="text-align:left;margin-bottom:14px">
 <label>Подтвердите пароль</label>
-<input id="regPass2" type="password" placeholder="Повторите пароль" autocomplete="new-password" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%" onkeydown="if(event.key==='Enter')registerUser()">
+<div style="position:relative">
+<input id="regPass2" type="password" placeholder="Повторите пароль" autocomplete="new-password" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;padding-right:40px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%" onkeydown="if(event.key==='Enter')registerUser()">
+<span onclick="togglePassVis('regPass2',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:14px;color:var(--tx3);user-select:none;opacity:.5">&#128065;</span>
+</div>
 </div>
 <div id="regError" style="font-size:11px;color:var(--rd);min-height:20px;margin-bottom:10px"></div>
 <button class="btn pr" id="regBtn" style="width:100%;padding:12px;font-size:13px" onclick="registerUser()">Создать аккаунт</button>
@@ -591,11 +597,17 @@ Apple</button>
 <div style="font-size:11px;color:var(--tx3);margin-bottom:16px">Введите новый пароль для вашего аккаунта</div>
 <div class="modal-field" style="text-align:left;margin-bottom:12px">
 <label>Новый пароль</label>
-<input id="resetPass1" type="password" placeholder="Минимум 8 символов" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
+<div style="position:relative">
+<input id="resetPass1" type="password" placeholder="Минимум 8 символов" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;padding-right:40px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
+<span onclick="togglePassVis('resetPass1',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:14px;color:var(--tx3);user-select:none;opacity:.5">&#128065;</span>
+</div>
 </div>
 <div class="modal-field" style="text-align:left;margin-bottom:12px">
 <label>Повторите пароль</label>
-<input id="resetPass2" type="password" placeholder="Повторите пароль" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%" onkeydown="if(event.key==='Enter')resetPassword()">
+<div style="position:relative">
+<input id="resetPass2" type="password" placeholder="Повторите пароль" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;padding-right:40px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%" onkeydown="if(event.key==='Enter')resetPassword()">
+<span onclick="togglePassVis('resetPass2',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:14px;color:var(--tx3);user-select:none;opacity:.5">&#128065;</span>
+</div>
 </div>
 <div id="resetError" style="font-size:11px;min-height:20px;margin-bottom:10px;color:var(--tx3)"></div>
 <button class="btn pr" id="resetBtn" style="width:100%;padding:12px;font-size:13px" onclick="resetPassword()">Сохранить пароль</button>
@@ -4054,6 +4066,35 @@ document.addEventListener('click',function(e){
   const tu=document.getElementById('topUser');
   if(tu&&!tu.contains(e.target))tu.classList.remove('open');
 });
+
+// ═══ HANDLE PASSWORD RECOVERY FROM EMAIL LINK ═══
+// Supabase sends: ...#access_token=...&type=recovery
+// OR: ...?type=recovery#access_token=...
+(function handleRecoveryRedirect(){
+  const hash=window.location.hash;
+  const params=new URLSearchParams(window.location.search);
+  const isRecovery=hash.includes('type=recovery')||params.get('type')==='recovery';
+  if(!isRecovery||!hash.includes('access_token'))return;
+  // Parse hash params (Supabase puts them after #)
+  const hashParams=new URLSearchParams(hash.substring(1));
+  const accessToken=hashParams.get('access_token');
+  const refreshToken=hashParams.get('refresh_token');
+  if(!accessToken)return;
+  // Set session so updateUser works
+  if(sb){
+    sb.auth.setSession({access_token:accessToken,refresh_token:refreshToken||''}).then(({error})=>{
+      if(error){console.error('Recovery session error:',error);return}
+      // Show reset password form
+      const allPanels=['loginStep1','loginRegister','loginVerify','loginStep2','loginStep25','loginOnboard','loginForgot'];
+      allPanels.forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none'});
+      document.getElementById('authTabs').style.display='none';
+      document.getElementById('loginReset').style.display='block';
+      document.getElementById('loginScreen').classList.remove('hidden');
+      // Clean URL
+      history.replaceState(null,'',location.pathname);
+    });
+  }
+})();
 
 // Auto-restore session from localStorage — with server re-validation
 (async function restoreSession(){
