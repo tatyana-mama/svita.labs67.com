@@ -1138,6 +1138,37 @@ Apple</button>
 <div class="sec" id="sec-s6">
 <div class="ph"><div><h2>06 &middot; Концепция</h2><div class="ph-s">Бизнес-модель, рентабельность, документация</div></div><span class="tag t-wip">В работе</span></div>
 
+<!-- ═══ СВОДНЫЙ БЮДЖЕТ ═══ -->
+<div class="c" style="border-color:var(--acbd);background:linear-gradient(135deg,var(--acbg),var(--sf))"><div class="ch" style="border-bottom-color:var(--acbd)"><h3>&#128176; Сводный бюджет концепции</h3><span style="font-size:10px;color:var(--tx3)">Автосборка из всех этапов</span></div>
+<div class="cb">
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
+<div style="background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px;text-align:center">
+<div style="font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">Общие инвестиции</div>
+<div style="font-size:22px;font-weight:800;color:var(--ac2);margin-top:4px" id="budgetTotal">0</div>
+<div style="font-size:10px;color:var(--tx3)">PLN</div>
+</div>
+<div style="background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px;text-align:center">
+<div style="font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">Ежемесячные расходы</div>
+<div style="font-size:22px;font-weight:800;color:var(--rd);margin-top:4px" id="budgetMonthly">0</div>
+<div style="font-size:10px;color:var(--tx3)">PLN / мес</div>
+</div>
+<div style="background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px;text-align:center">
+<div style="font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">Окупаемость</div>
+<div style="font-size:22px;font-weight:800;color:var(--gn);margin-top:4px" id="budgetPayback">--</div>
+<div style="font-size:10px;color:var(--tx3)">мес</div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr auto;gap:3px 12px;font-size:11px;padding:0 4px">
+<span style="color:var(--tx2)">&#127970; Помещение (аренда × 12 мес.)</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetRent">0 PLN</span>
+<span style="color:var(--tx2)">&#128736; Ремонт и модернизация</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetReno">0 PLN</span>
+<span style="color:var(--tx2)">&#128230; Оборудование</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetEquip">0 PLN</span>
+<span style="color:var(--tx2)">&#129489; ФОТ (первые 3 мес.)</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetStaff">0 PLN</span>
+<span style="color:var(--tx2)">&#128203; Документация и лицензии</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetDocs">0 PLN</span>
+<span style="color:var(--tx2)">&#128200; Маркетинг (запуск)</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetMkt">0 PLN</span>
+<span style="font-weight:800;color:var(--tx);border-top:2px solid var(--acbd);padding-top:6px;margin-top:4px">ИТОГО ИНВЕСТИЦИИ</span><span style="font-weight:800;color:var(--ac2);text-align:right;border-top:2px solid var(--acbd);padding-top:6px;margin-top:4px" id="budgetGrand">0 PLN</span>
+</div>
+</div></div>
+
 <!-- Бизнес-модель -->
 <div class="c"><div class="ch"><h3>&#127973; Бизнес-модель</h3><button class="btn sm gn" id="bmSaveBtn" onclick="saveBusinessModel()">Сохранить</button></div>
 <div class="cb">
@@ -7438,6 +7469,26 @@ function calcTotals(){
   if(renDisp)renDisp.textContent=renovation.toLocaleString('ru');
   return{rent,renovation,eng,equip,docs,staff,fot,grand,revenue,expenses,chairs,ppc,wd,avgCheck,rentMonth};
 }
+function updateBudgetSummary(t){
+  const f=n=>n.toLocaleString('ru')+' PLN';
+  const rentYear=t.rentMonth*12;
+  const staffQ=t.staff*3;
+  const mkt=parseInt(document.getElementById('prMarketing')?.value||0);
+  const totalInvest=rentYear+t.renovation+t.eng+t.equip+staffQ+t.docs+mkt;
+  const profit=t.revenue-t.expenses;
+  const payback=profit>0&&totalInvest>0?Math.ceil(totalInvest/profit):'--';
+  const el=id=>document.getElementById(id);
+  if(el('budgetRent'))el('budgetRent').textContent=f(rentYear);
+  if(el('budgetReno'))el('budgetReno').textContent=f(t.renovation+t.eng);
+  if(el('budgetEquip'))el('budgetEquip').textContent=f(t.equip);
+  if(el('budgetStaff'))el('budgetStaff').textContent=f(staffQ);
+  if(el('budgetDocs'))el('budgetDocs').textContent=f(t.docs);
+  if(el('budgetMkt'))el('budgetMkt').textContent=f(mkt);
+  if(el('budgetGrand'))el('budgetGrand').textContent=f(totalInvest);
+  if(el('budgetTotal'))el('budgetTotal').textContent=totalInvest.toLocaleString('ru');
+  if(el('budgetMonthly'))el('budgetMonthly').textContent=t.expenses.toLocaleString('ru');
+  if(el('budgetPayback'))el('budgetPayback').textContent=payback;
+}
 function getVal2(costKey){
   const el=document.querySelector('[data-cost="'+costKey+'"]');
   return parseInt(el?.value)||0;
@@ -7465,6 +7516,7 @@ function _recalcNow(){
   if(cur==='s6')updateFormulaDisplay();
   updateTabCosts(t);
   updateAchievements();
+  updateBudgetSummary(t);
 }
 function updateTabCosts(t){
   // Tab 1: Помещение — аренда + депозит
