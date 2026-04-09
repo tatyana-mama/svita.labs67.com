@@ -518,7 +518,7 @@
 
 <div style="display:flex;align-items:center;gap:12px;margin:20px 0 16px">
 <div style="flex:1;height:1px;background:var(--bd)"></div>
-<span style="font-size:10px;color:var(--tx3);letter-spacing:0.08em;font-family:var(--fm)">ИЛИ</span>
+<span style="font-size:10px;color:var(--tx3);letter-spacing:0.08em;font-family:var(--f)">ИЛИ</span>
 <div style="flex:1;height:1px;background:var(--bd)"></div>
 </div>
 
@@ -561,12 +561,16 @@ Apple</button>
 <span onclick="togglePassVis('regPass2',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:14px;color:var(--tx3);user-select:none;opacity:.5">&#128065;</span>
 </div>
 </div>
+<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:14px;text-align:left">
+<input type="checkbox" id="regAgree" style="margin-top:2px;accent-color:var(--ac);cursor:pointer">
+<label for="regAgree" style="font-size:10px;color:var(--tx3);cursor:pointer;line-height:1.4">Я принимаю <span style="color:var(--ac2);text-decoration:underline">условия использования</span> и <span style="color:var(--ac2);text-decoration:underline">политику конфиденциальности</span></label>
+</div>
 <div id="regError" style="font-size:11px;color:var(--rd);min-height:20px;margin-bottom:10px"></div>
 <button class="btn pr" id="regBtn" style="width:100%;padding:12px;font-size:13px" onclick="registerUser()">Создать аккаунт</button>
 
 <div style="display:flex;align-items:center;gap:12px;margin:18px 0 14px">
 <div style="flex:1;height:1px;background:var(--bd)"></div>
-<span style="font-size:10px;color:var(--tx3);letter-spacing:0.08em;font-family:var(--fm)">ИЛИ</span>
+<span style="font-size:10px;color:var(--tx3);letter-spacing:0.08em;font-family:var(--f)">ИЛИ</span>
 <div style="flex:1;height:1px;background:var(--bd)"></div>
 </div>
 <div style="display:flex;gap:8px">
@@ -616,7 +620,7 @@ Apple</button>
 <!-- STEP 2: ROLE SELECT (after login) -->
 <div id="loginStep2" style="display:none">
 <div style="font-size:12px;color:var(--tx2);margin-bottom:8px">Добро пожаловать, <strong id="loginUserName"></strong></div>
-<div id="emailBadge" style="font-size:10px;margin-bottom:14px;font-family:var(--fm)"></div>
+<div id="emailBadge" style="font-size:10px;margin-bottom:14px;font-family:var(--f)"></div>
 <div class="login-roles" id="loginRoles">
 <div class="login-role" data-role="admin" onclick="selectRole(this)" style="display:none" id="roleOptAdmin">
 <div class="lr-icon" style="background:linear-gradient(135deg,var(--ac),#8b5cf6)">&#128081;</div>
@@ -647,52 +651,6 @@ Apple</button>
 <div id="bizSubtypeCards" style="display:grid;gap:6px"></div>
 </div>
 <button class="btn pr" style="width:100%;padding:12px" onclick="enterApp()">Начать</button>
-</div>
-
-<!-- REGISTER FORM -->
-<div id="loginRegister" style="display:none">
-<div style="font-size:14px;font-weight:700;margin-bottom:4px">Создать аккаунт</div>
-<div style="font-size:11px;color:var(--tx3);margin-bottom:18px">Заполните данные для регистрации</div>
-<div class="modal-field" style="text-align:left;margin-bottom:12px">
-<label>Имя</label>
-<input id="regName" type="text" placeholder="Как вас зовут" autocomplete="name" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
-</div>
-<div class="modal-field" style="text-align:left;margin-bottom:12px">
-<label>Email</label>
-<input id="regEmail" type="email" placeholder="email@example.com" autocomplete="email" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
-</div>
-<div class="modal-field" style="text-align:left;margin-bottom:12px">
-<label>Пароль</label>
-<div style="position:relative">
-<input id="regPass" type="password" placeholder="Минимум 8 символов" autocomplete="new-password" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;padding-right:40px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
-<span onclick="togglePassVis('regPass',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:14px;color:var(--tx3);user-select:none">&#128065;</span>
-</div>
-<div id="regPassStrength" style="margin-top:6px;height:3px;border-radius:2px;background:var(--bd);overflow:hidden"><div id="regPassBar" style="height:100%;width:0;border-radius:2px;transition:all .2s"></div></div>
-<div id="regPassHint" style="font-size:10px;color:var(--tx3);margin-top:4px;min-height:14px"></div>
-</div>
-<div class="modal-field" style="text-align:left;margin-bottom:12px">
-<label>Подтвердите пароль</label>
-<input id="regPass2" type="password" placeholder="Повторите пароль" autocomplete="new-password" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%" onkeydown="if(event.key==='Enter')registerUser()">
-</div>
-<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:14px;text-align:left">
-<input type="checkbox" id="regAgree" style="margin-top:2px;accent-color:var(--ac);cursor:pointer">
-<label for="regAgree" style="font-size:10px;color:var(--tx3);cursor:pointer;line-height:1.4">Я принимаю <span style="color:var(--ac2);text-decoration:underline">условия использования</span> и <span style="color:var(--ac2);text-decoration:underline">политику конфиденциальности</span></label>
-</div>
-<div id="regError" style="font-size:11px;color:var(--rd);min-height:20px;margin-bottom:10px"></div>
-<button class="btn pr" id="regBtn" style="width:100%;padding:12px;font-size:13px" onclick="registerUser()">Зарегистрироваться</button>
-
-<div style="display:flex;align-items:center;gap:12px;margin:18px 0 14px">
-<div style="flex:1;height:1px;background:var(--bd)"></div>
-<span style="font-size:10px;color:var(--tx3);letter-spacing:0.08em;font-family:var(--fm)">ИЛИ</span>
-<div style="flex:1;height:1px;background:var(--bd)"></div>
-</div>
-<div style="display:flex;gap:8px">
-<button class="btn" onclick="oauthLogin('google')" style="flex:1;padding:10px;font-size:11px;background:var(--sf2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);cursor:pointer;font-family:var(--f)">Google</button>
-<button class="btn" onclick="oauthLogin('github')" style="flex:1;padding:10px;font-size:11px;background:var(--sf2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);cursor:pointer;font-family:var(--f)">GitHub</button>
-<button class="btn" onclick="oauthLogin('apple')" style="flex:1;padding:10px;font-size:11px;background:var(--sf2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);cursor:pointer;font-family:var(--f)">Apple</button>
-</div>
-
-<div style="margin-top:16px;font-size:10px;color:var(--tx3)">Уже есть аккаунт? <span style="color:var(--ac2);cursor:pointer" onclick="showLogin()">Войти</span></div>
 </div>
 
 <!-- EMAIL VERIFICATION SCREEN -->
@@ -4729,7 +4687,7 @@ function renderOwnerProposals(){
 <div><div style="font-size:13px;font-weight:600">${esc(p.contractor_name)}</div><div style="font-size:10px;color:var(--tx3)">${esc(p.contractor_email)} · ${new Date(p.created_at).toLocaleDateString()}</div></div>
 <span style="font-size:10px;padding:3px 8px;border-radius:5px;background:${statusColor}22;color:${statusColor};font-weight:600">${statusText}</span>
 </div>
-<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px">${p.items.map(i=>`<span style="font-size:10px;padding:3px 8px;border:1px solid var(--bd);border-radius:5px">${esc(i.name)}: ${i.price.toLocaleString()} PLN</span>`).join('')}</div>
+<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px">${(p.items||[]).map(i=>`<span style="font-size:10px;padding:3px 8px;border:1px solid var(--bd);border-radius:5px">${esc(i.name)}: ${i.price.toLocaleString()} PLN</span>`).join('')}</div>
 <div style="display:flex;justify-content:space-between;align-items:center">
 <div style="font-size:14px;font-weight:700">${p.total.toLocaleString()} PLN</div>
 <div style="display:flex;gap:4px">
@@ -5023,7 +4981,7 @@ function renderContractorProposals(){
     const statusText=p.status==='accepted'?'Принято':p.status==='rejected'?'Отклонено':'На рассмотрении';
     return `<div class="c" style="margin-bottom:12px"><div class="ch"><h3>КП от ${new Date(p.created_at).toLocaleDateString()}</h3><span style="font-size:10px;padding:3px 8px;border-radius:5px;background:${statusColor}22;color:${statusColor};font-weight:600">${statusText}</span></div>
 <div class="cb" style="padding:12px"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
-${p.items.map(i=>`<div style="padding:8px 10px;border:1px solid var(--bd);border-radius:6px;font-size:11px"><div style="font-weight:600">${esc(i.name)}</div><div style="color:var(--tx3);margin-top:2px">${esc(i.cat)} · ${i.price.toLocaleString()} PLN</div>${i.note?`<div style="color:var(--tx2);margin-top:2px;font-style:italic">${esc(i.note)}</div>`:''}</div>`).join('')}
+${(p.items||[]).map(i=>`<div style="padding:8px 10px;border:1px solid var(--bd);border-radius:6px;font-size:11px"><div style="font-weight:600">${esc(i.name)}</div><div style="color:var(--tx3);margin-top:2px">${esc(i.cat)} · ${i.price.toLocaleString()} PLN</div>${i.note?`<div style="color:var(--tx2);margin-top:2px;font-style:italic">${esc(i.note)}</div>`:''}</div>`).join('')}
 </div><div style="text-align:right;font-size:14px;font-weight:700">Итого: ${p.total.toLocaleString()} PLN</div></div></div>`;
   }).join('');
 }
@@ -7232,7 +7190,7 @@ function renderStaff(){
   const items=pickedIds.map(id=>{const e=DB.employees.find(x=>String(x.id)===String(id));if(!e)return null;const over=picked[id]||{};return {...e,...over,id:e.id}}).filter(Boolean);
   // Stats
   let totalFot=0;
-  items.forEach(r=>{totalFot+=(r.salary||0)});
+  items.forEach(r=>{totalFot+=(r.salary||0)*(r.qty||1)});
   const cnt=items.length;
   const avg=cnt?Math.round(totalFot/cnt):0;
   const el=id=>document.getElementById(id);
