@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVITA — Pricing & Plans</title>
+    <style>
+        :root {
+            --bg: #0a0e14;
+            --card: #161b22;
+            --blue: #4f6ef7;
+            --blue2: #3b5ce4;
+            --green: #3fb950;
+            --gold: #c9a96e;
+            --gold2: #e8c97a;
+            --purple: #8b5cf6;
+            --orange: #f0883e;
+            --red: #f85149;
+            --tx: #c9d1d9;
+            --tx2: #8b949e;
+            --bright: #ffffff;
+            --bd: #30363d;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--tx); overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .container { width: 92vw; height: 82vh; position: relative; }
+        .slide { position: absolute; width: 100%; height: 100%; background: var(--card); border: 1px solid var(--bd); border-radius: 14px; padding: 40px 48px; display: none; flex-direction: column; animation: fadeUp .4s ease; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+        .slide.active { display: flex; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+        h1 { color: var(--blue); font-size: clamp(1.8rem,4vw,2.6rem); margin-bottom: 16px; letter-spacing: 1px; font-weight: 800; }
+        h2 { color: var(--green); margin-bottom: 12px; border-left: 4px solid var(--green); padding-left: 14px; font-size: 1.3rem; }
+        h3 { color: var(--bright); margin-bottom: 8px; font-size: 1rem; }
+        p { line-height: 1.7; margin-bottom: 12px; font-size: .95rem; }
+        .sub { color: var(--tx2); font-size: .85rem; line-height: 1.6; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 16px; }
+        .card { background: rgba(255,255,255,.03); border: 1px solid var(--bd); border-radius: 10px; padding: 20px; transition: .2s; }
+        .card:hover { border-color: var(--blue); transform: translateY(-3px); }
+        .card h3 { font-size: .95rem; }
+        .card .price { font-size: 1.6rem; font-weight: 800; color: var(--bright); margin: 6px 0; }
+        .card .price span { font-size: .7rem; color: var(--tx2); font-weight: 500; }
+        .card ul { list-style: none; font-size: .82rem; margin-top: 8px; }
+        .card li { padding: 3px 0; display: flex; align-items: center; gap: 6px; }
+        .card li .ck { color: var(--green); font-weight: 700; }
+        .card li .no { color: var(--tx2); }
+
+        .plan-trial { border-color: var(--tx2); }
+        .plan-pro { border-color: var(--blue); background: rgba(79,110,247,.06); }
+        .plan-unlimited { border-color: var(--gold); background: rgba(201,169,110,.06); }
+        .plan-pro .label { color: var(--blue); }
+        .plan-unlimited .label { color: var(--gold); }
+        .label { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+
+        table { width: 100%; border-collapse: collapse; font-size: .82rem; margin-top: 12px; }
+        th { text-align: left; padding: 8px 6px; border-bottom: 2px solid var(--bd); color: var(--tx2); font-weight: 600; font-size: .75rem; text-transform: uppercase; letter-spacing: .5px; }
+        td { padding: 7px 6px; border-bottom: 1px solid rgba(48,54,61,.5); }
+        .t-trial { text-align: center; color: var(--tx2); }
+        .t-pro { text-align: center; color: var(--blue); font-weight: 600; }
+        .t-unl { text-align: center; color: var(--gold); font-weight: 600; }
+
+        .role-badge { display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: .7rem; font-weight: 700; letter-spacing: .5px; }
+        .role-owner { background: rgba(79,110,247,.15); color: var(--blue); }
+        .role-contr { background: rgba(240,136,62,.15); color: var(--orange); }
+        .role-supp { background: rgba(139,92,246,.15); color: var(--purple); }
+
+        .hero-num { font-size: 3rem; font-weight: 800; line-height: 1; }
+        .hero-label { font-size: .75rem; color: var(--tx2); margin-top: 2px; }
+        .stats { display: flex; gap: 40px; margin-top: 24px; }
+
+        .nav { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; background: rgba(22,27,34,.95); border: 1px solid var(--bd); border-radius: 12px; padding: 8px 16px; z-index: 10; backdrop-filter: blur(12px); }
+        .nav button { padding: 8px 18px; border-radius: 8px; border: none; font-size: .8rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: .15s; }
+        .nav .prev { background: transparent; color: var(--tx2); border: 1px solid var(--bd); }
+        .nav .prev:hover { background: rgba(255,255,255,.05); }
+        .nav .prev:disabled { opacity: .3; cursor: default; }
+        .nav .next { background: var(--blue); color: #fff; }
+        .nav .next:hover { filter: brightness(1.1); }
+        .nav .counter { font-size: .75rem; color: var(--tx2); min-width: 50px; text-align: center; }
+        .nav .bar { width: 80px; height: 3px; border-radius: 2px; background: var(--bd); overflow: hidden; }
+        .nav .bar-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width .3s; }
+
+        .back { position: fixed; top: 16px; left: 16px; color: var(--tx2); font-size: .8rem; text-decoration: none; z-index: 10; display: flex; align-items: center; gap: 4px; }
+        .back:hover { color: var(--bright); }
+
+        @media(max-width:768px) {
+            .slide { padding: 24px 20px; }
+            .grid { grid-template-columns: 1fr; }
+            .stats { gap: 20px; flex-wrap: wrap; }
+            table { font-size: .75rem; }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<a href="/news.html" class="back">&larr; News</a>
+
+<!-- SLIDE 1: Title -->
+<div class="container">
+
+<div class="slide active" data-slide="0">
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center">
+        <div style="font-size:.8rem;color:var(--blue);font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:12px">SVITA AI</div>
+        <h1 style="font-size:clamp(2rem,5vw,3.2rem);margin-bottom:8px">Pricing & Plans</h1>
+        <p style="color:var(--tx2);font-size:1.1rem;max-width:500px">3 roles. 3 plans. One platform for launching any service business in Europe.</p>
+        <div class="stats">
+            <div><div class="hero-num" style="color:var(--blue)">3</div><div class="hero-label">Roles</div></div>
+            <div><div class="hero-num" style="color:var(--green)">3</div><div class="hero-label">Plans</div></div>
+            <div><div class="hero-num" style="color:var(--gold)">40+</div><div class="hero-label">Countries</div></div>
+            <div><div class="hero-num" style="color:var(--purple)">12</div><div class="hero-label">Currencies</div></div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 2: 3 Roles -->
+<div class="slide" data-slide="1">
+    <h2 style="border-color:var(--purple)">Three Roles, One Ecosystem</h2>
+    <p class="sub">Each role gets its own dashboard, tools, and pricing.</p>
+    <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="card" style="border-left:3px solid var(--blue)">
+            <div class="role-badge role-owner">OWNER</div>
+            <h3 style="margin-top:10px">Business Owner</h3>
+            <p class="sub">Builds the full business concept: premises, staff, equipment, services, budget. Gets AI analysis and exports.</p>
+        </div>
+        <div class="card" style="border-left:3px solid var(--orange)">
+            <div class="role-badge role-contr">CONTRACTOR</div>
+            <h3 style="margin-top:10px">Contractor</h3>
+            <p class="sub">Finds renovation and construction jobs. Responds to owner requests, sends proposals, builds portfolio and reputation.</p>
+        </div>
+        <div class="card" style="border-left:3px solid var(--purple)">
+            <div class="role-badge role-supp">SUPPLIER</div>
+            <h3 style="margin-top:10px">Supplier</h3>
+            <p class="sub">Lists equipment in the catalog. Owners pick directly from catalog. Gets analytics, contacts, and promotion tools.</p>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 3: Owner Plans -->
+<div class="slide" data-slide="2">
+    <h2><span class="role-badge role-owner" style="margin-right:8px">OWNER</span> Business Owner Plans</h2>
+    <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="card plan-trial">
+            <div class="label" style="color:var(--tx2)">Trial</div>
+            <div class="price">Free</div>
+            <ul>
+                <li><span class="ck">+</span> 1 concept</li>
+                <li><span class="ck">+</span> All 7 constructor stages</li>
+                <li><span class="ck">+</span> All databases</li>
+                <li><span class="ck">+</span> Budget & profitability</li>
+                <li><span class="ck">+</span> AI chat (5/day)</li>
+                <li><span class="no">-</span> AI concept generation</li>
+                <li><span class="no">-</span> Export PDF/JSON</li>
+                <li><span class="no">-</span> Contractors access</li>
+                <li><span class="no">-</span> Suppliers access</li>
+            </ul>
+        </div>
+        <div class="card plan-pro">
+            <div class="label">Pro</div>
+            <div class="price">99 <span>EUR / mo</span></div>
+            <ul>
+                <li><span class="ck">+</span> 5 concepts</li>
+                <li><span class="ck">+</span> All 7 stages + databases</li>
+                <li><span class="ck">+</span> AI chat (50/day)</li>
+                <li><span class="ck">+</span> AI concept generation</li>
+                <li><span class="ck">+</span> Export PDF / JSON</li>
+                <li><span class="no">-</span> Contractors access</li>
+                <li><span class="no">-</span> Suppliers access</li>
+                <li><span class="no">-</span> Commercial proposals</li>
+            </ul>
+        </div>
+        <div class="card plan-unlimited">
+            <div class="label">Unlimited</div>
+            <div class="price">249 <span>EUR / mo</span></div>
+            <ul>
+                <li><span class="ck">+</span> Unlimited concepts</li>
+                <li><span class="ck">+</span> All features</li>
+                <li><span class="ck">+</span> Unlimited AI chat</li>
+                <li><span class="ck">+</span> Contractors marketplace</li>
+                <li><span class="ck">+</span> Suppliers catalog</li>
+                <li><span class="ck">+</span> Commercial proposals</li>
+                <li><span class="ck">+</span> Priority support</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 4: Owner Feature Matrix -->
+<div class="slide" data-slide="3">
+    <h2><span class="role-badge role-owner" style="margin-right:8px">OWNER</span> Feature Matrix</h2>
+    <table>
+        <tr><th>Feature</th><th class="t-trial">Trial</th><th class="t-pro">Pro</th><th class="t-unl">Unlimited</th></tr>
+        <tr><td>Concepts</td><td class="t-trial">1</td><td class="t-pro">5</td><td class="t-unl">Unlimited</td></tr>
+        <tr><td>7 Constructor Stages</td><td class="t-trial">Yes</td><td class="t-pro">Yes</td><td class="t-unl">Yes</td></tr>
+        <tr><td>Databases (rooms, equipment, staff, services, docs)</td><td class="t-trial">Yes</td><td class="t-pro">Yes</td><td class="t-unl">Yes</td></tr>
+        <tr><td>Budget & Profitability Analytics</td><td class="t-trial">Yes</td><td class="t-pro">Yes</td><td class="t-unl">Yes</td></tr>
+        <tr><td>AI Chat (concept analysis)</td><td class="t-trial">5 / day</td><td class="t-pro">50 / day</td><td class="t-unl">Unlimited</td></tr>
+        <tr><td>AI Concept Generation</td><td class="t-trial">-</td><td class="t-pro">Yes</td><td class="t-unl">Yes</td></tr>
+        <tr><td>Export PDF / JSON</td><td class="t-trial">-</td><td class="t-pro">Yes</td><td class="t-unl">Yes</td></tr>
+        <tr><td>Contractors Marketplace</td><td class="t-trial">-</td><td class="t-pro">-</td><td class="t-unl">Yes</td></tr>
+        <tr><td>Suppliers Catalog</td><td class="t-trial">-</td><td class="t-pro">-</td><td class="t-unl">Yes</td></tr>
+        <tr><td>Commercial Proposals</td><td class="t-trial">-</td><td class="t-pro">-</td><td class="t-unl">Yes</td></tr>
+        <tr><td>Priority Support</td><td class="t-trial">-</td><td class="t-pro">-</td><td class="t-unl">Yes</td></tr>
+    </table>
+</div>
+
+<!-- SLIDE 5: Contractor Plans -->
+<div class="slide" data-slide="4">
+    <h2 style="border-color:var(--orange)"><span class="role-badge role-contr" style="margin-right:8px">CONTRACTOR</span> Plans</h2>
+    <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="card plan-trial">
+            <div class="label" style="color:var(--tx2)">Trial</div>
+            <div class="price">Free</div>
+            <ul>
+                <li><span class="ck">+</span> Browse available jobs</li>
+                <li><span class="ck">+</span> 3 responses / month</li>
+                <li><span class="ck">+</span> Basic profile</li>
+                <li><span class="no">-</span> Owner contacts</li>
+                <li><span class="no">-</span> Commercial proposals</li>
+                <li><span class="no">-</span> Ratings & reviews</li>
+                <li><span class="no">-</span> Priority placement</li>
+                <li><span class="no">-</span> Verified badge</li>
+            </ul>
+        </div>
+        <div class="card plan-pro" style="border-color:var(--orange);background:rgba(240,136,62,.06)">
+            <div class="label" style="color:var(--orange)">Pro</div>
+            <div class="price">79 <span>EUR / mo</span></div>
+            <ul>
+                <li><span class="ck">+</span> 20 responses / month</li>
+                <li><span class="ck">+</span> Full portfolio profile</li>
+                <li><span class="ck">+</span> Direct owner contacts</li>
+                <li><span class="ck">+</span> Commercial proposals</li>
+                <li><span class="ck">+</span> Ratings & reviews</li>
+                <li><span class="no">-</span> Priority placement</li>
+                <li><span class="no">-</span> Verified badge</li>
+            </ul>
+        </div>
+        <div class="card plan-unlimited">
+            <div class="label">Unlimited</div>
+            <div class="price">149 <span>EUR / mo</span></div>
+            <ul>
+                <li><span class="ck">+</span> Unlimited responses</li>
+                <li><span class="ck">+</span> All Pro features</li>
+                <li><span class="ck">+</span> Priority in search</li>
+                <li><span class="ck">+</span> Verified badge</li>
+                <li><span class="ck">+</span> Featured placement</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 6: Supplier Plans -->
+<div class="slide" data-slide="5">
+    <h2 style="border-color:var(--purple)"><span class="role-badge role-supp" style="margin-right:8px">SUPPLIER</span> Plans</h2>
+    <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="card plan-trial">
+            <div class="label" style="color:var(--tx2)">Trial</div>
+            <div class="price">Free</div>
+            <ul>
+                <li><span class="ck">+</span> 10 catalog items</li>
+                <li><span class="ck">+</span> Basic product cards</li>
+                <li><span class="ck">+</span> Visible to owners</li>
+                <li><span class="no">-</span> Owner contacts</li>
+                <li><span class="no">-</span> View analytics</li>
+                <li><span class="no">-</span> Promo banner</li>
+                <li><span class="no">-</span> Priority & badge</li>
+            </ul>
+        </div>
+        <div class="card plan-pro" style="border-color:var(--purple);background:rgba(139,92,246,.06)">
+            <div class="label" style="color:var(--purple)">Pro</div>
+            <div class="price">69 <span>EUR / mo</span></div>
+            <ul>
+                <li><span class="ck">+</span> 100 catalog items</li>
+                <li><span class="ck">+</span> Full product cards (photos, specs)</li>
+                <li><span class="ck">+</span> Direct owner contacts</li>
+                <li><span class="ck">+</span> View analytics</li>
+                <li><span class="no">-</span> Promo banner</li>
+                <li><span class="no">-</span> Priority & badge</li>
+            </ul>
+        </div>
+        <div class="card plan-unlimited">
+            <div class="label">Unlimited</div>
+            <div class="price">129 <span>EUR / mo</span></div>
+            <ul>
+                <li><span class="ck">+</span> Unlimited items</li>
+                <li><span class="ck">+</span> All Pro features</li>
+                <li><span class="ck">+</span> Promo banner in catalog</li>
+                <li><span class="ck">+</span> Priority in search</li>
+                <li><span class="ck">+</span> Verified badge</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 7: Revenue Model -->
+<div class="slide" data-slide="6">
+    <h2 style="border-color:var(--gold)">Revenue Model</h2>
+    <p class="sub">How SVITA generates revenue across three role segments.</p>
+    <div class="grid" style="grid-template-columns:repeat(2,1fr);margin-top:12px">
+        <div class="card">
+            <h3>Subscription Revenue</h3>
+            <table style="margin:0">
+                <tr><td style="color:var(--tx2)">Owner Pro</td><td style="text-align:right;font-weight:700">99 EUR/mo</td></tr>
+                <tr><td style="color:var(--tx2)">Owner Unlimited</td><td style="text-align:right;font-weight:700">249 EUR/mo</td></tr>
+                <tr><td style="color:var(--tx2)">Contractor Pro</td><td style="text-align:right;font-weight:700">79 EUR/mo</td></tr>
+                <tr><td style="color:var(--tx2)">Contractor Unlimited</td><td style="text-align:right;font-weight:700">149 EUR/mo</td></tr>
+                <tr><td style="color:var(--tx2)">Supplier Pro</td><td style="text-align:right;font-weight:700">69 EUR/mo</td></tr>
+                <tr><td style="color:var(--tx2)">Supplier Unlimited</td><td style="text-align:right;font-weight:700">129 EUR/mo</td></tr>
+            </table>
+        </div>
+        <div class="card">
+            <h3>Unit Economics (target)</h3>
+            <table style="margin:0">
+                <tr><td style="color:var(--tx2)">Average MRR per user</td><td style="text-align:right;font-weight:700;color:var(--green)">~85 EUR</td></tr>
+                <tr><td style="color:var(--tx2)">Free-to-paid conversion</td><td style="text-align:right;font-weight:700">8-12%</td></tr>
+                <tr><td style="color:var(--tx2)">Churn rate target</td><td style="text-align:right;font-weight:700">&lt;5%/mo</td></tr>
+                <tr><td style="color:var(--tx2)">CAC (organic)</td><td style="text-align:right;font-weight:700;color:var(--green)">~15 EUR</td></tr>
+                <tr><td style="color:var(--tx2)">LTV/CAC ratio</td><td style="text-align:right;font-weight:700;color:var(--green)">&gt;10x</td></tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 8: CTA -->
+<div class="slide" data-slide="7">
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center">
+        <div style="font-size:3rem;margin-bottom:16px">&#9889;</div>
+        <h1 style="font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:12px">Start Building Today</h1>
+        <p style="color:var(--tx2);font-size:1rem;max-width:480px;margin-bottom:28px">Create your first business concept for free. No credit card required. All 40+ European countries supported.</p>
+        <a href="/dashboard.html#signup" style="display:inline-block;padding:14px 36px;background:var(--blue);color:#fff;border-radius:10px;font-size:1rem;font-weight:700;text-decoration:none;transition:.15s" onmouseover="this.style.filter='brightness(1.15)'" onmouseout="this.style.filter='none'">Try SVITA Free &rarr;</a>
+        <div style="margin-top:24px;display:flex;gap:24px">
+            <a href="/dashboard.html" style="color:var(--tx2);font-size:.85rem;text-decoration:none">Sign In</a>
+            <a href="/news.html" style="color:var(--tx2);font-size:.85rem;text-decoration:none">All News</a>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<!-- NAV -->
+<div class="nav">
+    <button class="prev" id="prevBtn" disabled>&larr;</button>
+    <div class="counter" id="counter">1 / 8</div>
+    <div class="bar"><div class="bar-fill" id="bar" style="width:12.5%"></div></div>
+    <button class="next" id="nextBtn">Next &rarr;</button>
+</div>
+
+<script>
+let cur=0;
+const slides=document.querySelectorAll('.slide');
+const total=slides.length;
+function go(n){
+    if(n<0||n>=total)return;
+    cur=n;
+    slides.forEach((s,i)=>s.classList.toggle('active',i===cur));
+    document.getElementById('prevBtn').disabled=cur===0;
+    document.getElementById('nextBtn').innerHTML=cur===total-1?'Done':'Next &rarr;';
+    document.getElementById('counter').textContent=(cur+1)+' / '+total;
+    document.getElementById('bar').style.width=((cur+1)/total*100)+'%';
+}
+document.getElementById('nextBtn').addEventListener('click',()=>go(cur+1));
+document.getElementById('prevBtn').addEventListener('click',()=>go(cur-1));
+document.addEventListener('keydown',e=>{
+    if(e.code==='ArrowRight'||e.code==='Space'){e.preventDefault();go(cur+1)}
+    if(e.code==='ArrowLeft')go(cur-1);
+});
+</script>
+</body>
+</html>
