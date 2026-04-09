@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SVITA — Prototype v2</title>
+<title>SVITA — Prototype v3</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -135,6 +136,29 @@ td .price{color:var(--gold);font-weight:600}
 .crm-row:last-child{border:none}
 .crm-row .label{color:var(--tx2)}
 
+/* Detail panel (opens when card clicked) */
+.detail-panel{display:none;margin-bottom:28px}
+.detail-panel.open{display:block}
+.detail-panel .dp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.detail-panel .dp-head h2{font-size:16px;font-weight:600}
+.dp-close{border:none;background:none;font-size:18px;cursor:pointer;color:var(--tx2);padding:4px 8px;border-radius:6px}
+.dp-close:hover{background:var(--sf2);color:var(--tx)}
+.dp-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.dp-item{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;cursor:pointer;transition:all .15s}
+.dp-item:hover{border-color:var(--gold);box-shadow:0 2px 8px rgba(186,117,23,.1)}
+.dp-item.selected{border-color:var(--gold);background:var(--goldbg)}
+.dp-item h4{font-size:13px;font-weight:600;margin-bottom:4px}
+.dp-item .dp-sub{font-size:11px;color:var(--tx2)}
+.dp-item .dp-price{font-size:13px;font-weight:600;color:var(--gold);margin-top:6px}
+.dp-item .dp-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;background:var(--sf2);color:var(--tx2);margin-top:4px}
+.dp-search{width:100%;padding:10px 14px;border:1px solid var(--bd);border-radius:8px;font-size:13px;font-family:var(--f);margin-bottom:12px;outline:none}
+.dp-search:focus{border-color:var(--gold)}
+.dp-tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.dp-tab{padding:5px 12px;border-radius:16px;font-size:11px;font-weight:500;border:1px solid var(--bd);background:var(--sf);color:var(--tx2);cursor:pointer;transition:all .15s}
+.dp-tab:hover{border-color:var(--gold);color:var(--gold)}
+.dp-tab.act{background:var(--gold);color:#fff;border-color:var(--gold)}
+.loading{text-align:center;padding:40px;color:var(--tx3);font-size:13px}
+
 /* Stage content visibility */
 .stage-content{display:none}
 .stage-content.active{display:block}
@@ -241,43 +265,54 @@ td .price{color:var(--gold);font-weight:600}
     <div class="stat green"><div class="stat-label">Прибыль/мес</div><div class="stat-value">562 600</div><div class="stat-sub">PLN</div></div>
     <div class="stat"><div class="stat-label">Окупаемость</div><div class="stat-value">1</div><div class="stat-sub">мес</div></div>
   </div>
-  <div class="cards">
-    <div class="card">
+  <div class="cards" id="stepCards">
+    <div class="card" onclick="openStep('premises')">
       <div class="card-icon">&#127970;</div>
       <h3>Помещение</h3>
-      <p>Выберите помещение, нарисуйте план кабинетов и зон</p>
-      <div class="card-meta"><span class="card-cost">36 000 PLN</span><span class="card-count">0 комнат</span></div>
+      <p>Выберите помещение из <span id="cnt-premises">...</span> вариантов</p>
+      <div class="card-meta"><span class="card-cost" id="cost-premises">0 PLN</span><span class="card-count" id="sel-premises">0 выбрано</span></div>
     </div>
-    <div class="card">
+    <div class="card" onclick="openStep('services')">
       <div class="card-icon">&#128736;</div>
       <h3>Модернизация</h3>
-      <p>Ремонт, электрика, вентиляция, отделка</p>
-      <div class="card-meta"><span class="card-cost">0 PLN</span><span class="card-count">0 работ</span></div>
+      <p>Ремонт, электрика, вентиляция — <span id="cnt-services">...</span> услуг</p>
+      <div class="card-meta"><span class="card-cost" id="cost-services">0 PLN</span><span class="card-count" id="sel-services">0 выбрано</span></div>
     </div>
-    <div class="card">
+    <div class="card" onclick="openStep('equipment')">
       <div class="card-icon">&#128230;</div>
       <h3>Оснащение</h3>
-      <p>Стоматологическое оборудование, мебель, IT</p>
-      <div class="card-meta"><span class="card-cost">0 PLN</span><span class="card-count">0 позиций</span></div>
+      <p>Оборудование, мебель — <span id="cnt-equipment">...</span> позиций</p>
+      <div class="card-meta"><span class="card-cost" id="cost-equipment">0 PLN</span><span class="card-count" id="sel-equipment">0 выбрано</span></div>
     </div>
-    <div class="card">
+    <div class="card" style="opacity:.5">
       <div class="card-icon">&#129489;</div>
       <h3>Персонал</h3>
       <p>Врачи, ассистенты, администраторы</p>
-      <div class="card-meta"><span class="card-cost">0 PLN/мес</span><span class="card-count">0 чел</span></div>
+      <div class="card-meta"><span class="card-cost">0 PLN/мес</span><span class="card-count">скоро</span></div>
     </div>
-    <div class="card">
+    <div class="card" style="opacity:.5">
       <div class="card-icon">&#129657;</div>
-      <h3>Услуги</h3>
+      <h3>Услуги клиники</h3>
       <p>Перечень процедур и прейскурант</p>
-      <div class="card-meta"><span class="card-cost">—</span><span class="card-count">0 услуг</span></div>
+      <div class="card-meta"><span class="card-cost">--</span><span class="card-count">скоро</span></div>
     </div>
-    <div class="card">
+    <div class="card" style="opacity:.5">
       <div class="card-icon">&#128203;</div>
       <h3>Документация</h3>
       <p>Лицензии, разрешения, сертификаты</p>
-      <div class="card-meta"><span class="card-cost">0 PLN</span><span class="card-count">0 документов</span></div>
+      <div class="card-meta"><span class="card-cost">0 PLN</span><span class="card-count">скоро</span></div>
     </div>
+  </div>
+
+  <!-- Detail panel (opens on card click) -->
+  <div class="detail-panel" id="detailPanel">
+    <div class="dp-head">
+      <h2 id="dpTitle">--</h2>
+      <button class="dp-close" onclick="closeDetail()">&times;</button>
+    </div>
+    <input class="dp-search" id="dpSearch" placeholder="Поиск..." oninput="filterItems()">
+    <div class="dp-tabs" id="dpTabs"></div>
+    <div class="dp-list" id="dpList"></div>
   </div>
 </div>
 
@@ -420,6 +455,177 @@ td .price{color:var(--gold);font-weight:600}
 </div>
 
 <script>
+// ══════ SUPABASE ══════
+const SB_URL = 'https://ctdleobjnzniqkqomlrq.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZGxlb2JqbnpuaXFrcW9tbHJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMzE4MTEsImV4cCI6MjA4NzgwNzgxMX0.AMHtY7zGPemKYCxMy2bqRTOEAp8trA_Slor9wmg7C38';
+const sb = supabase.createClient(SB_URL, SB_KEY);
+
+// ══════ STATE ══════
+const state = {
+  premises: [], equipment: [], services: [],
+  premisesCat: [], equipmentCat: [], servicesCat: [],
+  selected: { premises: [], equipment: [], services: [] },
+  currentStep: null, currentCat: 'all'
+};
+
+// ══════ LOAD DATA ══════
+async function loadAll() {
+  const [p, e, s, ec, sc] = await Promise.all([
+    sb.from('premises').select('id,name,district,area_m2,rent_pln,rooms,score,status,has_water,has_sewage,has_ventilation,sanepid_ready').eq('status','active').order('score',{ascending:false}),
+    sb.from('equipment').select('id,name,brand,price_pln,category,category_id,supplier_name,status').not('price_pln','is',null).order('price_pln',{ascending:true}),
+    sb.from('services').select('id,name,category_id,price_min,price_max,currency,unit').order('name'),
+    sb.from('equipment_categories').select('id,slug,name,icon,sort_order').order('sort_order'),
+    sb.from('service_categories').select('id,slug,name,icon,sort_order').order('sort_order')
+  ]);
+  state.premises = p.data || [];
+  state.equipment = e.data || [];
+  state.services = s.data || [];
+  state.equipmentCat = ec.data || [];
+  state.servicesCat = sc.data || [];
+
+  document.getElementById('cnt-premises').textContent = state.premises.length;
+  document.getElementById('cnt-equipment').textContent = state.equipment.length;
+  document.getElementById('cnt-services').textContent = state.services.length;
+  updateTotals();
+}
+
+// ══════ FORMATTING ══════
+const fmt = n => n == null ? '--' : Number(n).toLocaleString('pl-PL');
+
+// ══════ TOTALS ══════
+function updateTotals() {
+  const sp = state.selected.premises;
+  const se = state.selected.equipment;
+  const ss = state.selected.services;
+  const costP = sp.reduce((s,id) => { const r = state.premises.find(x=>x.id===id); return s + (r ? Number(r.rent_pln||0) : 0); }, 0);
+  const costE = se.reduce((s,id) => { const r = state.equipment.find(x=>x.id===id); return s + (r ? Number(r.price_pln||0) : 0); }, 0);
+  const costS = ss.reduce((s,id) => { const r = state.services.find(x=>x.id===id); return s + (r ? Number(r.price_min||0) : 0); }, 0);
+  document.getElementById('cost-premises').textContent = fmt(costP) + ' PLN/мес';
+  document.getElementById('cost-equipment').textContent = fmt(costE) + ' PLN';
+  document.getElementById('cost-services').textContent = fmt(costS) + ' PLN';
+  document.getElementById('sel-premises').textContent = sp.length + ' выбрано';
+  document.getElementById('sel-equipment').textContent = se.length + ' выбрано';
+  document.getElementById('sel-services').textContent = ss.length + ' выбрано';
+
+  // Update stats
+  const totalInvest = costP * 12 + costE + costS;
+  const statVals = document.querySelectorAll('#content1 .stat .stat-value');
+  if (statVals[0]) statVals[0].textContent = fmt(totalInvest);
+
+  // Progress
+  const steps = [sp.length > 0, se.length > 0, ss.length > 0];
+  const done = steps.filter(Boolean).length;
+  const pct = Math.round((done / 6) * 100);
+  const fill = document.querySelector('#content1 .progress-fill');
+  if (fill) fill.style.width = pct + '%';
+  const labels = document.querySelectorAll('#content1 .progress-label span');
+  if (labels[0]) labels[0].textContent = done + ' из 6 этапов';
+  if (labels[1]) labels[1].textContent = pct + '%';
+}
+
+// ══════ OPEN STEP ══════
+function openStep(step) {
+  state.currentStep = step;
+  state.currentCat = 'all';
+  const panel = document.getElementById('detailPanel');
+  const titles = { premises: 'Помещения', equipment: 'Оснащение', services: 'Модернизация' };
+  document.getElementById('dpTitle').textContent = titles[step];
+  document.getElementById('dpSearch').value = '';
+
+  // Build tabs
+  const tabs = document.getElementById('dpTabs');
+  tabs.innerHTML = '<div class="dp-tab act" onclick="filterCat(\'all\')">Все</div>';
+  const cats = step === 'equipment' ? state.equipmentCat : step === 'services' ? state.servicesCat : [];
+  cats.forEach(c => {
+    const label = typeof c.name === 'object' ? (c.name.ru || c.name.en) : c.name;
+    tabs.innerHTML += '<div class="dp-tab" onclick="filterCat(\'' + c.id + '\')">' + (c.icon||'') + ' ' + label + '</div>';
+  });
+
+  renderItems();
+  panel.classList.add('open');
+  panel.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function closeDetail() {
+  document.getElementById('detailPanel').classList.remove('open');
+  state.currentStep = null;
+}
+
+// ══════ RENDER ITEMS ══════
+function renderItems() {
+  const step = state.currentStep;
+  const list = document.getElementById('dpList');
+  const search = document.getElementById('dpSearch').value.toLowerCase();
+  let items = [];
+
+  if (step === 'premises') {
+    items = state.premises.map(p => ({
+      id: p.id,
+      title: p.name,
+      sub: p.district + ' · ' + p.area_m2 + ' m² · ' + p.rooms + ' комн.',
+      price: fmt(p.rent_pln) + ' PLN/мес',
+      badge: 'Score: ' + p.score,
+      cat: 'all'
+    }));
+  } else if (step === 'equipment') {
+    items = state.equipment.map(e => ({
+      id: e.id,
+      title: e.name,
+      sub: (e.brand || '') + (e.supplier_name && e.supplier_name !== 'unknown' ? ' · ' + e.supplier_name : ''),
+      price: fmt(e.price_pln) + ' PLN',
+      badge: null,
+      cat: e.category_id
+    }));
+  } else if (step === 'services') {
+    items = state.services.map(s => ({
+      id: s.id,
+      title: s.name,
+      sub: s.unit || '',
+      price: s.price_min ? fmt(s.price_min) + (s.price_max ? ' - ' + fmt(s.price_max) : '') + ' ' + (s.currency||'PLN') : '--',
+      badge: null,
+      cat: s.category_id
+    }));
+  }
+
+  // Filter
+  if (state.currentCat !== 'all') items = items.filter(i => i.cat === state.currentCat);
+  if (search) items = items.filter(i => i.title.toLowerCase().includes(search) || (i.sub||'').toLowerCase().includes(search));
+
+  const sel = state.selected[step] || [];
+  list.innerHTML = items.length === 0
+    ? '<div class="loading">Ничего не найдено</div>'
+    : items.slice(0, 50).map(i => `
+    <div class="dp-item${sel.includes(i.id) ? ' selected' : ''}" onclick="toggleItem('${step}','${i.id}')">
+      <h4>${i.title}</h4>
+      <div class="dp-sub">${i.sub}</div>
+      <div class="dp-price">${i.price}</div>
+      ${i.badge ? '<div class="dp-badge">' + i.badge + '</div>' : ''}
+    </div>`).join('');
+
+  if (items.length > 50) {
+    list.innerHTML += '<div class="loading">... и ещё ' + (items.length - 50) + ' позиций (используйте поиск)</div>';
+  }
+}
+
+// ══════ TOGGLE SELECTION ══════
+function toggleItem(step, id) {
+  const sel = state.selected[step];
+  const idx = sel.indexOf(id);
+  if (idx >= 0) sel.splice(idx, 1); else sel.push(id);
+  renderItems();
+  updateTotals();
+}
+
+// ══════ FILTER ══════
+function filterItems() { renderItems(); }
+function filterCat(catId) {
+  state.currentCat = catId;
+  document.querySelectorAll('.dp-tab').forEach(t => t.classList.remove('act'));
+  event.target.classList.add('act');
+  renderItems();
+}
+
+// ══════ STAGE SWITCHING ══════
 function switchStage(n) {
   document.querySelectorAll('.stage').forEach((s,i) => {
     s.classList.remove('act');
@@ -431,13 +637,10 @@ function switchStage(n) {
   document.getElementById('content'+n).classList.add('active');
   document.querySelectorAll('.sidebar').forEach(s => s.style.display='none');
   document.getElementById('sidebar'+n).style.display='';
-  const ai = document.getElementById('aiSidebar');
-  const main = document.getElementById('mainContent');
-  const showAi = true;
-  ai.style.display = showAi ? '' : 'none';
-  main.classList.toggle('no-ai', !showAi);
+  closeDetail();
 }
 
+// ══════ AI CHAT ══════
 function aiSend() {
   const inp = document.querySelector('.ai-input input');
   const msg = inp.value.trim();
@@ -458,6 +661,9 @@ function aiSend() {
     body.scrollTop = body.scrollHeight;
   }, 600);
 }
+
+// ══════ INIT ══════
+loadAll();
 </script>
 </body>
 </html>
