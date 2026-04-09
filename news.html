@@ -16,11 +16,17 @@ a{color:inherit;text-decoration:none}
 .header-left{display:flex;align-items:center;gap:14px}
 .logo{font-size:18px;font-weight:800;display:flex;align-items:center;gap:8px}
 .logo .dot{width:7px;height:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 3px var(--acbg)}
-.logo-tag{font-size:9px;color:var(--tx3);letter-spacing:2px;text-transform:uppercase;font-weight:500}
 .header-sep{width:1px;height:20px;background:var(--bd2)}
 .header-section{font-size:13px;font-weight:600;color:var(--tx2)}
+.header-right{display:flex;align-items:center;gap:14px}
 .back-link{font-size:12px;color:var(--ac);font-weight:500;display:flex;align-items:center;gap:4px;transition:opacity .15s}
 .back-link:hover{opacity:.7}
+
+/* Lang toggle */
+.lang-toggle{display:flex;border:1px solid var(--bd2);border-radius:6px;overflow:hidden;font-size:11px;font-weight:600}
+.lang-btn{padding:4px 10px;cursor:pointer;color:var(--tx3);background:transparent;border:none;font-family:var(--f);font-size:11px;font-weight:600;transition:all .15s}
+.lang-btn:hover{color:var(--tx)}
+.lang-btn.active{background:var(--ac);color:#fff}
 
 .page{max-width:960px;margin:0 auto;padding:40px 24px 80px}
 .page-head{margin-bottom:36px}
@@ -33,7 +39,6 @@ a{color:inherit;text-decoration:none}
 .news-card:hover{border-color:var(--bd2);box-shadow:var(--shadow-md);transform:translateY(-2px)}
 .news-thumb{width:100%;height:180px;background:var(--sf2);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
 .news-thumb img{width:100%;height:100%;object-fit:cover}
-.news-thumb-icon{font-size:48px;opacity:.3}
 .news-badge{position:absolute;top:10px;left:10px;font-size:9px;font-weight:700;padding:3px 8px;border-radius:5px;text-transform:uppercase;letter-spacing:.5px}
 .badge-presentation{background:rgba(79,110,247,.12);color:var(--ac2)}
 .badge-research{background:rgba(34,197,94,.1);color:#1a9956}
@@ -44,13 +49,16 @@ a{color:inherit;text-decoration:none}
 .news-desc{font-size:12px;color:var(--tx2);line-height:1.55;flex:1}
 .news-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:12px}
 .news-tag{font-size:9px;font-weight:600;padding:2px 7px;border-radius:5px;background:var(--sf2);color:var(--tx3)}
-
 .news-cta{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-size:11px;font-weight:600;color:var(--ac);transition:gap .15s}
 .news-card:hover .news-cta{gap:8px}
 
-.empty-state{text-align:center;padding:80px 20px;color:var(--tx3)}
-.empty-state .icon{font-size:48px;margin-bottom:16px;opacity:.4}
-.empty-state p{font-size:13px;line-height:1.6}
+[data-ru]{display:none}
+body.lang-ru [data-ru]{display:block}
+body.lang-ru [data-en]{display:none}
+/* inline variants */
+span[data-ru],span[data-en]{display:inline}
+body.lang-ru span[data-ru]{display:inline}
+body.lang-ru span[data-en]{display:none}
 
 @media(max-width:640px){
   .header{padding:0 16px}
@@ -68,13 +76,23 @@ a{color:inherit;text-decoration:none}
     <span class="header-sep"></span>
     <span class="header-section">News</span>
   </div>
-  <a href="/" class="back-link">&larr; Dashboard</a>
+  <div class="header-right">
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
+    </div>
+    <a href="/" class="back-link"><span data-en>&larr; Dashboard</span><span data-ru>&larr; Dashboard</span></a>
+  </div>
 </div>
 
 <div class="page">
   <div class="page-head">
-    <h1>AI & Neural Networks</h1>
-    <p>Presentations, research, and tools — everything we build and discover in the world of artificial intelligence.</p>
+    <h1>
+      <span data-en>AI & Neural Networks</span>
+      <span data-ru>AI & Нейронные сети</span>
+    </h1>
+    <p data-en>Presentations, research, and tools — everything we build and discover in the world of artificial intelligence.</p>
+    <p data-ru>Презентации, исследования и инструменты — всё, что мы создаём и открываем в мире искусственного интеллекта.</p>
   </div>
 
   <div class="news-grid">
@@ -86,78 +104,89 @@ a{color:inherit;text-decoration:none}
         <span class="news-badge badge-presentation">Presentation</span>
       </div>
       <div class="news-body">
-        <div class="news-date">April 9, 2026</div>
-        <div class="news-title">Vibe Coding — The New Era of Building Things</div>
-        <div class="news-desc">11-slide interactive presentation about prompt-driven development, AI agents as extensions of self, and the $616B market. EN/RU.</div>
+        <div class="news-date"><span data-en>April 9, 2026</span><span data-ru>9 апреля 2026</span></div>
+        <div class="news-title"><span data-en>Vibe Coding — The New Era of Building Things</span><span data-ru>Вайб Кодинг — Новая Эра Создания</span></div>
+        <div class="news-desc"><span data-en>11-slide interactive presentation about prompt-driven development, AI agents as extensions of self, and the $616B market. EN/RU.</span><span data-ru>11 интерактивных слайдов о промпт-разработке, AI-агентах как продолжении мышления, и рынке в $616 млрд. EN/RU.</span></div>
         <div class="news-tags">
           <span class="news-tag">AI Agents</span>
           <span class="news-tag">Vibe Coding</span>
           <span class="news-tag">EN</span>
           <span class="news-tag">RU</span>
         </div>
-        <div class="news-cta">Open &rarr;</div>
+        <div class="news-cta"><span data-en>Open &rarr;</span><span data-ru>Открыть &rarr;</span></div>
       </div>
     </a>
 
-    <!-- 3. Claude Opus Principles -->
+    <!-- 2. Claude Opus Principles -->
     <a href="/principles.html" class="news-card">
       <div class="news-thumb" style="background:linear-gradient(135deg,#06060c,#141426)">
         <div style="text-align:center;color:#8b5cf6;font-size:28px;font-weight:800;opacity:.7">CLAUDE<br><span style="font-size:16px;color:#9898b8;font-weight:300">OPUS 4.6</span></div>
         <span class="news-badge badge-research">Research</span>
       </div>
       <div class="news-body">
-        <div class="news-date">Апрель 2026</div>
-        <div class="news-title">Claude Opus 4.6 — Фундаментальные принципы</div>
-        <div class="news-desc">Архитектура, рассуждения, ограничения и возможности одной из самых продвинутых AI-моделей. Интерактивная презентация.</div>
+        <div class="news-date"><span data-en>April 2026</span><span data-ru>Апрель 2026</span></div>
+        <div class="news-title"><span data-en>Claude Opus 4.6 — Fundamental Principles</span><span data-ru>Claude Opus 4.6 — Фундаментальные принципы</span></div>
+        <div class="news-desc"><span data-en>Architecture, reasoning, limitations and capabilities of one of the most advanced AI models. Interactive presentation.</span><span data-ru>Архитектура, рассуждения, ограничения и возможности одной из самых продвинутых AI-моделей. Интерактивная презентация.</span></div>
         <div class="news-tags">
           <span class="news-tag">Claude</span>
           <span class="news-tag">Anthropic</span>
           <span class="news-tag">LLM</span>
         </div>
-        <div class="news-cta">Открыть &rarr;</div>
+        <div class="news-cta"><span data-en>Open &rarr;</span><span data-ru>Открыть &rarr;</span></div>
       </div>
     </a>
 
-    <!-- 4. Cognitive Map -->
+    <!-- 3. Cognitive Map -->
     <a href="/cognitive-map.html" class="news-card">
       <div class="news-thumb" style="background:linear-gradient(135deg,#08080f,#161625)">
         <div style="text-align:center;color:#06b6d4;font-size:26px;font-weight:800;opacity:.7">COGNITIVE<br><span style="font-size:16px;color:#9898b8;font-weight:300">ARCHITECTURE</span></div>
         <span class="news-badge badge-research">Research</span>
       </div>
       <div class="news-body">
-        <div class="news-date">Апрель 2026</div>
-        <div class="news-title">Когнитивная архитектура Claude Opus 4.6</div>
-        <div class="news-desc">Карта когнитивных процессов: как модель думает, структурирует информацию и принимает решения. Визуальная презентация.</div>
+        <div class="news-date"><span data-en>April 2026</span><span data-ru>Апрель 2026</span></div>
+        <div class="news-title"><span data-en>Cognitive Architecture of Claude Opus 4.6</span><span data-ru>Когнитивная архитектура Claude Opus 4.6</span></div>
+        <div class="news-desc"><span data-en>Map of cognitive processes: how the model thinks, structures information, and makes decisions. Visual presentation.</span><span data-ru>Карта когнитивных процессов: как модель думает, структурирует информацию и принимает решения. Визуальная презентация.</span></div>
         <div class="news-tags">
           <span class="news-tag">Cognitive Map</span>
           <span class="news-tag">Architecture</span>
           <span class="news-tag">AI</span>
         </div>
-        <div class="news-cta">Открыть &rarr;</div>
+        <div class="news-cta"><span data-en>Open &rarr;</span><span data-ru>Открыть &rarr;</span></div>
       </div>
     </a>
 
-    <!-- 5. SWOT Analysis -->
+    <!-- 4. SWOT Analysis -->
     <a href="/swot.html" class="news-card">
       <div class="news-thumb" style="background:linear-gradient(135deg,#0a0a12,#1a1a2e)">
         <div style="text-align:center;color:#eab308;font-size:28px;font-weight:800;opacity:.7">SWOT<br><span style="font-size:16px;color:#a0a0b8;font-weight:300">ANALYSIS</span></div>
         <span class="news-badge badge-tool">Analysis</span>
       </div>
       <div class="news-body">
-        <div class="news-date">Апрель 2026</div>
-        <div class="news-title">SVITA AI — SWOT-анализ</div>
-        <div class="news-desc">Сильные и слабые стороны, возможности и угрозы проекта SVITA. Стратегический разбор на интерактивных слайдах.</div>
+        <div class="news-date"><span data-en>April 2026</span><span data-ru>Апрель 2026</span></div>
+        <div class="news-title"><span data-en>SVITA AI — SWOT Analysis</span><span data-ru>SVITA AI — SWOT-анализ</span></div>
+        <div class="news-desc"><span data-en>Strengths, weaknesses, opportunities, and threats of the SVITA project. Strategic breakdown in interactive slides.</span><span data-ru>Сильные и слабые стороны, возможности и угрозы проекта SVITA. Стратегический разбор на интерактивных слайдах.</span></div>
         <div class="news-tags">
           <span class="news-tag">SWOT</span>
           <span class="news-tag">Strategy</span>
           <span class="news-tag">SVITA</span>
         </div>
-        <div class="news-cta">Открыть &rarr;</div>
+        <div class="news-cta"><span data-en>Open &rarr;</span><span data-ru>Открыть &rarr;</span></div>
       </div>
     </a>
 
   </div>
 </div>
 
+<script>
+function setLang(lang){
+  document.body.classList.toggle('lang-ru', lang==='ru');
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+  localStorage.setItem('svita_news_lang',lang);
+}
+(function(){
+  const saved=localStorage.getItem('svita_news_lang');
+  if(saved)setLang(saved);
+})();
+</script>
 </body>
 </html>
