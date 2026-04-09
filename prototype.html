@@ -193,12 +193,12 @@ td .price{color:var(--gold);font-weight:600}
 <div class="sidebar" id="sidebar1" style="display:none">
   <div class="sg">
     <div class="sg-label">Этапы</div>
-    <div class="si act"><span class="ico">&#127970;</span>Помещение<span class="badge">36 000</span></div>
-    <div class="si"><span class="ico">&#128736;</span>Модернизация<span class="badge">0</span></div>
-    <div class="si"><span class="ico">&#128230;</span>Оснащение<span class="badge">0</span></div>
-    <div class="si"><span class="ico">&#129489;</span>Персонал<span class="badge">0</span></div>
-    <div class="si"><span class="ico">&#129657;</span>Услуги<span class="badge">0</span></div>
-    <div class="si"><span class="ico">&#128203;</span>Документация<span class="badge">0</span></div>
+    <div class="si act" onclick="sidebarClick(this,'premises')"><span class="ico">&#127970;</span>Помещение<span class="badge" id="sb-premises">0</span></div>
+    <div class="si" onclick="sidebarClick(this,'services')"><span class="ico">&#128736;</span>Модернизация<span class="badge" id="sb-services">0</span></div>
+    <div class="si" onclick="sidebarClick(this,'equipment')"><span class="ico">&#128230;</span>Оснащение<span class="badge" id="sb-equipment">0</span></div>
+    <div class="si" style="opacity:.5"><span class="ico">&#129489;</span>Персонал<span class="badge">--</span></div>
+    <div class="si" style="opacity:.5"><span class="ico">&#129657;</span>Услуги<span class="badge">--</span></div>
+    <div class="si" style="opacity:.5"><span class="ico">&#128203;</span>Документация<span class="badge">--</span></div>
   </div>
   <div class="sg">
     <div class="sg-label">Аналитика</div>
@@ -211,17 +211,17 @@ td .price{color:var(--gold);font-weight:600}
 <div class="sidebar" id="sidebar2">
   <div class="sg">
     <div class="sg-label">Фазы реализации</div>
-    <div class="si" style="color:var(--gn)"><span class="ico">&#10003;</span>Регистрация</div>
-    <div class="si act"><span class="ico">&#9654;</span>Ремонт</div>
-    <div class="si"><span class="ico">&#9675;</span>Оснащение</div>
-    <div class="si"><span class="ico">&#9675;</span>Персонал</div>
-    <div class="si"><span class="ico">&#9675;</span>Запуск</div>
+    <div class="si" style="color:var(--gn)" onclick="sbHighlight(this)"><span class="ico">&#10003;</span>Регистрация</div>
+    <div class="si act" onclick="sbHighlight(this)"><span class="ico">&#9654;</span>Ремонт</div>
+    <div class="si" onclick="sbHighlight(this)"><span class="ico">&#9675;</span>Оснащение</div>
+    <div class="si" onclick="sbHighlight(this)"><span class="ico">&#9675;</span>Персонал</div>
+    <div class="si" onclick="sbHighlight(this)"><span class="ico">&#9675;</span>Запуск</div>
   </div>
   <div class="sg">
     <div class="sg-label">Инструменты</div>
-    <div class="si"><span class="ico">&#128196;</span>PDF-план</div>
-    <div class="si"><span class="ico">&#128172;</span>AI-ассистент</div>
-    <div class="si"><span class="ico">&#128176;</span>Бюджет</div>
+    <div class="si" onclick="sbHighlight(this)"><span class="ico">&#128196;</span>PDF-план</div>
+    <div class="si" onclick="sbHighlight(this)"><span class="ico">&#128172;</span>AI-ассистент</div>
+    <div class="si" onclick="sbHighlight(this)"><span class="ico">&#128176;</span>Бюджет</div>
   </div>
 </div>
 
@@ -473,7 +473,7 @@ async function loadAll() {
   const [p, e, s, ec, sc] = await Promise.all([
     sb.from('premises').select('id,name,district,area_m2,rent_pln,rooms,score,status,has_water,has_sewage,has_ventilation,sanepid_ready').eq('status','active').order('score',{ascending:false}),
     sb.from('equipment').select('id,name,brand,price_pln,category,category_id,supplier_name,status').not('price_pln','is',null).order('price_pln',{ascending:true}),
-    sb.from('services').select('id,name,category_id,price_min,price_max,currency,unit').order('name'),
+    sb.from('services').select('id,name,category_id,price_min,price_max,currency,price_unit').order('name'),
     sb.from('equipment_categories').select('id,slug,name,icon,sort_order').order('sort_order'),
     sb.from('service_categories').select('id,slug,name,icon,sort_order').order('sort_order')
   ]);
@@ -506,6 +506,14 @@ function updateTotals() {
   document.getElementById('sel-premises').textContent = sp.length + ' выбрано';
   document.getElementById('sel-equipment').textContent = se.length + ' выбрано';
   document.getElementById('sel-services').textContent = ss.length + ' выбрано';
+
+  // Sidebar badges
+  const sbP = document.getElementById('sb-premises');
+  const sbE = document.getElementById('sb-equipment');
+  const sbS = document.getElementById('sb-services');
+  if (sbP) sbP.textContent = sp.length > 0 ? fmt(costP) : state.premises.length;
+  if (sbE) sbE.textContent = se.length > 0 ? fmt(costE) : state.equipment.length;
+  if (sbS) sbS.textContent = ss.length > 0 ? fmt(costS) : state.services.length;
 
   // Update stats
   const totalInvest = costP * 12 + costE + costS;
@@ -580,7 +588,7 @@ function renderItems() {
     items = state.services.map(s => ({
       id: s.id,
       title: s.name,
-      sub: s.unit || '',
+      sub: s.price_unit || '',
       price: s.price_min ? fmt(s.price_min) + (s.price_max ? ' - ' + fmt(s.price_max) : '') + ' ' + (s.currency||'PLN') : '--',
       badge: null,
       cat: s.category_id
@@ -623,6 +631,17 @@ function filterCat(catId) {
   document.querySelectorAll('.dp-tab').forEach(t => t.classList.remove('act'));
   event.target.classList.add('act');
   renderItems();
+}
+
+// ══════ SIDEBAR ══════
+function sbHighlight(el) {
+  el.closest('.sidebar').querySelectorAll('.si').forEach(s => s.classList.remove('act'));
+  el.classList.add('act');
+}
+function sidebarClick(el, step) {
+  document.querySelectorAll('#sidebar1 .si').forEach(s => s.classList.remove('act'));
+  el.classList.add('act');
+  openStep(step);
 }
 
 // ══════ STAGE SWITCHING ══════
