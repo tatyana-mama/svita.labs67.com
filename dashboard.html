@@ -2489,7 +2489,7 @@ async function loadSupabaseData(){
     }));
     // Load parsed properties from JSON catalog
     try{
-      const pRes=await fetch('/data/properties.json');
+      const pRes=await fetch('data/properties.json');
       if(pRes.ok){
         const parsed=await pRes.json();
         const existing=new Set(DB.premises.map(p=>p.id));
@@ -5278,16 +5278,18 @@ function renderSelectedRenovations(){
 const DOC_CATS=['Регистрация компании','Медицинская регистрация (RPWDL)','Санэпиднадзор (PSSE)','Пожарная безопасность','Помещение и строительство','Защита данных (RODO)','Отходы и экология (BDO)','Страхование','НФЗ / Частная практика','Персонал и лицензии','Оборудование и сертификация','Радиационная безопасность (RTG)','Фармацевтика и препараты','Доступность','Прочее'];
 let ADMIN_DOC_ITEMS=[];
 let _docsCountry='';
+let _docsCurrency='PLN';
 async function loadDocsForCountry(countryCode){
   if(_docsCountry===countryCode&&ADMIN_DOC_ITEMS.length)return;
   const sel=document.getElementById('docCountrySelect');
   const info=document.getElementById('docCountryInfo');
   try{
-    const res=await fetch('/data/docs/'+countryCode+'.json');
+    const res=await fetch('data/docs/'+countryCode+'.json');
     if(!res.ok)throw new Error(res.status);
     const data=await res.json();
     ADMIN_DOC_ITEMS=data.items||[];
     _docsCountry=countryCode;
+    _docsCurrency=data.currency||'EUR';
     if(sel)sel.value=countryCode;
     if(info)info.textContent=ADMIN_DOC_ITEMS.length+' документов · '+(data.lang||countryCode);
     renderDocCatalog();renderDocs();
@@ -5300,6 +5302,7 @@ async function loadDocsForCountry(countryCode){
     // Use inline fallback
     ADMIN_DOC_ITEMS=_PL_DOC_ITEMS;
     _docsCountry='PL';
+    _docsCurrency='PLN';
     if(sel)sel.value='PL';
     if(info)info.textContent=ADMIN_DOC_ITEMS.length+' документов · pl';
     renderDocCatalog();renderDocs();
@@ -5498,7 +5501,7 @@ function renderDocCatalog(){
     items.forEach(d=>{
       const picked=!!DB.pickedDocs['doc_'+d.idx];
       const noteAttr=d.note?` onmouseenter="showDocNote(this,${d.idx})" onmouseleave="hideDocNote()"`:'';
-      html+=`<div class="ci" style="padding:8px 12px;display:flex;align-items:center;gap:8px;position:relative;${picked?'background:var(--acbg)':''}"${noteAttr}><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:${picked?'600':'400'}">${esc(d.name)}${d.required?'<span style="color:var(--rd);font-size:9px"> *</span>':''}${d.note?' <span style="font-size:9px;color:var(--ac2);cursor:help" title="Наведите для подробностей">ℹ</span>':''}</div><div style="font-size:10px;color:var(--tx3)">${esc(d.desc||'')}</div><div style="font-size:10px;color:var(--ac2)">${d.price.toLocaleString('ru')} PLN</div></div><button class="btn sm ${picked?'gn':'pr'}" style="flex-shrink:0;min-width:100px;font-size:10px" onclick="togglePickDoc(${d.idx})">${picked?'✓ Добавлено':'+ В документы'}</button></div>`;
+      html+=`<div class="ci" style="padding:8px 12px;display:flex;align-items:center;gap:8px;position:relative;${picked?'background:var(--acbg)':''}"${noteAttr}><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:${picked?'600':'400'}">${esc(d.name)}${d.required?'<span style="color:var(--rd);font-size:9px"> *</span>':''}${d.note?' <span style="font-size:9px;color:var(--ac2);cursor:help" title="Наведите для подробностей">ℹ</span>':''}</div><div style="font-size:10px;color:var(--tx3)">${esc(d.desc||'')}</div><div style="font-size:10px;color:var(--ac2)">${d.price.toLocaleString('ru')} ${_docsCurrency}</div></div><button class="btn sm ${picked?'gn':'pr'}" style="flex-shrink:0;min-width:100px;font-size:10px" onclick="togglePickDoc(${d.idx})">${picked?'✓ Добавлено':'+ В документы'}</button></div>`;
     });
     html+='</div></div>';
   });
@@ -5528,7 +5531,7 @@ function renderDocs(){
   const keys=Object.keys(DB.pickedDocs||{});
   if(!keys.length){
     c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Добавьте документы из <a href="#" onclick="nav(\'db-docs\');return false" style="color:var(--ac2)">каталога</a></div>';
-    if(el('docCount'))el('docCount').textContent='0';if(el('docDone'))el('docDone').textContent='0';if(el('docCostStat'))el('docCostStat').textContent='0';if(el('s7Total'))el('s7Total').textContent='0 PLN';if(el('docBar'))el('docBar').style.width='0%';return;
+    if(el('docCount'))el('docCount').textContent='0';if(el('docDone'))el('docDone').textContent='0';if(el('docCostStat'))el('docCostStat').textContent='0';if(el('s7Total'))el('s7Total').textContent='0 '+_docsCurrency;if(el('docBar'))el('docBar').style.width='0%';return;
   }
   const groups={};let total=0,done=0;
   keys.forEach(key=>{
@@ -5545,14 +5548,14 @@ function renderDocs(){
     const g=groups[cat];
     const catCost=g.reduce((s,d)=>{let c=d.price||0;(d.items||[]).forEach(it=>{c+=it.price||0});return s+c},0);
     const req=g.some(d=>d.required);
-    html+=`<div class="c"><div class="ch"><h3 style="font-size:13px">${esc(cat)}</h3>${req?'<span style="font-size:9px;color:var(--rd);font-weight:600">ОБЯЗАТЕЛЬНО</span>':''}<span style="font-size:10px;color:var(--gn);font-weight:600;margin-left:auto">${catCost.toLocaleString('ru')} PLN</span></div><div class="cb">`;
+    html+=`<div class="c"><div class="ch"><h3 style="font-size:13px">${esc(cat)}</h3>${req?'<span style="font-size:9px;color:var(--rd);font-weight:600">ОБЯЗАТЕЛЬНО</span>':''}<span style="font-size:10px;color:var(--gn);font-weight:600;margin-left:auto">${catCost.toLocaleString('ru')} ${_docsCurrency}</span></div><div class="cb">`;
     g.forEach(d=>{
       const subTotal=(d.items||[]).reduce((s,it)=>s+(it.price||0),0);
       html+=`<div style="border-bottom:1px solid var(--bd);padding:10px 12px;${d.done?'opacity:.5':''}">
 <div class="ci cost-row" style="padding:0">
 <input type="checkbox" ${d.done?'checked':''} onchange="toggleDocDone('${d.key}')" style="flex-shrink:0">
 <div class="ct" style="flex:1;min-width:0;font-size:11px;${d.done?'text-decoration:line-through':''}">${esc(d.name)}${d.required?'<span style="color:var(--rd);font-size:9px"> *</span>':''}${d.desc?'<div class="ct-sub" style="text-decoration:none">'+esc(d.desc)+'</div>':''}</div>
-<div style="display:flex;align-items:center;gap:2px;flex-shrink:0"><input type="number" value="${d.price||0}" onchange="setDocBasePrice('${d.key}',this.value)" style="width:60px;font-size:11px;font-weight:700;color:var(--ac2);text-align:right;border:1px solid var(--bd);border-radius:4px;padding:2px 4px;background:var(--sf)"><span style="font-size:9px;color:var(--tx3)">PLN</span></div>
+<div style="display:flex;align-items:center;gap:2px;flex-shrink:0"><input type="number" value="${d.price||0}" onchange="setDocBasePrice('${d.key}',this.value)" style="width:60px;font-size:11px;font-weight:700;color:var(--ac2);text-align:right;border:1px solid var(--bd);border-radius:4px;padding:2px 4px;background:var(--sf)"><span style="font-size:9px;color:var(--tx3)">${_docsCurrency}</span></div>
 <button onclick="addDocSubItem('${d.key}')" style="background:none;border:none;color:var(--ac);cursor:pointer;font-size:14px;padding:2px;flex-shrink:0" title="Добавить строку">&#43;</button>
 <button onclick="removePickedDoc('${d.key}')" style="background:none;border:none;color:var(--rd);cursor:pointer;font-size:12px;padding:2px;flex-shrink:0">&#10005;</button>
 </div>`;
@@ -5563,7 +5566,7 @@ function renderDocs(){
           html+=`<div style="display:flex;align-items:center;gap:6px;padding:4px 8px;background:var(--sf2);border-radius:6px;border:1px solid var(--bd)">
 <input value="${esc(it.name)}" onchange="setDocSubName('${d.key}',${idx},this.value)" style="flex:1;font-size:11px;border:none;background:transparent;color:var(--tx);font-family:var(--f);outline:none" placeholder="Описание позиции">
 <input type="number" value="${it.price||0}" onchange="setDocSubPrice('${d.key}',${idx},this.value)" style="width:55px;font-size:11px;font-weight:600;color:var(--ac2);text-align:right;border:1px solid var(--bd);border-radius:4px;padding:2px 4px;background:var(--sf)">
-<span style="font-size:9px;color:var(--tx3)">PLN</span>
+<span style="font-size:9px;color:var(--tx3)">${_docsCurrency}</span>
 <button onclick="removeDocSubItem('${d.key}',${idx})" style="background:none;border:none;color:var(--rd);cursor:pointer;font-size:10px;padding:2px">&#10005;</button>
 </div>`;
         });
@@ -5577,7 +5580,7 @@ function renderDocs(){
   if(el('docCount'))el('docCount').textContent=keys.length;
   if(el('docDone'))el('docDone').textContent=done;
   if(el('docCostStat'))el('docCostStat').textContent=total.toLocaleString('ru');
-  if(el('s7Total'))el('s7Total').textContent=total.toLocaleString('ru')+' PLN';
+  if(el('s7Total'))el('s7Total').textContent=total.toLocaleString('ru')+' '+_docsCurrency;
   const pct=keys.length?Math.round(done/keys.length*100):0;
   if(el('docBar'))el('docBar').style.width=pct+'%';
 }
