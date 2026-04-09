@@ -7497,7 +7497,7 @@ function getVal2(costKey){
 let _recalcTimer;
 function recalc(){
   clearTimeout(_recalcTimer);
-  _recalcTimer=setTimeout(_recalcNow,50);
+  _recalcTimer=setTimeout(()=>{_recalcNow();saveLoadParams()},50);
 }
 function _recalcNow(){
   const t=calcTotals();
