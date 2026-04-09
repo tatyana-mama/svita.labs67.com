@@ -100,7 +100,7 @@ a{color:inherit;text-decoration:none}
       <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">RU</button>
     </div>
     <span id="userIndicator"></span>
-    <a href="/" class="back-link">&larr; <span data-t="dashboard">Dashboard</span></a>
+    <a href="/dashboard.html" class="back-link">&larr; <span data-t="dashboard">Dashboard</span></a>
   </div>
 </div>
 
@@ -170,15 +170,15 @@ const T={
 };
 
 // Lang
-function t(k){return T[lang][k]||T.en[k]||k}
+function tr(k){return T[lang][k]||T.en[k]||k}
 function setLang(l){
   lang=l;
   localStorage.setItem('svita_news_lang',l);
   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===l));
-  document.getElementById('pageTitle').textContent=t('title');
-  document.getElementById('pageDesc').textContent=t('desc');
-  document.querySelectorAll('[data-t]').forEach(el=>{el.textContent=t(el.dataset.t)});
-  if(!sessionUser){const lnk=document.querySelector('[data-t="login"]');if(lnk)lnk.textContent=t('login')}
+  document.getElementById('pageTitle').textContent=tr('title');
+  document.getElementById('pageDesc').textContent=tr('desc');
+  document.querySelectorAll('[data-t]').forEach(el=>{el.textContent=tr(el.dataset.t)});
+  if(!sessionUser){const lnk=document.querySelector('[data-t="login"]');if(lnk)lnk.textContent=tr('login')}
   renderPosts();
 }
 
@@ -193,8 +193,8 @@ function renderPosts(){
     const t=lang==='ru'?(p.title_ru||p.title_en):p.title_en;
     const d=lang==='ru'?(p.desc_ru||p.desc_en):p.desc_en;
     const dt=lang==='ru'?(p.date_ru||p.date_en):p.date_en;
-    const cta=t('open')+' &rarr;';
-    const badgeText=t((p.badge||'Presentation').toLowerCase());
+    const cta=tr('open')+' &rarr;';
+    const badgeText=tr((p.badge||'Presentation').toLowerCase());
     const tags=(p.tags||[]).map(tg=>'<span class="news-tag">'+tg+'</span>').join('');
     const admin=isAdmin?`<div class="admin-actions"><button class="admin-btn edit" onclick="event.preventDefault();editPost('${p.id}')" title="Edit">&#9998;</button><button class="admin-btn del" onclick="event.preventDefault();deletePost('${p.id}')" title="Delete">&#10005;</button></div>`:'';
     html+=`<a href="${p.url}" class="news-card" data-page="${p.url}">
@@ -213,7 +213,7 @@ function renderPosts(){
       </div>
     </a>`;
   });
-  if(isAdmin)html+='<div class="add-card" onclick="newPost()">'+t('newPost')+'</div>';
+  if(isAdmin)html+='<div class="add-card" onclick="newPost()">'+tr('newPost')+'</div>';
   grid.innerHTML=html;
   loadViews();
 }
@@ -287,7 +287,7 @@ async function savePost(){
 }
 
 async function deletePost(id){
-  if(!confirm(t('deleteConfirm')))return;
+  if(!confirm(tr('deleteConfirm')))return;
   await fetch(SB+'/rest/v1/news_posts?id=eq.'+id,{method:'DELETE',headers:{'apikey':SK}});
   loadPosts();
 }
