@@ -490,18 +490,25 @@
 <div class="login-bg" id="loginScreen">
 <div class="login-box">
 <h1><span style="color:var(--ac)">&#9679;</span> SVITA</h1>
-<div class="sub">Конструктор клиники</div>
+<div class="sub">Конструктор бизнеса</div>
 
-<!-- STEP 1: LOGIN FORM -->
+<!-- TABS: Sign In / Sign Up -->
+<div id="authTabs" style="display:flex;border-bottom:2px solid var(--bd);margin-bottom:20px">
+<div class="auth-tab active" id="tabSignIn" onclick="switchAuthTab('signin')" style="flex:1;padding:10px 0;font-size:13px;font-weight:600;cursor:pointer;text-align:center;border-bottom:2px solid var(--ac);margin-bottom:-2px;color:var(--tx);transition:all .15s">Sign In</div>
+<div class="auth-tab" id="tabSignUp" onclick="switchAuthTab('signup')" style="flex:1;padding:10px 0;font-size:13px;font-weight:600;cursor:pointer;text-align:center;border-bottom:2px solid transparent;margin-bottom:-2px;color:var(--tx3);transition:all .15s">Sign Up</div>
+</div>
+
+<!-- SIGN IN FORM -->
 <div id="loginStep1">
 <div class="modal-field" style="text-align:left;margin-bottom:14px">
 <label>Email</label>
-<input id="loginEmail" type="email" placeholder="email@example.com" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%" onkeydown="if(event.key==='Enter')loginCheck()">
+<input id="loginEmail" type="email" placeholder="email@example.com" autocomplete="email" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%" onkeydown="if(event.key==='Enter')loginCheck()">
 </div>
 <div class="modal-field" style="text-align:left;margin-bottom:6px">
 <label>Пароль</label>
-<input id="loginPass" type="password" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%" onkeydown="if(event.key==='Enter')loginCheck()">
+<input id="loginPass" type="password" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" autocomplete="current-password" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%" onkeydown="if(event.key==='Enter')loginCheck()">
 </div>
+<div style="text-align:right;margin-bottom:10px"><span style="font-size:10px;color:var(--ac2);cursor:pointer" onclick="showForgotPassword()">Забыли пароль?</span></div>
 <div id="loginError" style="font-size:11px;color:var(--rd);min-height:20px;margin-bottom:10px"></div>
 <button class="btn pr" style="width:100%;padding:12px;font-size:13px" onclick="loginCheck()">Войти</button>
 
@@ -522,9 +529,44 @@ GitHub</button>
 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
 Apple</button>
 </div>
+</div>
 
-<div style="margin-top:12px;font-size:10px;color:var(--tx3)"><span style="color:var(--ac2);cursor:pointer" onclick="showForgotPassword()">Забыли пароль?</span></div>
-<div style="margin-top:8px;font-size:10px;color:var(--tx3)">Нет аккаунта? <span style="color:var(--ac2);cursor:pointer" onclick="showRegister()">Регистрация</span></div>
+<!-- SIGN UP FORM -->
+<div id="loginRegister" style="display:none">
+<div class="modal-field" style="text-align:left;margin-bottom:12px">
+<label>Имя</label>
+<input id="regName" type="text" placeholder="Как вас зовут" autocomplete="name" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
+</div>
+<div class="modal-field" style="text-align:left;margin-bottom:12px">
+<label>Email</label>
+<input id="regEmail" type="email" placeholder="email@example.com" autocomplete="email" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
+</div>
+<div class="modal-field" style="text-align:left;margin-bottom:12px">
+<label>Пароль</label>
+<div style="position:relative">
+<input id="regPass" type="password" placeholder="Минимум 8 символов" autocomplete="new-password" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;padding-right:40px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
+<span onclick="togglePassVis('regPass',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:14px;color:var(--tx3);user-select:none;opacity:.5">&#128065;</span>
+</div>
+<div style="margin-top:6px;height:3px;border-radius:2px;background:var(--bd);overflow:hidden"><div id="regPassBar" style="height:100%;width:0;border-radius:2px;transition:all .2s"></div></div>
+<div id="regPassHint" style="font-size:10px;color:var(--tx3);margin-top:4px;min-height:14px"></div>
+</div>
+<div class="modal-field" style="text-align:left;margin-bottom:14px">
+<label>Подтвердите пароль</label>
+<input id="regPass2" type="password" placeholder="Повторите пароль" autocomplete="new-password" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%" onkeydown="if(event.key==='Enter')registerUser()">
+</div>
+<div id="regError" style="font-size:11px;color:var(--rd);min-height:20px;margin-bottom:10px"></div>
+<button class="btn pr" id="regBtn" style="width:100%;padding:12px;font-size:13px" onclick="registerUser()">Создать аккаунт</button>
+
+<div style="display:flex;align-items:center;gap:12px;margin:18px 0 14px">
+<div style="flex:1;height:1px;background:var(--bd)"></div>
+<span style="font-size:10px;color:var(--tx3);letter-spacing:0.08em;font-family:var(--fm)">ИЛИ</span>
+<div style="flex:1;height:1px;background:var(--bd)"></div>
+</div>
+<div style="display:flex;gap:8px">
+<button class="btn" onclick="oauthLogin('google')" style="flex:1;padding:10px;font-size:11px;background:var(--sf2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);cursor:pointer;font-family:var(--f)">Google</button>
+<button class="btn" onclick="oauthLogin('github')" style="flex:1;padding:10px;font-size:11px;background:var(--sf2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);cursor:pointer;font-family:var(--f)">GitHub</button>
+<button class="btn" onclick="oauthLogin('apple')" style="flex:1;padding:10px;font-size:11px;background:var(--sf2);border:1px solid var(--bd);border-radius:8px;color:var(--tx);cursor:pointer;font-family:var(--f)">Apple</button>
+</div>
 </div>
 
 <!-- FORGOT PASSWORD -->
@@ -538,7 +580,7 @@ Apple</button>
 </div>
 <div id="forgotError" style="font-size:11px;min-height:20px;margin-bottom:10px;color:var(--tx3)"></div>
 <button class="btn pr" id="forgotBtn" style="width:100%;padding:12px;font-size:13px" onclick="sendResetLink()">Отправить ссылку</button>
-<div style="margin-top:16px;font-size:10px;color:var(--tx3)"><span style="color:var(--ac2);cursor:pointer" onclick="showLogin()">Назад ко входу</span></div>
+<div style="margin-top:16px;font-size:10px;color:var(--tx3)"><span style="color:var(--ac2);cursor:pointer" onclick="switchAuthTab('signin')">Назад ко входу</span></div>
 </div>
 
 <!-- RESET PASSWORD (after clicking link in email) -->
@@ -596,16 +638,35 @@ Apple</button>
 
 <!-- REGISTER FORM -->
 <div id="loginRegister" style="display:none">
+<div style="font-size:14px;font-weight:700;margin-bottom:4px">Создать аккаунт</div>
+<div style="font-size:11px;color:var(--tx3);margin-bottom:18px">Заполните данные для регистрации</div>
+<div class="modal-field" style="text-align:left;margin-bottom:12px">
+<label>Имя</label>
+<input id="regName" type="text" placeholder="Как вас зовут" autocomplete="name" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
+</div>
 <div class="modal-field" style="text-align:left;margin-bottom:12px">
 <label>Email</label>
-<input id="regEmail" type="email" placeholder="email@example.com" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
+<input id="regEmail" type="email" placeholder="email@example.com" autocomplete="email" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
 </div>
 <div class="modal-field" style="text-align:left;margin-bottom:12px">
 <label>Пароль</label>
-<input id="regPass" type="password" placeholder="Минимум 8 символов" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
+<div style="position:relative">
+<input id="regPass" type="password" placeholder="Минимум 8 символов" autocomplete="new-password" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;padding-right:40px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%">
+<span onclick="togglePassVis('regPass',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:14px;color:var(--tx3);user-select:none">&#128065;</span>
+</div>
+<div id="regPassStrength" style="margin-top:6px;height:3px;border-radius:2px;background:var(--bd);overflow:hidden"><div id="regPassBar" style="height:100%;width:0;border-radius:2px;transition:all .2s"></div></div>
+<div id="regPassHint" style="font-size:10px;color:var(--tx3);margin-top:4px;min-height:14px"></div>
+</div>
+<div class="modal-field" style="text-align:left;margin-bottom:12px">
+<label>Подтвердите пароль</label>
+<input id="regPass2" type="password" placeholder="Повторите пароль" autocomplete="new-password" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:12px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%" onkeydown="if(event.key==='Enter')registerUser()">
+</div>
+<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:14px;text-align:left">
+<input type="checkbox" id="regAgree" style="margin-top:2px;accent-color:var(--ac);cursor:pointer">
+<label for="regAgree" style="font-size:10px;color:var(--tx3);cursor:pointer;line-height:1.4">Я принимаю <span style="color:var(--ac2);text-decoration:underline">условия использования</span> и <span style="color:var(--ac2);text-decoration:underline">политику конфиденциальности</span></label>
 </div>
 <div id="regError" style="font-size:11px;color:var(--rd);min-height:20px;margin-bottom:10px"></div>
-<button class="btn pr" style="width:100%;padding:12px;font-size:13px" onclick="registerUser()">Зарегистрироваться</button>
+<button class="btn pr" id="regBtn" style="width:100%;padding:12px;font-size:13px" onclick="registerUser()">Зарегистрироваться</button>
 
 <div style="display:flex;align-items:center;gap:12px;margin:18px 0 14px">
 <div style="flex:1;height:1px;background:var(--bd)"></div>
@@ -3435,19 +3496,26 @@ async function newConcept(){
   showBizSelector();
 }
 
-function showLogin(){
-  document.getElementById('loginStep1').style.display='block';
-  document.getElementById('loginStep2').style.display='none';
-  document.getElementById('loginRegister').style.display='none';
-  document.getElementById('loginVerify').style.display='none';
-  document.getElementById('loginError').textContent='';
+function switchAuthTab(tab){
+  const allPanels=['loginStep1','loginRegister','loginForgot','loginReset','loginVerify','loginStep2','loginStep25','loginOnboard'];
+  allPanels.forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none'});
+  const tabs=document.getElementById('authTabs');
+  if(tabs)tabs.style.display='flex';
+  document.getElementById('tabSignIn').style.borderBottomColor=tab==='signin'?'var(--ac)':'transparent';
+  document.getElementById('tabSignIn').style.color=tab==='signin'?'var(--tx)':'var(--tx3)';
+  document.getElementById('tabSignUp').style.borderBottomColor=tab==='signup'?'var(--ac)':'transparent';
+  document.getElementById('tabSignUp').style.color=tab==='signup'?'var(--tx)':'var(--tx3)';
+  if(tab==='signin'){document.getElementById('loginStep1').style.display='block';document.getElementById('loginError').textContent=''}
+  if(tab==='signup'){document.getElementById('loginRegister').style.display='block';document.getElementById('regError').textContent=''}
 }
-function showRegister(){
-  document.getElementById('loginStep1').style.display='none';
-  document.getElementById('loginStep2').style.display='none';
-  document.getElementById('loginRegister').style.display='block';
-  document.getElementById('loginVerify').style.display='none';
-  document.getElementById('regError').textContent='';
+function showLogin(){switchAuthTab('signin')}
+function showRegister(){switchAuthTab('signup')}
+function showForgotPassword(){
+  const allPanels=['loginStep1','loginRegister','loginVerify','loginStep2','loginStep25','loginOnboard'];
+  allPanels.forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none'});
+  document.getElementById('authTabs').style.display='none';
+  document.getElementById('loginForgot').style.display='block';
+  document.getElementById('forgotError').textContent='';
 }
 
 async function loginCheck(){
@@ -3457,29 +3525,68 @@ async function loginCheck(){
   if(!sb){document.getElementById('loginError').textContent='Supabase не загружен';return}
   if(!rateLimit('login',5,600000)){document.getElementById('loginError').textContent='Слишком много попыток. Подождите 10 минут.';return}
   document.getElementById('loginError').textContent='Входим...';
-  const{data,error}=await sb.rpc('verify_password',{p_email:email,p_password:pass});
-  if(error){document.getElementById('loginError').textContent='Ошибка сервера';return}
-  if(!data||!data.ok){document.getElementById('loginError').textContent='Неверный email или пароль';return}
-  const isAdmin=data.role==='superadmin'||data.role==='admin';
-  currentUser={email:data.email,name:data.name||data.email.split('@')[0],isAdmin,emailConfirmed:true,id:data.id};
+  const{data,error}=await sb.auth.signInWithPassword({email,password:pass});
+  if(error){document.getElementById('loginError').textContent=error.message==='Invalid login credentials'?'Неверный email или пароль':error.message;return}
+  if(!data.user){document.getElementById('loginError').textContent='Ошибка входа';return}
+  const profile=await sb.from('profiles').select('display_name,role').eq('email',email).single();
+  const role=profile.data?.role||'viewer';
+  const name=profile.data?.display_name||data.user.user_metadata?.name||email.split('@')[0];
+  const isAdmin=role==='superadmin'||role==='admin';
+  currentUser={email,name,isAdmin,emailConfirmed:true,id:data.user.id};
   localStorage.setItem('svita_session',JSON.stringify(currentUser));
   proceedToRoleSelect();
 }
 
+function togglePassVis(inputId,btn){
+  const inp=document.getElementById(inputId);
+  if(inp.type==='password'){inp.type='text';btn.style.opacity='1'}
+  else{inp.type='password';btn.style.opacity='.5'}
+}
+function checkPassStrength(){
+  const pass=document.getElementById('regPass').value;
+  const bar=document.getElementById('regPassBar');
+  const hint=document.getElementById('regPassHint');
+  if(!bar||!hint)return;
+  let score=0;
+  if(pass.length>=8)score++;
+  if(pass.length>=12)score++;
+  if(/[A-Z]/.test(pass))score++;
+  if(/[0-9]/.test(pass))score++;
+  if(/[^A-Za-z0-9]/.test(pass))score++;
+  const colors=['var(--rd)','var(--rd)','var(--or)','var(--yl)','var(--gn)','var(--gn)'];
+  const labels=['','Слабый','Слабый','Средний','Хороший','Надёжный'];
+  bar.style.width=(score/5*100)+'%';
+  bar.style.background=colors[score]||'var(--bd)';
+  hint.textContent=pass.length?labels[score]:'';
+  hint.style.color=colors[score]||'var(--tx3)';
+}
+(function(){const el=document.getElementById('regPass');if(el)el.addEventListener('input',checkPassStrength)})();
+
 async function registerUser(){
+  const err=document.getElementById('regError');
+  err.style.color='var(--rd)';
+  const name=(document.getElementById('regName').value||'').trim();
   const email=document.getElementById('regEmail').value.trim().toLowerCase();
   const pass=document.getElementById('regPass').value;
-  const name=email.split('@')[0];
-  if(!email||!pass){document.getElementById('regError').textContent='Заполните все поля';return}
-  if(pass.length<8){document.getElementById('regError').textContent='Пароль минимум 6 символов';return}
-  if(!sb){document.getElementById('regError').textContent='Supabase не загружен';return}
-  if(!rateLimit('register',3,600000)){document.getElementById('regError').textContent='Слишком много попыток. Подождите 10 минут.';return}
-  document.getElementById('regError').textContent='Регистрируем...';
-  const{data,error}=await sb.rpc('register_user',{p_email:email,p_password:pass,p_name:name,p_role:'viewer'});
-  if(error){document.getElementById('regError').textContent='Ошибка сервера';return}
-  if(!data||!data.ok){document.getElementById('regError').textContent=data?.error||'Ошибка регистрации';return}
-  document.getElementById('regError').style.color='var(--gn)';
-  document.getElementById('regError').textContent='Аккаунт создан! Войдите с вашим email и паролем.';
+  const pass2=document.getElementById('regPass2').value;
+  if(!name){err.textContent='Введите имя';return}
+  if(!email){err.textContent='Введите email';return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){err.textContent='Некорректный email';return}
+  if(!pass){err.textContent='Введите пароль';return}
+  if(pass.length<8){err.textContent='Пароль минимум 8 символов';return}
+  if(pass!==pass2){err.textContent='Пароли не совпадают';return}
+  if(!sb){err.textContent='Supabase не загружен';return}
+  if(!rateLimit('register',3,600000)){err.textContent='Слишком много попыток. Подождите 10 минут.';return}
+  const btn=document.getElementById('regBtn');
+  btn.disabled=true;btn.textContent='Создаём...';
+  err.textContent='';
+  const{data,error}=await sb.auth.signUp({email,password:pass,options:{data:{name:sanitize(name)}}});
+  btn.disabled=false;btn.textContent='Создать аккаунт';
+  if(error){err.textContent=error.message;return}
+  if(data.user&&!data.user.identities?.length){err.textContent='Этот email уже зарегистрирован';return}
+  err.style.color='var(--gn)';
+  err.textContent='Аккаунт создан! Проверьте email для подтверждения.';
+  setTimeout(()=>switchAuthTab('signin'),3000);
 }
 
 async function resendVerification(){
@@ -3519,13 +3626,6 @@ function logAction(action,entityType,entityId,metadata){
 }
 
 // ═══ FORGOT / RESET PASSWORD ═══
-function showForgotPassword(){
-  hideAllLoginSteps();
-  document.getElementById('loginForgot').style.display='block';
-  document.getElementById('forgotError').textContent='';
-  document.getElementById('forgotEmail').value=document.getElementById('loginEmail')?.value||'';
-}
-
 async function sendResetLink(){
   const email=document.getElementById('forgotEmail').value.trim().toLowerCase();
   if(!email){document.getElementById('forgotError').textContent='Введите email';document.getElementById('forgotError').style.color='var(--rd)';return}
@@ -3593,9 +3693,10 @@ async function proceedToRoleSelect(){
 }
 
 function hideAllLoginSteps(){
-  ['loginStep1','loginRegister','loginVerify','loginStep2','loginOnboard','loginForgot','loginReset'].forEach(id=>{
+  ['loginStep1','loginRegister','loginVerify','loginStep2','loginStep25','loginOnboard','loginForgot','loginReset'].forEach(id=>{
     const el=document.getElementById(id);if(el)el.style.display='none';
   });
+  const tabs=document.getElementById('authTabs');if(tabs)tabs.style.display='none';
 }
 
 function showOnboarding(){
