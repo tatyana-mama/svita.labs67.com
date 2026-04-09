@@ -3773,7 +3773,7 @@ async function resetPassword(){
   }else{
     document.getElementById('resetError').textContent='Пароль обновлён! Входим...';
     document.getElementById('resetError').style.color='var(--gn)';
-    setTimeout(()=>{restoreSession()},1000);
+    setTimeout(()=>{location.reload()},1200);
   }
   btn.textContent='Сохранить пароль';btn.disabled=false;
 }
