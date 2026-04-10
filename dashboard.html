@@ -67,6 +67,20 @@
 .exec-progress .ep-bar{flex:1;height:6px;background:var(--sf2);border-radius:3px;overflow:hidden}
 .exec-progress .ep-fill{height:100%;background:var(--gn);border-radius:3px;transition:width .3s}
 .exec-progress .ep-text{font-size:11px;font-weight:600;color:var(--tx2);white-space:nowrap}
+.inv-card{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:8px}
+.inv-card.accepted{border-left:3px solid var(--gn)}
+.inv-card.pending{border-left:3px solid var(--yl)}
+.inv-card.rejected{border-left:3px solid var(--rd)}
+.inv-status{font-size:9px;padding:3px 8px;border-radius:5px;font-weight:700;display:inline-block}
+.inv-items{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0}
+.inv-items span{font-size:10px;padding:3px 8px;border:1px solid var(--bd);border-radius:5px;background:var(--sf2)}
+.asgn-card{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.asgn-avatar{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0}
+.asgn-info{flex:1;min-width:0}
+.asgn-name{font-size:13px;font-weight:600}
+.asgn-role{font-size:10px;color:var(--tx3)}
+.asgn-tasks{font-size:10px;color:var(--ac2);margin-top:2px}
+.asgn-total{font-size:14px;font-weight:700;white-space:nowrap}
 .chat-contact{padding:10px 12px;cursor:pointer;border-bottom:1px solid var(--bd);transition:all .15s;font-size:12px}
 .chat-contact:hover{background:var(--sf2)}
 .chat-contact.active{background:var(--acbg);color:var(--ac2)}
@@ -1743,6 +1757,19 @@ function switchAdminRole(role){
 <div class="sec" id="sec-exec-equipment"><div class="bk" onclick="nav('overview')">&larr; Обзор</div><div class="ph"><h2>&#128230; Оборудование — исполнение</h2></div><div id="execEquipment" class="exec-list"></div></div>
 <div class="sec" id="sec-exec-staff"><div class="bk" onclick="nav('overview')">&larr; Обзор</div><div class="ph"><h2>&#129489; Сотрудники — исполнение</h2></div><div id="execStaff" class="exec-list"></div></div>
 <div class="sec" id="sec-exec-docs"><div class="bk" onclick="nav('overview')">&larr; Обзор</div><div class="ph"><h2>&#128203; Документация — исполнение</h2></div><div id="execDocs" class="exec-list"></div></div>
+
+<!-- ═══ STAGE 2: ИСПОЛНИТЕЛИ ═══ -->
+<div class="sec" id="sec-exec-contractors">
+<div class="bk" onclick="nav('overview')">&larr; Обзор</div>
+<div class="ph"><h2>&#128119; Исполнители</h2><div class="ph-s">Привязанные подрядчики и поставщики с задачами и счетами</div></div>
+<div id="execContractorsContent" style="padding:0 24px 24px">
+<div id="assignedList"></div>
+<div style="margin-top:16px;border-top:1px solid var(--bd);padding-top:16px">
+<div style="font-size:12px;font-weight:700;color:var(--tx2);margin-bottom:8px">Все счета</div>
+<div id="invoicesList"></div>
+</div>
+</div>
+</div>
 
 <!-- ═══ STAGE 2: CHAT ═══ -->
 <div class="sec" id="sec-exec-chat">
@@ -4390,6 +4417,7 @@ function buildSidebar(){
     html+='<div class="si'+(canC?'':' locked')+'" data-nav="'+(canC?'db-contractors':'upgrade-gate')+'" data-tip="Компании для выполнения работ"><span class="ico">&#128736;</span><span class="sl">Подрядчики</span>'+(canC?'<span class="sb wip" id="sbContr">0</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
     html+='<div class="si'+(canC?'':' locked')+'" data-nav="'+(canC?'db-vendor-companies':'upgrade-gate')+'" data-tip="Поставщики оборудования и материалов"><span class="ico">&#127970;</span><span class="sl">Поставщики</span>'+(canC?'<span class="sb wip" id="sbVend">0</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
     html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
+    html+='<div class="si" data-nav="exec-contractors" data-tip="Привязанные исполнители, задачи и счета"><span class="ico">&#128119;</span><span class="sl">Исполнители</span></div>';
     html+='<div class="si" data-nav="exec-chat" data-tip="Чат с подрядчиками и поставщиками"><span class="ico">&#128172;</span><span class="sl">Чат</span></div>';
   }
 
@@ -4452,7 +4480,7 @@ function updateSidebarBadges(){
 // ═══════════════ NAVIGATION ═══════════════
 function getSecNames(){
   const isCoffee=currentBizType&&currentBizType!=='dental';
-  return{overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:isCoffee?'Меню':'Услуги населению',s6:'Концепция',s7:'Документация',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны',news:'Новости','db-premises':'БД Помещений','db-renovations':'Модернизация и услуги','db-services':isCoffee?'Меню':'Каталог услуг','db-docs':'Каталог документов','db-contractors':'БД Подрядчиков','db-suppliers':'Каталог оборудования','db-employees':'БД Сотрудников','db-vendor-companies':'Поставщики',users:'Пользователи','cabinet-types':isCoffee?'Стоимость помещений':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения','exec-premises':'Помещения','exec-renovations':'Модернизация','exec-services':'Услуги','exec-equipment':'Оборудование','exec-staff':'Сотрудники','exec-docs':'Документация','exec-chat':'Чат'};
+  return{overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:isCoffee?'Меню':'Услуги населению',s6:'Концепция',s7:'Документация',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны',news:'Новости','db-premises':'БД Помещений','db-renovations':'Модернизация и услуги','db-services':isCoffee?'Меню':'Каталог услуг','db-docs':'Каталог документов','db-contractors':'БД Подрядчиков','db-suppliers':'Каталог оборудования','db-employees':'БД Сотрудников','db-vendor-companies':'Поставщики',users:'Пользователи','cabinet-types':isCoffee?'Стоимость помещений':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения','exec-premises':'Помещения','exec-renovations':'Модернизация','exec-services':'Услуги','exec-equipment':'Оборудование','exec-staff':'Сотрудники','exec-docs':'Документация','exec-contractors':'Исполнители','exec-chat':'Чат'};
 }
 const secNames=getSecNames();
 const stageOrder=['s1','s2','s3','s4','s5','s6','s7'];
@@ -4496,6 +4524,7 @@ function nav(id){
   if(id==='exec-staff')renderExecSection('staff');
   if(id==='exec-docs')renderExecSection('docs');
   if(id==='exec-chat')renderChatContacts();
+  if(id==='exec-contractors')renderAssignedContractors();
   if(id==='overview'&&currentStage===2)renderExecOverview();
   updateSumbar();
   updateRightPanel();
@@ -5037,8 +5066,146 @@ function sendChatMsg(){
   loadChatMessages(activeChatUser);
 }
 function attachExecItem(){
-  // TODO: modal to pick item from execution list
-  toast('Выберите задачу для прикрепления','ac');
+  // Build list of exec items to attach
+  const cats=['premises','renovations','services','equipment','staff','docs'];
+  const labels=['Помещения','Модернизация','Услуги','Оборудование','Сотрудники','Документация'];
+  let opts='';
+  cats.forEach((cat,i)=>{
+    getExecItems(cat).forEach(it=>{
+      const name=it.name||it.title||it.address||'#'+it.id;
+      const cost=it.price||it.salary||it.cost||0;
+      opts+='<div style="padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--bd);font-size:12px;display:flex;justify-content:space-between" onclick="attachItemToChat(\''+cat+'\',\''+it.id+'\',\''+esc(name).replace(/'/g,"\\'")+'\','+cost+')"><span>'+labels[i]+': '+esc(name)+'</span><span style="color:var(--tx3)">'+Number(cost).toLocaleString()+' PLN</span></div>';
+    });
+  });
+  if(!opts){toast('Нет позиций для прикрепления','rd');return}
+  showModal('Прикрепить задачу','<div style="max-height:300px;overflow-y:auto">'+opts+'</div>');
+}
+function attachItemToChat(cat,id,name,cost){
+  closeModal();
+  const inp=document.getElementById('chatInput');
+  if(inp)inp.value='[Задача] '+name+' — '+Number(cost).toLocaleString()+' PLN. Прошу указать стоимость выполнения.';
+  inp.focus();
+}
+
+// ═══════════════ INVOICES & ASSIGNMENTS ═══════════════
+var invoices=JSON.parse(localStorage.getItem('svita_invoices')||'[]');
+var assignments=JSON.parse(localStorage.getItem('svita_assignments')||'{}');
+function saveInvoices(){localStorage.setItem('svita_invoices',JSON.stringify(invoices))}
+function saveAssignments(){localStorage.setItem('svita_assignments',JSON.stringify(assignments))}
+
+function createInvoice(contractorEmail,contractorName,items,totalPrice){
+  const inv={
+    id:'inv_'+Date.now(),
+    contractor_email:contractorEmail,
+    contractor_name:contractorName,
+    items:items,
+    total:totalPrice,
+    status:'pending',
+    created:Date.now()
+  };
+  invoices.push(inv);
+  saveInvoices();
+  // Assign contractor to items
+  items.forEach(it=>{
+    assignments[it.cat+'_'+it.id]={contractor:contractorEmail,contractor_name:contractorName,invoice_id:inv.id,status:'assigned'};
+  });
+  saveAssignments();
+  toast('Счёт создан: '+totalPrice.toLocaleString()+' PLN','gn');
+  return inv;
+}
+
+function acceptInvoice(invId){
+  const inv=invoices.find(i=>i.id===invId);
+  if(!inv)return;
+  inv.status='accepted';
+  saveInvoices();
+  renderAssignedContractors();
+  toast('Счёт принят','gn');
+}
+function rejectInvoice(invId){
+  const inv=invoices.find(i=>i.id===invId);
+  if(!inv)return;
+  inv.status='rejected';
+  // Unassign items
+  (inv.items||[]).forEach(it=>{delete assignments[it.cat+'_'+it.id]});
+  saveInvoices();saveAssignments();
+  renderAssignedContractors();
+  toast('Счёт отклонён','rd');
+}
+
+function renderAssignedContractors(){
+  // Group assignments by contractor
+  const byContractor={};
+  Object.entries(assignments).forEach(([key,a])=>{
+    if(!byContractor[a.contractor])byContractor[a.contractor]={name:a.contractor_name,email:a.contractor,items:[],total:0};
+    byContractor[a.contractor].items.push(key);
+  });
+  const el=document.getElementById('assignedList');
+  if(!el)return;
+  const contractors=Object.values(byContractor);
+  if(!contractors.length){
+    el.innerHTML='<div style="text-align:center;color:var(--tx3);font-size:12px;padding:24px">Нет привязанных исполнителей.<br>Откройте чат, договоритесь о работах и создайте счёт.</div>';
+  }else{
+    el.innerHTML=contractors.map(c=>{
+      const invs=invoices.filter(i=>i.contractor_email===c.email);
+      const total=invs.filter(i=>i.status==='accepted').reduce((s,i)=>s+i.total,0);
+      const initials=c.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+      return '<div class="asgn-card"><div class="asgn-avatar" style="background:linear-gradient(135deg,var(--or),var(--yl))">'+initials+'</div><div class="asgn-info"><div class="asgn-name">'+esc(c.name)+'</div><div class="asgn-role">'+esc(c.email)+'</div><div class="asgn-tasks">'+c.items.length+' задач привязано</div></div><div class="asgn-total">'+total.toLocaleString()+' PLN</div></div>';
+    }).join('');
+  }
+  // Render invoices
+  const il=document.getElementById('invoicesList');
+  if(!il)return;
+  if(!invoices.length){
+    il.innerHTML='<div style="color:var(--tx3);font-size:11px">Нет счетов</div>';
+    return;
+  }
+  il.innerHTML=invoices.slice().reverse().map(inv=>{
+    const sc=inv.status==='accepted'?'var(--gn)':inv.status==='rejected'?'var(--rd)':'var(--yl)';
+    const st=inv.status==='accepted'?'Принят':inv.status==='rejected'?'Отклонён':'Ожидает';
+    let actions='';
+    if(inv.status==='pending')actions='<div style="display:flex;gap:6px;margin-top:8px"><button class="btn sm pr" style="font-size:10px" onclick="acceptInvoice(\''+inv.id+'\')">&#10003; Принять</button><button class="btn sm" style="font-size:10px;color:var(--rd)" onclick="rejectInvoice(\''+inv.id+'\')">&#10007; Отклонить</button></div>';
+    return '<div class="inv-card '+inv.status+'"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:600">'+esc(inv.contractor_name)+'</div><div style="font-size:10px;color:var(--tx3)">'+new Date(inv.created).toLocaleDateString()+' · '+inv.id+'</div></div><div><span class="inv-status" style="background:'+sc+'22;color:'+sc+'">'+st+'</span><div style="font-size:16px;font-weight:800;margin-top:4px;text-align:right">'+inv.total.toLocaleString()+' PLN</div></div></div><div class="inv-items">'+(inv.items||[]).map(it=>'<span>'+esc(it.name||it.cat+' #'+it.id)+'</span>').join('')+'</div>'+actions+'</div>';
+  }).join('');
+}
+
+// Send tasks to contractor and create invoice from chat
+function sendTasksToContractor(contractorEmail,contractorName){
+  const cats=['premises','renovations','services','equipment','staff','docs'];
+  let items=[];
+  cats.forEach(cat=>{
+    getExecItems(cat).forEach(it=>{
+      const key=cat+'_'+it.id;
+      if(!assignments[key]){
+        const name=it.name||it.title||it.address||'#'+it.id;
+        const cost=it.price||it.salary||it.cost||0;
+        items.push({cat,id:it.id,name,cost});
+      }
+    });
+  });
+  if(!items.length){toast('Все задачи уже привязаны','yl');return}
+  // Show modal to pick items and set price
+  let html='<div style="font-size:11px;color:var(--tx2);margin-bottom:10px">Выберите работы для '+esc(contractorName)+':</div>';
+  html+='<div id="invoiceItems" style="max-height:250px;overflow-y:auto">';
+  items.forEach((it,i)=>{
+    html+='<label style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--bd);font-size:11px;cursor:pointer"><input type="checkbox" data-idx="'+i+'" checked><span style="flex:1">'+esc(it.name)+'</span><span style="color:var(--tx3)">'+it.cost.toLocaleString()+' PLN</span></label>';
+  });
+  html+='</div>';
+  html+='<div style="margin-top:12px;display:flex;gap:8px;align-items:center"><label style="font-size:11px;font-weight:600">Итого:</label><input id="invoiceTotal" type="number" style="flex:1;padding:6px 10px;border:1px solid var(--bd);border-radius:6px;font-size:12px" value="'+items.reduce((s,it)=>s+it.cost,0)+'"><span style="font-size:11px;color:var(--tx3)">PLN</span></div>';
+  html+='<button class="btn pr" style="width:100%;margin-top:12px;padding:10px" onclick="confirmInvoice(\''+esc(contractorEmail).replace(/'/g,"\\'")+'\',\''+esc(contractorName).replace(/'/g,"\\'")+'\')">Создать счёт</button>';
+  showModal('Создать счёт',html);
+  window._pendingInvoiceItems=items;
+}
+function confirmInvoice(email,name){
+  const items=window._pendingInvoiceItems||[];
+  const checks=document.querySelectorAll('#invoiceItems input[type=checkbox]');
+  const selected=[];
+  checks.forEach(ch=>{if(ch.checked)selected.push(items[parseInt(ch.dataset.idx)])});
+  if(!selected.length){toast('Выберите хотя бы одну работу','rd');return}
+  const total=parseInt(document.getElementById('invoiceTotal').value)||0;
+  createInvoice(email,name,selected,total);
+  closeModal();
+  renderAssignedContractors();
 }
 
 function renderAll(){
