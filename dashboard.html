@@ -4514,6 +4514,10 @@ function buildSidebar(){
     html+='<div class="side-sec">Администрирование</div>';
     html+='<div class="si" data-nav="users" data-tip="Управление пользователями, ролями и подписками"><span class="ico">&#128101;</span><span class="sl">Пользователи</span><span class="sb wip" id="sbUsers">0</span></div>';
   }
+
+  // ── Мой Кабинет — для всех ──
+  html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
+  html+='<div class="si" data-nav="account" data-tip="Профиль, управление, концепции, тариф, безопасность"><span class="ico">&#127968;</span><span class="sl">Мой Кабинет</span></div>';
   n.innerHTML=html;
   n.querySelectorAll('[data-nav]').forEach(el=>{el.addEventListener('click',()=>nav(el.dataset.nav))});
   // Sidebar tooltips
