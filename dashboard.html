@@ -4255,6 +4255,10 @@ function enterApp(){
   localStorage.setItem('svita_role',currentRole);
   if(currentBizType){localStorage.setItem('svita_biz_type',currentBizType)}
   if(currentBizSubtype){localStorage.setItem('svita_biz_subtype',currentBizSubtype)}
+  // Contractors/suppliers have no Stage 1 content — force Stage 2
+  if((currentRole==='contractor'||currentRole==='supplier')&&currentStage===1){
+    currentStage=2;localStorage.setItem('svita_stage','2');
+  }
   // Update sidebar biz type button and tag
   updateBizUI();
   // Update stage switcher UI and tag
