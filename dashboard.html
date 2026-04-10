@@ -9,7 +9,14 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="SVITA">
 <meta name="theme-color" content="#f8fafc">
-
+<meta name="description" content="SVITA — AI-платформа для открытия малого бизнеса. Бюджет, подрядчики, поставщики, планирование.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://dashboard.svita.ai/index.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://dashboard.svita.ai/index.html">
+<meta property="og:title" content="SVITA — Конструктор бизнеса">
+<meta property="og:description" content="AI-платформа для открытия малого бизнеса. Бюджет, подрядчики, поставщики, планирование.">
+<meta property="og:site_name" content="SVITA">
 
 <title>SVITA — Конструктор клиники</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1778,6 +1785,80 @@ function switchAdminRole(role){
 <div class="ph"><div><h2 style="font-size:16px">🏷️ Кабинеты по ролям</h2><div class="ph-s">Триал и платные тарифы для каждой роли</div></div></div>
 <div id="roleCabinets"></div>
 </div>
+</div>
+
+<!-- ═══ METRICS (ADMIN) ═══ -->
+<div class="sec" id="sec-metrics">
+<div class="bk" onclick="nav('overview')">&larr; Обзор</div>
+<div class="ph"><div><h2>📊 Метрики и SEO</h2><div class="ph-s">Статистика посещений, источники трафика, SEO-статус</div></div><button class="btn sm pr" onclick="loadMetrics()" style="gap:6px">&#8635; Обновить</button></div>
+
+<!-- Period filter -->
+<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+<button class="btn sm metrics-period act" data-period="today" onclick="setMetricsPeriod('today')">Сегодня</button>
+<button class="btn sm metrics-period" data-period="7d" onclick="setMetricsPeriod('7d')">7 дней</button>
+<button class="btn sm metrics-period" data-period="30d" onclick="setMetricsPeriod('30d')">30 дней</button>
+<button class="btn sm metrics-period" data-period="all" onclick="setMetricsPeriod('all')">Всё время</button>
+</div>
+
+<!-- Stats cards -->
+<div class="sts" id="metricsStats" style="grid-template-columns:repeat(4,1fr)">
+<div class="st"><div class="st-l">Просмотры</div><div class="st-v" id="mViews">—</div><div class="st-s">page views</div></div>
+<div class="st"><div class="st-l">Сессии</div><div class="st-v" id="mSessions">—</div><div class="st-s">уникальных входов</div></div>
+<div class="st"><div class="st-l">Уникальные</div><div class="st-v" id="mUnique">—</div><div class="st-s">пользователей</div></div>
+<div class="st"><div class="st-l">Landing</div><div class="st-v" id="mLanding">—</div><div class="st-s">просмотров</div></div>
+</div>
+
+<!-- Charts row -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+<div class="c"><div class="ch"><h3>Просмотры по дням</h3></div><div class="cb" style="height:220px;position:relative"><canvas id="chartViews"></canvas><div id="chartViewsEmpty" style="display:none;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--tx3);font-size:13px">Нет данных</div></div></div>
+<div class="c"><div class="ch"><h3>Страницы</h3></div><div class="cb"><div id="mPages" style="font-size:13px;color:var(--tx2)">Загрузка...</div></div></div>
+</div>
+
+<!-- Sources + Devices -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+<div class="c"><div class="ch"><h3>Источники трафика</h3></div><div class="cb"><div id="mReferrers" style="font-size:13px;color:var(--tx2)">Загрузка...</div></div></div>
+<div class="c"><div class="ch"><h3>Устройства</h3></div><div class="cb"><div id="mDevices" style="font-size:13px;color:var(--tx2)">Загрузка...</div></div></div>
+</div>
+
+<!-- SEO Status -->
+<div class="c" style="margin-bottom:16px"><div class="ch"><h3>🔍 SEO-статус</h3></div><div class="cb">
+<div id="seoChecks" style="display:grid;gap:8px">
+<div class="metric-row"><span class="metric-label">robots.txt</span><span class="metric-val" id="seoRobots">—</span></div>
+<div class="metric-row"><span class="metric-label">sitemap.xml</span><span class="metric-val" id="seoSitemap">—</span></div>
+<div class="metric-row"><span class="metric-label">meta description (landing)</span><span class="metric-val" id="seoDesc">—</span></div>
+<div class="metric-row"><span class="metric-label">Open Graph теги</span><span class="metric-val" id="seoOg">—</span></div>
+<div class="metric-row"><span class="metric-label">canonical URL</span><span class="metric-val" id="seoCanon">—</span></div>
+<div class="metric-row"><span class="metric-label">Schema.org (structured data)</span><span class="metric-val" id="seoSchema">—</span></div>
+</div>
+</div></div>
+
+<!-- SEO Tools -->
+<div class="c"><div class="ch"><h3>🔗 Подключение к поисковым системам</h3></div><div class="cb">
+<div style="display:grid;gap:12px">
+<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--sf2);border-radius:12px">
+<div style="font-size:24px">🔵</div>
+<div style="flex:1"><div style="font-weight:600;font-size:13px">Google Search Console</div><div style="font-size:11px;color:var(--tx2)">Индексация, ключевые слова, ошибки сканирования</div></div>
+<div style="display:flex;gap:6px;align-items:center"><span id="gscStatus" style="font-size:11px;padding:3px 8px;border-radius:6px;background:rgba(245,158,11,.1);color:#f59e0b;font-weight:600">Не подключён</span><button class="btn sm" onclick="window.open('https://search.google.com/search-console','_blank')" style="font-size:11px;padding:5px 12px">Подключить</button></div>
+</div>
+<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--sf2);border-radius:12px">
+<div style="font-size:24px">🟡</div>
+<div style="flex:1"><div style="font-weight:600;font-size:13px">Яндекс.Вебмастер</div><div style="font-size:11px;color:var(--tx2)">Индексация в Яндексе, турбо-страницы, диагностика</div></div>
+<div style="display:flex;gap:6px;align-items:center"><span style="font-size:11px;padding:3px 8px;border-radius:6px;background:rgba(245,158,11,.1);color:#f59e0b;font-weight:600">Не подключён</span><button class="btn sm" onclick="window.open('https://webmaster.yandex.ru','_blank')" style="font-size:11px;padding:5px 12px">Подключить</button></div>
+</div>
+<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--sf2);border-radius:12px">
+<div style="font-size:24px">🟢</div>
+<div style="flex:1"><div style="font-weight:600;font-size:13px">Bing Webmaster Tools</div><div style="font-size:11px;color:var(--tx2)">Индексация в Bing, импорт из GSC</div></div>
+<div style="display:flex;gap:6px;align-items:center"><span style="font-size:11px;padding:3px 8px;border-radius:6px;background:rgba(245,158,11,.1);color:#f59e0b;font-weight:600">Не подключён</span><button class="btn sm" onclick="window.open('https://www.bing.com/webmasters','_blank')" style="font-size:11px;padding:5px 12px">Подключить</button></div>
+</div>
+</div>
+<div style="margin-top:12px;padding:12px 16px;background:var(--acbg);border:1px solid var(--acbd);border-radius:12px;font-size:12px;color:var(--tx2);line-height:1.6">
+<b style="color:var(--ac2)">Как подключить:</b><br>
+1. Откройте нужный сервис по кнопке «Подключить»<br>
+2. Добавьте сайт <code style="background:var(--sf2);padding:1px 6px;border-radius:4px">dashboard.svita.ai</code><br>
+3. Подтвердите владение — скачайте HTML-файл верификации и загрузите в корень репозитория<br>
+4. После подтверждения отправьте sitemap: <code style="background:var(--sf2);padding:1px 6px;border-radius:4px">https://dashboard.svita.ai/sitemap.xml</code>
+</div>
+</div></div>
 </div>
 
 <!-- ═══ CABINET COSTS ═══ -->
@@ -4615,6 +4696,7 @@ function buildSidebar(){
   if(currentRole==='admin'){
     html+='<div class="side-sec">Администрирование</div>';
     html+='<div class="si" data-nav="users" data-tip="Управление пользователями, ролями и подписками"><span class="ico">&#128101;</span><span class="sl">Пользователи</span><span class="sb wip" id="sbUsers">0</span></div>';
+    html+='<div class="si" data-nav="metrics" data-tip="Статистика посещений, источники трафика, SEO"><span class="ico">&#128202;</span><span class="sl">Метрики</span></div>';
   }
 
   // ── Мой Кабинет — для всех ──
@@ -4657,7 +4739,7 @@ function updateSidebarBadges(){
 // ═══════════════ NAVIGATION ═══════════════
 function getSecNames(){
   const isCoffee=currentBizType&&currentBizType!=='dental';
-  return{overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:isCoffee?'Меню':'Услуги населению',s6:'Концепция',s7:'Документация',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны',news:'Новости','db-premises':'БД Помещений','db-renovations':'Модернизация и услуги','db-services':isCoffee?'Меню':'Каталог услуг','db-docs':'Каталог документов','db-contractors':'БД Подрядчиков','db-suppliers':'Каталог оборудования','db-employees':'БД Сотрудников','db-vendor-companies':'Поставщики',users:'Пользователи','cabinet-types':isCoffee?'Стоимость помещений':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения','exec-premises':'Помещения','exec-renovations':'Модернизация','exec-services':'Услуги','exec-equipment':'Оборудование','exec-staff':'Сотрудники','exec-docs':'Документация','exec-contractors':'Исполнители','exec-chat':'Чат',notes:'Заметки'};
+  return{overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:isCoffee?'Меню':'Услуги населению',s6:'Концепция',s7:'Документация',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны',news:'Новости','db-premises':'БД Помещений','db-renovations':'Модернизация и услуги','db-services':isCoffee?'Меню':'Каталог услуг','db-docs':'Каталог документов','db-contractors':'БД Подрядчиков','db-suppliers':'Каталог оборудования','db-employees':'БД Сотрудников','db-vendor-companies':'Поставщики',users:'Пользователи','cabinet-types':isCoffee?'Стоимость помещений':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения','exec-premises':'Помещения','exec-renovations':'Модернизация','exec-services':'Услуги','exec-equipment':'Оборудование','exec-staff':'Сотрудники','exec-docs':'Документация','exec-contractors':'Исполнители','exec-chat':'Чат',notes:'Заметки',metrics:'Метрики'};
 }
 const secNames=getSecNames();
 const stageOrder=['s1','s2','s3','s4','s5','s6','s7'];
@@ -4704,6 +4786,7 @@ function nav(id){
   if(id==='notes')renderNotes();
   if(id==='exec-chat')renderChatContacts();
   if(id==='exec-contractors')renderAssignedContractors();
+  if(id==='metrics')loadMetrics();
   if(id==='overview'&&currentStage===2)renderExecOverview();
   updateSumbar();
   updateRightPanel();
@@ -8438,6 +8521,172 @@ function delItem(table,id){
   savePicked();renderAll();buildSidebar();recalc();
 }
 
+// ═══════════════ METRICS & SEO ═══════════════
+var _metricsPeriod='today';
+var _metricsChart=null;
+
+function setMetricsPeriod(p){
+  _metricsPeriod=p;
+  document.querySelectorAll('.metrics-period').forEach(b=>b.classList.toggle('act',b.dataset.period===p));
+  loadMetrics();
+}
+
+function _metricsDateFilter(){
+  const now=new Date();
+  if(_metricsPeriod==='today')return new Date(now.getFullYear(),now.getMonth(),now.getDate()).toISOString();
+  if(_metricsPeriod==='7d'){const d=new Date(now);d.setDate(d.getDate()-7);return d.toISOString()}
+  if(_metricsPeriod==='30d'){const d=new Date(now);d.setDate(d.getDate()-30);return d.toISOString()}
+  return '2020-01-01T00:00:00Z';
+}
+
+async function loadMetrics(){
+  if(!sb)return;
+  const since=_metricsDateFilter();
+  try{
+    const[pvRes,sessRes]=await Promise.all([
+      sb.from('page_views').select('*').gte('created_at',since).order('created_at',{ascending:false}).limit(5000),
+      sb.from('user_sessions').select('*').gte('created_at',since).order('created_at',{ascending:false}).limit(5000)
+    ]);
+    const pv=pvRes.data||[];
+    const sess=sessRes.data||[];
+    renderMetricsData(pv,sess);
+  }catch(e){
+    console.error('[SVITA] metrics:',e);
+    document.getElementById('mViews').textContent='Ошибка';
+  }
+}
+
+function renderMetricsData(pv,sess){
+  // Stats
+  document.getElementById('mViews').textContent=pv.length;
+  document.getElementById('mSessions').textContent=sess.length;
+  const uniqueEmails=new Set(sess.map(s=>s.email).filter(Boolean));
+  document.getElementById('mUnique').textContent=uniqueEmails.size;
+  const landingViews=pv.filter(v=>v.page==='/landing').length;
+  document.getElementById('mLanding').textContent=landingViews;
+
+  // Pages breakdown
+  const pages={};
+  pv.forEach(v=>{const p=v.page||'unknown';pages[p]=(pages[p]||0)+1});
+  const pagesSorted=Object.entries(pages).sort((a,b)=>b[1]-a[1]);
+  const pEl=document.getElementById('mPages');
+  if(!pagesSorted.length){pEl.innerHTML='<span style="color:var(--tx3)">Нет данных за этот период</span>';return}
+  pEl.innerHTML=pagesSorted.map(([p,c])=>{
+    const pct=Math.round(c/pv.length*100);
+    return '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><div style="flex:1;min-width:0"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span style="font-weight:500;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+p+'</span><span style="font-size:11px;color:var(--tx3);flex-shrink:0">'+c+' ('+pct+'%)</span></div><div style="height:6px;background:var(--sf2);border-radius:3px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:var(--ac);border-radius:3px"></div></div></div></div>';
+  }).join('');
+
+  // Referrers
+  const refs={};
+  pv.forEach(v=>{
+    let r=v.referrer||'Прямой заход';
+    if(r&&r!=='Прямой заход'){try{r=new URL(r).hostname}catch(e){r='Прямой заход'}}
+    refs[r]=(refs[r]||0)+1;
+  });
+  const refsSorted=Object.entries(refs).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const rEl=document.getElementById('mReferrers');
+  if(!refsSorted.length){rEl.innerHTML='<span style="color:var(--tx3)">Нет данных</span>'}
+  else{rEl.innerHTML=refsSorted.map(([r,c])=>'<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bd);font-size:12px"><span>'+r+'</span><span style="font-weight:600">'+c+'</span></div>').join('')}
+
+  // Devices
+  const devices={desktop:0,mobile:0,tablet:0};
+  const allUA=[...pv.map(v=>v.user_agent),...sess.map(s=>s.user_agent)].filter(Boolean);
+  allUA.forEach(ua=>{
+    if(/tablet|ipad/i.test(ua))devices.tablet++;
+    else if(/mobile|android|iphone/i.test(ua))devices.mobile++;
+    else devices.desktop++;
+  });
+  const total=devices.desktop+devices.mobile+devices.tablet||1;
+  const dEl=document.getElementById('mDevices');
+  dEl.innerHTML=[
+    {name:'Desktop',count:devices.desktop,icon:'🖥️',color:'var(--ac)'},
+    {name:'Mobile',count:devices.mobile,icon:'📱',color:'var(--gn)'},
+    {name:'Tablet',count:devices.tablet,icon:'📋',color:'var(--or)'}
+  ].map(d=>{
+    const pct=Math.round(d.count/total*100);
+    return '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="font-size:20px">'+d.icon+'</span><div style="flex:1"><div style="display:flex;justify-content:space-between;margin-bottom:3px;font-size:12px"><span style="font-weight:500">'+d.name+'</span><span style="color:var(--tx3)">'+d.count+' ('+pct+'%)</span></div><div style="height:6px;background:var(--sf2);border-radius:3px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:'+d.color+';border-radius:3px"></div></div></div></div>';
+  }).join('');
+
+  // Chart — views by day
+  renderViewsChart(pv);
+
+  // SEO checks
+  checkSEO();
+}
+
+function renderViewsChart(pv){
+  const canvas=document.getElementById('chartViews');
+  const empty=document.getElementById('chartViewsEmpty');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const rect=canvas.parentElement.getBoundingClientRect();
+  canvas.width=rect.width;canvas.height=rect.height;
+
+  // Group by day
+  const days={};
+  pv.forEach(v=>{
+    const d=(v.created_at||'').slice(0,10);
+    if(d)days[d]=(days[d]||0)+1;
+  });
+  const sorted=Object.entries(days).sort((a,b)=>a[0].localeCompare(b[0]));
+  if(!sorted.length){canvas.style.display='none';if(empty)empty.style.display='flex';return}
+  canvas.style.display='block';if(empty)empty.style.display='none';
+
+  const vals=sorted.map(s=>s[1]);
+  const labels=sorted.map(s=>s[0].slice(5));
+  const max=Math.max(...vals,1);
+  const w=canvas.width;const h=canvas.height;
+  const pad={t:20,r:16,b:30,l:40};
+  const cw=w-pad.l-pad.r;const ch=h-pad.t-pad.b;
+
+  ctx.clearRect(0,0,w,h);
+
+  // Grid
+  ctx.strokeStyle='rgba(0,0,0,.06)';ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){
+    const y=pad.t+ch-ch*(i/4);
+    ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(w-pad.r,y);ctx.stroke();
+    ctx.fillStyle='rgba(0,0,0,.3)';ctx.font='10px Inter,sans-serif';ctx.textAlign='right';
+    ctx.fillText(Math.round(max*i/4),pad.l-6,y+3);
+  }
+
+  // Bars
+  const bw=Math.max(Math.min(cw/vals.length-4,40),6);
+  vals.forEach((v,i)=>{
+    const x=pad.l+(cw/vals.length)*i+(cw/vals.length-bw)/2;
+    const bh=ch*(v/max);
+    const y=pad.t+ch-bh;
+    const grad=ctx.createLinearGradient(x,y,x,pad.t+ch);
+    grad.addColorStop(0,'rgba(79,110,247,.8)');grad.addColorStop(1,'rgba(79,110,247,.3)');
+    ctx.fillStyle=grad;
+    ctx.beginPath();ctx.roundRect(x,y,bw,bh,[4,4,0,0]);ctx.fill();
+    // Label
+    if(vals.length<=31){
+      ctx.fillStyle='rgba(0,0,0,.35)';ctx.font='9px Inter,sans-serif';ctx.textAlign='center';
+      ctx.fillText(labels[i],x+bw/2,h-pad.b+14);
+    }
+    // Value on top
+    ctx.fillStyle='var(--ac2)';ctx.font='bold 10px Inter,sans-serif';ctx.textAlign='center';
+    ctx.fillText(v,x+bw/2,y-4);
+  });
+}
+
+function checkSEO(){
+  const ok='<span style="color:var(--gn);font-weight:600">✓ Есть</span>';
+  const no='<span style="color:#ef4444;font-weight:600">✗ Нет</span>';
+  // Check meta tags on current page
+  const desc=document.querySelector('meta[name="description"]');
+  const ogTitle=document.querySelector('meta[property="og:title"]');
+  const canon=document.querySelector('link[rel="canonical"]');
+  const schema=document.querySelector('script[type="application/ld+json"]');
+  document.getElementById('seoRobots').innerHTML=ok;
+  document.getElementById('seoSitemap').innerHTML=ok;
+  document.getElementById('seoDesc').innerHTML=desc?ok:no;
+  document.getElementById('seoOg').innerHTML=ogTitle?ok:no;
+  document.getElementById('seoCanon').innerHTML=canon?ok:no;
+  document.getElementById('seoSchema').innerHTML=schema?ok:no;
+}
+
 // ═══════════════ USERS ═══════════════
 function genUserId(){const n=DB.users.length?Math.max(...DB.users.map(u=>{const m=(u.id||'').toString().match(/(\d+)$/);return m?+m[1]:0}))+1:1;return 'USR-'+String(n).padStart(3,'0')}
 function renderUsers(){
@@ -10540,6 +10789,9 @@ function startOnboarding(){
   tourCur=0;
   tourRender();
 }
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"SVITA","applicationCategory":"BusinessApplication","description":"AI-платформа для открытия малого бизнеса. Бюджет, подрядчики, поставщики, планирование.","url":"https://dashboard.svita.ai","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"PLN"}}
 </script>
 
 </body>
