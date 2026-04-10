@@ -795,9 +795,11 @@ Apple</button>
 <div class="top-umenu-plan"><span class="top-umenu-plan-badge" id="topMenuPlan" style="background:var(--acbg);color:var(--ac2)">TRIAL</span></div>
 </div>
 <div class="top-umenu-body">
-<button class="top-umenu-item" onclick="event.stopPropagation();document.getElementById('topUser').classList.remove('open');nav('account')">&#128209; Мои концепции</button>
-<button class="top-umenu-item" onclick="event.stopPropagation();showProfileModal()">&#9881; Настройки</button>
-<button class="top-umenu-item" onclick="event.stopPropagation();showUpgradeModal()">&#9889; Сменить тариф</button>
+<button class="top-umenu-item" onclick="event.stopPropagation();document.getElementById('topUser').classList.remove('open');nav('account')" style="font-weight:600;color:var(--ac2)">&#127968; Мой Кабинет</button>
+<div class="top-umenu-sep"></div>
+<button class="top-umenu-item" onclick="event.stopPropagation();document.getElementById('topUser').classList.remove('open');nav('account');setTimeout(()=>switchCabTab('cab-concepts'),50)">&#128209; Мои концепции</button>
+<button class="top-umenu-item" onclick="event.stopPropagation();document.getElementById('topUser').classList.remove('open');nav('account');setTimeout(()=>switchCabTab('cab-profile'),50)">&#9881; Настройки</button>
+<button class="top-umenu-item" onclick="event.stopPropagation();document.getElementById('topUser').classList.remove('open');nav('account');setTimeout(()=>switchCabTab('cab-plan'),50)">&#9889; Сменить тариф</button>
 <div class="top-umenu-sep"></div>
 <button class="top-umenu-item danger" onclick="event.stopPropagation();logout()">&#10140; Выход</button>
 </div>
