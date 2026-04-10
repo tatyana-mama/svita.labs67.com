@@ -2936,6 +2936,33 @@ function loadPicked(){
   }catch(e){console.error('[SVITA] loadPicked error',e)}
 }
 
+// Persist user-added items across reload
+const CUSTOM_TABLES=['contractors','rooms','employees','services','users','cabinetTypes','vendorCompanies'];
+function saveCustomDB(){
+  const custom={};
+  CUSTOM_TABLES.forEach(t=>{custom[t]=(DB[t]||[]).filter(x=>x.custom)});
+  // suppliers (equip) custom items
+  custom.suppliers=(DB.suppliers||[]).filter(x=>x.custom);
+  // renovations custom
+  custom.renovations=(DB.renovations||[]).filter(x=>x.custom);
+  // premises custom
+  custom.premises=(DB.premises||[]).filter(x=>x.custom);
+  uSet('svita_custom_db',JSON.stringify(custom));
+}
+function loadCustomDB(){
+  try{
+    const raw=uGet('svita_custom_db');if(!raw)return;
+    const custom=JSON.parse(raw);
+    Object.keys(custom).forEach(t=>{
+      if(!DB[t])return;
+      const existing=new Set(DB[t].map(x=>x.id));
+      (custom[t]||[]).forEach(item=>{
+        if(!existing.has(item.id)){item.custom=true;DB[t].push(item)}
+      });
+    });
+  }catch(e){console.error('[SVITA] loadCustomDB',e)}
+}
+
 const BM_FIELDS=['cType','cBrand','cCity','cDate','cFormat','cAudience','cUsp','cTech'];
 const LOAD_PARAMS=['chairsCount','patientsPerChair','workDays','avgCheck','prUtils','prMaterials','prMarketing','prOther','fotRateInput','depositMonths'];
 function saveLoadParams(){
@@ -4211,6 +4238,7 @@ function enterApp(){
   if(savedProp){try{activeProperty=JSON.parse(savedProp)}catch(e){activeProperty=null}}
   else{activeProperty=currentRole==='admin'?{...DEFAULT_PROPERTY}:null}
   try{migrateLocalStorageKeys(currentUser.id)}catch(e){console.error('[SVITA] migrate:',e)}
+  try{loadCustomDB()}catch(e){console.error('[SVITA] loadCustomDB:',e)}
   try{loadPicked()}catch(e){console.error('[SVITA] loadPicked:',e)}
   try{loadBusinessModel()}catch(e){console.error('[SVITA] loadBM:',e)}
   // Auto-pick all default employees if pickedStaff is empty (first launch)
@@ -5819,7 +5847,7 @@ function addCustomRen(){
   document.getElementById('crVal').value='';
   document.getElementById('crUnit').value='';
   document.getElementById('customRenForm').style.display='none';
-  renderRenovationsCatalog();renderSelectedRenovations();recalc();
+  saveCustomDB();savePicked();renderRenovationsCatalog();renderSelectedRenovations();recalc();
 }
 function togglePickRenovation(id){
   if(DB.pickedRenovations[id]){delete DB.pickedRenovations[id]}else{DB.pickedRenovations[id]={qty:1,done:false}}
@@ -8580,7 +8608,7 @@ function saveModal(){
 
   // Premise — full property object for DB
   if(modalMode==='premise'){
-    const premiseObj={id:editingId||++nextId,name:obj.name,price:obj.price||0,status:'candidate',notes:obj.notes||'',img:null,source:obj.source||'',specs:{address:obj.name,city:obj.city||'',area:obj.area||0,floors:obj.floors||0,owner_name:obj.owner_name||'',owner_phone:obj.owner_phone||''}};
+    const premiseObj={id:editingId||++nextId,name:obj.name,price:obj.price||0,status:'candidate',notes:obj.notes||'',img:null,source:obj.source||'',custom:true,specs:{address:obj.name,city:obj.city||'',area:obj.area||0,floors:obj.floors||0,owner_name:obj.owner_name||'',owner_phone:obj.owner_phone||''}};
     if(editingId){
       const idx=DB.premises.findIndex(x=>x.id===editingId);
       if(idx!==-1)Object.assign(DB.premises[idx],premiseObj);
@@ -8598,15 +8626,16 @@ function saveModal(){
     }
     editingId=null;
     closeModal();
+    saveCustomDB();
     renderPremises();buildSidebar();
     return;
   }
 
   if(modalMode==='vendor'){
-    const v={id:editingId||'v'+(++nextId),name:obj.name,desc:obj.desc||'',city:obj.city||'',phone:obj.phone||'',website:obj.website||'',tags:(obj.tags||'').split(',').map(t=>t.trim()).filter(Boolean)};
+    const v={id:editingId||'v'+(++nextId),name:obj.name,desc:obj.desc||'',city:obj.city||'',phone:obj.phone||'',website:obj.website||'',tags:(obj.tags||'').split(',').map(t=>t.trim()).filter(Boolean),custom:true};
     if(editingId){const idx=DB.vendorCompanies.findIndex(x=>x.id===editingId);if(idx!==-1)Object.assign(DB.vendorCompanies[idx],v)}
     else DB.vendorCompanies.push(v);
-    editingId=null;closeModal();renderVendors();buildSidebar();return;
+    editingId=null;closeModal();saveCustomDB();renderVendors();buildSidebar();return;
   }
 
   const tableMap={room:'rooms',contractor:'contractors',supplier:'suppliers',employee:'employees',equip:'suppliers',staff:'employees',service:'services',user:'users',cabinetType:'cabinetTypes',renovation:'renovations'};
@@ -8632,6 +8661,7 @@ function saveModal(){
 
   // Add new item
   obj.id=modalMode==='user'?genUserId():++nextId;
+  obj.custom=true;
   if(modalMode==='user'){obj.plan='trial';obj.status='Активен';obj.created=new Date().toISOString().slice(0,10)}
   if(modalMode==='room')obj.area=Math.round((obj.w||0)*(obj.l||0)*100)/100;
   if(modalMode==='contractor')obj.rating=0;
@@ -8650,6 +8680,7 @@ function saveModal(){
   }
   editingId=null;
   closeModal();
+  saveCustomDB();
   renderAll();buildSidebar();recalc();
 }
 
