@@ -4651,6 +4651,7 @@ const stageOrder=['s1','s2','s3','s4','s5','s6','s7'];
 let cur='overview';
 
 function nav(id){
+  if(_tourActive){return}
   if(id==='upgrade-gate'){showUpgradeModal();return}
   // Close mobile sidebar
   const _sb=document.getElementById('sidebar');if(_sb)_sb.classList.remove('mob-open');
@@ -10349,24 +10350,27 @@ enterApp=function(){
 </div>
 
 <!-- Onboarding Guide -->
+<!-- Tour overlay (blocks all interaction) -->
+<div id="tourOverlay" style="display:none;position:fixed;inset:0;z-index:7990;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);transition:opacity .3s"></div>
 <!-- Guided Tour Tooltip -->
-<div id="tourTooltip" style="display:none;position:fixed;z-index:8000;background:#fff;border-radius:12px;padding:20px;box-shadow:0 8px 32px rgba(0,0,0,.18);font-family:var(--f);max-width:340px;width:90%;animation:obSlide .3s ease;border-left:4px solid var(--ac)">
+<div id="tourTooltip" style="display:none;position:fixed;z-index:8000;background:#fff;border-radius:14px;padding:22px;box-shadow:0 12px 40px rgba(0,0,0,.25);font-family:var(--f);max-width:360px;width:90%;animation:obSlide .3s ease;border-left:4px solid var(--ac)">
 <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
 <div id="tourStep" style="font-size:9px;font-weight:700;color:var(--ac);text-transform:uppercase;letter-spacing:1px"></div>
-<button onclick="endTour()" style="background:none;border:none;color:var(--tx3);cursor:pointer;font-size:14px;padding:0;line-height:1">&times;</button>
+<button onclick="endTour()" style="background:none;border:none;color:var(--tx3);cursor:pointer;font-size:16px;padding:2px 4px;line-height:1;border-radius:4px" title="Пропустить обучение">&times;</button>
 </div>
 <div id="tourTitle" style="font-size:15px;font-weight:700;color:var(--tx);margin-bottom:6px"></div>
 <div id="tourText" style="font-size:12px;color:var(--tx2);line-height:1.6;margin-bottom:16px"></div>
 <div style="display:flex;justify-content:space-between;align-items:center">
 <div id="tourDots" style="display:flex;gap:4px"></div>
-<div style="display:flex;gap:6px">
+<div style="display:flex;gap:8px">
 <button id="tourBack" onclick="tourNav(-1)" class="btn sm" style="display:none;font-size:11px">Назад</button>
-<button id="tourNext" onclick="tourNav(1)" class="btn sm pr" style="font-size:11px">Далее</button>
+<button id="tourNext" onclick="tourNav(1)" class="btn sm pr" style="font-size:11px;padding:8px 18px">Далее</button>
 </div>
 </div>
+<div style="margin-top:12px;text-align:center"><button onclick="endTour()" style="background:none;border:none;color:var(--tx3);cursor:pointer;font-size:10px;font-family:var(--f);opacity:.6">Пропустить обучение</button></div>
 </div>
 <!-- Tour highlight ring -->
-<div id="tourHighlight" style="display:none;position:fixed;z-index:7999;border:2px solid var(--ac);border-radius:8px;box-shadow:0 0 0 4000px rgba(0,0,0,.08);pointer-events:none;transition:all .3s ease"></div>
+<div id="tourHighlight" style="display:none;position:fixed;z-index:7995;border:2px solid var(--ac);border-radius:8px;box-shadow:0 0 0 6px rgba(59,130,246,.2);pointer-events:none;transition:all .3s ease"></div>
 <style>@keyframes obSlide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}</style>
 
 <!-- floating chat removed — AI chat is now in right panel -->
@@ -10417,10 +10421,14 @@ const TOUR_STEPS=[
   {target:'.sidebar',pos:'right',title:'Готово!',text:'Заполняйте этапы по порядку — прогресс виден в обзоре. Удачи с проектом!'}
 ];
 let tourCur=0;
+let _tourActive=false;
 function tourRender(){
   const s=TOUR_STEPS[tourCur];
   const tt=document.getElementById('tourTooltip');
   const hl=document.getElementById('tourHighlight');
+  const ov=document.getElementById('tourOverlay');
+  ov.style.display='block';
+  _tourActive=true;
   document.getElementById('tourStep').textContent=`Шаг ${tourCur+1} из ${TOUR_STEPS.length}`;
   document.getElementById('tourTitle').textContent=s.title;
   document.getElementById('tourText').textContent=s.text;
@@ -10434,12 +10442,11 @@ function tourRender(){
     hl.style.display='block';
     hl.style.top=(r.top-4)+'px';hl.style.left=(r.left-4)+'px';
     hl.style.width=(r.width+8)+'px';hl.style.height=(r.height+8)+'px';
-    tt.style.display='block';
-    // Position tooltip to the right of the element
+    tt.style.display='block';tt.style.transform='none';
     let top=Math.max(8,r.top);
     let left=r.right+16;
-    if(left+350>window.innerWidth){left=Math.max(8,r.left-360)}
-    if(top+200>window.innerHeight){top=Math.max(8,window.innerHeight-220)}
+    if(left+370>window.innerWidth){left=Math.max(8,r.left-380)}
+    if(top+240>window.innerHeight){top=Math.max(8,window.innerHeight-260)}
     tt.style.top=top+'px';tt.style.left=left+'px';
     el.scrollIntoView({behavior:'smooth',block:'nearest'});
   }else{
@@ -10457,6 +10464,8 @@ function tourNav(d){
 function endTour(){
   document.getElementById('tourTooltip').style.display='none';
   document.getElementById('tourHighlight').style.display='none';
+  document.getElementById('tourOverlay').style.display='none';
+  _tourActive=false;
   uSet('svita_onboarded','1');
 }
 function startOnboarding(){
