@@ -182,23 +182,26 @@
 .top-uav{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
 .top-uname{font-size:12px;font-weight:600;color:var(--tx);line-height:1.2}
 .top-urole{font-size:9px;color:var(--tx3);line-height:1.2}
-.top-umenu{position:absolute;top:calc(100% + 8px);right:0;background:var(--sf);border:1px solid var(--bd2);border-radius:14px;padding:0;min-width:280px;opacity:0;pointer-events:none;transform:translateY(-6px);transition:all .2s;z-index:999;box-shadow:0 16px 48px rgba(0,0,0,.35);overflow:hidden}
-.top-user.open .top-umenu{opacity:1;pointer-events:auto;transform:translateY(0)}
-.top-umenu-head{padding:24px 20px 16px;text-align:center;border-bottom:1px solid var(--bd)}
-.top-umenu-avatar{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;margin:0 auto 10px}
-.top-umenu-name{font-size:14px;font-weight:700;color:var(--tx)}
-.top-umenu-email{font-size:11px;color:var(--tx3);margin-top:2px}
-.top-umenu-plan{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:11px;color:var(--tx2)}
-.top-umenu-plan-badge{padding:2px 8px;border-radius:5px;font-size:9px;font-weight:700;letter-spacing:.04em}
-.top-umenu-body{padding:6px}
-.top-umenu-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;font-size:12px;color:var(--tx2);cursor:pointer;transition:all .1s;border:none;background:none;width:100%;font-family:var(--f);text-align:left}
-.top-umenu-item:hover{background:var(--sf2);color:var(--tx)}
-.top-umenu-item.danger{color:var(--rd)}
-.top-umenu-item.danger:hover{background:rgba(239,68,68,.08)}
-.top-umenu-sep{height:1px;background:var(--bd);margin:0}
-.top-umenu-foot{padding:12px 20px;text-align:center;border-top:1px solid var(--bd);font-size:10px;color:var(--tx3)}
-.top-umenu-foot a{color:var(--ac2);text-decoration:none;margin:0 4px}
-.top-umenu-foot a:hover{text-decoration:underline}
+.top-umenu{position:absolute;top:calc(100% + 10px);right:0;background:rgba(255,255,255,.92);backdrop-filter:blur(24px) saturate(1.6);-webkit-backdrop-filter:blur(24px) saturate(1.6);border:1px solid rgba(255,255,255,.5);border-radius:20px;padding:0;min-width:300px;opacity:0;pointer-events:none;transform:translateY(-8px) scale(.97);transition:all .25s cubic-bezier(.4,0,.2,1);z-index:999;box-shadow:0 20px 60px rgba(0,0,0,.12),0 4px 16px rgba(0,0,0,.06),0 0 0 1px rgba(0,0,0,.04);overflow:hidden}
+.top-user.open .top-umenu{opacity:1;pointer-events:auto;transform:translateY(0) scale(1)}
+.top-umenu-head{padding:28px 24px 20px;text-align:center;position:relative;overflow:hidden}
+.top-umenu-head::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(79,110,247,.08) 0%,rgba(124,58,237,.06) 50%,rgba(236,72,153,.04) 100%);z-index:0}
+.top-umenu-head>*{position:relative;z-index:1}
+.top-umenu-avatar{width:64px;height:64px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:#fff;margin:0 auto 12px;box-shadow:0 6px 20px rgba(0,0,0,.15);position:relative}
+.top-umenu-avatar::after{content:'';position:absolute;inset:-3px;border-radius:21px;border:2px solid rgba(255,255,255,.6);pointer-events:none}
+.top-umenu-name{font-size:16px;font-weight:700;color:var(--tx);letter-spacing:-.01em}
+.top-umenu-email{font-size:11px;color:var(--tx3);margin-top:3px;font-weight:400}
+.top-umenu-plan{display:inline-flex;align-items:center;gap:6px;margin-top:10px}
+.top-umenu-plan-badge{padding:3px 12px;border-radius:8px;font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.top-umenu-body{padding:8px 8px 4px}
+.top-umenu-item{display:flex;align-items:center;gap:12px;padding:11px 16px;border-radius:12px;font-size:13px;color:var(--tx2);cursor:pointer;transition:all .15s;border:none;background:none;width:100%;font-family:var(--f);text-align:left;font-weight:500}
+.top-umenu-item:hover{background:var(--acbg);color:var(--ac2);transform:translateX(2px)}
+.top-umenu-item.danger{color:#ef4444}
+.top-umenu-item.danger:hover{background:rgba(239,68,68,.06);color:#dc2626;transform:translateX(2px)}
+.top-umenu-sep{height:1px;background:linear-gradient(90deg,transparent,var(--bd),transparent);margin:4px 16px}
+.top-umenu-foot{padding:14px 20px;text-align:center;border-top:1px solid var(--bd);font-size:10px;color:var(--tx3);background:rgba(0,0,0,.01)}
+.top-umenu-foot a{color:var(--ac2);text-decoration:none;margin:0 4px;font-weight:500;transition:color .15s}
+.top-umenu-foot a:hover{color:var(--acd);text-decoration:underline}
 .btn{padding:6px 14px;border-radius:7px;font-size:11px;font-weight:600;border:1px solid var(--bd);background:transparent;color:var(--tx2);cursor:pointer;font-family:var(--f);transition:all .15s}
 .btn:hover{background:var(--sf2);color:var(--tx)}.btn.pr{background:var(--ac);border-color:transparent;color:#fff}.btn.pr:hover{background:#2563eb}
 .btn.gn{background:var(--gn);border-color:transparent;color:#fff}.btn.sm{padding:4px 10px;font-size:10px}
@@ -505,7 +508,7 @@
   .top{padding:6px 12px}
   .top-p{font-size:12px}
   .top-upgrade{font-size:9px;padding:4px 10px}
-  .top-umenu{min-width:240px}
+  .top-umenu{min-width:260px;right:-8px}
   .login-box{padding:24px 16px}
   .login-box h1{font-size:18px}
   .login-role{padding:10px;gap:8px}
@@ -4628,6 +4631,14 @@ let _sidebarBuilt=false;
 function buildSidebar(){
   const n=document.getElementById('sideNav');
   if(!n||!currentRole)return;
+  // Contractors/suppliers have no Stage 1 — always force Stage 2
+  if((currentRole==='contractor'||currentRole==='supplier')&&currentStage===1){
+    currentStage=2;localStorage.setItem('svita_stage','2');
+    document.querySelectorAll('.stage-btn').forEach(b=>{b.classList.toggle('active',parseInt(b.dataset.stage)===2)});
+    const _st=document.getElementById('sideTag');if(_st)_st.textContent='Закупки и установка';
+    const _br=document.getElementById('sideBizRow');if(_br)_br.style.display='none';
+    document.getElementById('tabBar').style.display='none';
+  }
   // Build structure only ONCE — after that only update badges
   if(_sidebarBuilt){updateSidebarBadges();return}
   let html='<div class="si act" data-nav="overview" data-tip="Главная панель: прогресс, метрики и статус"><span class="ico">&#9673;</span><span class="sl">Обзор</span></div>';
