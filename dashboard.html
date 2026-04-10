@@ -10349,29 +10349,28 @@ enterApp=function(){
 </div>
 </div>
 
-<!-- Onboarding Guide -->
-<!-- Tour overlay (blocks all interaction) -->
-<div id="tourOverlay" style="display:none;position:fixed;inset:0;z-index:7990;background:rgba(0,0,0,.55);backdrop-filter:blur(2px);transition:opacity .3s"></div>
-<!-- Guided Tour Tooltip -->
-<div id="tourTooltip" style="display:none;position:fixed;z-index:8000;background:#fff;border-radius:14px;padding:22px;box-shadow:0 12px 40px rgba(0,0,0,.25);font-family:var(--f);max-width:360px;width:90%;animation:obSlide .3s ease;border-left:4px solid var(--ac)">
-<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
-<div id="tourStep" style="font-size:9px;font-weight:700;color:var(--ac);text-transform:uppercase;letter-spacing:1px"></div>
-<button onclick="endTour()" style="background:none;border:none;color:var(--tx3);cursor:pointer;font-size:16px;padding:2px 4px;line-height:1;border-radius:4px" title="Пропустить обучение">&times;</button>
+<!-- ═══ GUIDED TOUR v2 ═══ -->
+<svg id="tourSvg" style="display:none;position:fixed;inset:0;z-index:7990;pointer-events:auto" width="100%" height="100%">
+  <defs><mask id="tourMask"><rect width="100%" height="100%" fill="white"/><rect id="tourCut" rx="12" ry="12" fill="black"/></mask></defs>
+  <rect width="100%" height="100%" fill="rgba(0,0,0,.6)" mask="url(#tourMask)"/>
+</svg>
+<div id="tourTip" style="display:none;position:fixed;z-index:8000;background:#fff;border-radius:16px;padding:24px;box-shadow:0 16px 48px rgba(0,0,0,.2),0 0 0 1px rgba(0,0,0,.05);font-family:var(--f);width:340px;max-width:calc(100vw - 32px)">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+<div id="tourStep" style="font-size:10px;font-weight:700;color:var(--ac);text-transform:uppercase;letter-spacing:1px"></div>
+<button onclick="endTour()" style="background:var(--sf2);border:none;color:var(--tx3);cursor:pointer;font-size:13px;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:background .15s" onmouseenter="this.style.background='var(--sf3)'" onmouseleave="this.style.background='var(--sf2)'">&times;</button>
 </div>
-<div id="tourTitle" style="font-size:15px;font-weight:700;color:var(--tx);margin-bottom:6px"></div>
-<div id="tourText" style="font-size:12px;color:var(--tx2);line-height:1.6;margin-bottom:16px"></div>
+<div id="tourTitle" style="font-size:16px;font-weight:700;color:var(--tx);margin-bottom:6px;line-height:1.3"></div>
+<div id="tourText" style="font-size:13px;color:var(--tx2);line-height:1.65;margin-bottom:20px"></div>
 <div style="display:flex;justify-content:space-between;align-items:center">
 <div id="tourDots" style="display:flex;gap:4px"></div>
 <div style="display:flex;gap:8px">
-<button id="tourBack" onclick="tourNav(-1)" class="btn sm" style="display:none;font-size:11px">Назад</button>
-<button id="tourNext" onclick="tourNav(1)" class="btn sm pr" style="font-size:11px;padding:8px 18px">Далее</button>
+<button id="tourBack" onclick="tourNav(-1)" class="btn sm" style="display:none;font-size:12px;padding:8px 16px">Назад</button>
+<button id="tourNext" onclick="tourNav(1)" class="btn sm pr" style="font-size:12px;padding:8px 20px">Далее</button>
 </div>
 </div>
-<div style="margin-top:12px;text-align:center"><button onclick="endTour()" style="background:none;border:none;color:var(--tx3);cursor:pointer;font-size:10px;font-family:var(--f);opacity:.6">Пропустить обучение</button></div>
+<div style="margin-top:14px;text-align:center"><button onclick="endTour()" style="background:none;border:none;color:var(--tx3);cursor:pointer;font-size:11px;font-family:var(--f);opacity:.5;transition:opacity .15s" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='.5'">Пропустить обучение</button></div>
 </div>
-<!-- Tour highlight ring -->
-<div id="tourHighlight" style="display:none;position:fixed;z-index:7995;border:2px solid var(--ac);border-radius:8px;box-shadow:0 0 0 6px rgba(59,130,246,.2);pointer-events:none;transition:all .3s ease"></div>
-<style>@keyframes obSlide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}</style>
+<div id="tourRing" style="display:none;position:fixed;z-index:7995;border:2px solid var(--ac);border-radius:14px;pointer-events:none;transition:all .35s ease;box-shadow:0 0 0 4px rgba(79,110,247,.15)"></div>
 
 <!-- floating chat removed — AI chat is now in right panel -->
 
@@ -10406,55 +10405,87 @@ function cookieAccept(){localStorage.setItem('svita_cookies','accepted');cookieA
 function cookieDecline(){localStorage.setItem('svita_cookies','declined');cookieApply('declined');document.getElementById('cookieConsent').style.display='none';toast('Только необходимые cookie','yl')}
 if(_ck)cookieApply(_ck);
 
-// ═══════════════ GUIDED TOUR ═══════════════
+// ═══════════════ GUIDED TOUR v2 ═══════════════
 const TOUR_STEPS=[
-  {target:'.sidebar',pos:'right',title:'Sidebar — навигация',text:'Здесь вся навигация: этапы концепции, каталоги, аналитика. Вкладки — это этапы запуска вашего заведения.'},
-  {target:'[data-nav="account"]',pos:'right',title:'Личный кабинет',text:'Начните здесь — заполните профиль: имя, контакты, роль. Данные сохранятся автоматически.'},
-  {target:'[data-nav="s6"]',pos:'right',title:'Концепция',text:'Заполните бизнес-модель: тип учреждения, бренд, город, формат, аудиторию. Это основа вашего проекта.'},
-  {target:'.sidebar-group:last-of-type',pos:'right',title:'Каталог — базы данных',text:'Здесь каталоги: помещения, оборудование, подрядчики, сотрудники, процедуры. Выбирайте позиции — они добавятся в вашу концепцию.'},
-  {target:'[data-nav="s1"]',pos:'right',title:'Таб 1 · Помещение',text:'Найдите помещение из каталога или добавьте своё. Нарисуйте план: кабинеты, стерилизаторную, ресепшен.'},
-  {target:'[data-nav="s2"]',pos:'right',title:'Таб 2 · Модернизация',text:'Ремонт и подготовка помещения. Электрика, вентиляция, отделка. Добавляйте конкретные действия с ценами.'},
-  {target:'[data-nav="s3"]',pos:'right',title:'Таб 3 · Оснащение',text:'Оборудование из каталога. Назначайте по кабинетам, указывайте количество.'},
-  {target:'[data-nav="s4"]',pos:'right',title:'Таб 4 · Персонал',text:'Врачи, ассистенты, администраторы. Укажите ставки — ФОТ рассчитается автоматически.'},
-  {target:'[data-nav="s5"]',pos:'right',title:'Таб 5 · Прайс-лист',text:'Стоматологические услуги. Формирует средний чек и прогноз выручки.'},
-  {target:'[data-nav="budget"]',pos:'right',title:'Бюджет и рентабельность',text:'Итоговые цифры: стартовые вложения, ФОТ, выручка, окупаемость. Всё считается автоматически.'},
-  {target:'.sidebar',pos:'right',title:'Готово!',text:'Заполняйте этапы по порядку — прогресс виден в обзоре. Удачи с проектом!'}
+  {target:'#sidebar',place:'right',title:'Навигация',text:'Боковая панель — ваш пульт управления. Здесь все разделы: этапы концепции, каталоги, аналитика.'},
+  {target:'[data-nav="overview"]',place:'right',title:'Обзор',text:'Главный экран с прогрессом, метриками и статусом вашего проекта. Сюда возвращайтесь для общей картины.'},
+  {target:'[data-nav="s6"]',place:'right',title:'Концепция',text:'Начните здесь: бренд, город, формат, аудитория. Это фундамент вашего бизнес-плана.'},
+  {target:'.tab[data-nav="s1"]',place:'bottom',title:'Таб 1 · Помещение',text:'Найдите помещение из каталога или добавьте своё. Укажите адрес, площадь, аренду.'},
+  {target:'.tab[data-nav="s2"]',place:'bottom',title:'Таб 2 · Модернизация',text:'Ремонт: электрика, вентиляция, отделка. Добавляйте работы с ценами.'},
+  {target:'.tab[data-nav="s3"]',place:'bottom',title:'Таб 3 · Оснащение',text:'Оборудование из каталога. Назначайте по кабинетам и зонам.'},
+  {target:'.tab[data-nav="s4"]',place:'bottom',title:'Таб 4 · Персонал',text:'Врачи, ассистенты, администраторы. ФОТ считается автоматически.'},
+  {target:'[data-nav="budget"]',place:'right',title:'Бюджет',text:'Итоговые цифры: стартовые вложения, ФОТ, выручка, окупаемость. Всё автоматически.'},
+  {target:'[data-nav="account"]',place:'right',title:'Мой Кабинет',text:'Профиль, управление пользователями, настройки тарифа, безопасность.'},
+  {target:null,place:'center',title:'Готово!',text:'Заполняйте этапы по порядку. Прогресс виден в Обзоре. Удачного запуска!'}
 ];
-let tourCur=0;
-let _tourActive=false;
+let tourCur=0,_tourActive=false;
+const _PAD=8; // padding around highlighted element
+
+function _tourPos(targetRect,tipW,tipH,place){
+  const vw=window.innerWidth,vh=window.innerHeight;
+  const gap=14;
+  const r=targetRect;
+  let top,left;
+  // Try requested placement, fall back if no room
+  const placements=[place,'right','bottom','left','top'];
+  for(const p of placements){
+    if(p==='right'&&r.right+gap+tipW<vw){left=r.right+gap;top=Math.max(8,Math.min(r.top,vh-tipH-8));return{top,left}}
+    if(p==='bottom'&&r.bottom+gap+tipH<vh){top=r.bottom+gap;left=Math.max(8,Math.min(r.left,vw-tipW-8));return{top,left}}
+    if(p==='left'&&r.left-gap-tipW>0){left=r.left-gap-tipW;top=Math.max(8,Math.min(r.top,vh-tipH-8));return{top,left}}
+    if(p==='top'&&r.top-gap-tipH>0){top=r.top-gap-tipH;left=Math.max(8,Math.min(r.left,vw-tipW-8));return{top,left}}
+  }
+  // Fallback: center
+  return{top:Math.max(8,(vh-tipH)/2),left:Math.max(8,(vw-tipW)/2)};
+}
+
 function tourRender(){
   const s=TOUR_STEPS[tourCur];
-  const tt=document.getElementById('tourTooltip');
-  const hl=document.getElementById('tourHighlight');
-  const ov=document.getElementById('tourOverlay');
-  ov.style.display='block';
+  const svg=document.getElementById('tourSvg');
+  const tip=document.getElementById('tourTip');
+  const ring=document.getElementById('tourRing');
+  const cut=document.getElementById('tourCut');
+  svg.style.display='block';
   _tourActive=true;
-  document.getElementById('tourStep').textContent=`Шаг ${tourCur+1} из ${TOUR_STEPS.length}`;
+
+  // Update content
+  document.getElementById('tourStep').textContent='Шаг '+(tourCur+1)+' из '+TOUR_STEPS.length;
   document.getElementById('tourTitle').textContent=s.title;
   document.getElementById('tourText').textContent=s.text;
   document.getElementById('tourBack').style.display=tourCur>0?'inline-flex':'none';
   document.getElementById('tourNext').textContent=tourCur===TOUR_STEPS.length-1?'Начать работу':'Далее';
-  document.getElementById('tourDots').innerHTML=TOUR_STEPS.map((_,i)=>`<div style="width:${i===tourCur?'12px':'5px'};height:5px;border-radius:3px;background:${i===tourCur?'var(--ac)':'var(--bd)'};transition:all .2s"></div>`).join('');
-  // Position tooltip near target element
-  const el=document.querySelector(s.target);
+  document.getElementById('tourDots').innerHTML=TOUR_STEPS.map(function(_,i){return '<div style="width:'+(i===tourCur?'14px':'6px')+';height:6px;border-radius:3px;background:'+(i===tourCur?'var(--ac)':'var(--bd)')+';transition:all .25s"></div>'}).join('');
+
+  const el=s.target?document.querySelector(s.target):null;
   if(el){
     const r=el.getBoundingClientRect();
-    hl.style.display='block';
-    hl.style.top=(r.top-4)+'px';hl.style.left=(r.left-4)+'px';
-    hl.style.width=(r.width+8)+'px';hl.style.height=(r.height+8)+'px';
-    tt.style.display='block';tt.style.transform='none';
-    let top=Math.max(8,r.top);
-    let left=r.right+16;
-    if(left+370>window.innerWidth){left=Math.max(8,r.left-380)}
-    if(top+240>window.innerHeight){top=Math.max(8,window.innerHeight-260)}
-    tt.style.top=top+'px';tt.style.left=left+'px';
+    // SVG cutout
+    cut.setAttribute('x',r.left-_PAD);
+    cut.setAttribute('y',r.top-_PAD);
+    cut.setAttribute('width',r.width+_PAD*2);
+    cut.setAttribute('height',r.height+_PAD*2);
+    // Ring
+    ring.style.display='block';
+    ring.style.top=(r.top-_PAD)+'px';ring.style.left=(r.left-_PAD)+'px';
+    ring.style.width=(r.width+_PAD*2)+'px';ring.style.height=(r.height+_PAD*2)+'px';
+    // Show tip temporarily to measure
+    tip.style.display='block';tip.style.visibility='hidden';tip.style.top='0';tip.style.left='0';
+    const tipR=tip.getBoundingClientRect();
+    const pos=_tourPos(r,tipR.width,tipR.height,s.place);
+    tip.style.top=pos.top+'px';tip.style.left=pos.left+'px';
+    tip.style.visibility='visible';
     el.scrollIntoView({behavior:'smooth',block:'nearest'});
   }else{
-    hl.style.display='none';
-    tt.style.display='block';
-    tt.style.top='50%';tt.style.left='50%';tt.style.transform='translate(-50%,-50%)';
+    // Center (no target)
+    cut.setAttribute('width',0);cut.setAttribute('height',0);
+    ring.style.display='none';
+    tip.style.display='block';tip.style.visibility='hidden';tip.style.top='0';tip.style.left='0';
+    const tipR=tip.getBoundingClientRect();
+    tip.style.top=Math.max(8,(window.innerHeight-tipR.height)/2)+'px';
+    tip.style.left=Math.max(8,(window.innerWidth-tipR.width)/2)+'px';
+    tip.style.visibility='visible';
   }
 }
+
 function tourNav(d){
   tourCur+=d;
   if(tourCur>=TOUR_STEPS.length){endTour();return}
@@ -10462,9 +10493,9 @@ function tourNav(d){
   tourRender();
 }
 function endTour(){
-  document.getElementById('tourTooltip').style.display='none';
-  document.getElementById('tourHighlight').style.display='none';
-  document.getElementById('tourOverlay').style.display='none';
+  document.getElementById('tourSvg').style.display='none';
+  document.getElementById('tourTip').style.display='none';
+  document.getElementById('tourRing').style.display='none';
   _tourActive=false;
   uSet('svita_onboarded','1');
 }
