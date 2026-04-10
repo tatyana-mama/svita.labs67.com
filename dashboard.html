@@ -10407,36 +10407,16 @@ if(_ck)cookieApply(_ck);
 
 // ═══════════════ GUIDED TOUR v2 ═══════════════
 const TOUR_STEPS=[
-  {target:'#sidebar',place:'right',title:'Навигация',text:'Боковая панель — ваш пульт управления. Здесь все разделы: этапы концепции, каталоги, аналитика.'},
-  {target:'[data-nav="overview"]',place:'right',title:'Обзор',text:'Главный экран с прогрессом, метриками и статусом вашего проекта. Сюда возвращайтесь для общей картины.'},
-  {target:'[data-nav="s6"]',place:'right',title:'Концепция',text:'Начните здесь: бренд, город, формат, аудитория. Это фундамент вашего бизнес-плана.'},
-  {target:'.tab[data-nav="s1"]',place:'bottom',title:'Таб 1 · Помещение',text:'Найдите помещение из каталога или добавьте своё. Укажите адрес, площадь, аренду.'},
-  {target:'.tab[data-nav="s2"]',place:'bottom',title:'Таб 2 · Модернизация',text:'Ремонт: электрика, вентиляция, отделка. Добавляйте работы с ценами.'},
-  {target:'.tab[data-nav="s3"]',place:'bottom',title:'Таб 3 · Оснащение',text:'Оборудование из каталога. Назначайте по кабинетам и зонам.'},
-  {target:'.tab[data-nav="s4"]',place:'bottom',title:'Таб 4 · Персонал',text:'Врачи, ассистенты, администраторы. ФОТ считается автоматически.'},
-  {target:'[data-nav="budget"]',place:'right',title:'Бюджет',text:'Итоговые цифры: стартовые вложения, ФОТ, выручка, окупаемость. Всё автоматически.'},
-  {target:'[data-nav="account"]',place:'right',title:'Мой Кабинет',text:'Профиль, управление пользователями, настройки тарифа, безопасность.'},
-  {target:null,place:'center',title:'Готово!',text:'Заполняйте этапы по порядку. Прогресс виден в Обзоре. Удачного запуска!'}
+  {target:'#sidebar',title:'Навигация',text:'Боковая панель — ваш пульт управления. Все разделы, каталоги и аналитика.'},
+  {target:'#tabBar',title:'Этапы концепции',text:'7 вкладок — помещение, ремонт, оснащение, персонал, услуги, концепция, документы. Заполняйте по порядку.'},
+  {target:'.si[data-nav="budget"]',title:'Бюджет',text:'Стартовые вложения, ФОТ, выручка, окупаемость. Считается автоматически на основе ваших данных.'},
+  {target:'.si[data-nav="profit"]',title:'Рентабельность',text:'Прогноз доходов, точка безубыточности и срок окупаемости вашего проекта.'},
+  {target:'#sideNav',title:'Каталоги',text:'Базы данных: помещения, оборудование, сотрудники, подрядчики. Выбирайте — они добавятся в концепцию.'},
+  {target:'.si[data-nav="account"]',title:'Мой Кабинет',text:'Профиль, управление пользователями, тариф и безопасность. Данные сохраняются автоматически.'},
+  {target:null,title:'Готово!',text:'Начните с вкладки Концепция — заполните бренд, город, формат. Прогресс виден в Обзоре. Удачи!'}
 ];
 let tourCur=0,_tourActive=false;
-const _PAD=8; // padding around highlighted element
-
-function _tourPos(targetRect,tipW,tipH,place){
-  const vw=window.innerWidth,vh=window.innerHeight;
-  const gap=14;
-  const r=targetRect;
-  let top,left;
-  // Try requested placement, fall back if no room
-  const placements=[place,'right','bottom','left','top'];
-  for(const p of placements){
-    if(p==='right'&&r.right+gap+tipW<vw){left=r.right+gap;top=Math.max(8,Math.min(r.top,vh-tipH-8));return{top,left}}
-    if(p==='bottom'&&r.bottom+gap+tipH<vh){top=r.bottom+gap;left=Math.max(8,Math.min(r.left,vw-tipW-8));return{top,left}}
-    if(p==='left'&&r.left-gap-tipW>0){left=r.left-gap-tipW;top=Math.max(8,Math.min(r.top,vh-tipH-8));return{top,left}}
-    if(p==='top'&&r.top-gap-tipH>0){top=r.top-gap-tipH;left=Math.max(8,Math.min(r.left,vw-tipW-8));return{top,left}}
-  }
-  // Fallback: center
-  return{top:Math.max(8,(vh-tipH)/2),left:Math.max(8,(vw-tipW)/2)};
-}
+const _PAD=10;
 
 function tourRender(){
   const s=TOUR_STEPS[tourCur];
@@ -10444,44 +10424,88 @@ function tourRender(){
   const tip=document.getElementById('tourTip');
   const ring=document.getElementById('tourRing');
   const cut=document.getElementById('tourCut');
+  const vw=window.innerWidth,vh=window.innerHeight;
   svg.style.display='block';
   _tourActive=true;
 
-  // Update content
-  document.getElementById('tourStep').textContent='Шаг '+(tourCur+1)+' из '+TOUR_STEPS.length;
+  // Content
+  const total=TOUR_STEPS.length;
+  document.getElementById('tourStep').textContent='Шаг '+(tourCur+1)+' из '+total;
   document.getElementById('tourTitle').textContent=s.title;
   document.getElementById('tourText').textContent=s.text;
   document.getElementById('tourBack').style.display=tourCur>0?'inline-flex':'none';
-  document.getElementById('tourNext').textContent=tourCur===TOUR_STEPS.length-1?'Начать работу':'Далее';
+  document.getElementById('tourNext').textContent=tourCur===total-1?'Начать работу':'Далее';
   document.getElementById('tourDots').innerHTML=TOUR_STEPS.map(function(_,i){return '<div style="width:'+(i===tourCur?'14px':'6px')+';height:6px;border-radius:3px;background:'+(i===tourCur?'var(--ac)':'var(--bd)')+';transition:all .25s"></div>'}).join('');
 
+  // Find target
   const el=s.target?document.querySelector(s.target):null;
-  if(el){
+  const hasTarget=el&&el.offsetParent!==null; // visible element only
+
+  if(hasTarget){
     const r=el.getBoundingClientRect();
-    // SVG cutout
+    // SVG cutout — hole in overlay
     cut.setAttribute('x',r.left-_PAD);
     cut.setAttribute('y',r.top-_PAD);
     cut.setAttribute('width',r.width+_PAD*2);
     cut.setAttribute('height',r.height+_PAD*2);
-    // Ring
+    // Blue ring
     ring.style.display='block';
     ring.style.top=(r.top-_PAD)+'px';ring.style.left=(r.left-_PAD)+'px';
     ring.style.width=(r.width+_PAD*2)+'px';ring.style.height=(r.height+_PAD*2)+'px';
-    // Show tip temporarily to measure
+
+    // Measure tooltip
     tip.style.display='block';tip.style.visibility='hidden';tip.style.top='0';tip.style.left='0';
-    const tipR=tip.getBoundingClientRect();
-    const pos=_tourPos(r,tipR.width,tipR.height,s.place);
-    tip.style.top=pos.top+'px';tip.style.left=pos.left+'px';
+    const tw=tip.offsetWidth,th=tip.offsetHeight;
+    const gap=16;
+
+    // Find best position: prioritize not overlapping target
+    // Calculate available space in each direction
+    const spaceRight=vw-r.right-gap;
+    const spaceLeft=r.left-gap;
+    const spaceBottom=vh-r.bottom-gap;
+    const spaceTop=r.top-gap;
+
+    let tTop,tLeft;
+    if(spaceRight>=tw){
+      // Right of element
+      tLeft=r.right+gap;
+      tTop=Math.max(8,Math.min(r.top+(r.height-th)/2,vh-th-8));
+    }else if(spaceBottom>=th){
+      // Below element
+      tTop=r.bottom+gap;
+      tLeft=Math.max(8,Math.min(r.left+(r.width-tw)/2,vw-tw-8));
+    }else if(spaceLeft>=tw){
+      // Left of element
+      tLeft=r.left-gap-tw;
+      tTop=Math.max(8,Math.min(r.top+(r.height-th)/2,vh-th-8));
+    }else if(spaceTop>=th){
+      // Above element
+      tTop=r.top-gap-th;
+      tLeft=Math.max(8,Math.min(r.left+(r.width-tw)/2,vw-tw-8));
+    }else{
+      // No room adjacent — place in the biggest open area
+      // Find which half of screen has more room (away from element center)
+      const elemCenterX=r.left+r.width/2;
+      if(elemCenterX<vw/2){
+        // Element on left — put tooltip on right half
+        tLeft=Math.max(vw/2,vw-tw-16);
+        tTop=Math.max(8,(vh-th)/2);
+      }else{
+        // Element on right — put tooltip on left half
+        tLeft=16;
+        tTop=Math.max(8,(vh-th)/2);
+      }
+    }
+    tip.style.top=tTop+'px';tip.style.left=tLeft+'px';
     tip.style.visibility='visible';
-    el.scrollIntoView({behavior:'smooth',block:'nearest'});
   }else{
-    // Center (no target)
+    // No target — center tooltip, no cutout
     cut.setAttribute('width',0);cut.setAttribute('height',0);
     ring.style.display='none';
     tip.style.display='block';tip.style.visibility='hidden';tip.style.top='0';tip.style.left='0';
-    const tipR=tip.getBoundingClientRect();
-    tip.style.top=Math.max(8,(window.innerHeight-tipR.height)/2)+'px';
-    tip.style.left=Math.max(8,(window.innerWidth-tipR.width)/2)+'px';
+    const tw=tip.offsetWidth,th=tip.offsetHeight;
+    tip.style.top=Math.max(8,(vh-th)/2)+'px';
+    tip.style.left=Math.max(8,(vw-tw)/2)+'px';
     tip.style.visibility='visible';
   }
 }
