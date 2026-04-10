@@ -42,6 +42,15 @@
 .side-logo{font-size:20px;font-weight:800;display:flex;align-items:center;gap:10px;color:var(--tx)}.side-logo .d{width:8px;height:8px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 3px var(--acbg)}
 .side-tag{font-size:9px;color:var(--tx3);letter-spacing:2px;text-transform:uppercase;margin-top:4px;font-weight:500}
 .stage-sw{display:flex;gap:3px;margin-top:10px;padding:3px;background:var(--sf2);border-radius:10px}
+.cab-tab{padding:7px 14px;border-radius:8px;border:1px solid transparent;background:transparent;color:var(--tx3);font-size:11px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;white-space:nowrap}
+.cab-tab:hover{background:var(--sf2);color:var(--tx)}
+.cab-tab.active{background:var(--acbg);color:var(--ac2);font-weight:700;border-color:var(--ac)}
+.cab-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-bottom:1px solid var(--bd);font-size:12px;transition:background .15s;border-radius:6px}
+.cab-item:hover{background:var(--sf2)}
+.cab-item-av{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.cab-item-info{flex:1;min-width:0}
+.cab-item-name{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cab-item-sub{font-size:10px;color:var(--tx3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .stage-btn{flex:1;padding:7px 2px 5px;border-radius:8px;border:none;background:transparent;cursor:pointer;text-align:center;transition:all .2s;position:relative}
 .stage-btn:hover{background:var(--sf)}
 .stage-btn.active{background:var(--sf);box-shadow:0 1px 3px rgba(0,0,0,.08)}
@@ -1407,10 +1416,21 @@ Apple</button>
 <!-- ═══ ЛИЧНЫЙ КАБИНЕТ ═══ -->
 <div class="sec" id="sec-account">
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
-<div class="ph"><div><h2>&#128100; Личный кабинет</h2><div class="ph-s">Профиль, безопасность, концепции, тариф</div></div></div>
+<div class="ph"><div><h2>&#127968; Мой Кабинет</h2><div class="ph-s">Профиль, управление, концепции, тариф</div></div></div>
 
-<!-- Профиль -->
-<div class="c"><div class="ch"><h3>&#128100; Профиль</h3><button class="btn sm gn" onclick="saveAccountProfile()">Сохранить</button></div>
+<!-- Табы кабинета -->
+<div id="cabinetTabs" style="display:flex;gap:2px;padding:0 0 16px;border-bottom:1px solid var(--bd);margin-bottom:16px;overflow-x:auto">
+<button class="cab-tab active" data-cab="cab-profile" onclick="switchCabTab('cab-profile')">Профиль</button>
+<button class="cab-tab" data-cab="cab-manage" onclick="switchCabTab('cab-manage')">Управление</button>
+<button class="cab-tab" data-cab="cab-concepts" onclick="switchCabTab('cab-concepts')">Концепции</button>
+<button class="cab-tab" data-cab="cab-plan" onclick="switchCabTab('cab-plan')">Тариф</button>
+<button class="cab-tab" data-cab="cab-security" onclick="switchCabTab('cab-security')">Безопасность</button>
+<button class="cab-tab" data-cab="cab-history" onclick="switchCabTab('cab-history')">Журнал</button>
+</div>
+
+<!-- ТАБ: Профиль -->
+<div class="cab-panel" id="cab-profile">
+<div class="c"><div class="ch"><h3>&#128100; Профиль</h3><span id="accSaveStatus" style="font-size:10px;color:var(--gn);opacity:0;transition:opacity .3s">Сохранено</span></div>
 <div class="cb">
 <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
 <div id="accAvatar" style="width:64px;height:64px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;color:#fff;flex-shrink:0;background:var(--ac)">АВ</div>
@@ -1426,21 +1446,18 @@ Apple</button>
 <div class="modal-field"><label>Компания</label><input id="acc_company" placeholder="Название компании" oninput="debounceSaveProfile()" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
 <div class="modal-field"><label>Город</label><input id="acc_city" placeholder="Быдгощ" oninput="debounceSaveProfile()" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
 </div>
-<div id="accRoleSwitch" style="margin-top:8px"></div>
+<!-- Переключатель ролей -->
+<div id="accRoleSwitch" style="margin-top:12px"></div>
 <script>
 (function(){
   var el=document.getElementById('accRoleSwitch');
-  // Admin role switcher — rendered dynamically after login
   window._renderRoleSwitch=function(){
-    if(!currentUser||!currentUser.isAdmin){
-      el.innerHTML='<div style="font-size:10px;color:var(--tx3)">Роль нельзя изменить. Для смены роли создайте новый аккаунт.</div>';
-      return;
-    }
+    if(!currentUser||!currentUser.isAdmin){el.innerHTML='';return}
     var roles=['admin','owner','contractor','supplier','employee'];
-    var html='<div style="font-size:10px;color:var(--tx3);margin-bottom:6px">Переключить роль (администратор)</div><div style="display:flex;gap:6px;flex-wrap:wrap">';
+    var html='<div style="font-size:10px;font-weight:600;color:var(--tx2);margin-bottom:8px">Переключить роль</div><div style="display:flex;gap:6px;flex-wrap:wrap">';
     roles.forEach(function(r){
       var sel=r===currentRole;
-      html+='<button onclick="switchAdminRole(\''+r+'\')" style="padding:4px 12px;border-radius:6px;font-size:10px;font-weight:'+(sel?'700':'400')+';border:1px solid '+(sel?'var(--ac)':'var(--bd)')+';background:'+(sel?'var(--acbg)':'var(--sf2)')+';color:'+(sel?'var(--ac2)':'var(--tx2)')+';cursor:pointer;font-family:var(--f);transition:all .15s">'+(ROLE_NAMES[r]||r)+'</button>';
+      html+='<button onclick="switchAdminRole(\''+r+'\')" style="padding:6px 14px;border-radius:8px;font-size:11px;font-weight:'+(sel?'700':'400')+';border:1.5px solid '+(sel?'var(--ac)':'var(--bd)')+';background:'+(sel?'var(--acbg)':'var(--sf2)')+';color:'+(sel?'var(--ac2)':'var(--tx2)')+';cursor:pointer;font-family:var(--f);transition:all .15s">'+(ROLE_NAMES[r]||r)+'</button>';
     });
     html+='</div>';
     el.innerHTML=html;
@@ -1454,13 +1471,82 @@ function switchAdminRole(role){
   buildSidebar();
   enterApp();
   if(window._renderRoleSwitch)_renderRoleSwitch();
-  nav('overview');
+  renderCabManage();
 }
 </script>
 </div></div>
+</div>
 
-<!-- Безопасность -->
-<div class="c" style="margin-top:12px"><div class="ch"><h3>&#128274; Безопасность</h3></div>
+<!-- ТАБ: Управление -->
+<div class="cab-panel" id="cab-manage" style="display:none">
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px">
+
+<!-- Пользователи -->
+<div class="c"><div class="ch"><h3>&#128101; Пользователи</h3><span id="cabUsersCount" style="font-size:10px;color:var(--tx3)">0</span></div>
+<div class="cb" style="max-height:320px;overflow-y:auto">
+<input type="text" placeholder="Поиск..." oninput="filterCabList('cabUsersList',this.value)" style="width:100%;padding:7px 10px;border:1px solid var(--bd);border-radius:8px;font-size:11px;background:var(--sf2);color:var(--tx);font-family:var(--f);margin-bottom:8px">
+<div id="cabUsersList"></div>
+</div>
+<div style="padding:8px 12px;border-top:1px solid var(--bd)"><button class="btn sm pr" onclick="openModal('user')" style="width:100%">+ Пригласить</button></div>
+</div>
+
+<!-- Подрядчики -->
+<div class="c"><div class="ch"><h3>&#128736; Подрядчики</h3><span id="cabContrCount" style="font-size:10px;color:var(--tx3)">0</span></div>
+<div class="cb" style="max-height:320px;overflow-y:auto">
+<input type="text" placeholder="Поиск..." oninput="filterCabList('cabContrList',this.value)" style="width:100%;padding:7px 10px;border:1px solid var(--bd);border-radius:8px;font-size:11px;background:var(--sf2);color:var(--tx);font-family:var(--f);margin-bottom:8px">
+<div id="cabContrList"></div>
+</div>
+<div style="padding:8px 12px;border-top:1px solid var(--bd)"><button class="btn sm pr" onclick="openModal('contractor')" style="width:100%">+ Добавить</button></div>
+</div>
+
+<!-- Поставщики -->
+<div class="c"><div class="ch"><h3>&#128666; Поставщики</h3><span id="cabVendCount" style="font-size:10px;color:var(--tx3)">0</span></div>
+<div class="cb" style="max-height:320px;overflow-y:auto">
+<input type="text" placeholder="Поиск..." oninput="filterCabList('cabVendList',this.value)" style="width:100%;padding:7px 10px;border:1px solid var(--bd);border-radius:8px;font-size:11px;background:var(--sf2);color:var(--tx);font-family:var(--f);margin-bottom:8px">
+<div id="cabVendList"></div>
+</div>
+<div style="padding:8px 12px;border-top:1px solid var(--bd)"><button class="btn sm pr" onclick="openModal('vendor')" style="width:100%">+ Добавить</button></div>
+</div>
+
+<!-- Товары / Оборудование -->
+<div class="c"><div class="ch"><h3>&#128230; Товары</h3><span id="cabEquipCount" style="font-size:10px;color:var(--tx3)">0</span></div>
+<div class="cb" style="max-height:320px;overflow-y:auto">
+<input type="text" placeholder="Поиск..." oninput="filterCabList('cabEquipList',this.value)" style="width:100%;padding:7px 10px;border:1px solid var(--bd);border-radius:8px;font-size:11px;background:var(--sf2);color:var(--tx);font-family:var(--f);margin-bottom:8px">
+<div id="cabEquipList"></div>
+</div>
+<div style="padding:8px 12px;border-top:1px solid var(--bd)"><button class="btn sm pr" onclick="openModal('equip')" style="width:100%">+ Добавить</button></div>
+</div>
+
+</div>
+</div>
+
+<!-- ТАБ: Концепции -->
+<div class="cab-panel" id="cab-concepts" style="display:none">
+<div class="c"><div class="ch"><h3>&#128209; Мои концепции</h3><div style="display:flex;gap:6px"><span style="font-size:10px;color:var(--tx3)" id="conceptsCount">0 / 1</span><button class="btn sm pr" onclick="createConcept()">+ Новая</button></div></div>
+<div class="cb" id="conceptsList" style="padding:12px">
+<div style="text-align:center;color:var(--tx3);font-size:12px;padding:16px">Загрузка...</div>
+</div></div>
+</div>
+
+<!-- ТАБ: Тариф -->
+<div class="cab-panel" id="cab-plan" style="display:none">
+<div class="c"><div class="ch"><h3>&#9889; Тарифный план</h3><button class="btn sm" style="background:linear-gradient(135deg,#c9a96e,#e8c97a);color:#000;border:none;font-weight:700" onclick="showUpgradeModal()">Upgrade</button></div>
+<div class="cb" id="planDetails">
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+<div id="accPlanBadge" style="padding:6px 16px;border-radius:8px;font-size:14px;font-weight:800;background:var(--sf2);color:var(--tx3)">TRIAL</div>
+<div><div style="font-size:12px;font-weight:600" id="accPlanName">Пробный план</div><div style="font-size:10px;color:var(--tx3)" id="accPlanDesc">1 концепция, базовые функции</div></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+<div style="padding:8px;border:1px solid var(--bd);border-radius:8px;text-align:center"><div style="font-size:18px;font-weight:800" id="accPlanConcepts">0 / 1</div><div style="font-size:9px;color:var(--tx3)">Концепций</div></div>
+<div style="padding:8px;border:1px solid var(--bd);border-radius:8px;text-align:center"><div style="font-size:18px;font-weight:800" id="accPlanContractors">—</div><div style="font-size:9px;color:var(--tx3)">Подрядчики</div></div>
+<div style="padding:8px;border:1px solid var(--bd);border-radius:8px;text-align:center"><div style="font-size:18px;font-weight:800" id="accPlanExpiry">∞</div><div style="font-size:9px;color:var(--tx3)">Срок</div></div>
+</div>
+</div></div>
+</div>
+
+<!-- ТАБ: Безопасность -->
+<div class="cab-panel" id="cab-security" style="display:none">
+<div class="c"><div class="ch"><h3>&#128274; Безопасность</h3></div>
 <div class="cb">
 <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd)">
 <div><div style="font-size:12px;font-weight:600">Метод входа</div><div style="font-size:10px;color:var(--tx3)" id="accAuthMethod">Email + пароль</div></div>
@@ -1478,32 +1564,15 @@ function switchAdminRole(role){
 <button class="btn sm" style="color:var(--rd);border-color:var(--rd)" onclick="confirmDeleteAccount()">Удалить</button>
 </div>
 </div></div>
-
-<!-- Мои концепции -->
-<div class="c" style="margin-top:12px"><div class="ch"><h3>&#128209; Мои концепции</h3><div style="display:flex;gap:6px"><span style="font-size:10px;color:var(--tx3)" id="conceptsCount">0 / 1</span><button class="btn sm pr" onclick="createConcept()">+ Новая</button></div></div>
-<div class="cb" id="conceptsList" style="padding:12px">
-<div style="text-align:center;color:var(--tx3);font-size:12px;padding:16px">Загрузка...</div>
-</div></div>
-
-<!-- Тарифный план -->
-<div class="c" style="margin-top:12px"><div class="ch"><h3>&#9889; Тарифный план</h3><button class="btn sm" style="background:linear-gradient(135deg,#c9a96e,#e8c97a);color:#000;border:none;font-weight:700" onclick="showUpgradeModal()">Upgrade</button></div>
-<div class="cb" id="planDetails">
-<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-<div id="accPlanBadge" style="padding:6px 16px;border-radius:8px;font-size:14px;font-weight:800;background:var(--sf2);color:var(--tx3)">TRIAL</div>
-<div><div style="font-size:12px;font-weight:600" id="accPlanName">Пробный план</div><div style="font-size:10px;color:var(--tx3)" id="accPlanDesc">1 концепция, базовые функции</div></div>
 </div>
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-<div style="padding:8px;border:1px solid var(--bd);border-radius:8px;text-align:center"><div style="font-size:18px;font-weight:800" id="accPlanConcepts">0 / 1</div><div style="font-size:9px;color:var(--tx3)">Концепций</div></div>
-<div style="padding:8px;border:1px solid var(--bd);border-radius:8px;text-align:center"><div style="font-size:18px;font-weight:800" id="accPlanContractors">—</div><div style="font-size:9px;color:var(--tx3)">Подрядчики</div></div>
-<div style="padding:8px;border:1px solid var(--bd);border-radius:8px;text-align:center"><div style="font-size:18px;font-weight:800" id="accPlanExpiry">∞</div><div style="font-size:9px;color:var(--tx3)">Срок</div></div>
-</div>
-</div></div>
 
-<!-- История действий -->
-<div class="c" style="margin-top:12px"><div class="ch"><h3>&#128203; История действий</h3><button class="btn sm" onclick="loadAuditLog()">Обновить</button></div>
-<div class="cb" id="auditLogList" style="padding:12px;max-height:300px;overflow-y:auto">
+<!-- ТАБ: Журнал -->
+<div class="cab-panel" id="cab-history" style="display:none">
+<div class="c"><div class="ch"><h3>&#128203; История действий</h3><button class="btn sm" onclick="loadAuditLog()">Обновить</button></div>
+<div class="cb" id="auditLogList" style="padding:12px;max-height:500px;overflow-y:auto">
 <div style="text-align:center;color:var(--tx3);font-size:12px;padding:16px">Нажмите «Обновить» для загрузки</div>
 </div></div>
+</div>
 
 </div>
 
@@ -4542,6 +4611,51 @@ function nextStage(){
 let userConcepts=[];
 let userSubscription={plan:'trial',concepts_limit:1,contractors_access:false};
 
+var _activeCabTab='cab-profile';
+function switchCabTab(id){
+  _activeCabTab=id;
+  document.querySelectorAll('.cab-tab').forEach(t=>t.classList.toggle('active',t.dataset.cab===id));
+  document.querySelectorAll('.cab-panel').forEach(p=>p.style.display=p.id===id?'':'none');
+  if(id==='cab-manage')renderCabManage();
+  if(id==='cab-concepts')loadConcepts();
+}
+function _cabAvatar(name,color){
+  const i=(name||'?').split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+  return '<div class="cab-item-av" style="background:'+color+'">'+i+'</div>';
+}
+function renderCabManage(){
+  const isAdmin=currentRole==='admin'||currentRole==='superadmin';
+  // Пользователи
+  const users=DB.users||[];
+  document.getElementById('cabUsersCount').textContent=users.length;
+  const ul=document.getElementById('cabUsersList');
+  ul.innerHTML=users.length?users.map(u=>'<div class="cab-item" data-filter="'+esc((u.name||'')+' '+(u.email||'')+' '+(u.role||'')).toLowerCase()+'">'+_cabAvatar(u.name,ROLE_COLORS[u.role]||'var(--ac)')+'<div class="cab-item-info"><div class="cab-item-name">'+esc(u.name||u.email)+'</div><div class="cab-item-sub">'+esc(ROLE_NAMES[u.role]||u.role)+(u.email?' · '+esc(u.email):'')+'</div></div></div>').join(''):'<div style="text-align:center;color:var(--tx3);font-size:11px;padding:12px">Нет пользователей</div>';
+  // Подрядчики
+  const contrs=DB.contractors||[];
+  document.getElementById('cabContrCount').textContent=contrs.length;
+  const cl=document.getElementById('cabContrList');
+  cl.innerHTML=contrs.length?contrs.map(c=>'<div class="cab-item" data-filter="'+esc((c.name||'')+' '+(c.spec||'')+' '+(c.city||'')).toLowerCase()+'">'+_cabAvatar(c.name,'#f59e0b')+'<div class="cab-item-info"><div class="cab-item-name">'+esc(c.name)+'</div><div class="cab-item-sub">'+esc(c.spec||'')+(c.city?' · '+esc(c.city):'')+(c.price?' · '+esc(c.price):'')+'</div></div></div>').join(''):'<div style="text-align:center;color:var(--tx3);font-size:11px;padding:12px">Нет подрядчиков</div>';
+  // Поставщики (vendors из renServices)
+  const vends=DB.renServices||[];
+  document.getElementById('cabVendCount').textContent=vends.length;
+  const vl=document.getElementById('cabVendList');
+  vl.innerHTML=vends.length?vends.map(v=>'<div class="cab-item" data-filter="'+esc((v.name||'')+' '+(v.desc||'')+' '+(v.city||'')).toLowerCase()+'">'+_cabAvatar(v.name,'#8b5cf6')+'<div class="cab-item-info"><div class="cab-item-name">'+esc(v.name)+'</div><div class="cab-item-sub">'+esc(v.desc||v.city||'')+(v.phone?' · '+esc(v.phone):'')+'</div></div></div>').join(''):'<div style="text-align:center;color:var(--tx3);font-size:11px;padding:12px">Нет поставщиков</div>';
+  // Товары
+  const equips=DB.suppliers||[];
+  document.getElementById('cabEquipCount').textContent=equips.length;
+  const el=document.getElementById('cabEquipList');
+  el.innerHTML=equips.length?equips.slice(0,50).map(e=>'<div class="cab-item" data-filter="'+esc((e.name||'')+' '+(e.category||'')+' '+(e.supplier||'')).toLowerCase()+'">'+_cabAvatar(e.name,'#06b6d4')+'<div class="cab-item-info"><div class="cab-item-name">'+esc(e.name)+'</div><div class="cab-item-sub">'+esc(e.category||'')+(e.supplier?' · '+esc(e.supplier):'')+(e.price?' · '+Number(e.price).toLocaleString()+' PLN':'')+'</div></div></div>').join('')+(equips.length>50?'<div style="text-align:center;padding:8px;font-size:10px;color:var(--tx3)">...ещё '+(equips.length-50)+'</div>':''):'<div style="text-align:center;color:var(--tx3);font-size:11px;padding:12px">Нет товаров</div>';
+  // Скрыть управление для не-админов
+  if(!isAdmin){
+    document.querySelector('#cab-manage').innerHTML='<div class="c"><div class="cb" style="text-align:center;color:var(--tx3);font-size:12px;padding:24px">Раздел доступен только администраторам</div></div>';
+  }
+}
+function filterCabList(listId,q){
+  q=q.toLowerCase().trim();
+  document.querySelectorAll('#'+listId+' .cab-item').forEach(el=>{
+    el.style.display=!q||(el.dataset.filter||'').includes(q)?'':'none';
+  });
+}
 async function renderAccount(){
   if(!currentUser)return;
   const u=currentUser;
@@ -4578,6 +4692,12 @@ async function renderAccount(){
   }
   renderPlanDetails();
   loadConcepts();
+  // Таб управления — только для админов
+  const isAdmin=currentRole==='admin'||currentRole==='superadmin';
+  const manTab=document.querySelector('.cab-tab[data-cab="cab-manage"]');
+  if(manTab)manTab.style.display=isAdmin?'':'none';
+  // Восстановить активный таб
+  switchCabTab(_activeCabTab);
 }
 
 function renderPlanDetails(){
@@ -4776,8 +4896,8 @@ async function saveAccountProfile(){
   const _sn3=document.getElementById('sideName');if(_sn3)_sn3.textContent=name;
   logAction('profile_update','profile',null,{name,phone,company,city});
   // Visual feedback
-  const btn=document.querySelector('#sec-account .ch .btn.gn');
-  if(btn){const old=btn.textContent;btn.textContent='✓ Сохранено';setTimeout(()=>btn.textContent=old,2000)}
+  const ss=document.getElementById('accSaveStatus');
+  if(ss){ss.style.opacity='1';setTimeout(()=>ss.style.opacity='0',2000)}
 }
 
 function showChangePassword(){
