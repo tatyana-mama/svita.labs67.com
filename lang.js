@@ -1,4 +1,4 @@
-// SVITA — svita.labs67.com — I18N translations
+// SVITA — svita.ai — I18N translations
 // Format: window.I18N — compatible with labs67-i18n.js v2.1
 // 12 languages: BE DE EN ES FR IT JA KO PL PT RU UK
 

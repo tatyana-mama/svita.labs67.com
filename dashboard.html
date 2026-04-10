@@ -1661,7 +1661,7 @@ Apple</button>
 
 <div class="sec" id="sec-news">
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
-<div class="ph"><div><h2>Новости</h2><div class="ph-s">AI & Neural Networks — презентации, исследования, инструменты</div></div><a href="news.html" target="_blank" class="btn pr" style="font-size:11px;padding:7px 16px;white-space:nowrap">Все новости &rarr;</a></div>
+<div class="ph"><div><h2>Новости</h2><div class="ph-s">AI & Neural Networks — презентации, исследования, инструменты</div></div><a href="https://news.svita.ai" target="_blank" class="btn pr" style="font-size:11px;padding:7px 16px;white-space:nowrap">Все новости &rarr;</a></div>
 <div id="dashNewsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;padding:0 24px 24px"></div>
 </div>
 
@@ -8584,7 +8584,7 @@ function exportPDF(){
   // Footer
   setFont(8,'normal',[80,80,100]);
   doc.text('Документ сгенерирован автоматически платформой SVITA · '+new Date().toLocaleDateString('ru'),M,H-15);
-  doc.text('svita.labs67.com',W-M,H-15,{align:'right'});
+  doc.text('svita.ai',W-M,H-15,{align:'right'});
 
   // ══════ PAGE 2: ФИНАНСОВАЯ МОДЕЛЬ ══════
   doc.addPage();y=M;
@@ -8798,7 +8798,7 @@ function exportPDF(){
   y=H-25;
   drawLine(y,GOLD);y+=6;
   setFont(8,'normal',GRAY);
-  doc.text('Данный документ подготовлен платформой SVITA (svita.labs67.com) и носит рекомендательный характер.',M,y);
+  doc.text('Данный документ подготовлен платформой SVITA (svita.ai) и носит рекомендательный характер.',M,y);
   y+=4;
   doc.text('Фактические затраты могут отличаться в зависимости от рыночных условий, подрядчиков и локации.',M,y);
   y+=4;

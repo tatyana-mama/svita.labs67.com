@@ -91,7 +91,7 @@ body{font-family:var(--fb);background:var(--bk);color:var(--wh);-webkit-font-smo
   <button class="side-btn" onclick="showTab('unanswered')">Неотвеченные <span class="cnt" id="cntUn">0</span></button>
   <div class="side-section">ссылки</div>
   <button class="side-btn" onclick="window.open('index.html','_blank')">Сайт &#8599;</button>
-  <button class="side-btn" onclick="window.open('dashboard.html','_blank')">Dashboard &#8599;</button>
+  <button class="side-btn" onclick="window.open('https://dashboard.svita.ai','_blank')">Dashboard &#8599;</button>
   <button class="side-btn" onclick="window.open('https://supabase.com/dashboard/project/ctdleobjnzniqkqomlrq','_blank')">Supabase &#8599;</button>
   <div class="side-footer"><a href="//labs67.com">labs67.com</a> &middot; v1.0</div>
 </div>
@@ -480,7 +480,7 @@ body{font-family:var(--fb);background:var(--bk);color:var(--wh);-webkit-font-smo
   window.sendPasswordReset=function(){
     var email=document.getElementById('resetEmail').value;
     if(!email){toast('Email не указан');return}
-    sb.auth.resetPasswordForEmail(email,{redirectTo:'https://svita.labs67.com/dashboard.html'}).then(function(res){
+    sb.auth.resetPasswordForEmail(email,{redirectTo:'https://dashboard.svita.ai'}).then(function(res){
       if(res.error){
         document.getElementById('resetResult').style.color='var(--red)';
         document.getElementById('resetResult').textContent='Ошибка: '+res.error.message;
