@@ -1497,6 +1497,14 @@ function switchAdminRole(role){
   if(!currentUser||!currentUser.isAdmin)return;
   currentRole=role;
   localStorage.setItem('svita_role',role);
+  // Contractors/suppliers have no Stage 1 content — force Stage 2
+  if((role==='contractor'||role==='supplier')&&currentStage===1){
+    currentStage=2;localStorage.setItem('svita_stage','2');
+    document.querySelectorAll('.stage-btn').forEach(b=>{b.classList.toggle('active',parseInt(b.dataset.stage)===2)});
+    const tags={1:'Формирование концепции',2:'Закупки и установка',3:'В разработке'};
+    document.getElementById('sideTag').textContent=tags[2];
+    const _bizRow=document.getElementById('sideBizRow');if(_bizRow)_bizRow.style.display='none';
+  }
   _sidebarBuilt=false;
   buildSidebar();
   enterApp();
@@ -4258,6 +4266,7 @@ function enterApp(){
   // Contractors/suppliers have no Stage 1 content — force Stage 2
   if((currentRole==='contractor'||currentRole==='supplier')&&currentStage===1){
     currentStage=2;localStorage.setItem('svita_stage','2');
+    _sidebarBuilt=false;
   }
   // Update sidebar biz type button and tag
   updateBizUI();
