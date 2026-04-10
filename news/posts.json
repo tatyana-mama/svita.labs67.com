@@ -2,6 +2,7 @@
   {
     "id": "vibe-coding",
     "href": "/news/vibe-coding.html",
+    "date_iso": "2026-04-09",
     "date_en": "April 9, 2026",
     "date_ru": "9 апреля 2026",
     "title_en": "Vibe Coding — The New Era of Building Things",
@@ -22,6 +23,7 @@
   {
     "id": "claude-opus",
     "href": "/principles.html",
+    "date_iso": "2026-04-08",
     "date_en": "April 2026",
     "date_ru": "Апрель 2026",
     "title_en": "Claude Opus 4.6 — Fundamental Principles",
@@ -42,6 +44,7 @@
   {
     "id": "cognitive-map",
     "href": "/cognitive-map.html",
+    "date_iso": "2026-04-08",
     "date_en": "April 2026",
     "date_ru": "Апрель 2026",
     "title_en": "Cognitive Architecture of Claude Opus 4.6",
@@ -62,6 +65,7 @@
   {
     "id": "svita-pricing",
     "href": "/news/svita-pricing.html",
+    "date_iso": "2026-04-09",
     "date_en": "April 9, 2026",
     "date_ru": "9 апреля 2026",
     "title_en": "SVITA Pricing — 3 Roles × 3 Plans",
@@ -82,8 +86,9 @@
   {
     "id": "swot",
     "href": "/swot.html",
-    "date_en": "April 2026",
-    "date_ru": "Апрель 2026",
+    "date_iso": "2026-04-07",
+    "date_en": "April 7, 2026",
+    "date_ru": "7 апреля 2026",
     "title_en": "SVITA AI — SWOT Analysis",
     "title_ru": "SVITA AI — SWOT-анализ",
     "desc_en": "Strengths, weaknesses, opportunities, and threats of the SVITA project. Strategic breakdown in interactive slides.",

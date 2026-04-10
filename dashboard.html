@@ -45,6 +45,8 @@
 .side-sec{font-size:9px;font-weight:700;color:var(--tx2);letter-spacing:1.5px;text-transform:uppercase;padding:18px 12px 6px}
 .si{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--tx2);border:none;transition:all .15s;user-select:none}.si.locked{opacity:.5}
 .si:hover{background:var(--sf2);color:var(--tx)}.si.act{background:var(--acbg);color:var(--ac2);font-weight:600}
+.si[data-tip]{position:relative}.si[data-tip]:hover::after{content:attr(data-tip);position:absolute;left:100%;top:50%;transform:translateY(-50%);margin-left:10px;background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:8px 12px;font-size:10px;font-weight:400;color:var(--tx2);z-index:200;box-shadow:0 4px 16px rgba(0,0,0,.12);pointer-events:none;line-height:1.5;width:220px;white-space:normal;animation:tipIn .15s ease}
+@keyframes tipIn{from{opacity:0;transform:translateY(-50%) translateX(-4px)}to{opacity:1;transform:translateY(-50%) translateX(0)}}
 .si.si-clr{border-left:3px solid var(--si-clr);border-radius:0 8px 8px 0}.si.si-clr .sb{background:color-mix(in srgb,var(--si-clr) 12%,transparent);color:var(--si-clr)}.si.si-clr.act{background:color-mix(in srgb,var(--si-clr) 8%,transparent);color:var(--si-clr);border-left-color:var(--si-clr)}
 .si .ico{font-size:15px;width:20px;text-align:center;flex-shrink:0}
 .sn{width:24px;height:24px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;border:1.5px solid var(--bd2);color:var(--tx3);flex-shrink:0}
@@ -1372,7 +1374,37 @@ Apple</button>
 <div class="modal-field"><label>Компания</label><input id="acc_company" placeholder="Название компании" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
 <div class="modal-field"><label>Город</label><input id="acc_city" placeholder="Быдгощ" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
 </div>
-<div style="margin-top:8px;font-size:10px;color:var(--tx3)">Роль нельзя изменить. Для смены роли создайте новый аккаунт.</div>
+<div id="accRoleSwitch" style="margin-top:8px"></div>
+<script>
+(function(){
+  var el=document.getElementById('accRoleSwitch');
+  // Admin role switcher — rendered dynamically after login
+  window._renderRoleSwitch=function(){
+    if(!currentUser||!currentUser.isAdmin){
+      el.innerHTML='<div style="font-size:10px;color:var(--tx3)">Роль нельзя изменить. Для смены роли создайте новый аккаунт.</div>';
+      return;
+    }
+    var roles=['admin','owner','contractor','supplier','employee'];
+    var html='<div style="font-size:10px;color:var(--tx3);margin-bottom:6px">Переключить роль (администратор)</div><div style="display:flex;gap:6px;flex-wrap:wrap">';
+    roles.forEach(function(r){
+      var sel=r===currentRole;
+      html+='<button onclick="switchAdminRole(\''+r+'\')" style="padding:4px 12px;border-radius:6px;font-size:10px;font-weight:'+(sel?'700':'400')+';border:1px solid '+(sel?'var(--ac)':'var(--bd)')+';background:'+(sel?'var(--acbg)':'var(--sf2)')+';color:'+(sel?'var(--ac2)':'var(--tx2)')+';cursor:pointer;font-family:var(--f);transition:all .15s">'+(ROLE_NAMES[r]||r)+'</button>';
+    });
+    html+='</div>';
+    el.innerHTML=html;
+  };
+})();
+function switchAdminRole(role){
+  if(!currentUser||!currentUser.isAdmin)return;
+  currentRole=role;
+  localStorage.setItem('svita_role',role);
+  _sidebarBuilt=false;
+  buildSidebar();
+  enterApp();
+  if(window._renderRoleSwitch)_renderRoleSwitch();
+  nav('overview');
+}
+</script>
 </div></div>
 
 <!-- Безопасность -->
@@ -1662,7 +1694,7 @@ Apple</button>
 
 <div class="sec" id="sec-news">
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
-<div class="ph"><div><h2>Новости</h2><div class="ph-s">AI & Neural Networks — презентации, исследования, инструменты</div></div><a href="https://news.svita.ai" target="_blank" class="btn pr" style="font-size:11px;padding:7px 16px;white-space:nowrap">Все новости &rarr;</a></div>
+<div class="ph"><div><h2>Свежие новости</h2><div class="ph-s">AI & Neural Networks — презентации, исследования, инструменты</div><div style="font-size:10px;color:var(--tx3);margin-top:2px">Новости не старше 5 дней</div></div><a href="https://news.svita.ai" target="_blank" class="btn pr" style="font-size:11px;padding:7px 16px;white-space:nowrap;margin-left:12px">Все новости &rarr;</a></div>
 <div id="dashNewsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;padding:0 24px 24px"></div>
 </div>
 
@@ -2898,6 +2930,15 @@ let currentUser=null;
 const ROLE_COLORS={admin:'linear-gradient(135deg,var(--ac),#8b5cf6)',owner:'linear-gradient(135deg,var(--gn),#059669)',contractor:'linear-gradient(135deg,var(--or),var(--yl))',supplier:'linear-gradient(135deg,#8b5cf6,#d946ef)',employee:'linear-gradient(135deg,#06b6d4,var(--ac))'};
 const ROLE_NAMES={admin:'Администратор',owner:'Владелец',contractor:'Подрядчик',supplier:'Поставщик',employee:'Сотрудник'};
 
+// ── Cross-subdomain session cookie on .svita.ai ──
+function syncSessionCookie(data){
+  if(data){
+    document.cookie='svita_session='+encodeURIComponent(JSON.stringify(data))+';domain=.svita.ai;path=/;max-age=2592000;SameSite=Lax';
+  }else{
+    document.cookie='svita_session=;domain=.svita.ai;path=/;max-age=0;domain=.svita.ai';
+  }
+}
+
 // ═══════════════ BUSINESS TYPES ═══════════════
 const BIZ_TYPES={
   dental:{icon:'🦷',name:'Стоматология',color:'#06b6d4',subtypes:[
@@ -3658,6 +3699,7 @@ async function loginCheck(){
   const isAdmin=role==='superadmin'||role==='admin';
   currentUser={email,name,isAdmin,emailConfirmed:true,id:data.user.id};
   localStorage.setItem('svita_session',JSON.stringify(currentUser));
+  syncSessionCookie(currentUser);
   proceedToRoleSelect();
 }
 
@@ -4036,6 +4078,7 @@ async function logout(){
   localStorage.removeItem('svita_role');
   localStorage.removeItem('svita_session');
   localStorage.removeItem('svita_chat_session_id');
+  syncSessionCookie(null);
   document.getElementById('loginScreen').style.display='';
   document.getElementById('loginScreen').classList.remove('hidden');
   document.getElementById('appContainer').style.display='none';
@@ -4143,6 +4186,7 @@ document.addEventListener('click',function(e){
           const isAdmin=prof?.role==='superadmin'||prof?.role==='admin';
           currentUser={email,name:prof?.name||name,isAdmin,emailConfirmed:true,id:prof?.id||su.id};
           localStorage.setItem('svita_session',JSON.stringify(currentUser));
+          syncSessionCookie(currentUser);
           // Clean OAuth hash from URL
           if(window.location.hash.includes('access_token'))history.replaceState(null,'',location.pathname);
           if(!prof){
@@ -4167,6 +4211,7 @@ document.addEventListener('click',function(e){
           const isAdmin=data.role==='superadmin'||data.role==='admin';
           currentUser={email:data.email,name:data.name||data.email.split('@')[0],isAdmin,emailConfirmed:true,id:data.id||u.id};
           localStorage.setItem('svita_session',JSON.stringify(currentUser));
+          syncSessionCookie(currentUser);
         }
       }catch(e){/* server unreachable — use cached session */}
     }
@@ -4200,48 +4245,48 @@ function buildSidebar(){
   if(!n||!currentRole)return;
   // Build structure only ONCE — after that only update badges
   if(_sidebarBuilt){updateSidebarBadges();return}
-  let html='<div class="si act" data-nav="overview"><span class="ico">&#9673;</span><span class="sl">Обзор</span></div>';
-  html+='<div class="si" data-nav="news"><span class="ico">&#128240;</span><span class="sl">Новости</span></div>';
+  let html='<div class="si act" data-nav="overview" data-tip="Главная панель: прогресс, метрики и статус вашей концепции"><span class="ico">&#9673;</span><span class="sl">Обзор</span></div>';
+  html+='<div class="si" data-nav="news" data-tip="Свежие публикации, исследования и обновления платформы"><span class="ico">&#128240;</span><span class="sl">Новости</span></div>';
   if(currentRole==='admin'||currentRole==='owner'){
     html+='<div class="side-sec">Аналитика</div>';
-    html+='<div class="si" data-nav="budget"><span class="ico">&#128176;</span><span class="sl">Бюджет</span></div>';
-    html+='<div class="si" data-nav="profit"><span class="ico">&#128200;</span><span class="sl">Рентабельность</span></div>';
-    html+='<div class="si" data-nav="zones"><span class="ico">&#127968;</span><span class="sl">Зоны</span></div>';
+    html+='<div class="si" data-nav="budget" data-tip="Финансовый план: стартовые и операционные расходы · Этап: Финансовое планирование"><span class="ico">&#128176;</span><span class="sl">Бюджет</span></div>';
+    html+='<div class="si" data-nav="profit" data-tip="Прогноз доходов, точка безубыточности, окупаемость · Этап: Финансовое планирование"><span class="ico">&#128200;</span><span class="sl">Рентабельность</span></div>';
+    html+='<div class="si" data-nav="zones" data-tip="Функциональные зоны: разбивка помещения по назначению · Этап: Планировка пространства"><span class="ico">&#127968;</span><span class="sl">Зоны</span></div>';
     const _ctIcon=currentBizType==='dental'?'🏥':'🏢';
     const _ctLabel=currentBizType==='dental'?'Стоимость кабинетов':'Стоимость помещений';
-    html+='<div class="si" data-nav="cabinet-types"><span class="ico">'+_ctIcon+'</span><span class="sl">'+_ctLabel+'</span><span class="sb wip" id="sbCab">0</span></div>';
+    html+='<div class="si" data-nav="cabinet-types" data-tip="Смета по каждому кабинету/помещению · Этап: Планировка пространства"><span class="ico">'+_ctIcon+'</span><span class="sl">'+_ctLabel+'</span><span class="sb wip" id="sbCab">0</span></div>';
 
     html+='<div class="side-sec">Базы данных</div>';
-    html+='<div class="si si-clr" style="--si-clr:#3b82f6" data-nav="db-premises"><span class="ico">&#127970;</span><span class="sl">Помещения</span><span class="sb wip" id="sbPrem">0</span></div>';
-    html+='<div class="si si-clr" style="--si-clr:#f59e0b" data-nav="db-renovations"><span class="ico">&#128736;</span><span class="sl">Модернизация</span><span class="sb wip" id="sbReno">0</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#3b82f6" data-nav="db-premises" data-tip="Каталог коммерческой недвижимости для аренды · Этап: Поиск помещения"><span class="ico">&#127970;</span><span class="sl">Помещения</span><span class="sb wip" id="sbPrem">0</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#f59e0b" data-nav="db-renovations" data-tip="Ремонт и отделка: материалы, работы, цены · Этап: Подготовка помещения"><span class="ico">&#128736;</span><span class="sl">Модернизация</span><span class="sb wip" id="sbReno">0</span></div>';
     const _svcLabel=currentBizType&&currentBizType!=='dental'?'Меню':'Услуги населению';
     const _svcIcon=currentBizType&&currentBizType!=='dental'?'&#127860;':'&#128203;';
-    html+='<div class="si si-clr" style="--si-clr:#10b981" data-nav="db-services"><span class="ico">'+_svcIcon+'</span><span class="sl">'+_svcLabel+'</span><span class="sb wip" id="sbSvc">0</span></div>';
-    html+='<div class="si si-clr" style="--si-clr:#8b5cf6" data-nav="db-suppliers"><span class="ico">&#128230;</span><span class="sl">Оборудование</span><span class="sb wip" id="sbEquip">0</span></div>';
-    html+='<div class="si si-clr" style="--si-clr:#06b6d4" data-nav="db-employees"><span class="ico">&#129489;</span><span class="sl">Сотрудники</span><span class="sb wip" id="sbEmp">0</span></div>';
-    html+='<div class="si si-clr" style="--si-clr:#ef4444" data-nav="db-docs"><span class="ico">&#128203;</span><span class="sl">Документация</span><span class="sb wip" id="sbDocs">0</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#10b981" data-nav="db-services" data-tip="Прайс-лист услуг вашего заведения · Этап: Формирование прайса"><span class="ico">'+_svcIcon+'</span><span class="sl">'+_svcLabel+'</span><span class="sb wip" id="sbSvc">0</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#8b5cf6" data-nav="db-suppliers" data-tip="Каталог мебели и оборудования · Этап: Закупка оборудования"><span class="ico">&#128230;</span><span class="sl">Оборудование</span><span class="sb wip" id="sbEquip">0</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#06b6d4" data-nav="db-employees" data-tip="Штатное расписание и зарплаты · Этап: Формирование команды"><span class="ico">&#129489;</span><span class="sl">Сотрудники</span><span class="sb wip" id="sbEmp">0</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#ef4444" data-nav="db-docs" data-tip="Юридические документы и лицензии · Этап: Юридическая подготовка"><span class="ico">&#128203;</span><span class="sl">Документация</span><span class="sb wip" id="sbDocs">0</span></div>';
     html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
     const canContractors=currentRole==='admin'||(typeof userSubscription!=='undefined'&&userSubscription.contractors_access);
-    html+='<div class="si'+(canContractors?'':' locked')+'" data-nav="'+(canContractors?'db-contractors':'upgrade-gate')+'"><span class="ico">&#128736;</span><span class="sl">Подрядчики</span>'+(canContractors?'<span class="sb wip" id="sbContr">0</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; Unlimited</span>')+'</div>';
-    html+='<div class="si'+(canContractors?'':' locked')+'" data-nav="'+(canContractors?'db-vendor-companies':'upgrade-gate')+'"><span class="ico">&#127970;</span><span class="sl">Поставщики</span>'+(canContractors?'<span class="sb wip" id="sbVend">0</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; Unlimited</span>')+'</div>';
+    html+='<div class="si'+(canContractors?'':' locked')+'" data-nav="'+(canContractors?'db-contractors':'upgrade-gate')+'" data-tip="Компании для выполнения ремонтных работ · Этап: Подбор подрядчиков"><span class="ico">&#128736;</span><span class="sl">Подрядчики</span>'+(canContractors?'<span class="sb wip" id="sbContr">0</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; Unlimited</span>')+'</div>';
+    html+='<div class="si'+(canContractors?'':' locked')+'" data-nav="'+(canContractors?'db-vendor-companies':'upgrade-gate')+'" data-tip="Компании-поставщики оборудования и материалов · Этап: Закупка оборудования"><span class="ico">&#127970;</span><span class="sl">Поставщики</span>'+(canContractors?'<span class="sb wip" id="sbVend">0</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; Unlimited</span>')+'</div>';
 
     if(currentRole==='admin'){
       html+='<div class="side-sec">Администрирование</div>';
-      html+='<div class="si" data-nav="users"><span class="ico">&#128101;</span><span class="sl">Пользователи</span><span class="sb wip" id="sbUsers">0</span></div>';
+      html+='<div class="si" data-nav="users" data-tip="Управление пользователями, ролями и подписками"><span class="ico">&#128101;</span><span class="sl">Пользователи</span><span class="sb wip" id="sbUsers">0</span></div>';
     }
   }
   if(currentRole==='contractor'){
     html+='<div class="side-sec">Мои данные</div>';
-    html+='<div class="si" data-nav="contractor-works"><span class="ico">&#128736;</span><span class="sl">Доступные работы</span></div>';
-    html+='<div class="si" data-nav="contractor-proposals"><span class="ico">&#128196;</span><span class="sl">Мои предложения</span></div>';
+    html+='<div class="si" data-nav="contractor-works" data-tip="Заказы от владельцев, доступные для выполнения"><span class="ico">&#128736;</span><span class="sl">Доступные работы</span></div>';
+    html+='<div class="si" data-nav="contractor-proposals" data-tip="Ваши коммерческие предложения и статусы"><span class="ico">&#128196;</span><span class="sl">Мои предложения</span></div>';
   }
   if(currentRole==='supplier'){
     html+='<div class="side-sec">Мои данные</div>';
-    html+='<div class="si" data-nav="db-suppliers"><span class="ico">&#128230;</span><span class="sl">Мой каталог</span></div>';
+    html+='<div class="si" data-nav="db-suppliers" data-tip="Каталог вашего оборудования и расходных материалов"><span class="ico">&#128230;</span><span class="sl">Мой каталог</span></div>';
   }
   if(currentRole==='employee'){
     html+='<div class="side-sec">Мой профиль</div>';
-    html+='<div class="si" data-nav="db-employees"><span class="ico">&#129489;</span><span class="sl">Мои данные</span></div>';
+    html+='<div class="si" data-nav="db-employees" data-tip="Ваш профиль сотрудника, навыки и контакты"><span class="ico">&#129489;</span><span class="sl">Мои данные</span></div>';
   }
   n.innerHTML=html;
   n.querySelectorAll('[data-nav]').forEach(el=>{el.addEventListener('click',()=>nav(el.dataset.nav))});
@@ -4327,6 +4372,7 @@ async function renderAccount(){
   const an=document.getElementById('accName');if(an)an.textContent=sanitize(u.name);
   const ae=document.getElementById('accEmail');if(ae)ae.textContent=u.email;
   const ar=document.getElementById('accRoleBadge');if(ar){ar.textContent=ROLE_NAMES[currentRole]||currentRole;ar.style.background=currentRole==='admin'?'rgba(59,130,246,.1)':'var(--acbg)'}
+  if(window._renderRoleSwitch)_renderRoleSwitch();
   // Form fields
   document.getElementById('acc_name').value=u.name||'';
   document.getElementById('acc_phone').value=u.phone||'';
@@ -9357,9 +9403,12 @@ enterApp=function(){
 (function(){
   var g=document.getElementById('dashNewsGrid');
   if(!g)return;
-  fetch('/news/posts.json').then(function(r){return r.json()}).then(function(posts){
-    g.innerHTML=posts.map(function(p){
-      var href=p.href.replace(/^\//,'');
+  fetch('https://news.svita.ai/news/posts.json').then(function(r){return r.json()}).then(function(posts){
+    var now=new Date(),cutoff=new Date(now.getTime()-5*24*60*60*1000);
+    var fresh=posts.filter(function(p){return p.date_iso&&new Date(p.date_iso)>=cutoff});
+    if(!fresh.length){g.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Нет свежих новостей — <a href="https://news.svita.ai" target="_blank" style="color:var(--ac2)">смотреть все</a></div>';return}
+    g.innerHTML=fresh.map(function(p){
+      var href=p.href.startsWith('http')?p.href:'https://news.svita.ai'+p.href;
       return '<a href="'+href+'" target="_blank" style="background:var(--sf);border:1px solid var(--bd);border-radius:14px;overflow:hidden;transition:all .2s;display:block;text-decoration:none;color:inherit">'
         +'<div style="height:120px;background:'+p.thumb_gradient+';display:flex;align-items:center;justify-content:center;position:relative">'
         +'<div style="text-align:center;color:'+p.thumb_color+';font-size:24px;font-weight:800;opacity:.7">'+p.thumb_text+'<br><span style="font-size:14px;color:'+p.thumb_sub_color+';font-weight:300">'+p.thumb_sub+'</span></div>'
