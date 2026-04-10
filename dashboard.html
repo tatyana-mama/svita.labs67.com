@@ -98,6 +98,29 @@
 .chat-cat-item:hover{background:var(--sf2)}
 .chat-cat-item:last-child{border-bottom:none}
 #chatAddBtn.open{background:var(--ac);color:#fff;border-color:var(--ac);transform:rotate(45deg)}
+/* ═══ NOTES (Apple Notes style) ═══ */
+.notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;padding:0 24px 24px}
+.note-card{background:linear-gradient(180deg,#fefce8 0%,#fef9c3 100%);border:1px solid #e5d9a0;border-radius:4px;padding:0;min-height:180px;display:flex;flex-direction:column;box-shadow:2px 3px 12px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);position:relative;transition:transform .15s,box-shadow .15s;cursor:default;overflow:hidden}
+.note-card::before{content:'';position:absolute;top:0;left:0;right:0;height:28px;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 26px,#d4c98a 26px,#d4c98a 28px);pointer-events:none;opacity:.4}
+.note-card:hover{transform:translateY(-2px);box-shadow:2px 5px 18px rgba(0,0,0,.12)}
+.note-head{padding:10px 12px 6px;display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1}
+.note-title{font-size:12px;font-weight:700;color:#78650d;line-height:1.3;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.note-role{font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:.3px;flex-shrink:0;margin-left:6px}
+.note-body{padding:4px 12px 10px;font-size:11px;color:#5c4f0e;line-height:1.55;flex:1;overflow:hidden;white-space:pre-wrap;word-break:break-word}
+.note-foot{padding:6px 12px;border-top:1px dashed #d4c98a;display:flex;justify-content:space-between;align-items:center;font-size:9px;color:#a09050}
+.note-del{opacity:0;transition:opacity .15s;cursor:pointer;font-size:12px;padding:2px}
+.note-card:hover .note-del{opacity:.7}
+.note-del:hover{opacity:1!important;color:#c0392b}
+.note-ai{background:linear-gradient(135deg,#ede9fe 0%,#ddd6fe 100%);border-color:#c4b5fd}
+.note-ai .note-title{color:#5b21b6}
+.note-ai .note-body{color:#4c1d95}
+.note-ai .note-foot{border-color:#c4b5fd;color:#7c3aed}
+.note-ai::before{background:repeating-linear-gradient(to bottom,transparent 0px,transparent 26px,#c4b5fd 26px,#c4b5fd 28px)}
+[data-theme=dark] .note-card{background:linear-gradient(180deg,#2a2715 0%,#302c14 100%);border-color:#4a4320}
+[data-theme=dark] .note-card::before{background:repeating-linear-gradient(to bottom,transparent 0px,transparent 26px,#4a4320 26px,#4a4320 28px)}
+[data-theme=dark] .note-title{color:#fbbf24}[data-theme=dark] .note-body{color:#d4b84e}[data-theme=dark] .note-foot{border-color:#4a4320;color:#a08930}
+[data-theme=dark] .note-ai{background:linear-gradient(180deg,#1e1640 0%,#251b4d 100%);border-color:#4c1d95}
+[data-theme=dark] .note-ai .note-title{color:#a78bfa}[data-theme=dark] .note-ai .note-body{color:#c4b5fd}[data-theme=dark] .note-ai .note-foot{border-color:#4c1d95;color:#7c3aed}
 .chat-msg{max-width:70%;padding:8px 12px;border-radius:12px;font-size:12px;line-height:1.4}
 .chat-msg.mine{align-self:flex-end;background:var(--ac);color:#fff;border-bottom-right-radius:4px}
 .chat-msg.theirs{align-self:flex-start;background:var(--sf2);color:var(--tx);border-bottom-left-radius:4px}
@@ -1845,6 +1868,23 @@ function switchAdminRole(role){
 <div id="invoicesList"></div>
 </div>
 </div>
+</div>
+
+<!-- ═══ STAGE 2: ЗАМЕТКИ ═══ -->
+<div class="sec" id="sec-notes">
+<div class="bk" onclick="nav('overview')">&larr; Обзор</div>
+<div class="ph"><h2>&#128221; Заметки</h2><div class="ph-s">Записи о подрядчиках и поставщиках</div></div>
+<div style="padding:0 24px 12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+<input id="notesSearch" type="text" placeholder="Поиск заметок..." oninput="renderNotes()" style="flex:1;min-width:180px;padding:8px 12px;border:1px solid var(--bd);border-radius:8px;font-size:11px;background:var(--sf);color:var(--tx);font-family:var(--f)">
+<select id="notesFilter" onchange="renderNotes()" style="padding:8px 10px;border:1px solid var(--bd);border-radius:8px;font-size:11px;background:var(--sf);color:var(--tx);font-family:var(--f)">
+<option value="all">Все</option>
+<option value="contractor">Подрядчики</option>
+<option value="supplier">Поставщики</option>
+<option value="ai">AI-заметки</option>
+</select>
+<button class="btn sm pr" onclick="openNewNote()" style="padding:8px 14px">+ Заметка</button>
+</div>
+<div id="notesGrid" class="notes-grid"></div>
 </div>
 
 <!-- ═══ STAGE 2: CHAT ═══ -->
@@ -4516,6 +4556,7 @@ function buildSidebar(){
   // ── STAGE 2: Закупки и установка ──
   if(currentStage===2&&(currentRole==='admin'||currentRole==='owner')){
     const canC=currentRole==='admin'||(typeof userSubscription!=='undefined'&&userSubscription.contractors_access);
+    html+='<div class="si" data-nav="notes" data-tip="Записи о подрядчиках и поставщиках"><span class="ico">&#128221;</span><span class="sl">Заметки</span></div>';
     html+='<div class="si" data-nav="exec-contractors" data-tip="Привязанные исполнители, задачи и счета"><span class="ico">&#128119;</span><span class="sl">Исполнители</span></div>';
     html+='<div class="si" data-nav="exec-chat" data-tip="Чат с подрядчиками и поставщиками"><span class="ico">&#128172;</span><span class="sl">Чат</span></div>';
     html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
@@ -4596,7 +4637,7 @@ function updateSidebarBadges(){
 // ═══════════════ NAVIGATION ═══════════════
 function getSecNames(){
   const isCoffee=currentBizType&&currentBizType!=='dental';
-  return{overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:isCoffee?'Меню':'Услуги населению',s6:'Концепция',s7:'Документация',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны',news:'Новости','db-premises':'БД Помещений','db-renovations':'Модернизация и услуги','db-services':isCoffee?'Меню':'Каталог услуг','db-docs':'Каталог документов','db-contractors':'БД Подрядчиков','db-suppliers':'Каталог оборудования','db-employees':'БД Сотрудников','db-vendor-companies':'Поставщики',users:'Пользователи','cabinet-types':isCoffee?'Стоимость помещений':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения','exec-premises':'Помещения','exec-renovations':'Модернизация','exec-services':'Услуги','exec-equipment':'Оборудование','exec-staff':'Сотрудники','exec-docs':'Документация','exec-contractors':'Исполнители','exec-chat':'Чат'};
+  return{overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:isCoffee?'Меню':'Услуги населению',s6:'Концепция',s7:'Документация',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны',news:'Новости','db-premises':'БД Помещений','db-renovations':'Модернизация и услуги','db-services':isCoffee?'Меню':'Каталог услуг','db-docs':'Каталог документов','db-contractors':'БД Подрядчиков','db-suppliers':'Каталог оборудования','db-employees':'БД Сотрудников','db-vendor-companies':'Поставщики',users:'Пользователи','cabinet-types':isCoffee?'Стоимость помещений':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения','exec-premises':'Помещения','exec-renovations':'Модернизация','exec-services':'Услуги','exec-equipment':'Оборудование','exec-staff':'Сотрудники','exec-docs':'Документация','exec-contractors':'Исполнители','exec-chat':'Чат',notes:'Заметки'};
 }
 const secNames=getSecNames();
 const stageOrder=['s1','s2','s3','s4','s5','s6','s7'];
@@ -4639,6 +4680,7 @@ function nav(id){
   if(id==='exec-equipment')renderExecSection('equipment');
   if(id==='exec-staff')renderExecSection('staff');
   if(id==='exec-docs')renderExecSection('docs');
+  if(id==='notes')renderNotes();
   if(id==='exec-chat')renderChatContacts();
   if(id==='exec-contractors')renderAssignedContractors();
   if(id==='overview'&&currentStage===2)renderExecOverview();
@@ -5533,6 +5575,95 @@ function confirmInvoice(email,name){
   renderAssignedContractors();
 }
 
+// ═══════════════ NOTES SYSTEM ═══════════════
+var _notes=JSON.parse(localStorage.getItem('svita_notes')||'[]');
+function _saveNotes(){localStorage.setItem('svita_notes',JSON.stringify(_notes))}
+function renderNotes(){
+  const el=document.getElementById('notesGrid');if(!el)return;
+  const q=(document.getElementById('notesSearch')?.value||'').toLowerCase().trim();
+  const f=document.getElementById('notesFilter')?.value||'all';
+  let list=_notes.slice().sort((a,b)=>b.ts-a.ts);
+  if(q)list=list.filter(n=>(n.title||'').toLowerCase().includes(q)||(n.body||'').toLowerCase().includes(q));
+  if(f==='ai')list=list.filter(n=>n.ai);
+  else if(f!=='all')list=list.filter(n=>n.role===f);
+  if(!list.length){el.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px"><div style="font-size:32px;margin-bottom:12px;opacity:.3">&#128221;</div><div style="font-size:12px;color:var(--tx3)">Нет заметок</div><div style="font-size:11px;color:var(--tx3);margin-top:4px">Нажмите «В заметки» на карточке подрядчика или поставщика</div></div>';return}
+  el.innerHTML=list.map(n=>{
+    const roleColor=n.role==='contractor'?'background:rgba(249,115,22,.12);color:#f59e0b':'background:rgba(139,92,246,.12);color:#8b5cf6';
+    const roleLabel=n.role==='contractor'?'Подрядчик':'Поставщик';
+    const date=new Date(n.ts).toLocaleDateString('ru',{day:'numeric',month:'short'});
+    return '<div class="note-card'+(n.ai?' note-ai':'')+'">'
+      +'<div class="note-head"><div class="note-title">'+esc(n.title)+'</div><span class="note-role" style="'+roleColor+'">'+roleLabel+'</span></div>'
+      +'<div class="note-body">'+esc(n.body)+'</div>'
+      +'<div class="note-foot"><span>'+(n.ai?'&#10024; AI-досье · ':'')+date+'</span><span class="note-del" onclick="delNote(\''+n.id+'\')" title="Удалить">&#128465;</span></div>'
+      +'</div>';
+  }).join('');
+}
+function delNote(id){_notes=_notes.filter(n=>n.id!==id);_saveNotes();renderNotes()}
+function addNoteFromContractor(cid){
+  const r=DB.contractors.find(x=>x.id==cid);if(!r)return;
+  const body='Специализация: '+r.spec+'\nГород: '+r.city+'\nСтавка: '+r.price+'\nРейтинг: '+r.rating+' ★\nТелефон: '+r.phone;
+  _notes.push({id:'n_'+Date.now(),title:r.name,body,role:'contractor',refId:cid,ai:false,ts:Date.now()});
+  _saveNotes();toast('Заметка добавлена','gn');
+}
+function addNoteFromVendor(vid){
+  const v=DB.vendorCompanies.find(x=>x.id==vid);if(!v)return;
+  const tags=(v.tags||[]).join(', ');
+  const body=v.desc+'\n\nКатегории: '+tags+'\nГород: '+(v.city||'—')+'\nТелефон: '+(v.phone||'—')+'\nСайт: '+(v.website||'—');
+  _notes.push({id:'n_'+Date.now(),title:v.name,body,role:'supplier',refId:vid,ai:false,ts:Date.now()});
+  _saveNotes();toast('Заметка добавлена','gn');
+}
+async function aiGenerateNote(id,role){
+  let entity,prompt;
+  if(role==='contractor'){
+    const r=DB.contractors.find(x=>x.id==id);if(!r){toast('Не найден','rd');return}
+    entity=r;
+    prompt='Ты — AI-аналитик платформы SVITA. Составь краткое досье на подрядчика для владельца бизнеса.\n\nПодрядчик: '+r.name+'\nСпециализация: '+r.spec+'\nГород: '+r.city+'\nСтавка: '+r.price+'\nРейтинг: '+r.rating+'/5\nТелефон: '+r.phone+'\n\nНапиши:\n1. Чем занимается (2-3 предложения)\n2. Для каких работ подходит\n3. Преимущества выбора\n4. На что обратить внимание\n5. Рекомендация по взаимодействию\n\nФормат: компактный, деловой, на русском. Без заголовков секций, просто текст.';
+  }else{
+    const v=DB.vendorCompanies.find(x=>x.id==id);if(!v){toast('Не найден','rd');return}
+    entity=v;
+    const tags=(v.tags||[]).join(', ');
+    prompt='Ты — AI-аналитик платформы SVITA. Составь краткое досье на поставщика для владельца бизнеса.\n\nПоставщик: '+v.name+'\nОписание: '+v.desc+'\nКатегории: '+tags+'\nГород: '+(v.city||'—')+'\nТелефон: '+(v.phone||'—')+'\nСайт: '+(v.website||'—')+'\n\nНапиши:\n1. Что поставляет (2-3 предложения)\n2. Какие задачи закрывает\n3. Преимущества\n4. На что обратить внимание при заказе\n5. Рекомендация\n\nФормат: компактный, деловой, на русском. Без заголовков секций, просто текст.';
+  }
+  toast('AI формирует досье...','bl');
+  const CHAT_URL=SB_URL+'/functions/v1/ai-chat';
+  try{
+    const res=await fetch(CHAT_URL,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+SB_KEY},body:JSON.stringify({message:prompt,context:{type:'note_generation'},history:[]})});
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    if(!data.reply)throw new Error('Пустой ответ');
+    _notes.push({id:'n_'+Date.now(),title:entity.name+' — AI-досье',body:data.reply,role,refId:id,ai:true,ts:Date.now()});
+    _saveNotes();toast('AI-досье создано','gn');
+    if(cur==='notes')renderNotes();
+  }catch(e){
+    console.error('[SVITA] AI note error',e);
+    // Fallback: generate locally
+    const fb=role==='contractor'
+      ?entity.name+' — '+entity.spec+'.\n\nРаботает в городе '+entity.city+'. Ставка: '+entity.price+'. Рейтинг: '+entity.rating+'/5.\n\nПодходит для выполнения работ по направлению «'+entity.spec+'». Рекомендуется уточнить сроки и объём до подписания договора.\n\nКонтакт: '+entity.phone
+      :entity.name+' — '+(entity.desc||'поставщик')+'\n\nКатегории: '+((entity.tags||[]).join(', ')||'—')+'\nГород: '+(entity.city||'—')+'\n\nПодходит для комплектации оборудованием и материалами. Рекомендуется запросить актуальный прайс и условия доставки.\n\nКонтакт: '+(entity.phone||'—');
+    _notes.push({id:'n_'+Date.now(),title:entity.name+' — досье',body:fb,role,refId:id,ai:true,ts:Date.now()});
+    _saveNotes();toast('Досье создано (оффлайн)','yl');
+    if(cur==='notes')renderNotes();
+  }
+}
+function openNewNote(){
+  let html='<div class="modal-field"><label>Заголовок</label><input id="mf_note_title" type="text" placeholder="Название заметки"></div>';
+  html+='<div class="modal-field"><label>Тип</label><select id="mf_note_role" style="width:100%;padding:8px;border:1px solid var(--bd);border-radius:8px;font-size:12px;background:var(--sf);color:var(--tx)"><option value="contractor">Подрядчик</option><option value="supplier">Поставщик</option></select></div>';
+  html+='<div class="modal-field"><label>Текст</label><textarea id="mf_note_body" rows="6" placeholder="Текст заметки..." style="width:100%;padding:8px;border:1px solid var(--bd);border-radius:8px;font-size:12px;font-family:var(--f);resize:vertical;background:var(--sf);color:var(--tx);box-sizing:border-box"></textarea></div>';
+  document.getElementById('modalTitle').textContent='Новая заметка';
+  document.getElementById('modalFields').innerHTML=html;
+  const ms=document.getElementById('modalSave');
+  ms.style.display='';ms.textContent='Сохранить';
+  ms.onclick=function(){
+    const t=document.getElementById('mf_note_title').value.trim();
+    const b=document.getElementById('mf_note_body').value.trim();
+    const r=document.getElementById('mf_note_role').value;
+    if(!t||!b){toast('Заполните заголовок и текст','rd');return}
+    _notes.push({id:'n_'+Date.now(),title:t,body:b,role:r,ai:false,ts:Date.now()});
+    _saveNotes();closeModal();toast('Заметка создана','gn');if(cur==='notes')renderNotes();
+  };
+  document.getElementById('modalBg').classList.add('vis');
+}
+
 function renderAll(){
   const fns=[renderProperty,renderPremises,renderContractors,renderEmployees,renderVendors,renderEquip,renderSelectedEquip,renderRenovationsCatalog,renderRenServices,renderSelectedRenovations,renderStaff,renderServices,renderSelectedServices,renderUsers,renderCabinetTypes,renderPickedRooms,renderPickedContractors,renderZones,renderDocCatalog,renderDocs,loadPropertyParams,updateRightPanel,renderOwnerProposals];
   fns.forEach(fn=>{try{fn()}catch(e){console.error('[SVITA] renderAll error in '+fn.name+':',e)}});
@@ -5854,7 +5985,7 @@ ${(p.items||[]).map(i=>`<div style="padding:8px 10px;border:1px solid var(--bd);
 function renderContractors(){
   const c=document.getElementById('contractorCards');if(!c)return;
   c.innerHTML=DB.contractors.map(r=>{
-    return `<div class="db-card"><div class="db-card-head"><span class="db-card-name">${esc(r.name)}</span><span class="db-card-role" style="background:rgba(249,115,22,.1);color:var(--or)">${esc(r.spec)}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Город</div><div class="db-card-val">${esc(r.city)}</div></div><div class="db-card-field"><div class="db-card-label">Ставка</div><div class="db-card-val">${esc(r.price)}</div></div><div class="db-card-field"><div class="db-card-label">Рейтинг</div><div class="db-card-val">${r.rating} ★</div></div><div class="db-card-field"><div class="db-card-label">Контакт</div><div class="db-card-val">${esc(r.phone)}</div></div></div></div>`;
+    return `<div class="db-card"><div class="db-card-head"><span class="db-card-name">${esc(r.name)}</span><span class="db-card-role" style="background:rgba(249,115,22,.1);color:var(--or)">${esc(r.spec)}</span></div><div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Город</div><div class="db-card-val">${esc(r.city)}</div></div><div class="db-card-field"><div class="db-card-label">Ставка</div><div class="db-card-val">${esc(r.price)}</div></div><div class="db-card-field"><div class="db-card-label">Рейтинг</div><div class="db-card-val">${r.rating} ★</div></div><div class="db-card-field"><div class="db-card-label">Контакт</div><div class="db-card-val">${esc(r.phone)}</div></div></div><div class="db-card-actions"><button class="btn sm" onclick="addNoteFromContractor('${r.id}')" style="color:#78650d">&#128221; В заметки</button><button class="btn sm" onclick="aiGenerateNote('${r.id}','contractor')" style="color:#7c3aed">&#10024; AI-досье</button></div></div>`;
   }).join('');
 }
 
@@ -5863,7 +5994,7 @@ function renderVendors(){
   if(!DB.vendorCompanies.length){c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Нет поставщиков</div>';return}
   c.innerHTML=DB.vendorCompanies.map(v=>{
     const tags=(v.tags||[]).map(t=>`<span style="display:inline-block;font-size:9px;padding:2px 8px;border-radius:4px;background:var(--acbg);color:var(--ac2);margin:2px">${esc(t)}</span>`).join('');
-    return `<div class="db-card"><div class="db-card-head"><span class="db-card-name">${esc(v.name)}</span><span class="db-card-role" style="background:rgba(139,92,246,.1);color:#8b5cf6">${esc(v.city||'')}</span></div><div style="padding:0 16px 8px;font-size:11px;color:var(--tx2);line-height:1.4">${esc(v.desc)}</div>${tags?`<div style="padding:0 16px 8px">${tags}</div>`:''}<div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Телефон</div><div class="db-card-val">${esc(v.phone||'—')}</div></div><div class="db-card-field"><div class="db-card-label">Сайт</div><div class="db-card-val">${v.website?`<a href="${safeHref('https://'+v.website)}" target="_blank" rel="noopener" style="color:var(--ac2);text-decoration:none">${esc(v.website)}</a>`:'—'}</div></div></div><div class="db-card-actions"><button class="btn sm" onclick="delVendor('${v.id}')">Удалить</button></div></div>`;
+    return `<div class="db-card"><div class="db-card-head"><span class="db-card-name">${esc(v.name)}</span><span class="db-card-role" style="background:rgba(139,92,246,.1);color:#8b5cf6">${esc(v.city||'')}</span></div><div style="padding:0 16px 8px;font-size:11px;color:var(--tx2);line-height:1.4">${esc(v.desc)}</div>${tags?`<div style="padding:0 16px 8px">${tags}</div>`:''}<div class="db-card-grid"><div class="db-card-field"><div class="db-card-label">Телефон</div><div class="db-card-val">${esc(v.phone||'—')}</div></div><div class="db-card-field"><div class="db-card-label">Сайт</div><div class="db-card-val">${v.website?`<a href="${safeHref('https://'+v.website)}" target="_blank" rel="noopener" style="color:var(--ac2);text-decoration:none">${esc(v.website)}</a>`:'—'}</div></div></div><div class="db-card-actions"><button class="btn sm" onclick="addNoteFromVendor('${v.id}')" style="color:#78650d">&#128221; В заметки</button><button class="btn sm" onclick="aiGenerateNote('${v.id}','supplier')" style="color:#7c3aed">&#10024; AI-досье</button><button class="btn sm" onclick="delVendor('${v.id}')">Удалить</button></div></div>`;
   }).join('');
 }
 function delVendor(id){
