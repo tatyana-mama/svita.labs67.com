@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="SVITA">
 <meta name="theme-color" content="#f8fafc">
-<meta http-equiv="X-Frame-Options" content="DENY">
+
 
 <title>SVITA — Конструктор клиники</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -4184,16 +4184,16 @@ document.addEventListener('click',function(e){
           const email=su.email;
           const name=su.user_metadata?.name||su.user_metadata?.full_name||email.split('@')[0];
           // Check profile in DB
-          const{data:prof}=await sb.from('profiles').select('id,email,name,role').eq('email',email).single();
+          const{data:prof}=await sb.from('profiles').select('id,email,display_name,role').eq('email',email).single();
           const isAdmin=prof?.role==='superadmin'||prof?.role==='admin';
-          currentUser={email,name:prof?.name||name,isAdmin,emailConfirmed:true,id:prof?.id||su.id};
+          currentUser={email,name:prof?.display_name||name,isAdmin,emailConfirmed:true,id:prof?.id||su.id};
           localStorage.setItem('svita_session',JSON.stringify(currentUser));
           syncSessionCookie(currentUser);
           // Clean OAuth hash from URL
           if(window.location.hash.includes('access_token'))history.replaceState(null,'',location.pathname);
           if(!prof){
             // New OAuth user — create profile
-            await sb.from('profiles').upsert({id:su.id,email,name,role:'owner'},{onConflict:'email'});
+            await sb.from('profiles').upsert({user_id:su.id,email,display_name:name,role:'owner'},{onConflict:'email'});
           }
           setTimeout(()=>{proceedToRoleSelect()},50);
           return;
@@ -4209,10 +4209,10 @@ document.addEventListener('click',function(e){
       try{
         const{data:{session}}=await sb.auth.getSession();
         if(!session){localStorage.removeItem('svita_session');syncSessionCookie(null);return}
-        const{data}=await sb.from('profiles').select('id,email,name,role').eq('id',session.user.id).single();
+        const{data}=await sb.from('profiles').select('id,email,display_name,role').eq('email',session.user.email).single();
         if(data){
           const isAdmin=data.role==='superadmin'||data.role==='admin';
-          currentUser={email:data.email,name:data.name||data.email.split('@')[0],isAdmin,emailConfirmed:true,id:data.id};
+          currentUser={email:data.email,name:data.display_name||data.email.split('@')[0],isAdmin,emailConfirmed:true,id:data.id};
           localStorage.setItem('svita_session',JSON.stringify(currentUser));
           syncSessionCookie(currentUser);
         }else{localStorage.removeItem('svita_session');syncSessionCookie(null);return}
