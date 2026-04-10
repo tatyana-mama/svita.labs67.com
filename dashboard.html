@@ -1007,7 +1007,7 @@ Apple</button>
 <div class="c" id="propertyCostBlock"><div class="ch"><h3>&#128176; Стоимость аренды</h3></div>
 <div class="cb">
 <div class="g3">
-<div class="cost-row" style="flex-direction:column;gap:4px;align-items:flex-start"><label style="font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase">Аренда / мес.</label><div class="cost-val"><input class="price-edit" data-cost="rent" value="12000" onchange="recalc()" style="width:100px"> PLN</div></div>
+<div class="cost-row" style="flex-direction:column;gap:4px;align-items:flex-start"><label style="font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase">Аренда / мес.</label><div class="cost-val"><input class="price-edit" data-cost="rent" value="12000" onchange="recalc();saveLoadParams()" style="width:100px"> PLN</div></div>
 <div class="cost-row" style="flex-direction:column;gap:4px;align-items:flex-start"><label style="font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase">Депозит (кол-во мес.)</label><div style="display:flex;gap:6px;align-items:center"><input class="price-edit" id="depositMonths" value="3" onchange="calcDeposit()" style="width:40px;text-align:center"> &times; аренда = <span id="depositVal" style="font-weight:700;color:var(--ac2)">36 000</span> PLN</div></div>
 <div class="cost-row" style="flex-direction:column;gap:4px;align-items:flex-start"><label style="font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase">Модернизация (Таб 2)</label><div class="cost-val"><span id="renCostDisplay" style="font-weight:700;color:var(--ac2);min-width:80px">0</span> PLN <button class="btn sm" onclick="nav('s2')" style="margin-left:8px;font-size:9px">Перейти →</button></div></div>
 </div>
@@ -1133,7 +1133,7 @@ Apple</button>
 <!-- Дополнительные заметки -->
 <div style="margin-top:12px">
 <label style="font-size:10px;font-weight:600;color:var(--tx3);text-transform:uppercase;display:block;margin-bottom:4px">Заметки по помещению</label>
-<textarea id="propNotes" placeholder="Любые дополнительные заметки..." style="width:100%;min-height:60px;background:var(--sf2);border:1px solid var(--bd);border-radius:6px;padding:10px;color:var(--tx);font-family:var(--f);font-size:12px;resize:vertical" onchange="savePropertyParams()"></textarea>
+<textarea id="propNotes" placeholder="Любые дополнительные заметки..." style="width:100%;min-height:60px;background:var(--sf2);border:1px solid var(--bd);border-radius:6px;padding:10px;color:var(--tx);font-family:var(--f);font-size:12px;resize:vertical" oninput="savePropertyParams()"></textarea>
 </div>
 </div></div>
 
@@ -1282,19 +1282,19 @@ Apple</button>
 <div class="g2" style="gap:8px">
 <div style="background:var(--sf2);border-radius:10px;padding:12px;display:flex;align-items:center;justify-content:space-between">
 <div><div style="font-size:10px;color:var(--tx3);text-transform:uppercase;font-weight:600">Кресел</div><div style="font-size:9px;color:var(--tx3);margin-top:2px">стоматологических установок</div></div>
-<input class="price-edit" id="chairsCount" value="7" oninput="recalc();updateFormulaDisplay()" style="width:50px;text-align:center;font-size:16px;font-weight:800">
+<input class="price-edit" id="chairsCount" value="7" oninput="recalc();updateFormulaDisplay();saveLoadParams()" style="width:50px;text-align:center;font-size:16px;font-weight:800">
 </div>
 <div style="background:var(--sf2);border-radius:10px;padding:12px;display:flex;align-items:center;justify-content:space-between">
 <div><div style="font-size:10px;color:var(--tx3);text-transform:uppercase;font-weight:600">Пациентов/день/кресло</div><div style="font-size:9px;color:var(--tx3);margin-top:2px">средняя загрузка</div></div>
-<input class="price-edit" id="patientsPerChair" value="6" oninput="recalc();updateFormulaDisplay()" style="width:50px;text-align:center;font-size:16px;font-weight:800">
+<input class="price-edit" id="patientsPerChair" value="6" oninput="recalc();updateFormulaDisplay();saveLoadParams()" style="width:50px;text-align:center;font-size:16px;font-weight:800">
 </div>
 <div style="background:var(--sf2);border-radius:10px;padding:12px;display:flex;align-items:center;justify-content:space-between">
 <div><div style="font-size:10px;color:var(--tx3);text-transform:uppercase;font-weight:600">Рабочих дней/мес.</div><div style="font-size:9px;color:var(--tx3);margin-top:2px">без выходных и праздников</div></div>
-<input class="price-edit" id="workDays" value="22" oninput="recalc();updateFormulaDisplay()" style="width:50px;text-align:center;font-size:16px;font-weight:800">
+<input class="price-edit" id="workDays" value="22" oninput="recalc();updateFormulaDisplay();saveLoadParams()" style="width:50px;text-align:center;font-size:16px;font-weight:800">
 </div>
 <div style="background:var(--sf2);border-radius:10px;padding:12px;display:flex;align-items:center;justify-content:space-between">
 <div><div style="font-size:10px;color:var(--tx3);text-transform:uppercase;font-weight:600">Средний чек</div><div style="font-size:9px;color:var(--tx3);margin-top:2px">PLN за приём</div></div>
-<input class="price-edit" id="avgCheck" value="650" oninput="recalc();updateFormulaDisplay()" style="width:70px;text-align:center;font-size:16px;font-weight:800">
+<input class="price-edit" id="avgCheck" value="650" oninput="recalc();updateFormulaDisplay();saveLoadParams()" style="width:70px;text-align:center;font-size:16px;font-weight:800">
 </div>
 </div>
 </div>
@@ -1322,7 +1322,7 @@ Apple</button>
 <div style="display:grid;grid-template-columns:1fr auto;gap:4px 12px;font-size:11px;margin-bottom:10px;padding:0 2px">
 <span style="color:var(--tx2)">Аренда</span><span style="color:var(--rd);font-weight:600;text-align:right" id="fmExpRent">0 PLN</span>
 <span style="color:var(--tx2);font-weight:700">&#129489; ЗП сотрудников</span><span style="color:var(--rd);font-weight:700;text-align:right" id="fmExpStaff">0 PLN</span>
-<span style="color:var(--tx2);font-weight:600">&#128176; ФОТ (налоги работодателя <input id="fotRateInput" type="number" value="20.48" min="0" max="100" step="0.01" style="width:52px;background:var(--bg);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:10px;padding:1px 4px;text-align:center" oninput="recalc()">%)</span><span style="color:var(--rd);font-weight:600;text-align:right" id="fmExpFot">0 PLN</span>
+<span style="color:var(--tx2);font-weight:600">&#128176; ФОТ (налоги работодателя <input id="fotRateInput" type="number" value="20.48" min="0" max="100" step="0.01" style="width:52px;background:var(--bg);border:1px solid var(--bd);border-radius:4px;color:var(--tx);font-size:10px;padding:1px 4px;text-align:center" oninput="recalc();saveLoadParams()">%)</span><span style="color:var(--rd);font-weight:600;text-align:right" id="fmExpFot">0 PLN</span>
 <span style="color:var(--tx2)">Коммунальные</span><span style="color:var(--rd);font-weight:600;text-align:right" id="fmExpUtils">0 PLN</span>
 <span style="color:var(--tx2)">Материалы</span><span style="color:var(--rd);font-weight:600;text-align:right" id="fmExpMat">0 PLN</span>
 <span style="color:var(--tx2)">Маркетинг</span><span style="color:var(--rd);font-weight:600;text-align:right" id="fmExpMkt">0 PLN</span>
@@ -1421,10 +1421,10 @@ Apple</button>
 </div>
 </div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-<div class="modal-field"><label>Имя</label><input id="acc_name" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
-<div class="modal-field"><label>Телефон</label><input id="acc_phone" placeholder="+48 500 000 000" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
-<div class="modal-field"><label>Компания</label><input id="acc_company" placeholder="Название компании" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
-<div class="modal-field"><label>Город</label><input id="acc_city" placeholder="Быдгощ" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+<div class="modal-field"><label>Имя</label><input id="acc_name" oninput="debounceSaveProfile()" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+<div class="modal-field"><label>Телефон</label><input id="acc_phone" placeholder="+48 500 000 000" oninput="debounceSaveProfile()" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+<div class="modal-field"><label>Компания</label><input id="acc_company" placeholder="Название компании" oninput="debounceSaveProfile()" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
+<div class="modal-field"><label>Город</label><input id="acc_city" placeholder="Быдгощ" oninput="debounceSaveProfile()" style="background:var(--sf2);border:1px solid var(--bd);border-radius:8px;padding:10px;color:var(--tx);font-family:var(--f);font-size:13px;width:100%"></div>
 </div>
 <div id="accRoleSwitch" style="margin-top:8px"></div>
 <script>
@@ -2865,9 +2865,9 @@ function loadPicked(){
 }
 
 const BM_FIELDS=['cType','cBrand','cCity','cDate','cFormat','cAudience','cUsp','cTech'];
-const LOAD_PARAMS=['chairsCount','patientsPerChair','workDays','avgCheck','prUtils','prMaterials','prMarketing','prOther'];
+const LOAD_PARAMS=['chairsCount','patientsPerChair','workDays','avgCheck','prUtils','prMaterials','prMarketing','prOther','fotRateInput','depositMonths'];
 function saveLoadParams(){
-  try{const raw=uGet('svita_bm');const bm=raw?JSON.parse(raw):{};LOAD_PARAMS.forEach(k=>{const el=document.getElementById(k);if(el)bm[k]=el.value});uSet('svita_bm',JSON.stringify(bm))}catch(e){}
+  try{const raw=uGet('svita_bm');const bm=raw?JSON.parse(raw):{};LOAD_PARAMS.forEach(k=>{const el=document.getElementById(k);if(el)bm[k]=el.value});const rentEl=document.querySelector('[data-cost="rent"]');if(rentEl)bm._rent=rentEl.value;uSet('svita_bm',JSON.stringify(bm))}catch(e){}
 }
 function saveBusinessModel(){
   const bm={};
@@ -2894,6 +2894,7 @@ function loadBusinessModel(){
     BM_FIELDS.forEach(k=>{const el=document.getElementById(k);if(el)el.value=bm[k]||''});
     // Restore load parameters (chairsCount, patientsPerChair, workDays, avgCheck)
     LOAD_PARAMS.forEach(k=>{const el=document.getElementById(k);if(el&&bm[k])el.value=bm[k]});
+    if(bm._rent){const rentEl=document.querySelector('[data-cost="rent"]');if(rentEl)rentEl.value=bm._rent}
   }catch(e){}
 }
 
@@ -2978,7 +2979,7 @@ function calcDeposit(){
   const months=parseInt(document.getElementById('depositMonths')?.value)||3;
   const total=rent*months;
   document.getElementById('depositVal').textContent=total.toLocaleString('ru');
-  recalc();
+  recalc();saveLoadParams();
 }
 
 function toggleChip(el){
@@ -4757,6 +4758,8 @@ async function deleteConcept(id){
   toast('Удалена','rd');
 }
 
+var _profTimer=null;
+function debounceSaveProfile(){clearTimeout(_profTimer);_profTimer=setTimeout(()=>saveAccountProfile(),1500)}
 async function saveAccountProfile(){
   if(!sb||!currentUser)return;
   const name=document.getElementById('acc_name').value.trim();
@@ -5503,7 +5506,8 @@ function delPremise(id){
 
 /* ── Contractor: view available works and create proposals ── */
 if(!DB.proposals)DB.proposals=[];
-let contractorSelected={};
+let contractorSelected=JSON.parse(localStorage.getItem('svita_contractor_sel')||'{}');
+function saveContractorSel(){localStorage.setItem('svita_contractor_sel',JSON.stringify(contractorSelected))}
 
 function renderContractorWorks(){
   const c=document.getElementById('contractorWorksList');if(!c)return;
@@ -5525,8 +5529,8 @@ function renderContractorWorks(){
 <div class="db-card-grid">
 <div class="db-card-field"><div class="db-card-label">Категория</div><div class="db-card-val">${r.cat}</div></div>
 <div class="db-card-field"><div class="db-card-label">Базовая цена</div><div class="db-card-val">${r.price.toLocaleString()} PLN</div></div>
-${sel?`<div class="db-card-field" style="grid-column:1/3"><div class="db-card-label">Ваша цена (PLN)</div><input type="number" value="${contractorSelected[r.id].price||r.price}" onchange="contractorSelected['${r.id}'].price=+this.value" style="width:100%;padding:6px 8px;font-size:12px;border:1px solid var(--bd);border-radius:6px;background:var(--sf2);color:var(--tx);font-family:var(--f)"></div>
-<div class="db-card-field" style="grid-column:1/3"><div class="db-card-label">Комментарий</div><input type="text" placeholder="Сроки, условия..." value="${contractorSelected[r.id].note||''}" onchange="contractorSelected['${r.id}'].note=this.value" style="width:100%;padding:6px 8px;font-size:12px;border:1px solid var(--bd);border-radius:6px;background:var(--sf2);color:var(--tx);font-family:var(--f)"></div>`:''}
+${sel?`<div class="db-card-field" style="grid-column:1/3"><div class="db-card-label">Ваша цена (PLN)</div><input type="number" value="${contractorSelected[r.id].price||r.price}" onchange="contractorSelected['${r.id}'].price=+this.value;saveContractorSel()" style="width:100%;padding:6px 8px;font-size:12px;border:1px solid var(--bd);border-radius:6px;background:var(--sf2);color:var(--tx);font-family:var(--f)"></div>
+<div class="db-card-field" style="grid-column:1/3"><div class="db-card-label">Комментарий</div><input type="text" placeholder="Сроки, условия..." value="${contractorSelected[r.id].note||''}" onchange="contractorSelected['${r.id}'].note=this.value;saveContractorSel()" style="width:100%;padding:6px 8px;font-size:12px;border:1px solid var(--bd);border-radius:6px;background:var(--sf2);color:var(--tx);font-family:var(--f)"></div>`:''}
 </div>
 <div class="db-card-actions"><button class="btn sm ${sel?'gn':'pr'}" onclick="toggleContractorWork('${r.id}',${r.price})">${sel?'&#10003; Выбрано':'+ Я делаю это'}</button></div>
 </div>`;
