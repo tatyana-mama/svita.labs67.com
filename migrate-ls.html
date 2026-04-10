@@ -11,6 +11,6 @@ for (var i = 0; i < localStorage.length; i++) {
     data[k] = localStorage.getItem(k);
   }
 }
-window.parent.postMessage({type:'svita_migrate', data: data}, '*');
+window.parent.postMessage({type:'svita_migrate', data: data}, 'https://dashboard.svita.ai');
 </script>
 </body></html>

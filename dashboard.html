@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-title" content="SVITA">
 <meta name="theme-color" content="#f8fafc">
 <meta http-equiv="X-Frame-Options" content="DENY">
-<meta http-equiv="Content-Security-Policy" content="frame-ancestors 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*.supabase.co; img-src 'self' data: blob: https:; frame-src https://svita.labs67.com; frame-ancestors 'none'">
 <title>SVITA — Конструктор клиники</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2925,7 +2925,7 @@ function loadPropertyParams(){
 }
 
 // ═══════════════ AUTH SYSTEM (Supabase Auth) ═══════════════
-let currentRole='admin';
+let currentRole=null;
 let currentUser=null;
 const ROLE_COLORS={admin:'linear-gradient(135deg,var(--ac),#8b5cf6)',owner:'linear-gradient(135deg,var(--gn),#059669)',contractor:'linear-gradient(135deg,var(--or),var(--yl))',supplier:'linear-gradient(135deg,#8b5cf6,#d946ef)',employee:'linear-gradient(135deg,#06b6d4,var(--ac))'};
 const ROLE_NAMES={admin:'Администратор',owner:'Владелец',contractor:'Подрядчик',supplier:'Поставщик',employee:'Сотрудник'};
@@ -2933,9 +2933,11 @@ const ROLE_NAMES={admin:'Администратор',owner:'Владелец',co
 // ── Cross-subdomain session cookie on .svita.ai ──
 function syncSessionCookie(data){
   if(data){
-    document.cookie='svita_session='+encodeURIComponent(JSON.stringify(data))+';domain=.svita.ai;path=/;max-age=2592000;SameSite=Lax';
+    // Strip sensitive fields — cookie is readable by JS on all subdomains
+    var safe={name:data.name||'',id:data.id||''};
+    document.cookie='svita_session='+encodeURIComponent(JSON.stringify(safe))+';domain=.svita.ai;path=/;max-age=2592000;SameSite=Lax;Secure';
   }else{
-    document.cookie='svita_session=;domain=.svita.ai;path=/;max-age=0;domain=.svita.ai';
+    document.cookie='svita_session=;domain=.svita.ai;path=/;max-age=0;Secure';
   }
 }
 
@@ -3769,7 +3771,7 @@ async function resendVerification(){
 
 async function oauthLogin(provider){
   if(!sb)return;
-  const{error}=await sb.auth.signInWithOAuth({provider,options:{redirectTo:location.origin+location.pathname}});
+  const{error}=await sb.auth.signInWithOAuth({provider,options:{redirectTo:'https://dashboard.svita.ai/'}});
   if(error)document.getElementById('loginError').textContent=error.message;
 }
 
@@ -3800,7 +3802,7 @@ async function sendResetLink(){
   if(!rateLimit('forgot',3,300000)){document.getElementById('forgotError').textContent='Слишком много попыток. Подождите 5 минут.';document.getElementById('forgotError').style.color='var(--rd)';return}
   const btn=document.getElementById('forgotBtn');
   btn.textContent='Отправляем...';btn.disabled=true;
-  const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname+'?type=recovery'});
+  const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:'https://dashboard.svita.ai/?type=recovery'});
   if(error){
     document.getElementById('forgotError').textContent=error.message;
     document.getElementById('forgotError').style.color='var(--rd)';
@@ -4202,18 +4204,24 @@ document.addEventListener('click',function(e){
     if(!saved)return;
     const u=JSON.parse(saved);
     if(!u||!u.email||!u.id)return;
-    // Re-validate session against server (non-blocking — if server down, use cached)
-    currentUser=u;
+    // Validate against server FIRST — never trust localStorage isAdmin
     if(sb){
       try{
-        const{data}=await sb.from('profiles').select('id,email,name,role').eq('email',u.email).single();
+        const{data:{session}}=await sb.auth.getSession();
+        if(!session){localStorage.removeItem('svita_session');syncSessionCookie(null);return}
+        const{data}=await sb.from('profiles').select('id,email,name,role').eq('id',session.user.id).single();
         if(data){
           const isAdmin=data.role==='superadmin'||data.role==='admin';
-          currentUser={email:data.email,name:data.name||data.email.split('@')[0],isAdmin,emailConfirmed:true,id:data.id||u.id};
+          currentUser={email:data.email,name:data.name||data.email.split('@')[0],isAdmin,emailConfirmed:true,id:data.id};
           localStorage.setItem('svita_session',JSON.stringify(currentUser));
           syncSessionCookie(currentUser);
-        }
-      }catch(e){/* server unreachable — use cached session */}
+        }else{localStorage.removeItem('svita_session');syncSessionCookie(null);return}
+      }catch(e){
+        // Server unreachable — use cached but strip admin (safe default)
+        currentUser={email:u.email,name:u.name,isAdmin:false,emailConfirmed:u.emailConfirmed,id:u.id};
+      }
+    }else{
+      currentUser={email:u.email,name:u.name,isAdmin:false,emailConfirmed:u.emailConfirmed,id:u.id};
     }
     // Restore biz type
     const sBiz=localStorage.getItem('svita_biz_type');
@@ -9420,17 +9428,19 @@ enterApp=function(){
     var now=new Date(),cutoff=new Date(now.getTime()-5*24*60*60*1000);
     var fresh=posts.filter(function(p){return p.date_iso&&new Date(p.date_iso)>=cutoff});
     if(!fresh.length){g.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Нет свежих новостей — <a href="https://news.svita.ai" target="_blank" style="color:var(--ac2)">смотреть все</a></div>';return}
+    var _e=function(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')};
+    var _css=function(s){return String(s||'').replace(/[;"'<>()]/g,'')};
     g.innerHTML=fresh.map(function(p){
-      var href=p.href.startsWith('http')?p.href:'https://news.svita.ai'+p.href;
-      return '<a href="'+href+'" target="_blank" style="background:var(--sf);border:1px solid var(--bd);border-radius:14px;overflow:hidden;transition:all .2s;display:block;text-decoration:none;color:inherit">'
-        +'<div style="height:120px;background:'+p.thumb_gradient+';display:flex;align-items:center;justify-content:center;position:relative">'
-        +'<div style="text-align:center;color:'+p.thumb_color+';font-size:24px;font-weight:800;opacity:.7">'+p.thumb_text+'<br><span style="font-size:14px;color:'+p.thumb_sub_color+';font-weight:300">'+p.thumb_sub+'</span></div>'
-        +'<span style="position:absolute;top:8px;right:8px;font-size:9px;padding:3px 8px;border-radius:6px;background:'+p.badge_bg+';color:'+p.badge_color+';font-weight:600">'+p.badge+'</span>'
+      var href=safeHref(p.href.startsWith('http')?p.href:'https://news.svita.ai'+p.href);
+      return '<a href="'+href+'" target="_blank" rel="noopener noreferrer" style="background:var(--sf);border:1px solid var(--bd);border-radius:14px;overflow:hidden;transition:all .2s;display:block;text-decoration:none;color:inherit">'
+        +'<div style="height:120px;background:'+_css(p.thumb_gradient)+';display:flex;align-items:center;justify-content:center;position:relative">'
+        +'<div style="text-align:center;color:'+_css(p.thumb_color)+';font-size:24px;font-weight:800;opacity:.7">'+_e(p.thumb_text)+'<br><span style="font-size:14px;color:'+_css(p.thumb_sub_color)+';font-weight:300">'+_e(p.thumb_sub)+'</span></div>'
+        +'<span style="position:absolute;top:8px;right:8px;font-size:9px;padding:3px 8px;border-radius:6px;background:'+_css(p.badge_bg)+';color:'+_css(p.badge_color)+';font-weight:600">'+_e(p.badge)+'</span>'
         +'</div>'
         +'<div style="padding:14px">'
-        +'<div style="font-size:10px;color:var(--tx3);margin-bottom:4px">'+p.date_ru+'</div>'
-        +'<div style="font-size:13px;font-weight:700;margin-bottom:6px">'+p.title_ru+'</div>'
-        +'<div style="font-size:11px;color:var(--tx2);line-height:1.5">'+p.desc_ru+'</div>'
+        +'<div style="font-size:10px;color:var(--tx3);margin-bottom:4px">'+_e(p.date_ru)+'</div>'
+        +'<div style="font-size:13px;font-weight:700;margin-bottom:6px">'+_e(p.title_ru)+'</div>'
+        +'<div style="font-size:11px;color:var(--tx2);line-height:1.5">'+_e(p.desc_ru)+'</div>'
         +'</div></a>';
     }).join('');
   }).catch(function(){});
@@ -9488,12 +9498,13 @@ if(!localStorage.getItem('svita_migrated')){
   _mig.style.display='none';
   document.body.appendChild(_mig);
   window.addEventListener('message',function(e){
+    if(e.origin!=='https://svita.labs67.com')return;
     if(e.data&&e.data.type==='svita_migrate'&&e.data.data){
       var d=e.data.data,n=0;
-      for(var k in d){if(d.hasOwnProperty(k)&&!localStorage.getItem(k)){localStorage.setItem(k,d[k]);n++}}
+      var safe=['svita_role','svita_lang','svita_theme','svita_biz_type','svita_biz_subtype','svita_cookies'];
+      for(var k in d){if(d.hasOwnProperty(k)&&safe.indexOf(k)!==-1&&!localStorage.getItem(k)){localStorage.setItem(k,d[k]);n++}}
       localStorage.setItem('svita_migrated','1');
-      if(n>0){console.log('[SVITA] Migrated '+n+' keys from old domain');location.reload()}
-      else{console.log('[SVITA] No new keys to migrate')}
+      if(n>0)location.reload();
     }
   });
 }
