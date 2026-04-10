@@ -51,6 +51,29 @@
 .stage-lbl{font-size:7.5px;color:var(--tx3);margin-top:2px;line-height:1.2;letter-spacing:.2px}
 .stage-btn.active .stage-num{color:var(--ac2)}
 .stage-btn.active .stage-lbl{color:var(--ac2)}
+.exec-list{padding:0 24px 24px}
+.exec-item{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--sf);border:1px solid var(--bd);border-radius:10px;margin-bottom:6px;transition:all .2s}
+.exec-item.done{opacity:.6;background:var(--gnbg);border-color:rgba(26,153,86,.15)}
+.exec-item .exec-check{width:22px;height:22px;border-radius:6px;border:2px solid var(--bd2);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:12px;color:transparent}
+.exec-item.done .exec-check{background:var(--gn);border-color:var(--gn);color:#fff}
+.exec-item .exec-info{flex:1;min-width:0}
+.exec-item .exec-name{font-size:12px;font-weight:600;color:var(--tx)}
+.exec-item.done .exec-name{text-decoration:line-through;color:var(--tx2)}
+.exec-item .exec-meta{font-size:10px;color:var(--tx3);margin-top:2px}
+.exec-item .exec-cost{font-size:12px;font-weight:700;color:var(--tx);white-space:nowrap}
+.exec-item .exec-send{font-size:10px;padding:4px 10px;border-radius:6px;border:1px solid var(--acbd);background:var(--acbg);color:var(--ac2);cursor:pointer;white-space:nowrap}
+.exec-item .exec-send:hover{background:var(--ac);color:#fff}
+.exec-progress{display:flex;align-items:center;gap:10px;padding:12px 24px;margin-bottom:8px}
+.exec-progress .ep-bar{flex:1;height:6px;background:var(--sf2);border-radius:3px;overflow:hidden}
+.exec-progress .ep-fill{height:100%;background:var(--gn);border-radius:3px;transition:width .3s}
+.exec-progress .ep-text{font-size:11px;font-weight:600;color:var(--tx2);white-space:nowrap}
+.chat-contact{padding:10px 12px;cursor:pointer;border-bottom:1px solid var(--bd);transition:all .15s;font-size:12px}
+.chat-contact:hover{background:var(--sf2)}
+.chat-contact.active{background:var(--acbg);color:var(--ac2)}
+.chat-msg{max-width:70%;padding:8px 12px;border-radius:12px;font-size:12px;line-height:1.4}
+.chat-msg.mine{align-self:flex-end;background:var(--ac);color:#fff;border-bottom-right-radius:4px}
+.chat-msg.theirs{align-self:flex-start;background:var(--sf2);color:var(--tx);border-bottom-left-radius:4px}
+.chat-msg .chat-attach{margin-top:6px;padding:6px 10px;background:rgba(0,0,0,.06);border-radius:6px;font-size:10px}
 .side-nav{flex:1;overflow-y:auto;padding:16px 12px}
 .side-sec{font-size:9px;font-weight:700;color:var(--tx2);letter-spacing:1.5px;text-transform:uppercase;padding:18px 12px 6px}
 .si{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--tx2);border:none;transition:all .15s;user-select:none}.si.locked{opacity:.5}
@@ -1711,6 +1734,35 @@ function switchAdminRole(role){
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
 <div class="ph"><div><h2>Свежие новости</h2><div class="ph-s">AI & Neural Networks — презентации, исследования, инструменты</div><div style="font-size:10px;color:var(--tx3);margin-top:2px">Новости не старше 5 дней</div></div><a href="https://news.svita.ai" target="_blank" class="btn pr" style="font-size:11px;padding:7px 16px;white-space:nowrap;margin-left:12px">Все новости &rarr;</a></div>
 <div id="dashNewsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;padding:0 24px 24px"></div>
+</div>
+
+<!-- ═══ STAGE 2: EXECUTION SECTIONS ═══ -->
+<div class="sec" id="sec-exec-premises"><div class="bk" onclick="nav('overview')">&larr; Обзор</div><div class="ph"><h2>&#127970; Помещения — исполнение</h2></div><div id="execPremises" class="exec-list"></div></div>
+<div class="sec" id="sec-exec-renovations"><div class="bk" onclick="nav('overview')">&larr; Обзор</div><div class="ph"><h2>&#128736; Модернизация — исполнение</h2></div><div id="execRenovations" class="exec-list"></div></div>
+<div class="sec" id="sec-exec-services"><div class="bk" onclick="nav('overview')">&larr; Обзор</div><div class="ph"><h2>&#128203; Услуги — исполнение</h2></div><div id="execServices" class="exec-list"></div></div>
+<div class="sec" id="sec-exec-equipment"><div class="bk" onclick="nav('overview')">&larr; Обзор</div><div class="ph"><h2>&#128230; Оборудование — исполнение</h2></div><div id="execEquipment" class="exec-list"></div></div>
+<div class="sec" id="sec-exec-staff"><div class="bk" onclick="nav('overview')">&larr; Обзор</div><div class="ph"><h2>&#129489; Сотрудники — исполнение</h2></div><div id="execStaff" class="exec-list"></div></div>
+<div class="sec" id="sec-exec-docs"><div class="bk" onclick="nav('overview')">&larr; Обзор</div><div class="ph"><h2>&#128203; Документация — исполнение</h2></div><div id="execDocs" class="exec-list"></div></div>
+
+<!-- ═══ STAGE 2: CHAT ═══ -->
+<div class="sec" id="sec-exec-chat">
+<div class="bk" onclick="nav('overview')">&larr; Обзор</div>
+<div class="ph"><h2>&#128172; Чат</h2><div class="ph-s">Общение с подрядчиками и поставщиками</div></div>
+<div style="display:flex;gap:16px;padding:0 24px 24px;height:calc(100vh - 160px)">
+<div id="chatUserList" style="width:240px;background:var(--sf);border:1px solid var(--bd);border-radius:12px;overflow-y:auto;flex-shrink:0">
+<div style="padding:12px;border-bottom:1px solid var(--bd);font-size:11px;font-weight:700;color:var(--tx2)">Контакты</div>
+<div id="chatContacts"></div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;background:var(--sf);border:1px solid var(--bd);border-radius:12px;overflow:hidden">
+<div id="chatHeader" style="padding:12px 16px;border-bottom:1px solid var(--bd);font-size:13px;font-weight:600;color:var(--tx2)">Выберите контакт</div>
+<div id="chatMessages" style="flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:8px"></div>
+<div id="chatInputWrap" style="display:none;padding:12px;border-top:1px solid var(--bd);display:flex;gap:8px">
+<button class="btn sm" onclick="attachExecItem()" title="Прикрепить задачу">&#128206;</button>
+<input id="chatInput" type="text" placeholder="Сообщение..." style="flex:1;padding:8px 12px;border:1px solid var(--bd);border-radius:8px;font-size:12px;font-family:var(--f)" onkeydown="if(event.key==='Enter')sendChatMsg()">
+<button class="btn sm pr" onclick="sendChatMsg()">&#10148;</button>
+</div>
+</div>
+</div>
 </div>
 
 </div><!-- /main -->
@@ -4324,14 +4376,21 @@ function buildSidebar(){
 
   // ── STAGE 2: Закупки и установка ──
   if(currentStage===2&&(currentRole==='admin'||currentRole==='owner')){
-    html+='<div class="side-sec">Закупки</div>';
-    html+='<div class="si si-clr" style="--si-clr:#8b5cf6" data-nav="db-suppliers" data-tip="Каталог оборудования для закупки"><span class="ico">&#128230;</span><span class="sl">Оборудование</span><span class="sb wip" id="sbEquip">0</span></div>';
-    html+='<div class="si si-clr" style="--si-clr:#f59e0b" data-nav="db-renovations" data-tip="Работы по модернизации помещения"><span class="ico">&#128736;</span><span class="sl">Модернизация</span><span class="sb wip" id="sbReno">0</span></div>';
+    html+='<div class="side-sec">Исполнение</div>';
+    html+='<div class="si si-clr" style="--si-clr:#3b82f6" data-nav="exec-premises" data-tip="Поиск и аренда помещения"><span class="ico">&#127970;</span><span class="sl">Помещения</span><span class="sb wip" id="sbExPrem">0</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#f59e0b" data-nav="exec-renovations" data-tip="Выполнение ремонтных работ"><span class="ico">&#128736;</span><span class="sl">Модернизация</span><span class="sb wip" id="sbExReno">0</span></div>';
+    const _svcL2=currentBizType&&currentBizType!=='dental'?'Меню':'Услуги';
+    html+='<div class="si si-clr" style="--si-clr:#10b981" data-nav="exec-services" data-tip="Запуск услуг и ценообразование"><span class="ico">&#128203;</span><span class="sl">'+_svcL2+'</span><span class="sb wip" id="sbExSvc">0</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#8b5cf6" data-nav="exec-equipment" data-tip="Закупка и установка оборудования"><span class="ico">&#128230;</span><span class="sl">Оборудование</span><span class="sb wip" id="sbExEquip">0</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#06b6d4" data-nav="exec-staff" data-tip="Найм и оформление сотрудников"><span class="ico">&#129489;</span><span class="sl">Сотрудники</span><span class="sb wip" id="sbExStaff">0</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#ef4444" data-nav="exec-docs" data-tip="Получение лицензий и оформление документов"><span class="ico">&#128203;</span><span class="sl">Документация</span><span class="sb wip" id="sbExDocs">0</span></div>';
     html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
     html+='<div class="side-sec">Исполнители</div>';
     const canC=currentRole==='admin'||(typeof userSubscription!=='undefined'&&userSubscription.contractors_access);
-    html+='<div class="si'+(canC?'':' locked')+'" data-nav="'+(canC?'db-contractors':'upgrade-gate')+'" data-tip="Компании для выполнения ремонтных работ"><span class="ico">&#128736;</span><span class="sl">Подрядчики</span>'+(canC?'<span class="sb wip" id="sbContr">0</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
-    html+='<div class="si'+(canC?'':' locked')+'" data-nav="'+(canC?'db-vendor-companies':'upgrade-gate')+'" data-tip="Компании-поставщики оборудования и материалов"><span class="ico">&#127970;</span><span class="sl">Поставщики</span>'+(canC?'<span class="sb wip" id="sbVend">0</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
+    html+='<div class="si'+(canC?'':' locked')+'" data-nav="'+(canC?'db-contractors':'upgrade-gate')+'" data-tip="Компании для выполнения работ"><span class="ico">&#128736;</span><span class="sl">Подрядчики</span>'+(canC?'<span class="sb wip" id="sbContr">0</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
+    html+='<div class="si'+(canC?'':' locked')+'" data-nav="'+(canC?'db-vendor-companies':'upgrade-gate')+'" data-tip="Поставщики оборудования и материалов"><span class="ico">&#127970;</span><span class="sl">Поставщики</span>'+(canC?'<span class="sb wip" id="sbVend">0</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
+    html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
+    html+='<div class="si" data-nav="exec-chat" data-tip="Чат с подрядчиками и поставщиками"><span class="ico">&#128172;</span><span class="sl">Чат</span></div>';
   }
 
   // ── Роли contractor/supplier — только на Stage 2 ──
@@ -4393,7 +4452,7 @@ function updateSidebarBadges(){
 // ═══════════════ NAVIGATION ═══════════════
 function getSecNames(){
   const isCoffee=currentBizType&&currentBizType!=='dental';
-  return{overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:isCoffee?'Меню':'Услуги населению',s6:'Концепция',s7:'Документация',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны',news:'Новости','db-premises':'БД Помещений','db-renovations':'Модернизация и услуги','db-services':isCoffee?'Меню':'Каталог услуг','db-docs':'Каталог документов','db-contractors':'БД Подрядчиков','db-suppliers':'Каталог оборудования','db-employees':'БД Сотрудников','db-vendor-companies':'Поставщики',users:'Пользователи','cabinet-types':isCoffee?'Стоимость помещений':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения'};
+  return{overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:isCoffee?'Меню':'Услуги населению',s6:'Концепция',s7:'Документация',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны',news:'Новости','db-premises':'БД Помещений','db-renovations':'Модернизация и услуги','db-services':isCoffee?'Меню':'Каталог услуг','db-docs':'Каталог документов','db-contractors':'БД Подрядчиков','db-suppliers':'Каталог оборудования','db-employees':'БД Сотрудников','db-vendor-companies':'Поставщики',users:'Пользователи','cabinet-types':isCoffee?'Стоимость помещений':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения','exec-premises':'Помещения','exec-renovations':'Модернизация','exec-services':'Услуги','exec-equipment':'Оборудование','exec-staff':'Сотрудники','exec-docs':'Документация','exec-chat':'Чат'};
 }
 const secNames=getSecNames();
 const stageOrder=['s1','s2','s3','s4','s5','s6','s7'];
@@ -4429,6 +4488,15 @@ function nav(id){
   if(id==='s4'){renderStaff()}
   if(id==='s5'){renderSelectedServices()}
   if(id==='db-services'){renderServices()}
+  // Stage 2 execution renders
+  if(id==='exec-premises')renderExecSection('premises');
+  if(id==='exec-renovations')renderExecSection('renovations');
+  if(id==='exec-services')renderExecSection('services');
+  if(id==='exec-equipment')renderExecSection('equipment');
+  if(id==='exec-staff')renderExecSection('staff');
+  if(id==='exec-docs')renderExecSection('docs');
+  if(id==='exec-chat')renderChatContacts();
+  if(id==='overview'&&currentStage===2)renderExecOverview();
   updateSumbar();
   updateRightPanel();
 }
@@ -4853,6 +4921,126 @@ function toggleCheck(el){
 }
 
 // ═══════════════ RENDER DB CARDS ═══════════════
+// ═══════════════ STAGE 2: EXECUTION ENGINE ═══════════════
+var execStatus=JSON.parse(localStorage.getItem('svita_exec_status')||'{}');
+function saveExecStatus(){localStorage.setItem('svita_exec_status',JSON.stringify(execStatus))}
+function toggleExecItem(cat,id){
+  const key=cat+'_'+id;
+  execStatus[key]=execStatus[key]==='done'?'pending':'done';
+  saveExecStatus();
+  renderExecSection(cat);
+  if(currentStage===2)renderExecOverview();
+}
+function sendToChat(cat,id,name){
+  // Pre-fill chat with item
+  switchStage(2);nav('exec-chat');
+  const inp=document.getElementById('chatInput');
+  if(inp)inp.value='['+cat+'] '+name+' — укажите стоимость работ';
+  toast('Задача добавлена в чат','ac');
+}
+
+function getExecItems(cat){
+  const map={
+    premises:()=>(DB.premises||[]).filter((_,i)=>DB.pickedRooms&&DB.pickedRooms[i]),
+    renovations:()=>{const ids=Object.keys(DB.pickedRenovations||{});return(DB.renovations||[]).filter(r=>ids.includes(String(r.id)))},
+    services:()=>{const ids=Object.keys(DB.pickedServices||{});return(DB.services||[]).filter(s=>ids.includes(String(s.id)))},
+    equipment:()=>{const ids=Object.keys(DB.pickedEquip||{});return(DB.suppliers||[]).filter(s=>ids.includes(String(s.id)))},
+    staff:()=>{const ids=Object.keys(DB.pickedStaff||{});return(DB.employees||[]).filter(e=>ids.includes(String(e.id)))},
+    docs:()=>(typeof ADMIN_DOC_ITEMS!=='undefined'?ADMIN_DOC_ITEMS:[]).filter(d=>{const ids=Object.keys(DB.pickedDocs||{});return ids.includes(String(d.id))})
+  };
+  return(map[cat]?map[cat]():[]);
+}
+
+function renderExecSection(cat){
+  const el=document.getElementById('exec'+cat.charAt(0).toUpperCase()+cat.slice(1));
+  if(!el)return;
+  const items=getExecItems(cat);
+  const total=items.length;
+  const done=items.filter(it=>execStatus[cat+'_'+it.id]==='done').length;
+  let html='<div class="exec-progress"><div class="ep-bar"><div class="ep-fill" style="width:'+(total?Math.round(done/total*100):0)+'%"></div></div><div class="ep-text">'+done+' / '+total+' выполнено</div></div>';
+  if(!total){html+='<div style="text-align:center;color:var(--tx3);font-size:12px;padding:24px">Нет позиций из Stage 1. Сначала сформируйте концепцию.</div>';el.innerHTML=html;return}
+  items.forEach(it=>{
+    const isDone=execStatus[cat+'_'+it.id]==='done';
+    const name=it.name||it.title||it.address||'Позиция #'+it.id;
+    const cost=it.price||it.salary||it.cost||it.total||0;
+    html+='<div class="exec-item'+(isDone?' done':'')+'">';
+    html+='<div class="exec-check" onclick="toggleExecItem(\''+cat+'\',\''+it.id+'\')">&#10003;</div>';
+    html+='<div class="exec-info"><div class="exec-name">'+esc(name)+'</div>';
+    if(it.spec||it.category||it.type)html+='<div class="exec-meta">'+(it.spec||it.category||it.type)+'</div>';
+    html+='</div>';
+    if(cost)html+='<div class="exec-cost">'+Number(cost).toLocaleString()+' PLN</div>';
+    html+='<button class="exec-send" onclick="sendToChat(\''+cat+'\',\''+it.id+'\',\''+esc(name).replace(/'/g,"\\'")+'\')">&#128172; В чат</button>';
+    html+='</div>';
+  });
+  el.innerHTML=html;
+  // Update sidebar badge
+  const badge=document.getElementById('sbEx'+cat.charAt(0).toUpperCase()+cat.slice(1));
+  if(badge)badge.textContent=done+'/'+total;
+}
+
+function renderExecOverview(){
+  if(currentStage!==2)return;
+  const cats=['premises','renovations','services','equipment','staff','docs'];
+  const labels=['Помещения','Модернизация','Услуги','Оборудование','Сотрудники','Документация'];
+  const icons=['&#127970;','&#128736;','&#128203;','&#128230;','&#129489;','&#128203;'];
+  let totalAll=0,doneAll=0;
+  let gridHtml='';
+  cats.forEach((cat,i)=>{
+    const items=getExecItems(cat);
+    const total=items.length;
+    const done=items.filter(it=>execStatus[cat+'_'+it.id]==='done').length;
+    totalAll+=total;doneAll+=done;
+    const pct=total?Math.round(done/total*100):0;
+    gridHtml+='<div class="stg'+(pct===100?' cur':'')+'" onclick="nav(\'exec-'+cat+'\')" style="cursor:pointer"><div style="display:flex;justify-content:space-between"><div class="stg-n">'+icons[i]+'</div><span class="tag '+(pct===100?'t-ok':pct>0?'t-wip':'t-w')+'">'+(pct===100?'Готово':pct>0?'В работе':'Ожидает')+'</span></div><div class="stg-t">'+labels[i]+'</div><div class="stg-pb"><div class="stg-pf" style="width:'+pct+'%;background:'+(pct===100?'var(--gn)':'var(--ac)')+'"></div></div><div class="stg-m"><span>'+done+' из '+total+'</span><strong>'+pct+'%</strong></div></div>';
+  });
+  // Render into overview (reuse stagesGrid)
+  const sg=document.getElementById('stagesGrid');
+  if(sg)sg.innerHTML=gridHtml;
+  // Update top stats
+  const pctAll=totalAll?Math.round(doneAll/totalAll*100):0;
+  const p=document.getElementById('ovProgress');if(p)p.innerHTML=pctAll+'<span style="font-size:14px;color:var(--tx2)">%</span>';
+  const pb=document.getElementById('ovProgressBar');if(pb)pb.style.width=pctAll+'%';
+  const ti=document.getElementById('totalItems');if(ti)ti.textContent=doneAll;
+  const os=document.getElementById('ovStage');if(os)os.textContent='Выполнено '+doneAll+' из '+totalAll;
+}
+
+// Chat placeholder functions
+var chatMessages=[];var activeChatUser=null;
+function renderChatContacts(){
+  const el=document.getElementById('chatContacts');if(!el)return;
+  const users=(DB.users||[]).filter(u=>u.role==='contractor'||u.role==='supplier');
+  if(!users.length){el.innerHTML='<div style="padding:16px;font-size:11px;color:var(--tx3);text-align:center">Нет подрядчиков и поставщиков</div>';return}
+  el.innerHTML=users.map(u=>'<div class="chat-contact'+(activeChatUser===u.email?' active':'')+'" onclick="openChat(\''+esc(u.email)+'\',\''+esc(u.name)+'\')"><div style="font-weight:600">'+esc(u.name)+'</div><div style="font-size:10px;color:var(--tx3)">'+esc(u.role==='contractor'?'Подрядчик':'Поставщик')+'</div></div>').join('');
+}
+function openChat(email,name){
+  activeChatUser=email;
+  document.getElementById('chatHeader').textContent=name;
+  document.getElementById('chatInputWrap').style.display='flex';
+  renderChatContacts();
+  loadChatMessages(email);
+}
+function loadChatMessages(email){
+  const el=document.getElementById('chatMessages');
+  const msgs=JSON.parse(localStorage.getItem('svita_chat_'+email)||'[]');
+  if(!msgs.length){el.innerHTML='<div style="text-align:center;color:var(--tx3);font-size:11px;padding:40px">Начните общение — отправьте задачу или сообщение</div>';return}
+  el.innerHTML=msgs.map(m=>'<div class="chat-msg '+(m.from===currentUser.email?'mine':'theirs')+'">'+esc(m.text)+(m.attach?'<div class="chat-attach">&#128206; '+esc(m.attach)+'</div>':'')+'<div style="font-size:9px;opacity:.5;margin-top:3px">'+new Date(m.ts).toLocaleTimeString()+'</div></div>').join('');
+  el.scrollTop=el.scrollHeight;
+}
+function sendChatMsg(){
+  if(!activeChatUser)return;
+  const inp=document.getElementById('chatInput');
+  const text=inp.value.trim();if(!text)return;
+  const msgs=JSON.parse(localStorage.getItem('svita_chat_'+activeChatUser)||'[]');
+  msgs.push({from:currentUser.email,text,ts:Date.now()});
+  localStorage.setItem('svita_chat_'+activeChatUser,JSON.stringify(msgs));
+  inp.value='';
+  loadChatMessages(activeChatUser);
+}
+function attachExecItem(){
+  // TODO: modal to pick item from execution list
+  toast('Выберите задачу для прикрепления','ac');
+}
+
 function renderAll(){
   const fns=[renderProperty,renderPremises,renderContractors,renderEmployees,renderVendors,renderEquip,renderSelectedEquip,renderRenovationsCatalog,renderRenServices,renderSelectedRenovations,renderStaff,renderServices,renderSelectedServices,renderUsers,renderCabinetTypes,renderPickedRooms,renderPickedContractors,renderZones,renderDocCatalog,renderDocs,loadPropertyParams,updateRightPanel,renderOwnerProposals];
   fns.forEach(fn=>{try{fn()}catch(e){console.error('[SVITA] renderAll error in '+fn.name+':',e)}});
