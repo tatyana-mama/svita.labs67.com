@@ -45,8 +45,7 @@
 .side-sec{font-size:9px;font-weight:700;color:var(--tx2);letter-spacing:1.5px;text-transform:uppercase;padding:18px 12px 6px}
 .si{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--tx2);border:none;transition:all .15s;user-select:none}.si.locked{opacity:.5}
 .si:hover{background:var(--sf2);color:var(--tx)}.si.act{background:var(--acbg);color:var(--ac2);font-weight:600}
-.si[data-tip]{position:relative}.si[data-tip]:hover::after{content:attr(data-tip);position:absolute;left:100%;top:50%;transform:translateY(-50%);margin-left:10px;background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:8px 12px;font-size:10px;font-weight:400;color:var(--tx2);z-index:200;box-shadow:0 4px 16px rgba(0,0,0,.12);pointer-events:none;line-height:1.5;width:220px;white-space:normal;animation:tipIn .15s ease}
-@keyframes tipIn{from{opacity:0;transform:translateY(-50%) translateX(-4px)}to{opacity:1;transform:translateY(-50%) translateX(0)}}
+#sideTip{position:fixed;z-index:9000;background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;font-size:10px;color:var(--tx2);box-shadow:0 6px 20px rgba(0,0,0,.14);pointer-events:none;line-height:1.5;width:220px;white-space:normal;opacity:0;transition:opacity .15s;font-family:var(--f)}
 .si.si-clr{border-left:3px solid var(--si-clr);border-radius:0 8px 8px 0}.si.si-clr .sb{background:color-mix(in srgb,var(--si-clr) 12%,transparent);color:var(--si-clr)}.si.si-clr.act{background:color-mix(in srgb,var(--si-clr) 8%,transparent);color:var(--si-clr);border-left-color:var(--si-clr)}
 .si .ico{font-size:15px;width:20px;text-align:center;flex-shrink:0}
 .sn{width:24px;height:24px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;border:1.5px solid var(--bd2);color:var(--tx3);flex-shrink:0}
@@ -708,6 +707,7 @@ Apple</button>
 </div>
 <nav class="side-nav" id="sideNav"></nav>
 </aside>
+<div id="sideTip"></div>
 <div class="mob-overlay" id="mobOverlay" onclick="toggleMobileSidebar()"></div>
 
 <!-- MAIN -->
@@ -4290,6 +4290,19 @@ function buildSidebar(){
   }
   n.innerHTML=html;
   n.querySelectorAll('[data-nav]').forEach(el=>{el.addEventListener('click',()=>nav(el.dataset.nav))});
+  // Sidebar tooltips
+  const _tip=document.getElementById('sideTip');
+  n.querySelectorAll('[data-tip]').forEach(el=>{
+    el.addEventListener('mouseenter',function(){
+      const r=el.getBoundingClientRect();
+      _tip.textContent=el.getAttribute('data-tip');
+      _tip.style.left=(r.right+10)+'px';
+      _tip.style.top=(r.top+r.height/2)+'px';
+      _tip.style.transform='translateY(-50%)';
+      _tip.style.opacity='1';
+    });
+    el.addEventListener('mouseleave',function(){_tip.style.opacity='0'});
+  });
   document.getElementById('tabBar').style.display=(currentRole==='admin'||currentRole==='owner')?'flex':'none';
   _sidebarBuilt=true;
   updateSidebarBadges();
