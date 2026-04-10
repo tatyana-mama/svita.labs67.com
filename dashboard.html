@@ -93,6 +93,11 @@
 .chat-contact{padding:10px 12px;cursor:pointer;border-bottom:1px solid var(--bd);transition:all .15s;font-size:12px}
 .chat-contact:hover{background:var(--sf2)}
 .chat-contact.active{background:var(--acbg);color:var(--ac2)}
+@keyframes chatCatIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.chat-cat-item{padding:8px 12px;cursor:pointer;display:flex;gap:10px;align-items:center;transition:background .15s;border-bottom:1px solid color-mix(in srgb,var(--bd) 50%,transparent)}
+.chat-cat-item:hover{background:var(--sf2)}
+.chat-cat-item:last-child{border-bottom:none}
+#chatAddBtn.open{background:var(--ac);color:#fff;border-color:var(--ac);transform:rotate(45deg)}
 .chat-msg{max-width:70%;padding:8px 12px;border-radius:12px;font-size:12px;line-height:1.4}
 .chat-msg.mine{align-self:flex-end;background:var(--ac);color:#fff;border-bottom-right-radius:4px}
 .chat-msg.theirs{align-self:flex-start;background:var(--sf2);color:var(--tx);border-bottom-left-radius:4px}
@@ -1847,10 +1852,16 @@ function switchAdminRole(role){
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
 <div class="ph"><h2>&#128172; Чат</h2><div class="ph-s" id="chatSubtitle">Общение с подрядчиками и поставщиками</div></div>
 <div style="display:flex;gap:16px;padding:0 24px 24px;height:calc(100vh - 160px)">
-<div id="chatUserList" style="width:240px;background:var(--sf);border:1px solid var(--bd);border-radius:12px;overflow-y:auto;flex-shrink:0">
-<div style="padding:12px;border-bottom:1px solid var(--bd);font-size:11px;font-weight:700;color:var(--tx2)">Контакты</div>
-<div style="padding:8px"><input id="chatSearch" type="text" placeholder="Поиск..." oninput="renderChatContacts()" style="width:100%;padding:7px 10px;border:1px solid var(--bd);border-radius:8px;font-size:11px;background:var(--sf2);color:var(--tx);font-family:var(--f);outline:none" onfocus="this.style.borderColor='var(--ac2)'" onblur="this.style.borderColor='var(--bd)'"></div>
-<div id="chatContacts"></div>
+<div id="chatUserList" style="width:260px;background:var(--sf);border:1px solid var(--bd);border-radius:12px;overflow-y:auto;flex-shrink:0;position:relative">
+<div style="padding:10px 12px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between">
+<span style="font-size:11px;font-weight:700;color:var(--tx2)">Диалоги</span>
+<button id="chatAddBtn" onclick="toggleChatCatalog()" style="width:26px;height:26px;border-radius:8px;border:1px solid var(--bd);background:var(--sf2);color:var(--ac);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s" title="Новый диалог">+</button>
+</div>
+<div id="chatCatalog" style="display:none;position:absolute;top:44px;left:0;right:0;bottom:0;z-index:20;background:var(--sf);border-top:1px solid var(--bd);overflow-y:auto;animation:chatCatIn .2s ease">
+<div style="padding:8px"><input id="chatCatSearch" type="text" placeholder="Поиск контакта..." oninput="renderChatCatalog()" style="width:100%;padding:7px 10px;border:1px solid var(--bd);border-radius:8px;font-size:11px;background:var(--sf2);color:var(--tx);font-family:var(--f);outline:none;box-sizing:border-box" onfocus="this.style.borderColor='var(--ac2)'" onblur="this.style.borderColor='var(--bd)'"></div>
+<div id="chatCatList"></div>
+</div>
+<div id="chatContacts" style="overflow-y:auto"></div>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;background:var(--sf);border:1px solid var(--bd);border-radius:12px;overflow:hidden">
 <div id="chatHeader" style="padding:12px 16px;border-bottom:1px solid var(--bd);font-size:13px;font-weight:600;color:var(--tx2)">Выберите контакт</div>
@@ -5245,16 +5256,77 @@ function _chatKey(email){
 var _roleLabels={admin:'Админ',superadmin:'Админ',owner:'Владелец',contractor:'Подрядчик',supplier:'Поставщик',viewer:'Зритель',employee:'Сотрудник'};
 var _groupLabels={owner:'Владельцы',admin:'Администраторы',contractor:'Подрядчики',supplier:'Поставщики',employee:'Сотрудники',viewer:'Зрители'};
 var _groupColors={contractor:'#f59e0b',supplier:'#8b5cf6',owner:'var(--ac)',admin:'#3b82f6',employee:'#06b6d4'};
+/* === Активные диалоги (основной список) === */
+function _activeChats(){
+  const me=currentUser?.email;if(!me)return[];
+  const chats=[];const seen={};
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(!k.startsWith('svita_chat_')||k==='svita_chat_session_id')continue;
+    const pair=k.replace('svita_chat_','').split('__');
+    if(pair.length!==2)continue;
+    const other=pair[0]===me?pair[1]:pair[1]===me?pair[0]:null;
+    if(!other||seen[other])continue;seen[other]=1;
+    const msgs=JSON.parse(localStorage.getItem(k)||'[]');
+    if(!msgs.length)continue;
+    const last=msgs[msgs.length-1];
+    const unread=msgs.filter(m=>m.from!==me&&!m.read).length;
+    // Найдём имя и роль из каталога
+    const info=_findContactInfo(other);
+    chats.push({email:other,name:info.name,role:info.role,spec:info.spec||'',city:info.city||'',lastMsg:last.text,lastTime:last.time||0,unread});
+  }
+  chats.sort((a,b)=>(b.lastTime||0)-(a.lastTime||0));
+  return chats;
+}
+function _findContactInfo(email){
+  const u=(DB.users||[]).find(x=>x.email===email);
+  if(u)return{name:u.name||email.split('@')[0],role:u.role||'owner',spec:u.position||u.spec||'',city:u.city||''};
+  const c=(DB.contractors||[]).find(x=>(x.email||'contractor_'+x.id)===email);
+  if(c)return{name:c.name,role:'contractor',spec:c.spec||'',city:c.city||''};
+  const v=(DB.vendorCompanies||[]).find(x=>(x.email||'vendor_'+x.id)===email);
+  if(v)return{name:v.name,role:'supplier',spec:v.tags?v.tags.join(', '):v.desc||'',city:v.city||''};
+  return{name:email.split('@')[0],role:'owner',spec:'',city:''};
+}
 function renderChatContacts(){
   const el=document.getElementById('chatContacts');if(!el)return;
-  let contacts=_chatContacts();
-  const role=currentRole||'owner';
-  const q=(document.getElementById('chatSearch')?.value||'').toLowerCase().trim();
-  if(q)contacts=contacts.filter(u=>(u.name||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q)||(u.spec||'').toLowerCase().includes(q)||(_roleLabels[u.role]||'').toLowerCase().includes(q)||(u.city||'').toLowerCase().includes(q));
-  if(!contacts.length){
-    el.innerHTML='<div style="padding:16px;font-size:11px;color:var(--tx3);text-align:center">'+(q?'Ничего не найдено':role==='contractor'||role==='supplier'?'Пока нет сообщений от заказчиков':'Нет контактов')+'</div>';return;
+  const chats=_activeChats();
+  if(!chats.length){
+    el.innerHTML='<div style="padding:24px 16px;text-align:center"><div style="font-size:20px;margin-bottom:8px;opacity:.4">&#128172;</div><div style="font-size:11px;color:var(--tx3)">Нет диалогов</div><div style="font-size:10px;color:var(--tx3);margin-top:4px">Нажмите <b>+</b> чтобы начать</div></div>';return;
   }
-  // Группировка по ролям
+  let html='';
+  chats.forEach(u=>{
+    const color=_groupColors[u.role]||'var(--tx3)';
+    const initials=(u.name||'?').split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+    const roleTag=_roleLabels[u.role]||'';
+    html+='<div class="chat-contact'+(activeChatUser===u.email?' active':'')+'" onclick="openChat(\''+esc(u.email)+'\',\''+esc(u.name)+'\')" style="display:flex;gap:10px;align-items:center">'
+      +'<div style="width:34px;height:34px;border-radius:10px;background:'+color+';display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">'+initials+'</div>'
+      +'<div style="flex:1;min-width:0">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:600;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(u.name)+'</div>'+(u.unread?'<div style="background:'+color+';color:#fff;border-radius:50%;min-width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700">'+u.unread+'</div>':'')+'</div>'
+      +'<div style="font-size:10px;color:var(--tx3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(u.lastMsg.substring(0,40))+'</div>'
+      +'</div></div>';
+  });
+  el.innerHTML=html;
+}
+/* === Каталог контактов (попап по +) === */
+var _chatCatOpen=false;
+function toggleChatCatalog(){
+  _chatCatOpen=!_chatCatOpen;
+  const cat=document.getElementById('chatCatalog');
+  const btn=document.getElementById('chatAddBtn');
+  if(_chatCatOpen){
+    cat.style.display='block';btn.classList.add('open');
+    renderChatCatalog();
+    setTimeout(()=>{const s=document.getElementById('chatCatSearch');if(s)s.focus()},50);
+  }else{
+    cat.style.display='none';btn.classList.remove('open');
+  }
+}
+function renderChatCatalog(){
+  const el=document.getElementById('chatCatList');if(!el)return;
+  let contacts=_chatContacts();
+  const q=(document.getElementById('chatCatSearch')?.value||'').toLowerCase().trim();
+  if(q)contacts=contacts.filter(u=>(u.name||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q)||(u.spec||'').toLowerCase().includes(q)||(u.city||'').toLowerCase().includes(q));
+  if(!contacts.length){el.innerHTML='<div style="padding:16px;font-size:11px;color:var(--tx3);text-align:center">'+(q?'Не найдено':'Нет контактов')+'</div>';return;}
   const groups={};
   contacts.forEach(u=>{const g=u.group||u.role||'other';if(!groups[g])groups[g]=[];groups[g].push(u)});
   const order=['contractor','supplier','owner','admin','employee','viewer'];
@@ -5264,21 +5336,22 @@ function renderChatContacts(){
     const color=_groupColors[g]||'var(--tx3)';
     html+='<div style="padding:8px 12px 4px;font-size:9px;font-weight:700;color:'+color+';text-transform:uppercase;letter-spacing:.5px">'+(_groupLabels[g]||g)+' <span style="font-weight:400;opacity:.6">'+groups[g].length+'</span></div>';
     groups[g].forEach(u=>{
-      const key=_chatKey(u.email);
-      const msgs=JSON.parse(localStorage.getItem(key)||'[]');
-      const last=msgs.length?msgs[msgs.length-1]:null;
-      const unread=msgs.filter(m=>m.from!==currentUser.email&&!m.read).length;
       const initials=(u.name||'?').split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
-      html+='<div class="chat-contact'+(activeChatUser===u.email?' active':'')+'" onclick="openChat(\''+esc(u.email)+'\',\''+esc(u.name)+'\')" style="display:flex;gap:10px;align-items:center">'
-        +'<div style="width:32px;height:32px;border-radius:8px;background:'+color+';display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">'+initials+'</div>'
+      html+='<div class="chat-cat-item" onclick="startChatFrom(\''+esc(u.email)+'\',\''+esc(u.name)+'\')">'
+        +'<div style="width:28px;height:28px;border-radius:8px;background:'+color+';display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0">'+initials+'</div>'
         +'<div style="flex:1;min-width:0">'
-        +'<div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:600;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(u.name)+'</div>'+(unread?'<div style="background:'+color+';color:#fff;border-radius:50%;min-width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700">'+unread+'</div>':'')+'</div>'
-        +'<div style="font-size:10px;color:var(--tx3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(u.spec?esc(u.spec):'')+(u.city?' · '+esc(u.city):'')+'</div>'
-        +(last?'<div style="font-size:10px;color:var(--tx3);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(last.text.substring(0,35))+'</div>':'')
+        +'<div style="font-weight:600;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(u.name)+'</div>'
+        +'<div style="font-size:9px;color:var(--tx3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(u.spec?esc(u.spec):'')+(u.city?' · '+esc(u.city):'')+'</div>'
         +'</div></div>';
     });
   });
   el.innerHTML=html;
+}
+function startChatFrom(email,name){
+  _chatCatOpen=false;
+  document.getElementById('chatCatalog').style.display='none';
+  document.getElementById('chatAddBtn').classList.remove('open');
+  openChat(email,name);
 }
 function openChat(email,name){
   activeChatUser=email;
