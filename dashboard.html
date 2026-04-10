@@ -8339,8 +8339,10 @@ function openModal(mode){
   const titles={property:'Карточка помещения',premise:'Добавить помещение',room:'Добавить комнату',contractor:'Заявка подрядчика',supplier:'Добавить товар',employee:'Добавить сотрудника',equip:'Добавить оборудование',staff:'Добавить должность',service:'Добавить процедуру',user:'Пригласить пользователя',cabinetType:'Добавить тип кабинета',vendor:'Добавить поставщика'};
   document.getElementById('modalTitle').textContent=titles[mode]||'Добавить';
   const fields=MODAL_FIELDS[mode]||[];
+  const SPEC_OPTS=['Электрика','Сантехника','Вентиляция и кондиционирование','Отделка и строительные работы','Звукоизоляция','Двери, окна, фасад','Мебель и встроенные конструкции','Пожарная безопасность','Видеонаблюдение и безопасность','IT-инфраструктура','Медицинские коммуникации','Фасад и благоустройство','Вывеска и навигация','Доступность','Радиационная безопасность','Санитария','Оборудование и сертификация','Проектирование','Логистика и доставка','Клининг','Прочее'];
   document.getElementById('modalFields').innerHTML=fields.map(f=>{
     const val=(mode==='property'&&activeProperty)?activeProperty[f.k]||'':'';
+    if(f.k==='spec'&&mode==='contractor')return `<div class="modal-field"><label>${f.l}</label><select id="mf_${f.k}" style="width:100%;padding:10px 12px;border:1.5px solid var(--bd);border-radius:10px;font-size:13px;background:var(--sf);color:var(--tx)"><option value="">— Выберите —</option>${SPEC_OPTS.map(o=>`<option value="${o}">${o}</option>`).join('')}</select></div>`;
     return `<div class="modal-field"><label>${f.l}</label><input id="mf_${f.k}" type="${f.t||'text'}" placeholder="${f.ph||''}" value="${val}"></div>`;
   }).join('');
   document.getElementById('modalBg').classList.add('vis');
