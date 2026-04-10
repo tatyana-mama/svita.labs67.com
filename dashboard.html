@@ -1774,7 +1774,7 @@ function switchAdminRole(role){
 <!-- ═══ STAGE 2: CHAT ═══ -->
 <div class="sec" id="sec-exec-chat">
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
-<div class="ph"><h2>&#128172; Чат</h2><div class="ph-s">Общение с подрядчиками и поставщиками</div></div>
+<div class="ph"><h2>&#128172; Чат</h2><div class="ph-s" id="chatSubtitle">Общение с подрядчиками и поставщиками</div></div>
 <div style="display:flex;gap:16px;padding:0 24px 24px;height:calc(100vh - 160px)">
 <div id="chatUserList" style="width:240px;background:var(--sf);border:1px solid var(--bd);border-radius:12px;overflow-y:auto;flex-shrink:0">
 <div style="padding:12px;border-bottom:1px solid var(--bd);font-size:11px;font-weight:700;color:var(--tx2)">Контакты</div>
@@ -5033,35 +5033,99 @@ function renderExecOverview(){
   const os=document.getElementById('ovStage');if(os)os.textContent='Выполнено '+doneAll+' из '+totalAll;
 }
 
-// Chat placeholder functions
+// Chat system
 var chatMessages=[];var activeChatUser=null;
+function _chatContacts(){
+  const role=currentRole||'owner';
+  if(role==='contractor'||role==='supplier'){
+    // Подрядчик/поставщик видит только тех, кто ему писал
+    const contacts=[];
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i);
+      if(!k.startsWith('svita_chat_'))continue;
+      const msgs=JSON.parse(localStorage.getItem(k)||'[]');
+      const myEmail=currentUser.email;
+      // ключ = svita_chat_{ownerEmail}_{myEmail} или svita_chat_{myEmail}_{ownerEmail}
+      const pair=k.replace('svita_chat_','').split('__');
+      if(pair.length!==2)continue;
+      const other=pair[0]===myEmail?pair[1]:pair[1]===myEmail?pair[0]:null;
+      if(!other)continue;
+      // проверяем что хотя бы одно сообщение от other (владелец написал первым)
+      const hasMsg=msgs.some(m=>m.from===other);
+      if(!hasMsg)continue;
+      const oName=msgs.find(m=>m.from===other);
+      contacts.push({email:other,name:oName?.fromName||other.split('@')[0],role:'owner'});
+    }
+    return contacts;
+  }
+  // Owner/admin — контакты = подрядчики + поставщики из DB
+  const contacts=[];
+  const seen={};
+  (DB.contractors||[]).forEach(c=>{if(!seen[c.id]){seen[c.id]=1;contacts.push({email:c.email||'contractor_'+c.id,name:c.name,role:'contractor',spec:c.spec})}});
+  // Поставщики из suppliers у кого есть supplier поле (vendor-записи)
+  (DB.suppliers||[]).filter(s=>s.supplier).forEach(s=>{
+    const key='sup_'+s.id;if(!seen[key]){seen[key]=1;contacts.push({email:s.email||'supplier_'+s.id,name:s.supplier||s.name,role:'supplier',spec:s.category})}
+  });
+  return contacts;
+}
+function _chatKey(email){
+  const me=currentUser.email;
+  const pair=[me,email].sort();
+  return 'svita_chat_'+pair[0]+'__'+pair[1];
+}
 function renderChatContacts(){
   const el=document.getElementById('chatContacts');if(!el)return;
-  const users=(DB.users||[]).filter(u=>u.role==='contractor'||u.role==='supplier');
-  if(!users.length){el.innerHTML='<div style="padding:16px;font-size:11px;color:var(--tx3);text-align:center">Нет подрядчиков и поставщиков</div>';return}
-  el.innerHTML=users.map(u=>'<div class="chat-contact'+(activeChatUser===u.email?' active':'')+'" onclick="openChat(\''+esc(u.email)+'\',\''+esc(u.name)+'\')"><div style="font-weight:600">'+esc(u.name)+'</div><div style="font-size:10px;color:var(--tx3)">'+esc(u.role==='contractor'?'Подрядчик':'Поставщик')+'</div></div>').join('');
+  const contacts=_chatContacts();
+  const role=currentRole||'owner';
+  if(!contacts.length){
+    el.innerHTML='<div style="padding:16px;font-size:11px;color:var(--tx3);text-align:center">'+(role==='contractor'||role==='supplier'?'Пока нет сообщений от заказчиков':'Нет подрядчиков и поставщиков')+'</div>';return;
+  }
+  el.innerHTML=contacts.map(u=>{
+    const key=_chatKey(u.email);
+    const msgs=JSON.parse(localStorage.getItem(key)||'[]');
+    const last=msgs.length?msgs[msgs.length-1]:null;
+    const unread=msgs.filter(m=>m.from!==currentUser.email&&!m.read).length;
+    return '<div class="chat-contact'+(activeChatUser===u.email?' active':'')+'" onclick="openChat(\''+esc(u.email)+'\',\''+esc(u.name)+'\')">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:600;font-size:12px">'+esc(u.name)+'</div>'+(unread?'<div style="background:var(--ac2);color:#fff;border-radius:50%;min-width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700">'+unread+'</div>':'')+'</div>'
+      +'<div style="font-size:10px;color:var(--tx3)">'+esc(u.role==='contractor'?'Подрядчик':u.role==='supplier'?'Поставщик':'Владелец')+(u.spec?' · '+esc(u.spec):'')+'</div>'
+      +(last?'<div style="font-size:10px;color:var(--tx3);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px">'+esc(last.text.substring(0,40))+'</div>':'')
+      +'</div>';
+  }).join('');
 }
 function openChat(email,name){
   activeChatUser=email;
   document.getElementById('chatHeader').textContent=name;
+  const role=currentRole||'owner';
+  const isOwner=role==='admin'||role==='owner';
   document.getElementById('chatInputWrap').style.display='flex';
+  // Подрядчик/поставщик может только отвечать — скрыть кнопку прикрепления задачи
+  const attachBtn=document.querySelector('#chatInputWrap .btn[onclick*="attachExecItem"]');
+  if(attachBtn)attachBtn.style.display=isOwner?'':'none';
   renderChatContacts();
   loadChatMessages(email);
 }
 function loadChatMessages(email){
   const el=document.getElementById('chatMessages');
-  const msgs=JSON.parse(localStorage.getItem('svita_chat_'+email)||'[]');
-  if(!msgs.length){el.innerHTML='<div style="text-align:center;color:var(--tx3);font-size:11px;padding:40px">Начните общение — отправьте задачу или сообщение</div>';return}
-  el.innerHTML=msgs.map(m=>'<div class="chat-msg '+(m.from===currentUser.email?'mine':'theirs')+'">'+esc(m.text)+(m.attach?'<div class="chat-attach">&#128206; '+esc(m.attach)+'</div>':'')+'<div style="font-size:9px;opacity:.5;margin-top:3px">'+new Date(m.ts).toLocaleTimeString()+'</div></div>').join('');
+  const key=_chatKey(email);
+  const msgs=JSON.parse(localStorage.getItem(key)||'[]');
+  if(!msgs.length){
+    const role=currentRole||'owner';
+    el.innerHTML='<div style="text-align:center;color:var(--tx3);font-size:11px;padding:40px">'+(role==='contractor'||role==='supplier'?'Ожидайте сообщения от заказчика':'Начните общение — отправьте задачу или сообщение')+'</div>';return;
+  }
+  el.innerHTML=msgs.map(m=>'<div class="chat-msg '+(m.from===currentUser.email?'mine':'theirs')+'"><div style="font-size:9px;font-weight:600;opacity:.6;margin-bottom:2px">'+(m.fromName?esc(m.fromName):'')+'</div>'+esc(m.text)+(m.attach?'<div class="chat-attach">&#128206; '+esc(m.attach)+'</div>':'')+'<div style="font-size:9px;opacity:.5;margin-top:3px">'+new Date(m.ts).toLocaleTimeString()+'</div></div>').join('');
   el.scrollTop=el.scrollHeight;
 }
 function sendChatMsg(){
   if(!activeChatUser)return;
+  const role=currentRole||'owner';
+  // Подрядчик/поставщик не может писать первым
+  const key=_chatKey(activeChatUser);
+  const msgs=JSON.parse(localStorage.getItem(key)||'[]');
+  if((role==='contractor'||role==='supplier')&&!msgs.length)return;
   const inp=document.getElementById('chatInput');
   const text=inp.value.trim();if(!text)return;
-  const msgs=JSON.parse(localStorage.getItem('svita_chat_'+activeChatUser)||'[]');
-  msgs.push({from:currentUser.email,text,ts:Date.now()});
-  localStorage.setItem('svita_chat_'+activeChatUser,JSON.stringify(msgs));
+  msgs.push({from:currentUser.email,fromName:currentUser.name||currentUser.email,text,ts:Date.now()});
+  localStorage.setItem(key,JSON.stringify(msgs));
   inp.value='';
   loadChatMessages(activeChatUser);
 }
@@ -8345,6 +8409,13 @@ function openModal(mode){
     if(f.k==='spec'&&mode==='contractor')return `<div class="modal-field"><label>${f.l}</label><select id="mf_${f.k}" style="width:100%;padding:10px 12px;border:1.5px solid var(--bd);border-radius:10px;font-size:13px;background:var(--sf);color:var(--tx)"><option value="">— Выберите —</option>${SPEC_OPTS.map(o=>`<option value="${o}">${o}</option>`).join('')}</select></div>`;
     return `<div class="modal-field"><label>${f.l}</label><input id="mf_${f.k}" type="${f.t||'text'}" placeholder="${f.ph||''}" value="${val}"></div>`;
   }).join('');
+  document.getElementById('modalBg').classList.add('vis');
+}
+
+function showModal(title,html){
+  document.getElementById('modalTitle').textContent=title;
+  document.getElementById('modalFields').innerHTML=html;
+  const ms=document.getElementById('modalSave');if(ms)ms.style.display='none';
   document.getElementById('modalBg').classList.add('vis');
 }
 
