@@ -4026,11 +4026,14 @@ function enterApp(){
   document.querySelectorAll('.stage-btn').forEach(b=>{b.classList.toggle('active',parseInt(b.dataset.stage)===currentStage)});
   const _bizRow=document.getElementById('sideBizRow');
   if(_bizRow)_bizRow.style.display=currentStage===1?'flex':'none';
-  // Track session + update profile + sync to DB.users
+  // Track session + update profile — only if authenticated
   if(sb&&currentUser.email){
-    sb.from('user_sessions').insert({email:currentUser.email,user_agent:navigator.userAgent}).then(()=>{});
-    sb.from('profiles').upsert({email:currentUser.email,display_name:currentUser.name,role:currentRole,last_login:new Date().toISOString()},{onConflict:'email'}).then(()=>{}).catch(()=>{});
-    sb.from('page_views').insert({page:'/dashboard',user_agent:navigator.userAgent,referrer:document.referrer||null}).then(()=>{});
+    sb.auth.getSession().then(({data:{session}})=>{
+      if(!session)return;
+      sb.from('user_sessions').insert({email:currentUser.email,user_agent:navigator.userAgent}).then(()=>{});
+      sb.from('profiles').upsert({email:currentUser.email,display_name:currentUser.name,role:currentRole,last_login:new Date().toISOString()},{onConflict:'email'}).then(()=>{});
+      sb.from('page_views').insert({page:'/dashboard',user_agent:navigator.userAgent,referrer:document.referrer||null}).then(()=>{});
+    }).catch(()=>{});
     // Ensure current user is in DB.users
     if(!DB.users.find(u=>u.email===currentUser.email)){
       DB.users.push({id:genUserId(),name:currentUser.name,email:currentUser.email,role:currentRole,plan:'trial',status:'Активен',created:new Date().toISOString().slice(0,10)});
@@ -9548,23 +9551,8 @@ enterApp=function(){
 </div>
 </div>
 <script>
-// ── Migrate localStorage from old domain ──
-if(!localStorage.getItem('svita_migrated')){
-  var _mig=document.createElement('iframe');
-  _mig.src='https://svita.labs67.com/migrate-ls.html';
-  _mig.style.display='none';
-  document.body.appendChild(_mig);
-  window.addEventListener('message',function(e){
-    if(e.origin!=='https://svita.labs67.com')return;
-    if(e.data&&e.data.type==='svita_migrate'&&e.data.data){
-      var d=e.data.data,n=0;
-      var safe=['svita_role','svita_lang','svita_theme','svita_biz_type','svita_biz_subtype','svita_cookies'];
-      for(var k in d){if(d.hasOwnProperty(k)&&safe.indexOf(k)!==-1&&!localStorage.getItem(k)){localStorage.setItem(k,d[k]);n++}}
-      localStorage.setItem('svita_migrated','1');
-      if(n>0)location.reload();
-    }
-  });
-}
+// Migration from old domain complete — no longer needed
+localStorage.setItem('svita_migrated','1');
 const _ck=localStorage.getItem('svita_cookies');
 if(!_ck){document.getElementById('cookieConsent').style.display='block'}
 function cookieApply(consent){
