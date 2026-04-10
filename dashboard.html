@@ -4515,6 +4515,10 @@ function buildSidebar(){
 
   // ── STAGE 2: Закупки и установка ──
   if(currentStage===2&&(currentRole==='admin'||currentRole==='owner')){
+    const canC=currentRole==='admin'||(typeof userSubscription!=='undefined'&&userSubscription.contractors_access);
+    html+='<div class="si" data-nav="exec-contractors" data-tip="Привязанные исполнители, задачи и счета"><span class="ico">&#128119;</span><span class="sl">Исполнители</span></div>';
+    html+='<div class="si" data-nav="exec-chat" data-tip="Чат с подрядчиками и поставщиками"><span class="ico">&#128172;</span><span class="sl">Чат</span></div>';
+    html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
     html+='<div class="side-sec">Исполнение</div>';
     html+='<div class="si si-clr" style="--si-clr:#3b82f6" data-nav="exec-premises" data-tip="Поиск и аренда помещения"><span class="ico">&#127970;</span><span class="sl">Помещения</span><span class="sb wip" id="sbExPrem">0</span></div>';
     html+='<div class="si si-clr" style="--si-clr:#f59e0b" data-nav="exec-renovations" data-tip="Выполнение ремонтных работ"><span class="ico">&#128736;</span><span class="sl">Модернизация</span><span class="sb wip" id="sbExReno">0</span></div>';
@@ -4525,12 +4529,8 @@ function buildSidebar(){
     html+='<div class="si si-clr" style="--si-clr:#ef4444" data-nav="exec-docs" data-tip="Получение лицензий и оформление документов"><span class="ico">&#128203;</span><span class="sl">Документация</span><span class="sb wip" id="sbExDocs">0</span></div>';
     html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
     html+='<div class="side-sec">Исполнители</div>';
-    const canC=currentRole==='admin'||(typeof userSubscription!=='undefined'&&userSubscription.contractors_access);
     html+='<div class="si'+(canC?'':' locked')+'" data-nav="'+(canC?'db-contractors':'upgrade-gate')+'" data-tip="Компании для выполнения работ"><span class="ico">&#128736;</span><span class="sl">Подрядчики</span>'+(canC?'<span class="sb wip" id="sbContr">0</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
     html+='<div class="si'+(canC?'':' locked')+'" data-nav="'+(canC?'db-vendor-companies':'upgrade-gate')+'" data-tip="Поставщики оборудования и материалов"><span class="ico">&#127970;</span><span class="sl">Поставщики</span>'+(canC?'<span class="sb wip" id="sbVend">0</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
-    html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
-    html+='<div class="si" data-nav="exec-contractors" data-tip="Привязанные исполнители, задачи и счета"><span class="ico">&#128119;</span><span class="sl">Исполнители</span></div>';
-    html+='<div class="si" data-nav="exec-chat" data-tip="Чат с подрядчиками и поставщиками"><span class="ico">&#128172;</span><span class="sl">Чат</span></div>';
   }
 
   // ── Роли contractor/supplier — только на Stage 2 ──
