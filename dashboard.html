@@ -1778,6 +1778,7 @@ function switchAdminRole(role){
 <div style="display:flex;gap:16px;padding:0 24px 24px;height:calc(100vh - 160px)">
 <div id="chatUserList" style="width:240px;background:var(--sf);border:1px solid var(--bd);border-radius:12px;overflow-y:auto;flex-shrink:0">
 <div style="padding:12px;border-bottom:1px solid var(--bd);font-size:11px;font-weight:700;color:var(--tx2)">Контакты</div>
+<div style="padding:8px"><input id="chatSearch" type="text" placeholder="Поиск..." oninput="renderChatContacts()" style="width:100%;padding:7px 10px;border:1px solid var(--bd);border-radius:8px;font-size:11px;background:var(--sf2);color:var(--tx);font-family:var(--f);outline:none" onfocus="this.style.borderColor='var(--ac2)'" onblur="this.style.borderColor='var(--bd)'"></div>
 <div id="chatContacts"></div>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;background:var(--sf);border:1px solid var(--bd);border-radius:12px;overflow:hidden">
@@ -5040,34 +5041,38 @@ function renderExecOverview(){
 var chatMessages=[];var activeChatUser=null;
 function _chatContacts(){
   const role=currentRole||'owner';
+  const me=currentUser?.email;
   if(role==='contractor'||role==='supplier'){
-    // Подрядчик/поставщик видит только тех, кто ему писал
     const contacts=[];
     for(let i=0;i<localStorage.length;i++){
       const k=localStorage.key(i);
-      if(!k.startsWith('svita_chat_'))continue;
-      const msgs=JSON.parse(localStorage.getItem(k)||'[]');
-      const myEmail=currentUser.email;
-      // ключ = svita_chat_{ownerEmail}_{myEmail} или svita_chat_{myEmail}_{ownerEmail}
+      if(!k.startsWith('svita_chat_')||k==='svita_chat_session_id')continue;
       const pair=k.replace('svita_chat_','').split('__');
       if(pair.length!==2)continue;
-      const other=pair[0]===myEmail?pair[1]:pair[1]===myEmail?pair[0]:null;
+      const other=pair[0]===me?pair[1]:pair[1]===me?pair[0]:null;
       if(!other)continue;
-      // проверяем что хотя бы одно сообщение от other (владелец написал первым)
-      const hasMsg=msgs.some(m=>m.from===other);
-      if(!hasMsg)continue;
-      const oName=msgs.find(m=>m.from===other);
-      contacts.push({email:other,name:oName?.fromName||other.split('@')[0],role:'owner'});
+      const msgs=JSON.parse(localStorage.getItem(k)||'[]');
+      if(!msgs.some(m=>m.from===other))continue;
+      const oMsg=msgs.find(m=>m.from===other);
+      contacts.push({email:other,name:oMsg?.fromName||other.split('@')[0],role:'owner'});
     }
     return contacts;
   }
-  // Owner/admin — контакты = подрядчики + поставщики из DB
+  // Admin — все пользователи; Owner — подрядчики, поставщики, админы
   const contacts=[];
   const seen={};
-  (DB.contractors||[]).forEach(c=>{if(!seen[c.id]){seen[c.id]=1;contacts.push({email:c.email||'contractor_'+c.id,name:c.name,role:'contractor',spec:c.spec})}});
-  // Поставщики из suppliers у кого есть supplier поле (vendor-записи)
-  (DB.suppliers||[]).filter(s=>s.supplier).forEach(s=>{
-    const key='sup_'+s.id;if(!seen[key]){seen[key]=1;contacts.push({email:s.email||'supplier_'+s.id,name:s.supplier||s.name,role:'supplier',spec:s.category})}
+  const isAdmin=role==='admin'||role==='superadmin';
+  (DB.users||[]).forEach(u=>{
+    if(u.email===me)return;
+    if(!isAdmin&&u.role!=='contractor'&&u.role!=='supplier')return;
+    if(seen[u.email])return;seen[u.email]=1;
+    contacts.push({email:u.email,name:u.name||u.email.split('@')[0],role:u.role||'owner',spec:u.position||u.spec||''});
+  });
+  // Также подрядчики из DB.contractors (могут быть не в DB.users)
+  (DB.contractors||[]).forEach(c=>{
+    const email=c.email||'contractor_'+c.id;
+    if(seen[email])return;seen[email]=1;
+    contacts.push({email,name:c.name,role:'contractor',spec:c.spec||''});
   });
   return contacts;
 }
@@ -5076,21 +5081,25 @@ function _chatKey(email){
   const pair=[me,email].sort();
   return 'svita_chat_'+pair[0]+'__'+pair[1];
 }
+var _roleLabels={admin:'Админ',superadmin:'Админ',owner:'Владелец',contractor:'Подрядчик',supplier:'Поставщик',viewer:'Зритель',employee:'Сотрудник'};
 function renderChatContacts(){
   const el=document.getElementById('chatContacts');if(!el)return;
-  const contacts=_chatContacts();
+  let contacts=_chatContacts();
   const role=currentRole||'owner';
+  const q=(document.getElementById('chatSearch')?.value||'').toLowerCase().trim();
+  if(q)contacts=contacts.filter(u=>(u.name||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q)||(u.spec||'').toLowerCase().includes(q)||(_roleLabels[u.role]||'').toLowerCase().includes(q));
   if(!contacts.length){
-    el.innerHTML='<div style="padding:16px;font-size:11px;color:var(--tx3);text-align:center">'+(role==='contractor'||role==='supplier'?'Пока нет сообщений от заказчиков':'Нет подрядчиков и поставщиков')+'</div>';return;
+    el.innerHTML='<div style="padding:16px;font-size:11px;color:var(--tx3);text-align:center">'+(q?'Ничего не найдено':role==='contractor'||role==='supplier'?'Пока нет сообщений от заказчиков':'Нет контактов')+'</div>';return;
   }
   el.innerHTML=contacts.map(u=>{
     const key=_chatKey(u.email);
     const msgs=JSON.parse(localStorage.getItem(key)||'[]');
     const last=msgs.length?msgs[msgs.length-1]:null;
     const unread=msgs.filter(m=>m.from!==currentUser.email&&!m.read).length;
+    const rl=_roleLabels[u.role]||u.role;
     return '<div class="chat-contact'+(activeChatUser===u.email?' active':'')+'" onclick="openChat(\''+esc(u.email)+'\',\''+esc(u.name)+'\')">'
       +'<div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:600;font-size:12px">'+esc(u.name)+'</div>'+(unread?'<div style="background:var(--ac2);color:#fff;border-radius:50%;min-width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700">'+unread+'</div>':'')+'</div>'
-      +'<div style="font-size:10px;color:var(--tx3)">'+esc(u.role==='contractor'?'Подрядчик':u.role==='supplier'?'Поставщик':'Владелец')+(u.spec?' · '+esc(u.spec):'')+'</div>'
+      +'<div style="font-size:10px;color:var(--tx3)">'+esc(rl)+(u.spec?' · '+esc(u.spec):'')+'</div>'
       +(last?'<div style="font-size:10px;color:var(--tx3);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px">'+esc(last.text.substring(0,40))+'</div>':'')
       +'</div>';
   }).join('');
