@@ -4080,7 +4080,7 @@ async function resetPassword(){
 
 async function proceedToRoleSelect(){
   // Check if user already completed onboarding (has role in profiles)
-  if(sb&&currentUser&&!currentUser.isAdmin){
+  if(sb&&currentUser){
     const{data:prof}=await sb.from('profiles').select('role,profile_complete,phone,company').eq('email',currentUser.email).single();
     if(prof&&prof.profile_complete&&prof.role){
       // Profile complete — skip onboarding, go straight to app
@@ -4088,22 +4088,29 @@ async function proceedToRoleSelect(){
       currentUser.phone=prof.phone||'';
       currentUser.company=prof.company||'';
       localStorage.setItem('svita_role',currentRole);
+      // Restore biz type from localStorage if available
+      const sBiz=localStorage.getItem('svita_biz_type');
+      if(sBiz&&BIZ_TYPES[sBiz]){currentBizType=sBiz;currentBizSubtype=localStorage.getItem('svita_biz_subtype')||null}
+      else if(!currentBizType){currentBizType='dental';localStorage.setItem('svita_biz_type','dental')}
       enterApp();
       return;
     }
   }
-  // Admin — skip to app if profile complete, otherwise show role select
+  // Admin without profile — use admin role, skip onboarding if biz type saved
   if(currentUser.isAdmin){
     const savedRole=localStorage.getItem('svita_role');
-    if(savedRole){currentRole=savedRole;enterApp();return}
-    hideAllLoginSteps();
-    document.getElementById('loginStep2').style.display='block';
-    document.getElementById('loginUserName').textContent=currentUser.name;
-    const badge=document.getElementById('emailBadge');
-    if(badge)badge.innerHTML=currentUser.emailConfirmed?'<span style="color:var(--gn)">&#10003; Email подтверждён</span>':'<span style="color:var(--or)">&#9888; Email не подтверждён</span>';
-    document.getElementById('roleOptAdmin').style.display='flex';
-    document.querySelector('[data-role="admin"]').classList.add('sel');
+    const savedBiz=localStorage.getItem('svita_biz_type');
+    if(savedRole){
+      currentRole=savedRole;
+      if(savedBiz&&BIZ_TYPES[savedBiz]){currentBizType=savedBiz;currentBizSubtype=localStorage.getItem('svita_biz_subtype')||null}
+      else if(!currentBizType){currentBizType='dental';localStorage.setItem('svita_biz_type','dental')}
+      enterApp();return;
+    }
+    // First time admin — default to admin role and dental, skip onboarding
     currentRole='admin';
+    localStorage.setItem('svita_role','admin');
+    if(!currentBizType){currentBizType='dental';localStorage.setItem('svita_biz_type','dental')}
+    enterApp();
     return;
   }
   // New user or incomplete profile — show onboarding
