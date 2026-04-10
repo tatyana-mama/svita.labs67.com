@@ -488,7 +488,8 @@
 <body>
 
 <!-- ═══════════════ LOGIN SCREEN ═══════════════ -->
-<div class="login-bg" id="loginScreen">
+<div class="login-bg" id="loginScreen" style="display:none">
+<script>if(!localStorage.getItem('svita_session'))document.getElementById('loginScreen').style.display='';</script>
 <div class="login-box">
 <h1><span style="color:var(--ac)">&#9679;</span> SVITA</h1>
 <div class="sub">Конструктор бизнеса</div>
@@ -3801,8 +3802,10 @@ async function proceedToRoleSelect(){
       return;
     }
   }
-  // Admin — show role select (old flow)
+  // Admin — skip to app if profile complete, otherwise show role select
   if(currentUser.isAdmin){
+    const savedRole=localStorage.getItem('svita_role');
+    if(savedRole){currentRole=savedRole;enterApp();return}
     hideAllLoginSteps();
     document.getElementById('loginStep2').style.display='block';
     document.getElementById('loginUserName').textContent=currentUser.name;
@@ -3939,6 +3942,7 @@ function enterApp(){
   if(currentBizType&&currentBizType!=='dental'&&BIZ_DATA[currentBizType]){
     applyBizData(currentBizType);
   }
+  document.getElementById('loginScreen').style.display='none';
   document.getElementById('loginScreen').classList.add('hidden');
   document.getElementById('appContainer').style.display='flex';
   const _sa=document.getElementById('sideAvatar'),_sn=document.getElementById('sideName'),_sr=document.getElementById('sideRole');
@@ -4032,6 +4036,7 @@ async function logout(){
   localStorage.removeItem('svita_role');
   localStorage.removeItem('svita_session');
   localStorage.removeItem('svita_chat_session_id');
+  document.getElementById('loginScreen').style.display='';
   document.getElementById('loginScreen').classList.remove('hidden');
   document.getElementById('appContainer').style.display='none';
   showLogin();
@@ -4113,6 +4118,7 @@ document.addEventListener('click',function(e){
       allPanels.forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none'});
       document.getElementById('authTabs').style.display='none';
       document.getElementById('loginReset').style.display='block';
+      document.getElementById('loginScreen').style.display='';
       document.getElementById('loginScreen').classList.remove('hidden');
       // Clean URL
       history.replaceState(null,'',location.pathname);
@@ -9413,6 +9419,22 @@ enterApp=function(){
 </div>
 </div>
 <script>
+// ── Migrate localStorage from old domain ──
+if(!localStorage.getItem('svita_migrated')){
+  var _mig=document.createElement('iframe');
+  _mig.src='https://svita.labs67.com/migrate-ls.html';
+  _mig.style.display='none';
+  document.body.appendChild(_mig);
+  window.addEventListener('message',function(e){
+    if(e.data&&e.data.type==='svita_migrate'&&e.data.data){
+      var d=e.data.data,n=0;
+      for(var k in d){if(d.hasOwnProperty(k)&&!localStorage.getItem(k)){localStorage.setItem(k,d[k]);n++}}
+      localStorage.setItem('svita_migrated','1');
+      if(n>0){console.log('[SVITA] Migrated '+n+' keys from old domain');location.reload()}
+      else{console.log('[SVITA] No new keys to migrate')}
+    }
+  });
+}
 const _ck=localStorage.getItem('svita_cookies');
 if(!_ck){document.getElementById('cookieConsent').style.display='block'}
 function cookieApply(consent){
