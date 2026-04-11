@@ -141,13 +141,20 @@
 .si .ico{font-size:13px;width:18px;height:18px;text-align:center;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 .si .ico img{width:16px;height:16px;object-fit:contain}
 /* Collapsible sidebar groups */
-.side-grp .side-sec{cursor:pointer;user-select:none;display:flex;align-items:center;padding:6px 10px 3px;margin:2px 0 0;border-radius:6px;transition:background .15s}
+.side-grp{margin:2px 0}
+.side-grp .side-sec{cursor:pointer;user-select:none;display:flex;align-items:center;padding:5px 10px 4px;margin:0;border-radius:6px;transition:background .15s,color .2s;gap:6px}
 .side-grp .side-sec:hover{background:var(--sf2)}
-.side-arr{margin-left:auto;font-size:11px;opacity:.5;transition:transform .25s;font-weight:700}
-.side-grp.collapsed .side-arr{transform:rotate(-90deg)}
+.side-grp .side-sec:active{transform:scale(.98)}
+.side-arr{margin-left:auto;font-size:9px;opacity:.4;transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .2s;display:flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:4px}
+.side-grp .side-sec:hover .side-arr{opacity:.7;background:rgba(0,0,0,.04)}
+.side-grp.collapsed .side-arr{transform:rotate(-90deg);opacity:.3}
 .side-grp.collapsed .side-sec{color:var(--tx3)}
-.side-grp-items{overflow:hidden;max-height:500px;opacity:1;transition:max-height .25s ease-out,opacity .15s ease}
-.side-grp.collapsed .side-grp-items{max-height:0;opacity:0;transition:max-height .2s ease-in,opacity .1s ease}
+.side-grp-items{overflow:hidden;max-height:600px;opacity:1;transition:max-height .3s cubic-bezier(.4,0,.2,1),opacity .2s ease .05s}
+.side-grp.collapsed .side-grp-items{max-height:0;opacity:0;transition:max-height .25s cubic-bezier(.4,0,.2,1),opacity .15s ease}
+.side-grp+.side-grp{margin-top:1px}
+.side-grp-cnt{margin-left:auto;font-size:9px;font-weight:600;color:var(--tx3);background:var(--sf2);padding:1px 6px;border-radius:8px;opacity:0;transition:opacity .25s;pointer-events:none}
+.side-grp.collapsed .side-grp-cnt{opacity:1}
+.side-grp.collapsed .side-arr{margin-left:4px}
 .sn{width:24px;height:24px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;border:1.5px solid var(--bd2);color:var(--tx3);flex-shrink:0}
 .sn.ok{background:var(--gn);color:#fff;border:none}.sn.cur{background:var(--ac);color:#fff;border:none}
 .sl{flex:1}.sb{font-size:9px;padding:2px 7px;border-radius:8px;font-weight:600}
@@ -4650,14 +4657,21 @@ function toggleMobileSidebar(forceClose){
 let _sidebarBuilt=false;
 function _sideGrpState(){try{return JSON.parse(localStorage.getItem('svita_side_grp')||'{}')}catch(e){return{}}}
 function _grpOpen(key){return !_sideGrpState()[key]}
-const _grpDefaults={databases:true,execution:true};
+const _grpDefaults={};
 function _grpStart(key,label){
   const st=_sideGrpState();
   const isCollapsed=st.hasOwnProperty(key)?st[key]:!!_grpDefaults[key];
   const c=isCollapsed?' collapsed':'';
-  return '<div class="side-grp'+c+'" data-grp="'+key+'"><div class="side-sec" onclick="toggleSideGrp(this.parentElement)">'+label+'<span class="side-arr">▾</span></div><div class="side-grp-items">';
+  return '<div class="side-grp'+c+'" data-grp="'+key+'"><div class="side-sec" onclick="toggleSideGrp(this.parentElement)">'+label+'<span class="side-grp-cnt"></span><span class="side-arr">▾</span></div><div class="side-grp-items">';
 }
 function _grpEnd(){return '</div></div>'}
+function _updateGrpCounts(){
+  document.querySelectorAll('.side-grp').forEach(g=>{
+    const cnt=g.querySelectorAll('.side-grp-items .si').length;
+    const el=g.querySelector('.side-grp-cnt');
+    if(el)el.textContent=cnt;
+  });
+}
 function toggleSideGrp(el){
   el.classList.toggle('collapsed');
   const st=_sideGrpState();
@@ -4787,6 +4801,7 @@ function buildSidebar(){
   });
   document.getElementById('tabBar').style.display=(currentStage===1&&(currentRole==='admin'||currentRole==='owner'))?'flex':'none';
   _sidebarBuilt=true;
+  _updateGrpCounts();
   updateSidebarBadges();
 }
 
@@ -10829,15 +10844,24 @@ function cookieAccept(){localStorage.setItem('svita_cookies','accepted');cookieA
 function cookieDecline(){localStorage.setItem('svita_cookies','declined');cookieApply('declined');document.getElementById('cookieConsent').style.display='none';toast('Только необходимые cookie','yl')}
 if(_ck)cookieApply(_ck);
 
-// ═══════════════ GUIDED TOUR v2 ═══════════════
+// ═══════════════ GUIDED TOUR v3 ═══════════════
 const TOUR_STEPS=[
-  {target:'#sidebar',title:'Навигация',text:'Боковая панель — ваш пульт управления. Все разделы, каталоги и аналитика.'},
-  {target:'#tabBar',title:'Этапы концепции',text:'7 вкладок — помещение, ремонт, оснащение, персонал, услуги, концепция, документы. Заполняйте по порядку.'},
-  {target:'.si[data-nav="budget"]',title:'Бюджет',text:'Стартовые вложения, ФОТ, выручка, окупаемость. Считается автоматически на основе ваших данных.'},
-  {target:'.si[data-nav="profit"]',title:'Рентабельность',text:'Прогноз доходов, точка безубыточности и срок окупаемости вашего проекта.'},
-  {target:'#sideNav',title:'Каталоги',text:'Базы данных: помещения, оборудование, сотрудники, подрядчики. Выбирайте — они добавятся в концепцию.'},
-  {target:'.si[data-nav="account"]',title:'Мой Кабинет',text:'Профиль, управление пользователями, тариф и безопасность. Данные сохраняются автоматически.'},
-  {target:null,title:'Готово!',text:'Начните с вкладки Концепция — заполните бренд, город, формат. Прогресс виден в Обзоре. Удачи!'}
+  {target:null,title:'Добро пожаловать в SVITA!',text:'Это ваш конструктор бизнес-концепций. За 7 этапов вы создадите полный план — от помещения до документов. Давайте покажем как всё устроено.',icon:'🚀'},
+  {target:'.si[data-nav="overview"]',title:'Обзор',text:'Главная панель — здесь отображается общий прогресс, ключевые метрики и статус вашего проекта. Начинайте каждый день отсюда.',icon:'📊'},
+  {target:'.si[data-nav="news"]',title:'Новости',text:'Свежие обновления платформы, новые функции и полезные материалы для вашего бизнеса.',icon:'📰'},
+  {target:'.side-grp[data-grp="analytics"] .side-sec',title:'Аналитика',text:'Финансовый блок: бюджет стартовых вложений, прогноз рентабельности, зонирование помещения и расчёт стоимости кабинетов.',icon:'💰',expand:'analytics'},
+  {target:'.si[data-nav="budget"]',title:'Бюджет',text:'Автоматический расчёт стартовых и операционных расходов. Обновляется в реальном времени при изменении параметров.',icon:'👛'},
+  {target:'.si[data-nav="profit"]',title:'Рентабельность',text:'Прогноз доходов, точка безубыточности и срок окупаемости. Основан на ваших данных о ценах и загрузке.',icon:'📈'},
+  {target:'.si[data-nav="zones"]',title:'Зоны',text:'Разбивка помещения по функциональным зонам — приём, кабинеты, стерилизаторная, серверная. Влияет на расчёт площади.',icon:'🗺️'},
+  {target:'.side-grp[data-grp="databases"] .side-sec',title:'Базы данных',text:'6 каталогов: помещения, ремонт, услуги, оборудование, сотрудники, документы. Выбирайте из каталогов — они добавятся в вашу концепцию.',icon:'🗄️',expand:'databases'},
+  {target:'.si[data-nav="db-premises"]',title:'Помещения',text:'Каталог коммерческой недвижимости. Фильтруйте по городу, площади, цене. Выбранное помещение станет основой проекта.',icon:'🏢'},
+  {target:'.si[data-nav="db-renovations"]',title:'Модернизация',text:'Каталог ремонтных работ и материалов с ценами. Выберите нужные — они автоматически добавятся в бюджет.',icon:'🔨'},
+  {target:'.si[data-nav="db-suppliers"]',title:'Оборудование',text:'Мебель, техника, инструменты — всё для оснащения вашего бизнеса. Цены и поставщики.',icon:'🪑'},
+  {target:'.si[data-nav="db-employees"]',title:'Сотрудники',text:'Штатное расписание: должности, зарплаты, количество. Автоматически формирует ФОТ в бюджете.',icon:'👤'},
+  {target:'.si[data-nav="db-docs"]',title:'Документация',text:'Перечень лицензий, разрешений и документов. Чеклист: отмечайте полученные — прогресс виден в Обзоре.',icon:'📜'},
+  {target:'#tabBar',title:'Вкладки этапов',text:'7 вкладок — поэтапное заполнение концепции. Помещение → Ремонт → Оснащение → Персонал → Услуги → Концепция → Документы.',icon:'📋'},
+  {target:'.si[data-nav="account"]',title:'Мой Кабинет',text:'Ваш профиль, сохранённые концепции, тарифный план и настройки безопасности.',icon:'⚙️'},
+  {target:null,title:'Вы готовы!',text:'Начните с заполнения Концепции на первой вкладке — введите бренд, город и формат. Весь прогресс сохраняется автоматически. Удачи!',icon:'🎉'}
 ];
 let tourCur=0,_tourActive=false;
 const _PAD=10;
@@ -10851,80 +10875,53 @@ function tourRender(){
   const vw=window.innerWidth,vh=window.innerHeight;
   svg.style.display='block';
   _tourActive=true;
+  // Block scroll and clicks
+  document.body.style.overflow='hidden';
+  document.body.style.pointerEvents='none';
+  svg.style.pointerEvents='auto';
+  tip.style.pointerEvents='auto';
 
   // Content
   const total=TOUR_STEPS.length;
   document.getElementById('tourStep').textContent='Шаг '+(tourCur+1)+' из '+total;
-  document.getElementById('tourTitle').textContent=s.title;
+  document.getElementById('tourTitle').innerHTML=(s.icon?'<span style="margin-right:6px">'+s.icon+'</span>':'')+s.title;
   document.getElementById('tourText').textContent=s.text;
   document.getElementById('tourBack').style.display=tourCur>0?'inline-flex':'none';
-  document.getElementById('tourNext').textContent=tourCur===total-1?'Начать работу':'Далее';
-  document.getElementById('tourDots').innerHTML=TOUR_STEPS.map(function(_,i){return '<div style="width:'+(i===tourCur?'14px':'6px')+';height:6px;border-radius:3px;background:'+(i===tourCur?'var(--ac)':'var(--bd)')+';transition:all .25s"></div>'}).join('');
+  document.getElementById('tourNext').textContent=tourCur===total-1?'Начать работу':'Далее →';
+  // Progress bar instead of dots
+  const pct=Math.round(((tourCur+1)/total)*100);
+  document.getElementById('tourDots').innerHTML='<div style="width:120px;height:4px;border-radius:2px;background:var(--sf2);overflow:hidden"><div style="width:'+pct+'%;height:100%;background:var(--ac);border-radius:2px;transition:width .3s ease"></div></div><span style="font-size:10px;color:var(--tx3);margin-left:6px">'+pct+'%</span>';
 
-  // Find target — auto-expand collapsed sidebar group if needed
+  // Expand sidebar group if needed
+  if(s.expand){
+    const grp=document.querySelector('.side-grp[data-grp="'+s.expand+'"]');
+    if(grp&&grp.classList.contains('collapsed')){
+      grp.classList.remove('collapsed');
+      const _st=_sideGrpState();_st[s.expand]=false;
+      localStorage.setItem('svita_side_grp',JSON.stringify(_st));
+    }
+  }
+
+  // Open mobile sidebar for sidebar targets
+  if(s.target&&(s.target.includes('si[')||s.target.includes('side-grp')||s.target==='#sidebar'||s.target==='#sideNav')){
+    const sb=document.getElementById('sidebar');
+    if(sb&&!sb.classList.contains('mob-open')&&vw<900){
+      sb.classList.add('mob-open');
+      const mo=document.getElementById('mobOverlay');if(mo)mo.classList.add('vis');
+    }
+  }
+
+  // Find target
   const el=s.target?document.querySelector(s.target):null;
   if(el){const _g=el.closest('.side-grp');if(_g&&_g.classList.contains('collapsed')){_g.classList.remove('collapsed');const _st=_sideGrpState();_st[_g.dataset.grp]=false;localStorage.setItem('svita_side_grp',JSON.stringify(_st))}}
-  const hasTarget=el&&el.offsetParent!==null; // visible element only
+  const hasTarget=el&&el.offsetParent!==null;
 
   if(hasTarget){
-    const r=el.getBoundingClientRect();
-    // SVG cutout — hole in overlay
-    cut.setAttribute('x',r.left-_PAD);
-    cut.setAttribute('y',r.top-_PAD);
-    cut.setAttribute('width',r.width+_PAD*2);
-    cut.setAttribute('height',r.height+_PAD*2);
-    // Blue ring
-    ring.style.display='block';
-    ring.style.top=(r.top-_PAD)+'px';ring.style.left=(r.left-_PAD)+'px';
-    ring.style.width=(r.width+_PAD*2)+'px';ring.style.height=(r.height+_PAD*2)+'px';
-
-    // Measure tooltip
-    tip.style.display='block';tip.style.visibility='hidden';tip.style.top='0';tip.style.left='0';
-    const tw=tip.offsetWidth,th=tip.offsetHeight;
-    const gap=16;
-
-    // Find best position: prioritize not overlapping target
-    // Calculate available space in each direction
-    const spaceRight=vw-r.right-gap;
-    const spaceLeft=r.left-gap;
-    const spaceBottom=vh-r.bottom-gap;
-    const spaceTop=r.top-gap;
-
-    let tTop,tLeft;
-    if(spaceRight>=tw){
-      // Right of element
-      tLeft=r.right+gap;
-      tTop=Math.max(8,Math.min(r.top+(r.height-th)/2,vh-th-8));
-    }else if(spaceBottom>=th){
-      // Below element
-      tTop=r.bottom+gap;
-      tLeft=Math.max(8,Math.min(r.left+(r.width-tw)/2,vw-tw-8));
-    }else if(spaceLeft>=tw){
-      // Left of element
-      tLeft=r.left-gap-tw;
-      tTop=Math.max(8,Math.min(r.top+(r.height-th)/2,vh-th-8));
-    }else if(spaceTop>=th){
-      // Above element
-      tTop=r.top-gap-th;
-      tLeft=Math.max(8,Math.min(r.left+(r.width-tw)/2,vw-tw-8));
-    }else{
-      // No room adjacent — place in the biggest open area
-      // Find which half of screen has more room (away from element center)
-      const elemCenterX=r.left+r.width/2;
-      if(elemCenterX<vw/2){
-        // Element on left — put tooltip on right half
-        tLeft=Math.max(vw/2,vw-tw-16);
-        tTop=Math.max(8,(vh-th)/2);
-      }else{
-        // Element on right — put tooltip on left half
-        tLeft=16;
-        tTop=Math.max(8,(vh-th)/2);
-      }
-    }
-    tip.style.top=tTop+'px';tip.style.left=tLeft+'px';
-    tip.style.visibility='visible';
+    // Scroll element into view
+    el.scrollIntoView({block:'nearest',behavior:'smooth'});
+    // Small delay for scroll to settle
+    setTimeout(()=>_positionTour(el,tip,ring,cut,svg,vw,vh),50);
   }else{
-    // No target — center tooltip, no cutout
     cut.setAttribute('width',0);cut.setAttribute('height',0);
     ring.style.display='none';
     tip.style.display='block';tip.style.visibility='hidden';tip.style.top='0';tip.style.left='0';
@@ -10933,6 +10930,47 @@ function tourRender(){
     tip.style.left=Math.max(8,(vw-tw)/2)+'px';
     tip.style.visibility='visible';
   }
+}
+
+function _positionTour(el,tip,ring,cut,svg,vw,vh){
+  const r=el.getBoundingClientRect();
+  cut.setAttribute('x',r.left-_PAD);
+  cut.setAttribute('y',r.top-_PAD);
+  cut.setAttribute('width',r.width+_PAD*2);
+  cut.setAttribute('height',r.height+_PAD*2);
+  ring.style.display='block';
+  ring.style.top=(r.top-_PAD)+'px';ring.style.left=(r.left-_PAD)+'px';
+  ring.style.width=(r.width+_PAD*2)+'px';ring.style.height=(r.height+_PAD*2)+'px';
+
+  tip.style.display='block';tip.style.visibility='hidden';tip.style.top='0';tip.style.left='0';
+  const tw=tip.offsetWidth,th=tip.offsetHeight;
+  const gap=14;
+
+  const spaceRight=vw-r.right-gap;
+  const spaceLeft=r.left-gap;
+  const spaceBottom=vh-r.bottom-gap;
+  const spaceTop=r.top-gap;
+
+  let tTop,tLeft;
+  if(spaceRight>=tw){
+    tLeft=r.right+gap;
+    tTop=Math.max(8,Math.min(r.top-10,vh-th-8));
+  }else if(spaceBottom>=th){
+    tTop=r.bottom+gap;
+    tLeft=Math.max(8,Math.min(r.left+(r.width-tw)/2,vw-tw-8));
+  }else if(spaceLeft>=tw){
+    tLeft=r.left-gap-tw;
+    tTop=Math.max(8,Math.min(r.top-10,vh-th-8));
+  }else if(spaceTop>=th){
+    tTop=r.top-gap-th;
+    tLeft=Math.max(8,Math.min(r.left+(r.width-tw)/2,vw-tw-8));
+  }else{
+    const cx=r.left+r.width/2;
+    tLeft=cx<vw/2?Math.max(vw/2,vw-tw-16):16;
+    tTop=Math.max(8,(vh-th)/2);
+  }
+  tip.style.top=tTop+'px';tip.style.left=tLeft+'px';
+  tip.style.visibility='visible';
 }
 
 function tourNav(d){
@@ -10946,10 +10984,15 @@ function endTour(){
   document.getElementById('tourTip').style.display='none';
   document.getElementById('tourRing').style.display='none';
   _tourActive=false;
+  document.body.style.overflow='';
+  document.body.style.pointerEvents='';
   uSet('svita_onboarded','1');
 }
 function startOnboarding(){
   tourCur=0;
+  // Expand sidebar for desktop
+  const sb=document.getElementById('sidebar');
+  if(sb&&window.innerWidth>=900)sb.classList.add('mob-open');
   tourRender();
 }
 </script>
