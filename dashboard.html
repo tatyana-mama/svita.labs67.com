@@ -4634,6 +4634,7 @@ function buildSidebar(){
   // Contractors/suppliers have no Stage 1 — always force Stage 2
   if((currentRole==='contractor'||currentRole==='supplier')&&currentStage===1){
     currentStage=2;localStorage.setItem('svita_stage','2');
+    _sidebarBuilt=false;
     document.querySelectorAll('.stage-btn').forEach(b=>{b.classList.toggle('active',parseInt(b.dataset.stage)===2)});
     const _st=document.getElementById('sideTag');if(_st)_st.textContent='Закупки и установка';
     const _br=document.getElementById('sideBizRow');if(_br)_br.style.display='none';
