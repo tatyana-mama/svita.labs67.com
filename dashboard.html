@@ -1507,16 +1507,15 @@ function switchAdminRole(role){
   if(!currentUser||!currentUser.isAdmin)return;
   currentRole=role;
   localStorage.setItem('svita_role',role);
-  // Contractors/suppliers have no Stage 1 content — force Stage 2
-  if((role==='contractor'||role==='supplier')&&currentStage===1){
-    currentStage=2;localStorage.setItem('svita_stage','2');
-    document.querySelectorAll('.stage-btn').forEach(b=>{b.classList.toggle('active',parseInt(b.dataset.stage)===2)});
-    const tags={1:'Формирование концепции',2:'Закупки и установка',3:'В разработке'};
-    document.getElementById('sideTag').textContent=tags[2];
-    const _bizRow=document.getElementById('sideBizRow');if(_bizRow)_bizRow.style.display='none';
-  }
   _sidebarBuilt=false;
   buildSidebar();
+  // Restore tabBar and stage UI after sidebar rebuild
+  const _tags={1:'Формирование концепции',2:'Закупки и установка',3:'В разработке'};
+  document.getElementById('sideTag').textContent=_tags[currentStage]||'SVITA';
+  document.querySelectorAll('.stage-btn').forEach(b=>{b.classList.toggle('active',parseInt(b.dataset.stage)===currentStage)});
+  document.getElementById('tabBar').style.display=(currentStage===1&&(role==='admin'||role==='owner'))?'flex':'none';
+  const _bizRow=document.getElementById('sideBizRow');
+  if(_bizRow)_bizRow.style.display=(currentStage===1&&(role==='admin'||role==='owner'))?'flex':'none';
   enterApp();
   if(window._renderRoleSwitch)_renderRoleSwitch();
   renderCabManage();
@@ -4603,6 +4602,8 @@ document.addEventListener('click',function(e){
 
 function switchStage(n){
   if(n===3||n===currentStage)return;
+  // Block Stage 1 for contractor/supplier
+  if(n===1&&(currentRole==='contractor'||currentRole==='supplier')){n=2}
   currentStage=n;
   localStorage.setItem('svita_stage',n);
   // Update switcher UI
@@ -4631,14 +4632,16 @@ let _sidebarBuilt=false;
 function buildSidebar(){
   const n=document.getElementById('sideNav');
   if(!n||!currentRole)return;
-  // Contractors/suppliers have no Stage 1 — always force Stage 2
-  if((currentRole==='contractor'||currentRole==='supplier')&&currentStage===1){
-    currentStage=2;localStorage.setItem('svita_stage','2');
-    _sidebarBuilt=false;
+  // Contractors/suppliers — ALWAYS force Stage 2, they have no Stage 1 content
+  if(currentRole==='contractor'||currentRole==='supplier'){
+    if(currentStage!==2){
+      currentStage=2;localStorage.setItem('svita_stage','2');
+      _sidebarBuilt=false;
+    }
     document.querySelectorAll('.stage-btn').forEach(b=>{b.classList.toggle('active',parseInt(b.dataset.stage)===2)});
     const _st=document.getElementById('sideTag');if(_st)_st.textContent='Закупки и установка';
     const _br=document.getElementById('sideBizRow');if(_br)_br.style.display='none';
-    document.getElementById('tabBar').style.display='none';
+    const _tb=document.getElementById('tabBar');if(_tb)_tb.style.display='none';
   }
   // Build structure only ONCE — after that only update badges
   if(_sidebarBuilt){updateSidebarBadges();return}
