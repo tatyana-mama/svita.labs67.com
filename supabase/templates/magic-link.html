@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SVITA — Sign In</title>
+</head>
+<body style="margin:0;padding:0;background:#f4f5f7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f5f7;padding:40px 20px">
+<tr><td align="center">
+<table width="480" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);overflow:hidden;max-width:480px;width:100%">
+
+<tr><td style="padding:36px 40px 0;text-align:center">
+<div style="font-size:28px;font-weight:800;color:#1a1a2e;letter-spacing:-0.02em">
+<span style="color:#4F46E5;font-size:14px;vertical-align:middle;margin-right:2px">&#9679;</span>
+SVITA
+</div>
+<div style="font-size:11px;letter-spacing:0.15em;color:#9ca3af;margin-top:4px;text-transform:uppercase">Business Constructor</div>
+<div style="height:1px;background:linear-gradient(90deg,transparent,#e5e7eb,transparent);margin:24px 0 0"></div>
+</td></tr>
+
+<tr><td style="padding:28px 40px 0;text-align:center">
+<div style="font-size:40px;margin-bottom:12px">&#128279;</div>
+<div style="font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:16px">Your magic link</div>
+<p style="font-size:14px;line-height:1.7;color:#4b5563;margin:0 0 28px">
+Click the button below to sign in to your SVITA account. This link is valid for a limited time and can only be used once.
+</p>
+</td></tr>
+
+<tr><td style="padding:0 40px;text-align:center">
+<a href="{{ .ConfirmationURL }}" target="_blank" style="display:inline-block;background:#4F46E5;color:#ffffff;font-size:14px;font-weight:700;text-decoration:none;padding:14px 48px;border-radius:10px;letter-spacing:0.02em">Sign In to SVITA</a>
+</td></tr>
+
+<tr><td style="padding:24px 40px 0;text-align:center">
+<p style="font-size:11px;color:#9ca3af;line-height:1.5;margin:0">
+If the button does not work, copy and paste this link:
+</p>
+<p style="font-size:11px;word-break:break-all;margin:6px 0 0">
+<a href="{{ .ConfirmationURL }}" style="color:#4F46E5;text-decoration:underline">{{ .ConfirmationURL }}</a>
+</p>
+</td></tr>
+
+<tr><td style="padding:28px 40px 32px;text-align:center">
+<div style="height:1px;background:linear-gradient(90deg,transparent,#e5e7eb,transparent);margin-bottom:20px"></div>
+<p style="font-size:10px;color:#9ca3af;margin:0;line-height:1.5">
+SVITA by LABS67 &mdash; AI-powered business constructor<br>
+<a href="https://svita.ai" style="color:#4F46E5;text-decoration:none">svita.ai</a>
+</p>
+</td></tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>
