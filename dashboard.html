@@ -4707,11 +4707,14 @@ function buildSidebar(){
     html+='<div class="si" data-nav="db-employees" data-tip="Ваш профиль сотрудника, навыки и контакты"><span class="ico">&#129489;</span><span class="sl">Мои данные</span></div>';
   }
 
-  // ── Admin — на обоих этапах ──
-  if(currentRole==='admin'){
+  // ── Admin panel — visible when user IS admin, regardless of selected role ──
+  if(currentUser&&currentUser.isAdmin){
+    html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
     html+='<div class="side-sec">Администрирование</div>';
     html+='<div class="si" data-nav="users" data-tip="Управление пользователями, ролями и подписками"><span class="ico">&#128101;</span><span class="sl">Пользователи</span><span class="sb wip" id="sbUsers">0</span></div>';
     html+='<div class="si" data-nav="metrics" data-tip="Статистика посещений, источники трафика, SEO"><span class="ico">&#128202;</span><span class="sl">Метрики</span></div>';
+    // Inline role switcher in sidebar
+    html+='<div id="sideRoleSwitch" style="padding:8px 16px"></div>';
   }
 
   // ── Мой Кабинет — для всех ──
@@ -4719,6 +4722,18 @@ function buildSidebar(){
   html+='<div class="si" data-nav="account" data-tip="Профиль, управление, концепции, тариф, безопасность"><span class="ico">&#127968;</span><span class="sl">Мой Кабинет</span></div>';
   n.innerHTML=html;
   n.querySelectorAll('[data-nav]').forEach(el=>{el.addEventListener('click',()=>nav(el.dataset.nav))});
+  // Render inline role switcher for admin
+  const _srs=document.getElementById('sideRoleSwitch');
+  if(_srs&&currentUser&&currentUser.isAdmin){
+    const roles=['admin','owner','contractor','supplier','employee'];
+    let rh='<div style="font-size:9px;font-weight:600;color:var(--tx3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Просмотр от роли</div><div style="display:flex;gap:4px;flex-wrap:wrap">';
+    roles.forEach(r=>{
+      const sel=r===currentRole;
+      rh+='<button onclick="switchAdminRole(\''+r+'\')" style="padding:4px 10px;border-radius:6px;font-size:10px;font-weight:'+(sel?'700':'400')+';border:1px solid '+(sel?'var(--ac)':'var(--bd)')+';background:'+(sel?'var(--acbg)':'transparent')+';color:'+(sel?'var(--ac2)':'var(--tx3)')+';cursor:pointer;font-family:var(--f);transition:all .15s">'+({admin:'Адм',owner:'Влд',contractor:'Подр',supplier:'Пост',employee:'Сотр'}[r]||r)+'</button>';
+    });
+    rh+='</div>';
+    _srs.innerHTML=rh;
+  }
   // Sidebar tooltips
   const _tip=document.getElementById('sideTip');
   n.querySelectorAll('[data-tip]').forEach(el=>{
