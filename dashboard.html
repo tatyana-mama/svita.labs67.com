@@ -590,6 +590,29 @@
   .cx{width:16px;height:16px;font-size:9px}
   .lightbox img{border-radius:4px}
 }
+/* Budget distribution rows */
+.bdr{margin-bottom:6px}
+.bdr-head{display:flex;align-items:center;gap:8px;font-size:12px;padding:4px 0}
+.bdr-icon{font-size:14px;flex-shrink:0}
+.bdr-name{flex:1;font-weight:500;color:var(--tx)}
+.bdr-pct{display:flex;align-items:center;gap:2px;font-size:11px;font-weight:700;color:var(--ac2);white-space:nowrap}
+.bdr-pct-in{width:38px;text-align:center;border:1px solid var(--bd);border-radius:6px;background:var(--sf2);color:var(--tx);font-size:11px;font-weight:700;padding:3px 2px;font-family:var(--f)}
+.bdr-pct-in:focus{border-color:var(--ac);outline:none}
+.bdr-val{font-size:12px;font-weight:700;color:var(--tx);min-width:70px;text-align:right}
+.bdr-bar{height:6px;background:var(--sf2);border-radius:3px;overflow:hidden;margin-top:2px}
+.bdr-fill{height:100%;border-radius:3px;transition:width .3s cubic-bezier(.4,0,.2,1)}
+/* Budget fill bar */
+.budget-fill-wrap{height:8px;background:var(--sf2);border-radius:4px;overflow:hidden;margin-top:8px}
+.budget-fill-bar{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--ac),var(--gn));transition:width .4s cubic-bezier(.4,0,.2,1)}
+/* Collapsible calculator blocks */
+.calc-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;transition:color .15s}
+.calc-toggle:hover{color:var(--ac2)}
+.calc-toggle .calc-arrow{font-size:10px;transition:transform .25s;color:var(--tx3)}
+.calc-toggle.open .calc-arrow{transform:rotate(90deg)}
+.calc-body{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1),opacity .25s;opacity:0}
+.calc-body.open{max-height:2000px;opacity:1}
+/* Currency rate badge */
+.cur-rate-badge{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:600;color:var(--gn);background:var(--gnbg);padding:2px 8px;border-radius:6px;margin-left:8px}
 </style>
 </head>
 <body>
@@ -859,12 +882,12 @@ Apple</button>
 </div>
 </div>
 <div class="tab-bar" id="tabBar">
-<div class="tab act" data-nav="s1" onclick="nav('s1')" style="--tab-clr:#3b82f6"><div class="tab-top"><span class="tab-num">1</span><span class="tab-icon">&#127970;</span>Помещение</div><span class="tab-cost" id="tabCost1"></span></div>
-<div class="tab" data-nav="s2" onclick="nav('s2')" style="--tab-clr:#f59e0b"><div class="tab-top"><span class="tab-num">2</span><span class="tab-icon">&#128736;</span>Модернизация</div><span class="tab-cost" id="tabCost2"></span></div>
-<div class="tab" data-nav="s3" onclick="nav('s3')" style="--tab-clr:#8b5cf6"><div class="tab-top"><span class="tab-num">3</span><span class="tab-icon">&#128230;</span>Оснащение</div><span class="tab-cost" id="tabCost3"></span></div>
-<div class="tab" data-nav="s4" onclick="nav('s4')" style="--tab-clr:#06b6d4"><div class="tab-top"><span class="tab-num">4</span><span class="tab-icon">&#129489;</span>Персонал</div><span class="tab-cost" id="tabCost4"></span></div>
-<div class="tab" data-nav="s5" onclick="nav('s5')" style="--tab-clr:#22c55e"><div class="tab-top"><span class="tab-num">5</span><span class="tab-icon">&#129657;</span>Услуги населению</div><span class="tab-cost" id="tabCost5"></span></div>
-<div class="tab" data-nav="s6" onclick="nav('s6')" style="--tab-clr:#ec4899"><div class="tab-top"><span class="tab-num">6</span><span class="tab-icon">&#128200;</span>Концепция</div><span class="tab-cost" id="tabCost6"></span></div>
+<div class="tab act" data-nav="s6" onclick="nav('s6')" style="--tab-clr:#ec4899"><div class="tab-top"><span class="tab-num">1</span><span class="tab-icon">&#128200;</span>Концепция</div><span class="tab-cost" id="tabCost6"></span></div>
+<div class="tab" data-nav="s1" onclick="nav('s1')" style="--tab-clr:#3b82f6"><div class="tab-top"><span class="tab-num">2</span><span class="tab-icon">&#127970;</span>Помещение</div><span class="tab-cost" id="tabCost1"></span></div>
+<div class="tab" data-nav="s2" onclick="nav('s2')" style="--tab-clr:#f59e0b"><div class="tab-top"><span class="tab-num">3</span><span class="tab-icon">&#128736;</span>Модернизация</div><span class="tab-cost" id="tabCost2"></span></div>
+<div class="tab" data-nav="s3" onclick="nav('s3')" style="--tab-clr:#8b5cf6"><div class="tab-top"><span class="tab-num">4</span><span class="tab-icon">&#128230;</span>Оснащение</div><span class="tab-cost" id="tabCost3"></span></div>
+<div class="tab" data-nav="s4" onclick="nav('s4')" style="--tab-clr:#06b6d4"><div class="tab-top"><span class="tab-num">5</span><span class="tab-icon">&#129489;</span>Персонал</div><span class="tab-cost" id="tabCost4"></span></div>
+<div class="tab" data-nav="s5" onclick="nav('s5')" style="--tab-clr:#22c55e"><div class="tab-top"><span class="tab-num">6</span><span class="tab-icon">&#129657;</span>Услуги населению</div><span class="tab-cost" id="tabCost5"></span></div>
 <div class="tab" data-nav="s7" onclick="nav('s7')" style="--tab-clr:#ef4444"><div class="tab-top"><span class="tab-num">7</span><span class="tab-icon">&#128203;</span>Документация</div><span class="tab-cost" id="tabCost7"></span></div>
 </div>
 
@@ -1211,7 +1234,7 @@ Apple</button>
 <div class="sts" id="renStats" style="grid-template-columns:repeat(4,1fr)">
 <div class="st"><div class="st-l">Работ</div><div class="st-v" id="renCount">0</div><div class="st-s">выбрано</div></div>
 <div class="st"><div class="st-l">Категорий</div><div class="st-v" id="renCatCount">0</div><div class="st-s">направлений</div></div>
-<div class="st"><div class="st-l">Общая стоимость</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="renTotal">0</div><div class="st-s">PLN</div></div>
+<div class="st"><div class="st-l">Общая стоимость</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="renTotal">0</div><div class="st-s cur-label">PLN</div></div>
 <div class="st"><div class="st-l">Выполнено</div><div class="st-v" style="color:var(--gn)" id="renDone">0</div><div class="st-s">из выбранных</div></div>
 </div>
 
@@ -1249,9 +1272,9 @@ Apple</button>
 <div class="ph"><div><h2>03 &middot; Оснащение</h2><div class="ph-s">Выбранное оборудование для проекта</div></div><button class="btn sm pr" onclick="navToEquip(null)">Каталог оборудования →</button></div>
 <div class="sts" id="eqStats" style="grid-template-columns:repeat(4,1fr)">
 <div class="st"><div class="st-l">Позиций</div><div class="st-v" id="eqCount">0</div><div class="st-s">выбрано</div></div>
-<div class="st"><div class="st-l">Общая стоимость</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="eqTotal">0</div><div class="st-s">PLN</div></div>
+<div class="st"><div class="st-l">Общая стоимость</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="eqTotal">0</div><div class="st-s cur-label">PLN</div></div>
 <div class="st"><div class="st-l">Категорий</div><div class="st-v" id="eqCats">0</div><div class="st-s">типов</div></div>
-<div class="st"><div class="st-l">Средняя цена</div><div class="st-v" style="font-size:16px" id="eqAvg">0</div><div class="st-s">PLN</div></div>
+<div class="st"><div class="st-l">Средняя цена</div><div class="st-v" style="font-size:16px" id="eqAvg">0</div><div class="st-s cur-label">PLN</div></div>
 </div>
 <div id="selectedEquipCards"></div>
 </div>
@@ -1261,8 +1284,8 @@ Apple</button>
 <div class="ph"><div><h2>04 &middot; Персонал</h2><div class="ph-s">Штатное расписание, ФОТ, отделы</div></div><button class="btn sm pr" onclick="openModal('staff')">+ Добавить</button></div>
 <div class="sts" id="staffStats">
 <div class="st"><div class="st-l">Штат</div><div class="st-v" id="staffCount">0</div><div class="st-s">человек</div></div>
-<div class="st"><div class="st-l">ЗП / мес.</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="staffFot">0</div><div class="st-s">PLN</div></div>
-<div class="st"><div class="st-l">ЗП / год</div><div class="st-v" style="font-size:16px;color:var(--yl)" id="staffFotYear">0</div><div class="st-s">PLN</div></div>
+<div class="st"><div class="st-l">ЗП / мес.</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="staffFot">0</div><div class="st-s cur-label">PLN</div></div>
+<div class="st"><div class="st-l">ЗП / год</div><div class="st-v" style="font-size:16px;color:var(--yl)" id="staffFotYear">0</div><div class="st-s cur-label">PLN</div></div>
 <div class="st"><div class="st-l">Средняя ЗП</div><div class="st-v" style="font-size:16px" id="staffAvg">0</div><div class="st-s">PLN/мес</div></div>
 </div>
 <div id="staffCards"></div>
@@ -1275,8 +1298,8 @@ Apple</button>
 <div class="sts" id="svcStats" style="grid-template-columns:repeat(4,1fr)">
 <div class="st"><div class="st-l">Позиций</div><div class="st-v" id="svcCount">0</div><div class="st-s">в прайсе</div></div>
 <div class="st"><div class="st-l">Категорий</div><div class="st-v" id="svcCats">0</div><div class="st-s">направлений</div></div>
-<div class="st"><div class="st-l">Средний чек</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="svcAvgPrice">0</div><div class="st-s">PLN</div></div>
-<div class="st"><div class="st-l">Мин / Макс</div><div class="st-v" style="font-size:16px;color:var(--gn)" id="svcRevenue">0</div><div class="st-s">PLN</div></div>
+<div class="st"><div class="st-l">Средний чек</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="svcAvgPrice">0</div><div class="st-s cur-label">PLN</div></div>
+<div class="st"><div class="st-l">Мин / Макс</div><div class="st-v" style="font-size:16px;color:var(--gn)" id="svcRevenue">0</div><div class="st-s cur-label">PLN</div></div>
 </div>
 <div id="serviceCards"></div>
 <div style="text-align:right;padding:12px 0;border-top:1px solid var(--bd);margin-top:8px"><span style="font-size:12px;color:var(--tx3)">Средний чек: </span><span style="font-size:18px;font-weight:800;color:var(--ac2)" id="s5Total">0 PLN</span></div>
@@ -1284,21 +1307,89 @@ Apple</button>
 
 <!-- ═══ S6: КОНЦЕПЦИЯ ═══ -->
 <div class="sec" id="sec-s6">
-<div class="ph"><div><h2>06 &middot; Концепция</h2><div class="ph-s">Бизнес-модель, рентабельность, документация</div></div><span class="tag t-wip">В работе</span></div>
+<div class="ph"><div><h2>01 &middot; Концепция</h2><div class="ph-s">Бизнес-модель, бюджет, валюта, рентабельность</div></div><span class="tag t-wip">В работе</span></div>
 
-<!-- ═══ СВОДНЫЙ БЮДЖЕТ ═══ -->
-<div class="c" style="border-color:var(--acbd);background:linear-gradient(135deg,var(--acbg),var(--sf))"><div class="ch" style="border-bottom-color:var(--acbd)"><h3>&#128176; Сводный бюджет концепции</h3><span style="font-size:10px;color:var(--tx3)">Автосборка из всех этапов</span></div>
+<!-- ═══ ВАЛЮТА + ОБЩИЙ БЮДЖЕТ ═══ -->
+<div class="c" style="border-color:var(--acbd);background:linear-gradient(135deg,var(--acbg),var(--sf))">
+<div class="ch" style="border-bottom-color:var(--acbd)"><h3>&#128176; Бюджет и валюта</h3><button class="btn sm pr" onclick="distributeBudget()" style="font-size:10px">Распределить</button></div>
+<div class="cb">
+<!-- Валюта -->
+<div style="display:flex;gap:12px;align-items:flex-end;margin-bottom:16px;flex-wrap:wrap">
+<div style="flex:1;min-width:200px">
+<div style="font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Валюта проекта</div>
+<select id="currencySelect" onchange="setCurrency(this.value)" style="width:100%;padding:10px 12px;border:1px solid var(--bd);border-radius:10px;background:var(--sf);color:var(--tx);font-size:13px;font-weight:600;font-family:var(--f);cursor:pointer">
+<option value="PLN">🇵🇱 PLN — Злотый (Польша)</option>
+<option value="EUR">🇪🇺 EUR — Евро</option>
+<option value="GBP">🇬🇧 GBP — Фунт стерлингов</option>
+<option value="CHF">🇨🇭 CHF — Франк (Швейцария)</option>
+<option value="SEK">🇸🇪 SEK — Крона (Швеция)</option>
+<option value="NOK">🇳🇴 NOK — Крона (Норвегия)</option>
+<option value="DKK">🇩🇰 DKK — Крона (Дания)</option>
+<option value="CZK">🇨🇿 CZK — Крона (Чехия)</option>
+<option value="HUF">🇭🇺 HUF — Форинт (Венгрия)</option>
+<option value="RON">🇷🇴 RON — Лей (Румыния)</option>
+<option value="BGN">🇧🇬 BGN — Лев (Болгария)</option>
+<option value="HRK">🇭🇷 HRK — Куна (Хорватия)</option>
+<option value="RSD">🇷🇸 RSD — Динар (Сербия)</option>
+<option value="UAH">🇺🇦 UAH — Гривна (Украина)</option>
+<option value="BYN">🇧🇾 BYN — Рубль (Беларусь)</option>
+<option value="GEL">🇬🇪 GEL — Лари (Грузия)</option>
+<option value="TRY">🇹🇷 TRY — Лира (Турция)</option>
+<option value="ISK">🇮🇸 ISK — Крона (Исландия)</option>
+<option value="ALL">🇦🇱 ALL — Лек (Албания)</option>
+<option value="BAM">🇧🇦 BAM — Марка (Босния)</option>
+<option value="MKD">🇲🇰 MKD — Денар (С. Македония)</option>
+<option value="MDL">🇲🇩 MDL — Лей (Молдова)</option>
+<option value="RUB">🇷🇺 RUB — Рубль (Россия)</option>
+<option value="USD">🇺🇸 USD — Доллар (США)</option>
+</select>
+</div>
+<div style="flex:1;min-width:200px">
+<div style="font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Общий бюджет проекта</div>
+<div style="position:relative"><input id="totalBudgetInput" type="number" placeholder="Введите сумму..." value="" oninput="onBudgetInput()" style="width:100%;padding:10px 60px 10px 12px;border:1px solid var(--acbd);border-radius:10px;background:var(--sf);color:var(--tx);font-size:18px;font-weight:800;font-family:var(--f)"><span id="budgetCurrLabel" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:700;color:var(--tx3)">PLN</span></div>
+</div>
+</div>
+
+<!-- Budget fill bar -->
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+<div style="flex:1"><div class="budget-fill-wrap"><div class="budget-fill-bar" id="budgetFillBar" style="width:0%"></div></div></div>
+<span style="font-size:11px;font-weight:700;color:var(--ac2)" id="budgetFillPct">0%</span>
+</div>
+
+<!-- Распределение по этапам (collapsible) -->
+<div class="calc-toggle" onclick="toggleCalc(this)"><span class="calc-arrow">&#9654;</span><span style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">Распределение по этапам</span></div>
+<div class="calc-body" id="budgetDistWrap">
+<div id="budgetDistribution" style="padding-top:8px">
+<div class="bdr" data-key="rent" data-pct="15"><div class="bdr-head"><span class="bdr-icon">🏢</span><span class="bdr-name">Помещение (аренда 12 мес.)</span><span class="bdr-pct"><input type="number" class="bdr-pct-in" value="15" min="0" max="100" oninput="updateDistPct(this)">%</span><span class="bdr-val" id="distRent">0</span></div><div class="bdr-bar"><div class="bdr-fill" style="width:15%;background:#3b82f6"></div></div></div>
+<div class="bdr" data-key="reno" data-pct="25"><div class="bdr-head"><span class="bdr-icon">🔨</span><span class="bdr-name">Ремонт и модернизация</span><span class="bdr-pct"><input type="number" class="bdr-pct-in" value="25" min="0" max="100" oninput="updateDistPct(this)">%</span><span class="bdr-val" id="distReno">0</span></div><div class="bdr-bar"><div class="bdr-fill" style="width:25%;background:#f59e0b"></div></div></div>
+<div class="bdr" data-key="equip" data-pct="30"><div class="bdr-head"><span class="bdr-icon">🪑</span><span class="bdr-name">Оборудование</span><span class="bdr-pct"><input type="number" class="bdr-pct-in" value="30" min="0" max="100" oninput="updateDistPct(this)">%</span><span class="bdr-val" id="distEquip">0</span></div><div class="bdr-bar"><div class="bdr-fill" style="width:30%;background:#8b5cf6"></div></div></div>
+<div class="bdr" data-key="staff" data-pct="15"><div class="bdr-head"><span class="bdr-icon">👤</span><span class="bdr-name">ФОТ (первые 3 мес.)</span><span class="bdr-pct"><input type="number" class="bdr-pct-in" value="15" min="0" max="100" oninput="updateDistPct(this)">%</span><span class="bdr-val" id="distStaff">0</span></div><div class="bdr-bar"><div class="bdr-fill" style="width:15%;background:#06b6d4"></div></div></div>
+<div class="bdr" data-key="docs" data-pct="5"><div class="bdr-head"><span class="bdr-icon">📜</span><span class="bdr-name">Документация и лицензии</span><span class="bdr-pct"><input type="number" class="bdr-pct-in" value="5" min="0" max="100" oninput="updateDistPct(this)">%</span><span class="bdr-val" id="distDocs">0</span></div><div class="bdr-bar"><div class="bdr-fill" style="width:5%;background:#ef4444"></div></div></div>
+<div class="bdr" data-key="mkt" data-pct="10"><div class="bdr-head"><span class="bdr-icon">📈</span><span class="bdr-name">Маркетинг (запуск)</span><span class="bdr-pct"><input type="number" class="bdr-pct-in" value="10" min="0" max="100" oninput="updateDistPct(this)">%</span><span class="bdr-val" id="distMkt">0</span></div><div class="bdr-bar"><div class="bdr-fill" style="width:10%;background:#22c55e"></div></div></div>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:8px;border-top:2px solid var(--acbd)">
+<span style="font-size:11px;font-weight:700;color:var(--tx)">Итого: <span id="distPctTotal" style="color:var(--ac2)">100</span>%</span>
+<span style="font-size:16px;font-weight:800;color:var(--ac2)" id="distTotal">0</span>
+</div>
+</div><!-- close budgetDistribution -->
+</div><!-- close calc-body budgetDistWrap -->
+<!-- Live currency rate -->
+<div style="margin-top:8px;text-align:right"><span id="curRateBadge" class="cur-rate-badge" style="display:none">1 EUR = ? PLN</span></div>
+</div></div>
+
+<!-- ═══ СВОДНЫЙ БЮДЖЕТ (автосборка) ═══ -->
+<div class="c"><div class="ch"><h3>&#128202; Сводка из этапов</h3><span style="font-size:10px;color:var(--tx3)">Автоматически из каталогов</span></div>
 <div class="cb">
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">
 <div style="background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px;text-align:center">
 <div style="font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">Общие инвестиции</div>
 <div style="font-size:22px;font-weight:800;color:var(--ac2);margin-top:4px" id="budgetTotal">0</div>
-<div style="font-size:10px;color:var(--tx3)">PLN</div>
+<div style="font-size:10px;color:var(--tx3)" class="cur-label">PLN</div>
 </div>
 <div style="background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px;text-align:center">
 <div style="font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">Ежемесячные расходы</div>
 <div style="font-size:22px;font-weight:800;color:var(--rd);margin-top:4px" id="budgetMonthly">0</div>
-<div style="font-size:10px;color:var(--tx3)">PLN / мес</div>
+<div style="font-size:10px;color:var(--tx3)" class="cur-label">PLN</div>
 </div>
 <div style="background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:14px;text-align:center">
 <div style="font-size:9px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">Окупаемость</div>
@@ -1306,20 +1397,25 @@ Apple</button>
 <div style="font-size:10px;color:var(--tx3)">мес</div>
 </div>
 </div>
-<div style="display:grid;grid-template-columns:1fr auto;gap:3px 12px;font-size:11px;padding:0 4px">
-<span style="color:var(--tx2)">&#127970; Помещение (аренда × 12 мес.)</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetRent">0 PLN</span>
-<span style="color:var(--tx2)">&#128736; Ремонт и модернизация</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetReno">0 PLN</span>
-<span style="color:var(--tx2)">&#128230; Оборудование</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetEquip">0 PLN</span>
-<span style="color:var(--tx2)">&#129489; ФОТ (первые 3 мес.)</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetStaff">0 PLN</span>
-<span style="color:var(--tx2)">&#128203; Документация и лицензии</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetDocs">0 PLN</span>
-<span style="color:var(--tx2)">&#128200; Маркетинг (запуск)</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetMkt">0 PLN</span>
-<span style="font-weight:800;color:var(--tx);border-top:2px solid var(--acbd);padding-top:6px;margin-top:4px">ИТОГО ИНВЕСТИЦИИ</span><span style="font-weight:800;color:var(--ac2);text-align:right;border-top:2px solid var(--acbd);padding-top:6px;margin-top:4px" id="budgetGrand">0 PLN</span>
+<div class="calc-toggle" onclick="toggleCalc(this)"><span class="calc-arrow">&#9654;</span><span style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">Детализация</span></div>
+<div class="calc-body">
+<div style="display:grid;grid-template-columns:1fr auto;gap:3px 12px;font-size:11px;padding:8px 4px 0">
+<span style="color:var(--tx2)">&#127970; Помещение (аренда × 12 мес.)</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetRent">0</span>
+<span style="color:var(--tx2)">&#128736; Ремонт и модернизация</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetReno">0</span>
+<span style="color:var(--tx2)">&#128230; Оборудование</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetEquip">0</span>
+<span style="color:var(--tx2)">&#129489; ФОТ (первые 3 мес.)</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetStaff">0</span>
+<span style="color:var(--tx2)">&#128203; Документация и лицензии</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetDocs">0</span>
+<span style="color:var(--tx2)">&#128200; Маркетинг (запуск)</span><span style="font-weight:600;text-align:right;color:var(--tx)" id="budgetMkt">0</span>
+<span style="font-weight:800;color:var(--tx);border-top:2px solid var(--acbd);padding-top:6px;margin-top:4px">ИТОГО</span><span style="font-weight:800;color:var(--ac2);text-align:right;border-top:2px solid var(--acbd);padding-top:6px;margin-top:4px" id="budgetGrand">0</span>
 </div>
+</div><!-- close calc-body -->
 </div></div>
 
 <!-- Бизнес-модель -->
 <div class="c"><div class="ch"><h3>&#127973; Бизнес-модель</h3><button class="btn sm gn" id="bmSaveBtn" onclick="saveBusinessModel()">Сохранить</button></div>
 <div class="cb">
+<div class="calc-toggle" onclick="toggleCalc(this)"><span class="calc-arrow">&#9654;</span><span style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">Редактировать параметры</span></div>
+<div class="calc-body">
 <div class="g2">
 <div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">BUSINESS TYPE</div><input class="price-edit" id="cType" placeholder="e.g. Dental clinic, Veterinary, Beauty salon..." style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
 <div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">BRAND NAME</div><input class="price-edit" id="cBrand" placeholder="Your brand or clinic name" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
@@ -1332,10 +1428,35 @@ Apple</button>
 <div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">USP</div><input class="price-edit" id="cUsp" placeholder="What makes you different? e.g. AI-powered, painless" style="font-size:13px;font-weight:700;margin-top:4px;width:100%"></div>
 <div class="db-card" style="margin:0;padding:12px"><div class="db-card-label">TECHNOLOGY</div><input class="price-edit" id="cTech" placeholder="e.g. CBCT 3D, CAD/CAM, Digital workflow" style="font-size:13px;font-weight:700;margin-top:4px;width:100%;color:var(--gn)"></div>
 </div>
+</div><!-- close calc-body business model -->
 </div></div>
 
 <!-- Конструктор рентабельности -->
-<div class="c"><div class="ch"><h3>&#128200; Конструктор рентабельности</h3><span style="font-size:10px;color:var(--tx3)">Все формулы видны</span></div><div class="cb">
+<div class="c"><div class="ch"><h3>&#128200; Конструктор рентабельности</h3><span style="font-size:10px;color:var(--tx3)">Итоговые показатели</span></div><div class="cb">
+
+<!-- Итоговые KPI (всегда видны) -->
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px" id="kpiSummary">
+<div style="background:var(--gnbg);border:1px solid rgba(26,153,86,.15);border-radius:10px;padding:12px;text-align:center">
+<div style="font-size:8px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">Выручка/мес</div>
+<div style="font-size:18px;font-weight:800;color:var(--gn);margin-top:2px" id="kpiRevenue">0</div>
+</div>
+<div style="background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:10px;padding:12px;text-align:center">
+<div style="font-size:8px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">Расходы/мес</div>
+<div style="font-size:18px;font-weight:800;color:var(--rd);margin-top:2px" id="kpiExpenses">0</div>
+</div>
+<div style="background:var(--acbg);border:1px solid var(--acbd);border-radius:10px;padding:12px;text-align:center">
+<div style="font-size:8px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">Прибыль/мес</div>
+<div style="font-size:18px;font-weight:800;color:var(--ac2);margin-top:2px" id="kpiProfit">0</div>
+</div>
+<div style="background:var(--ylbg);border:1px solid rgba(192,138,16,.15);border-radius:10px;padding:12px;text-align:center">
+<div style="font-size:8px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">Окупаемость</div>
+<div style="font-size:18px;font-weight:800;color:var(--yl);margin-top:2px" id="kpiPayback">--</div>
+</div>
+</div>
+
+<!-- Collapsible calculator details -->
+<div class="calc-toggle" onclick="toggleCalc(this)"><span class="calc-arrow">&#9654;</span><span style="font-size:10px;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.5px">Калькулятор — подробности</span></div>
+<div class="calc-body" id="profCalcBody">
 
 <!-- Входные параметры -->
 <div style="margin-bottom:16px">
@@ -1449,6 +1570,8 @@ Apple</button>
 </div>
 </div>
 
+</div><!-- close calc-body profCalcBody -->
+
 </div></div>
 
 </div>
@@ -1459,7 +1582,7 @@ Apple</button>
 <div class="sts">
 <div class="st"><div class="st-l">Документов</div><div class="st-v" id="docCount">0</div><div class="st-s">в проекте</div></div>
 <div class="st"><div class="st-l">Готово</div><div class="st-v" id="docDone">0</div><div class="st-s">выполнено</div><div class="st-b"><div class="st-bf" id="docBar" style="width:0%;background:var(--gn)"></div></div></div>
-<div class="st"><div class="st-l">Общая стоимость</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="docCostStat">0</div><div class="st-s">PLN</div></div>
+<div class="st"><div class="st-l">Общая стоимость</div><div class="st-v" style="font-size:16px;color:var(--ac2)" id="docCostStat">0</div><div class="st-s cur-label">PLN</div></div>
 </div>
 <div id="docCards"></div>
 <div style="text-align:right;padding:12px 0;border-top:1px solid var(--bd);margin-top:8px"><span style="font-size:12px;color:var(--tx3)">Итого: </span><span style="font-size:18px;font-weight:800;color:var(--ac2)" id="s7Total">0 PLN</span></div>
@@ -1913,7 +2036,7 @@ function switchAdminRole(role){
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
 <div class="ph"><div><h2>Рентабельность</h2><div class="ph-s">Оценка окупаемости</div></div></div>
 <div class="g2" style="margin-bottom:20px">
-<div class="profit-card"><div class="profit-label">Общие инвестиции</div><div class="profit-big" style="color:var(--rd)" id="prInvest">0</div><div class="profit-sub">PLN</div></div>
+<div class="profit-card"><div class="profit-label">Общие инвестиции</div><div class="profit-big" style="color:var(--rd)" id="prInvest">0</div><div class="profit-sub cur-label">PLN</div></div>
 <div class="profit-card"><div class="profit-label">Окупаемость</div><div class="profit-big" style="color:var(--gn)" id="prPayback">--</div><div class="profit-sub">месяцев</div></div>
 </div>
 <div class="c"><div class="ch"><h3>Ежемесячная модель</h3></div><div class="cb">
@@ -3157,6 +3280,117 @@ function loadBusinessModel(){
     LOAD_PARAMS.forEach(k=>{const el=document.getElementById(k);if(el&&bm[k])el.value=bm[k]});
     if(bm._rent){const rentEl=document.querySelector('[data-cost="rent"]');if(rentEl)rentEl.value=bm._rent}
   }catch(e){}
+}
+
+/* ═══ BUDGET / CURRENCY / DISTRIBUTION ═══ */
+let activeCurrency='PLN';
+let currencyRates={};
+let currencyRatesBase='EUR';
+
+function toggleCalc(el){
+  el.classList.toggle('open');
+  const body=el.nextElementSibling;
+  if(body)body.classList.toggle('open');
+}
+
+function setCurrency(val){
+  activeCurrency=val;
+  document.querySelectorAll('.cur-label').forEach(e=>e.textContent=val);
+  const lbl=document.getElementById('budgetCurrLabel');
+  if(lbl)lbl.textContent=val;
+  uSet('svita_currency',val);
+  onBudgetInput();
+  updateCurRateBadge();
+}
+
+function onBudgetInput(){
+  const inp=document.getElementById('totalBudgetInput');
+  const total=parseFloat(inp?.value)||0;
+  uSet('svita_budget',total.toString());
+  distributeBudget();
+}
+
+function distributeBudget(){
+  const inp=document.getElementById('totalBudgetInput');
+  const total=parseFloat(inp?.value)||0;
+  const rows=document.querySelectorAll('#budgetDistribution .bdr');
+  let sumPct=0;
+  rows.forEach(row=>{
+    const pctIn=row.querySelector('.bdr-pct-in');
+    const pct=parseFloat(pctIn?.value)||0;
+    sumPct+=pct;
+    const amount=Math.round(total*pct/100);
+    const valEl=row.querySelector('.bdr-val');
+    if(valEl)valEl.textContent=amount.toLocaleString('ru')+' '+activeCurrency;
+    const fill=row.querySelector('.bdr-fill');
+    if(fill)fill.style.width=Math.min(pct,100)+'%';
+    row.dataset.pct=pct;
+  });
+  const pctTotalEl=document.getElementById('distPctTotal');
+  if(pctTotalEl){pctTotalEl.textContent=Math.round(sumPct);pctTotalEl.style.color=Math.abs(sumPct-100)<0.5?'var(--gn)':'var(--rd)'}
+  const distTotalEl=document.getElementById('distTotal');
+  if(distTotalEl)distTotalEl.textContent=total.toLocaleString('ru')+' '+activeCurrency;
+  updateBudgetFill(total);
+}
+
+function updateDistPct(input){
+  const row=input.closest('.bdr');
+  if(row)row.dataset.pct=input.value;
+  distributeBudget();
+}
+
+function updateBudgetFill(total){
+  const bar=document.getElementById('budgetFillBar');
+  const pctEl=document.getElementById('budgetFillPct');
+  if(!bar||!pctEl)return;
+  const target=1760000;
+  const pct=total>0?Math.min(Math.round(total/target*100),100):0;
+  bar.style.width=pct+'%';
+  pctEl.textContent=pct+'%';
+  if(pct>=100){bar.style.background='linear-gradient(90deg,var(--gn),#10b981)'}
+  else if(pct>=70){bar.style.background='linear-gradient(90deg,var(--ac),var(--gn))'}
+  else if(pct>=30){bar.style.background='linear-gradient(90deg,var(--yl),var(--ac))'}
+  else{bar.style.background='linear-gradient(90deg,var(--rd),var(--yl))'}
+}
+
+function loadBudgetState(){
+  const cur=uGet('svita_currency')||'PLN';
+  const sel=document.getElementById('currencySelect');
+  if(sel)sel.value=cur;
+  activeCurrency=cur;
+  document.querySelectorAll('.cur-label').forEach(e=>e.textContent=cur);
+  const lbl=document.getElementById('budgetCurrLabel');
+  if(lbl)lbl.textContent=cur;
+  const budget=uGet('svita_budget')||'';
+  const inp=document.getElementById('totalBudgetInput');
+  if(inp&&budget)inp.value=budget;
+  distributeBudget();
+}
+
+async function fetchCurrencyRates(){
+  try{
+    const resp=await fetch('https://api.frankfurter.dev/v1/latest?base=EUR');
+    const data=await resp.json();
+    if(data&&data.rates){currencyRates=data.rates;currencyRates.EUR=1;currencyRatesBase='EUR';updateCurRateBadge()}
+  }catch(e){console.warn('Currency API unavailable:',e)}
+}
+
+function updateCurRateBadge(){
+  const badge=document.getElementById('curRateBadge');
+  if(!badge)return;
+  if(!currencyRates||!currencyRates[activeCurrency]||activeCurrency==='EUR'){badge.style.display='none';return}
+  const rate=currencyRates[activeCurrency];
+  badge.textContent='1 EUR = '+rate.toFixed(2)+' '+activeCurrency;
+  badge.style.display='inline-flex';
+}
+
+function updateKpiSummary(revenue,expenses,profit,payback){
+  const f=n=>n.toLocaleString('ru');
+  const el=id=>document.getElementById(id);
+  if(el('kpiRevenue'))el('kpiRevenue').textContent=f(revenue);
+  if(el('kpiExpenses'))el('kpiExpenses').textContent=f(expenses);
+  if(el('kpiProfit'))el('kpiProfit').textContent=f(profit);
+  if(el('kpiPayback'))el('kpiPayback').textContent=payback>0?payback+' мес.':'--';
 }
 
 function saveProperty(){
@@ -4418,6 +4652,7 @@ function enterApp(){
   try{loadCustomDB()}catch(e){console.error('[SVITA] loadCustomDB:',e)}
   try{loadPicked()}catch(e){console.error('[SVITA] loadPicked:',e)}
   try{loadBusinessModel()}catch(e){console.error('[SVITA] loadBM:',e)}
+  try{loadBudgetState();fetchCurrencyRates()}catch(e){console.error('[SVITA] budget:',e)}
   // Auto-pick all default employees if pickedStaff is empty (first launch)
   try{
   if(!Object.keys(DB.pickedStaff||{}).length&&currentRole==='admin'){
@@ -4825,7 +5060,7 @@ function getSecNames(){
   return{overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:isCoffee?'Меню':'Услуги населению',s6:'Концепция',s7:'Документация',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны',news:'Новости','db-premises':'БД Помещений','db-renovations':'Модернизация и услуги','db-services':isCoffee?'Меню':'Каталог услуг','db-docs':'Каталог документов','db-contractors':'БД Подрядчиков','db-suppliers':'Каталог оборудования','db-employees':'БД Сотрудников','db-vendor-companies':'Поставщики',users:'Пользователи','cabinet-types':isCoffee?'Стоимость помещений':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения','exec-premises':'Помещения','exec-renovations':'Модернизация','exec-services':'Услуги','exec-equipment':'Оборудование','exec-staff':'Сотрудники','exec-docs':'Документация','exec-contractors':'Исполнители','exec-chat':'Чат',notes:'Заметки',metrics:'Метрики','contractor-orders':'Активные заказы','supplier-requests':'Входящие запросы'};
 }
 const secNames=getSecNames();
-const stageOrder=['s1','s2','s3','s4','s5','s6','s7'];
+const stageOrder=['s6','s1','s2','s3','s4','s5','s7'];
 let cur='overview';
 
 function nav(id){
@@ -4930,7 +5165,7 @@ function renderCabManage(){
   const equips=DB.suppliers||[];
   document.getElementById('cabEquipCount').textContent=equips.length;
   const el=document.getElementById('cabEquipList');
-  el.innerHTML=equips.length?equips.slice(0,50).map(e=>'<div class="cab-item" data-filter="'+esc((e.name||'')+' '+(e.category||'')+' '+(e.supplier||'')).toLowerCase()+'">'+_cabAvatar(e.name,'#06b6d4')+'<div class="cab-item-info"><div class="cab-item-name">'+esc(e.name)+'</div><div class="cab-item-sub">'+esc(e.category||'')+(e.supplier?' · '+esc(e.supplier):'')+(e.price?' · '+Number(e.price).toLocaleString()+' PLN':'')+'</div></div></div>').join('')+(equips.length>50?'<div style="text-align:center;padding:8px;font-size:10px;color:var(--tx3)">...ещё '+(equips.length-50)+'</div>':''):'<div style="text-align:center;color:var(--tx3);font-size:11px;padding:12px">Нет товаров</div>';
+  el.innerHTML=equips.length?equips.slice(0,50).map(e=>'<div class="cab-item" data-filter="'+esc((e.name||'')+' '+(e.category||'')+' '+(e.supplier||'')).toLowerCase()+'">'+_cabAvatar(e.name,'#06b6d4')+'<div class="cab-item-info"><div class="cab-item-name">'+esc(e.name)+'</div><div class="cab-item-sub">'+esc(e.category||'')+(e.supplier?' · '+esc(e.supplier):'')+(e.price?' · '+Number(e.price).toLocaleString()+' '+(activeCurrency||'PLN'):'')+'</div></div></div>').join('')+(equips.length>50?'<div style="text-align:center;padding:8px;font-size:10px;color:var(--tx3)">...ещё '+(equips.length-50)+'</div>':''):'<div style="text-align:center;color:var(--tx3);font-size:11px;padding:12px">Нет товаров</div>';
   // Скрыть управление для не-админов
   if(!isAdmin){
     document.querySelector('#cab-manage').innerHTML='<div class="c"><div class="cb" style="text-align:center;color:var(--tx3);font-size:12px;padding:24px">Раздел доступен только администраторам</div></div>';
@@ -5676,7 +5911,7 @@ function createInvoice(contractorEmail,contractorName,items,totalPrice){
     assignments[it.cat+'_'+it.id]={contractor:contractorEmail,contractor_name:contractorName,invoice_id:inv.id,status:'assigned'};
   });
   saveAssignments();
-  toast('Счёт создан: '+totalPrice.toLocaleString()+' PLN','gn');
+  toast('Счёт создан: '+totalPrice.toLocaleString()+' '+(activeCurrency||'PLN'),'gn');
   return inv;
 }
 
@@ -6163,7 +6398,7 @@ async function sendProposal(){
   }
   contractorSelected={};
   renderContractorWorks();
-  alert('Коммерческое предложение отправлено! Сумма: '+total.toLocaleString()+' PLN');
+  alert('Коммерческое предложение отправлено! Сумма: '+total.toLocaleString()+' '+(activeCurrency||'PLN'));
   nav('contractor-proposals');
 }
 
@@ -8483,7 +8718,7 @@ function renderStaff(){
   if(el('staffFot'))el('staffFot').textContent=totalFot.toLocaleString('ru');
   if(el('staffFotYear'))el('staffFotYear').textContent=(totalFot*12).toLocaleString('ru');
   if(el('staffAvg'))el('staffAvg').textContent=avg.toLocaleString('ru');
-  if(el('s4Total'))el('s4Total').textContent=totalFot.toLocaleString('ru')+' PLN';
+  if(el('s4Total'))el('s4Total').textContent=totalFot.toLocaleString('ru')+' '+(activeCurrency||'PLN');
   if(!cnt){c.innerHTML='<div style="padding:24px;text-align:center;color:var(--tx3);font-size:12px">Добавьте сотрудников из БД Сотрудников</div>';return}
   c.innerHTML=items.map(r=>{
     const statusColor=r.status==='Работает'?'var(--gn)':r.status==='Собеседование'?'var(--yl)':'var(--tx3)';
@@ -8599,7 +8834,7 @@ function renderSelectedServices(){
   document.getElementById('svcCats').textContent=catKeys.length;
   document.getElementById('svcAvgPrice').textContent=avg.toLocaleString('ru');
   document.getElementById('svcRevenue').textContent=mn.toLocaleString('ru')+' / '+mx.toLocaleString('ru');
-  document.getElementById('s5Total').textContent=avg.toLocaleString('ru')+' PLN';
+  document.getElementById('s5Total').textContent=avg.toLocaleString('ru')+' '+(activeCurrency||'PLN');
 
   let html='';
   catKeys.forEach(cat=>{
@@ -9169,7 +9404,7 @@ function renderCabinetTypes(){
 <div style="font-size:11px;color:var(--tx2);margin-top:2px">${rm.type} · ${rm.area} м²</div>
 </div>
 <div style="text-align:right">
-<div style="font-size:20px;font-weight:800;color:${costColor}">${roomCost>0?roomCost.toLocaleString('ru')+' PLN':'—'}</div>
+<div style="font-size:20px;font-weight:800;color:${costColor}">${roomCost>0?roomCost.toLocaleString('ru')+' '+(activeCurrency||'PLN'):'—'}</div>
 <div style="font-size:10px;color:var(--tx3)">${items.length} позиций</div>
 </div>
 </div>`;
@@ -9397,13 +9632,14 @@ function calcTotals(){
   const grand=rent+eng+equip;
   // Update S1 cost total
   const s1el=document.getElementById('s1CostTotal');
-  if(s1el)s1el.textContent=rent.toLocaleString('ru')+' PLN';
+  if(s1el)s1el.textContent=rent.toLocaleString('ru')+' '+(activeCurrency||'PLN');
   const renDisp=document.getElementById('renCostDisplay');
   if(renDisp)renDisp.textContent=renovation.toLocaleString('ru');
   return{rent,renovation,eng,equip,docs,staff,fot,grand,revenue,expenses,chairs,ppc,wd,avgCheck,rentMonth};
 }
 function updateBudgetSummary(t){
-  const f=n=>n.toLocaleString('ru')+' PLN';
+  const c=activeCurrency||'PLN';
+  const f=n=>n.toLocaleString('ru')+' '+c;
   const rentYear=t.rentMonth*12;
   const staffQ=t.staff*3;
   const mkt=parseInt(document.getElementById('prMarketing')?.value||0);
@@ -9435,9 +9671,9 @@ function recalc(){
 function _recalcNow(){
   const t=calcTotals();
   // s2Total removed — renTotal is updated by renderSelectedRenovations()
-  document.getElementById('s4Total').textContent=t.staff.toLocaleString('ru')+' PLN';
-  document.getElementById('s7Total').textContent=t.docs.toLocaleString('ru')+' PLN';
-  const el6r=document.getElementById('s6Revenue');if(el6r)el6r.textContent=t.revenue.toLocaleString('ru')+' PLN';
+  document.getElementById('s4Total').textContent=t.staff.toLocaleString('ru')+' '+(activeCurrency||'PLN');
+  document.getElementById('s7Total').textContent=t.docs.toLocaleString('ru')+' '+(activeCurrency||'PLN');
+  const el6r=document.getElementById('s6Revenue');if(el6r)el6r.textContent=t.revenue.toLocaleString('ru')+' '+(activeCurrency||'PLN');
   const profit=t.revenue-t.expenses;
   document.getElementById('ovROI').textContent=profit>0&&t.grand>0?Math.ceil(t.grand/profit):'--';
   document.getElementById('totalItems').textContent=Object.keys(DB.pickedEquip||{}).length;
@@ -9454,13 +9690,13 @@ function _recalcNow(){
 function updateTabCosts(t){
   // Tab 1: Помещение — аренда + депозит
   const tc1=document.getElementById('tabCost1');
-  if(tc1)tc1.textContent=t.rent>0?t.rent.toLocaleString('ru')+' PLN':'';
+  if(tc1)tc1.textContent=t.rent>0?t.rent.toLocaleString('ru')+' '+(activeCurrency||'PLN'):'';
   // Tab 2: Модернизация — только ремонт
   const tc2=document.getElementById('tabCost2');
-  if(tc2)tc2.textContent=t.renovation>0?t.renovation.toLocaleString('ru')+' PLN':'';
+  if(tc2)tc2.textContent=t.renovation>0?t.renovation.toLocaleString('ru')+' '+(activeCurrency||'PLN'):'';
   // Tab 3: Оснащение — оборудование
   const tc3=document.getElementById('tabCost3');
-  if(tc3)tc3.textContent=t.equip>0?t.equip.toLocaleString('ru')+' PLN':'';
+  if(tc3)tc3.textContent=t.equip>0?t.equip.toLocaleString('ru')+' '+(activeCurrency||'PLN'):'';
   // Tab 4: Персонал — ФОТ/мес
   let fot=0;
   Object.entries(DB.pickedStaff||{}).forEach(([id,p])=>{
@@ -9477,7 +9713,7 @@ function updateTabCosts(t){
     if(s)svcTotal+=(p.customPrice!=null?p.customPrice:s.price)*(p.qty||1);
   });
   const tc5=document.getElementById('tabCost5');
-  if(tc5)tc5.textContent=svcTotal>0?svcTotal.toLocaleString('ru')+' PLN':'';
+  if(tc5)tc5.textContent=svcTotal>0?svcTotal.toLocaleString('ru')+' '+(activeCurrency||'PLN'):'';
   // Tab 5 stats
   const svcCountEl=document.getElementById('svcCount');
   const svcCatsEl=document.getElementById('svcCats');
@@ -9489,13 +9725,13 @@ function updateTabCosts(t){
   if(svcAvgEl)svcAvgEl.textContent=svcPickedCount>0?Math.round(svcTotal/svcPickedCount).toLocaleString('ru'):'0';
   if(svcRevEl){const chairs=parseInt(document.getElementById('chairsCount')?.value||7);const ppd=parseInt(document.getElementById('patientsPerChair')?.value||6);const wd=parseInt(document.getElementById('workDays')?.value||22);const avgP=svcPickedCount>0?svcTotal/svcPickedCount:0;svcRevEl.textContent=Math.round(avgP*chairs*ppd*wd).toLocaleString('ru')}
   const s5t=document.getElementById('s5Total');
-  if(s5t)s5t.textContent=(svcPickedCount>0?Math.round(svcTotal/svcPickedCount).toLocaleString('ru'):'0')+' PLN';
+  if(s5t)s5t.textContent=(svcPickedCount>0?Math.round(svcTotal/svcPickedCount).toLocaleString('ru'):'0')+' '+(activeCurrency||'PLN');
   // Tab 6: Концепция
   const tc6=document.getElementById('tabCost6');
   if(tc6)tc6.textContent='';
   // Tab 7: Документация
   const tc7=document.getElementById('tabCost7');
-  if(tc7)tc7.textContent=t.docs>0?t.docs.toLocaleString('ru')+' PLN':'';
+  if(tc7)tc7.textContent=t.docs>0?t.docs.toLocaleString('ru')+' '+(activeCurrency||'PLN'):'';
   // Tab status: red (0) → orange (wip) → green (ok)
   const tabs=document.querySelectorAll('#tabBar .tab');
   const renP=Object.keys(DB.pickedRenovations||{}).length;
@@ -9640,11 +9876,12 @@ function showAchToast(count){
 
 function updateBudget(){
   const t=calcTotals();
-  document.getElementById('budgetGrand').textContent=t.grand.toLocaleString('ru')+' PLN';
-  document.getElementById('bCatRent').textContent=t.rent.toLocaleString('ru')+' PLN';
-  document.getElementById('bCatEng').textContent=t.eng.toLocaleString('ru')+' PLN';
-  document.getElementById('bCatEquip').textContent=t.equip.toLocaleString('ru')+' PLN';
-  document.getElementById('bCatDocs').textContent=t.docs.toLocaleString('ru')+' PLN';
+  const c=activeCurrency||'PLN';
+  document.getElementById('budgetGrand').textContent=t.grand.toLocaleString('ru')+' '+c;
+  document.getElementById('bCatRent').textContent=t.rent.toLocaleString('ru')+' '+c;
+  document.getElementById('bCatEng').textContent=t.eng.toLocaleString('ru')+' '+c;
+  document.getElementById('bCatEquip').textContent=t.equip.toLocaleString('ru')+' '+c;
+  document.getElementById('bCatDocs').textContent=t.docs.toLocaleString('ru')+' '+c;
   // Build itemized list from DB data (not DOM) to work even when sections are hidden
   const items=[];
   // Rent + deposit
@@ -9691,13 +9928,13 @@ function updateProfit(){
   document.getElementById('prInvest').textContent=t.grand.toLocaleString('ru');
   document.getElementById('prPayback').textContent=payback||'--';
   document.getElementById('prPatients').textContent=t.chairs*t.ppc;
-  document.getElementById('prAvgCheck').textContent=t.avgCheck.toLocaleString('ru')+' PLN';
-  document.getElementById('prRevenue').textContent=t.revenue.toLocaleString('ru')+' PLN';
-  document.getElementById('prRent').textContent=t.rentMonth.toLocaleString('ru')+' PLN';
-  document.getElementById('prStaff').textContent=t.staff.toLocaleString('ru')+' PLN';
-  document.getElementById('prFot').textContent=t.fot.toLocaleString('ru')+' PLN';
-  document.getElementById('prExpenses').textContent=t.expenses.toLocaleString('ru')+' PLN';
-  document.getElementById('prProfit').textContent=profit.toLocaleString('ru')+' PLN';
+  document.getElementById('prAvgCheck').textContent=t.avgCheck.toLocaleString('ru')+' '+(activeCurrency||'PLN');
+  document.getElementById('prRevenue').textContent=t.revenue.toLocaleString('ru')+' '+(activeCurrency||'PLN');
+  document.getElementById('prRent').textContent=t.rentMonth.toLocaleString('ru')+' '+(activeCurrency||'PLN');
+  document.getElementById('prStaff').textContent=t.staff.toLocaleString('ru')+' '+(activeCurrency||'PLN');
+  document.getElementById('prFot').textContent=t.fot.toLocaleString('ru')+' '+(activeCurrency||'PLN');
+  document.getElementById('prExpenses').textContent=t.expenses.toLocaleString('ru')+' '+(activeCurrency||'PLN');
+  document.getElementById('prProfit').textContent=profit.toLocaleString('ru')+' '+(activeCurrency||'PLN');
   document.getElementById('prProfit').className='metric-val '+(profit>0?'pos':'neg');
   document.getElementById('prMarginBar').style.width=Math.max(0,Math.min(100,margin))+'%';
   document.getElementById('prMarginBar').style.background=margin>30?'var(--gn)':margin>15?'var(--yl)':'var(--rd)';
@@ -9705,7 +9942,7 @@ function updateProfit(){
   document.getElementById('prROI').textContent=roi+'%';
   document.getElementById('prROI').className='metric-val '+(roi>50?'pos':roi>20?'neu':'neg');
   document.getElementById('prPaybackMonths').textContent=payback?payback+' мес.':'--';
-  document.getElementById('prYearProfit').textContent=(profit*12).toLocaleString('ru')+' PLN';
+  document.getElementById('prYearProfit').textContent=(profit*12).toLocaleString('ru')+' '+(activeCurrency||'PLN');
 }
 
 function updateFormulaDisplay(){
@@ -9722,25 +9959,26 @@ function updateFormulaDisplay(){
   const roi=t.grand>0?Math.round(profit*12/t.grand*100):0;
   const payback=profit>0?Math.ceil(t.grand/profit):0;
   const fmt=n=>n.toLocaleString('ru');
+  const c=activeCurrency||'PLN';
   // Revenue
   const el=id=>document.getElementById(id);
-  if(el('fmRevenueCalc'))el('fmRevenueCalc').textContent=chairs+' × '+ppc+' × '+wd+' × '+fmt(avg)+' = '+fmt(revenue)+' PLN';
-  if(el('s6Revenue'))el('s6Revenue').textContent=fmt(revenue)+' PLN';
+  if(el('fmRevenueCalc'))el('fmRevenueCalc').textContent=chairs+' × '+ppc+' × '+wd+' × '+fmt(avg)+' = '+fmt(revenue)+' '+c;
+  if(el('s6Revenue'))el('s6Revenue').textContent=fmt(revenue)+' '+c;
   // Expenses — total + breakdown
-  if(el('fmExpensesTotal'))el('fmExpensesTotal').textContent=fmt(expenses)+' PLN';
-  if(el('fmExpRent'))el('fmExpRent').textContent=fmt(rentM)+' PLN';
-  if(el('fmExpStaff'))el('fmExpStaff').textContent=fmt(staff)+' PLN';
-  if(el('fmExpFot'))el('fmExpFot').textContent=fmt(fot)+' PLN';
-  if(el('fmExpUtils'))el('fmExpUtils').textContent=fmt(utils)+' PLN';
-  if(el('fmExpMat'))el('fmExpMat').textContent=fmt(mat)+' PLN';
-  if(el('fmExpMkt'))el('fmExpMkt').textContent=fmt(mkt)+' PLN';
-  if(el('fmExpOther'))el('fmExpOther').textContent=fmt(oth)+' PLN';
-  if(el('fmExpTotal2'))el('fmExpTotal2').textContent=fmt(expenses)+' PLN';
-  if(el('fmExpensesCalc'))el('fmExpensesCalc').textContent=fmt(rentM)+' + '+fmt(staff)+' + '+fmt(fot)+' + '+fmt(utils)+' + '+fmt(mat)+' + '+fmt(mkt)+' + '+fmt(oth)+' = '+fmt(expenses)+' PLN';
+  if(el('fmExpensesTotal'))el('fmExpensesTotal').textContent=fmt(expenses)+' '+c;
+  if(el('fmExpRent'))el('fmExpRent').textContent=fmt(rentM)+' '+c;
+  if(el('fmExpStaff'))el('fmExpStaff').textContent=fmt(staff)+' '+c;
+  if(el('fmExpFot'))el('fmExpFot').textContent=fmt(fot)+' '+c;
+  if(el('fmExpUtils'))el('fmExpUtils').textContent=fmt(utils)+' '+c;
+  if(el('fmExpMat'))el('fmExpMat').textContent=fmt(mat)+' '+c;
+  if(el('fmExpMkt'))el('fmExpMkt').textContent=fmt(mkt)+' '+c;
+  if(el('fmExpOther'))el('fmExpOther').textContent=fmt(oth)+' '+c;
+  if(el('fmExpTotal2'))el('fmExpTotal2').textContent=fmt(expenses)+' '+c;
+  if(el('fmExpensesCalc'))el('fmExpensesCalc').textContent=fmt(rentM)+' + '+fmt(staff)+' + '+fmt(fot)+' + '+fmt(utils)+' + '+fmt(mat)+' + '+fmt(mkt)+' + '+fmt(oth)+' = '+fmt(expenses)+' '+c;
   // Profit
   const pEl=el('fmProfitTotal');
-  if(pEl){pEl.textContent=fmt(profit)+' PLN';pEl.style.color=profit>0?'var(--gn)':'var(--rd)'}
-  if(el('fmProfitCalc'))el('fmProfitCalc').textContent=fmt(revenue)+' − '+fmt(expenses)+' = '+fmt(profit)+' PLN';
+  if(pEl){pEl.textContent=fmt(profit)+' '+c;pEl.style.color=profit>0?'var(--gn)':'var(--rd)'}
+  if(el('fmProfitCalc'))el('fmProfitCalc').textContent=fmt(revenue)+' − '+fmt(expenses)+' = '+fmt(profit)+' '+c;
   // Payback
   if(el('fmPaybackVal'))el('fmPaybackVal').textContent=payback?payback+' мес.':'--';
   if(el('fmPaybackCalc'))el('fmPaybackCalc').textContent=fmt(t.grand)+' ÷ '+fmt(Math.max(profit,0))+' = '+(payback?payback+' мес.':'∞');
@@ -9751,6 +9989,8 @@ function updateFormulaDisplay(){
   if(el('fmMarginVal')){el('fmMarginVal').textContent=margin+'%';el('fmMarginVal').style.color=margin>30?'var(--gn)':margin>15?'var(--yl)':'var(--rd)'}
   if(el('fmMarginBar')){el('fmMarginBar').style.width=Math.max(0,Math.min(100,margin))+'%';el('fmMarginBar').style.background=margin>30?'var(--gn)':margin>15?'var(--yl)':'var(--rd)'}
   if(el('fmMarginCalc'))el('fmMarginCalc').textContent=fmt(profit)+' ÷ '+fmt(revenue)+' × 100 = '+margin+'%';
+  // KPI summary (always visible)
+  updateKpiSummary(revenue,expenses,profit,payback);
 }
 // ═══════════════ RIGHT PANEL ═══════════════
 function updateRightPanel(){/* chat is in rpanel now */}
@@ -9843,7 +10083,7 @@ async function sendRpChat(){
     if(_fullReno.length)parts.push('РЕМОНТ ('+_fullReno.length+'):\n'+_fullReno.join('\n'));
     if(_fullDocs.length)parts.push('ДОКУМЕНТЫ ('+_fullDocs.length+'):\n'+_fullDocs.join('\n'));
     if(context.property)parts.push('ОБЪЕКТ: '+context.property.name+', '+context.property.area+'м², '+context.property.city);
-    if(context.budget&&context.budget!=='0')parts.push('БЮДЖЕТ: '+context.budget+' PLN');
+    if(context.budget&&context.budget!=='0')parts.push('БЮДЖЕТ: '+context.budget+' '+(activeCurrency||'PLN'));
     if(context.revenue&&context.revenue!=='0')parts.push('ВЫРУЧКА: '+context.revenue+' PLN/мес');
     context.currentState=parts.length?parts.join('\n\n'):'Концепция пока пустая — ничего не выбрано';
   }
@@ -9971,7 +10211,7 @@ function exportPDF(){
   setFont(10,'normal',GOLD);
   doc.text('Город',M,metaY);doc.text('Площадь',M+60,metaY);doc.text('Инвестиции',M+120,metaY);
   setFont(16,'bold',WHITE);
-  doc.text(city,M,metaY+10);doc.text(area+' м²',M+60,metaY+10);doc.text(t.grand.toLocaleString('ru')+' PLN',M+120,metaY+10);
+  doc.text(city,M,metaY+10);doc.text(area+' м²',M+60,metaY+10);doc.text(t.grand.toLocaleString('ru')+' '+(activeCurrency||'PLN'),M+120,metaY+10);
   // Stats row
   const sy=180;
   const profit=t.revenue-t.expenses;
@@ -9995,37 +10235,37 @@ function exportPDF(){
   doc.setFillColor(...LIGHT_BG);doc.rect(0,0,W,H,'F');
   addSectionTitle('Финансовая модель','📊');
   // Investment breakdown
-  addRow('Депозит + аренда',t.rent.toLocaleString('ru')+' PLN');
-  addRow('Ремонт и модернизация',t.renovation.toLocaleString('ru')+' PLN');
-  addRow('Инженерные системы',t.eng.toLocaleString('ru')+' PLN');
-  addRow('Оборудование',t.equip.toLocaleString('ru')+' PLN');
-  addRow('Документация и лицензии',t.docs.toLocaleString('ru')+' PLN');
+  addRow('Депозит + аренда',t.rent.toLocaleString('ru')+' '+(activeCurrency||'PLN'));
+  addRow('Ремонт и модернизация',t.renovation.toLocaleString('ru')+' '+(activeCurrency||'PLN'));
+  addRow('Инженерные системы',t.eng.toLocaleString('ru')+' '+(activeCurrency||'PLN'));
+  addRow('Оборудование',t.equip.toLocaleString('ru')+' '+(activeCurrency||'PLN'));
+  addRow('Документация и лицензии',t.docs.toLocaleString('ru')+' '+(activeCurrency||'PLN'));
   y+=2;drawLine(y);y+=4;
-  addRow('ИТОГО ИНВЕСТИЦИИ',t.grand.toLocaleString('ru')+' PLN',true);
+  addRow('ИТОГО ИНВЕСТИЦИИ',t.grand.toLocaleString('ru')+' '+(activeCurrency||'PLN'),true);
   y+=8;
   addSectionTitle('Ежемесячные показатели','💰');
   addRow('Кресел',String(t.chairs));
   addRow('Пациентов/день на кресло',String(t.ppc));
   addRow('Рабочих дней/мес',String(t.wd));
-  addRow('Средний чек',t.avgCheck.toLocaleString('ru')+' PLN');
+  addRow('Средний чек',t.avgCheck.toLocaleString('ru')+' '+(activeCurrency||'PLN'));
   y+=2;drawLine(y);y+=4;
-  addRow('Выручка/мес',t.revenue.toLocaleString('ru')+' PLN',true);
+  addRow('Выручка/мес',t.revenue.toLocaleString('ru')+' '+(activeCurrency||'PLN'),true);
   y+=4;
-  addRow('ФОТ (зарплаты)',t.staff.toLocaleString('ru')+' PLN');
-  addRow('ФОТ (налоги ZUS)',t.fot.toLocaleString('ru')+' PLN');
-  addRow('Аренда/мес',t.rentMonth.toLocaleString('ru')+' PLN');
+  addRow('ФОТ (зарплаты)',t.staff.toLocaleString('ru')+' '+(activeCurrency||'PLN'));
+  addRow('ФОТ (налоги ZUS)',t.fot.toLocaleString('ru')+' '+(activeCurrency||'PLN'));
+  addRow('Аренда/мес',t.rentMonth.toLocaleString('ru')+' '+(activeCurrency||'PLN'));
   const prUtils=parseInt(document.getElementById('prUtils')?.value)||0;
   const prMat=parseInt(document.getElementById('prMaterials')?.value)||0;
   const prMark=parseInt(document.getElementById('prMarketing')?.value)||0;
   const prOther=parseInt(document.getElementById('prOther')?.value)||0;
-  addRow('Коммунальные',prUtils.toLocaleString('ru')+' PLN');
-  addRow('Материалы',prMat.toLocaleString('ru')+' PLN');
-  addRow('Маркетинг',prMark.toLocaleString('ru')+' PLN');
-  addRow('Прочее',prOther.toLocaleString('ru')+' PLN');
+  addRow('Коммунальные',prUtils.toLocaleString('ru')+' '+(activeCurrency||'PLN'));
+  addRow('Материалы',prMat.toLocaleString('ru')+' '+(activeCurrency||'PLN'));
+  addRow('Маркетинг',prMark.toLocaleString('ru')+' '+(activeCurrency||'PLN'));
+  addRow('Прочее',prOther.toLocaleString('ru')+' '+(activeCurrency||'PLN'));
   y+=2;drawLine(y);y+=4;
-  addRow('Расходы/мес',t.expenses.toLocaleString('ru')+' PLN',true);
+  addRow('Расходы/мес',t.expenses.toLocaleString('ru')+' '+(activeCurrency||'PLN'),true);
   y+=4;
-  addRow('Прибыль/мес',profit.toLocaleString('ru')+' PLN',true);
+  addRow('Прибыль/мес',profit.toLocaleString('ru')+' '+(activeCurrency||'PLN'),true);
   addRow('Маржинальность',t.revenue>0?Math.round(profit/t.revenue*100)+'%':'—');
   addRow('Окупаемость',roi>0?roi+' мес':'—');
 
@@ -10066,11 +10306,11 @@ function exportPDF(){
       const price=(p.customPrice!=null?p.customPrice:s.price)*(p.qty||1);
       setFont(8,'normal',DARK);doc.text((s.name||'').substring(0,55),M+2,y);
       setFont(8,'normal',GRAY);doc.text('×'+(p.qty||1),M+110,y);
-      setFont(8,'normal',GOLD);doc.text(price.toLocaleString('ru')+' PLN',W-M-2,y,{align:'right'});
+      setFont(8,'normal',GOLD);doc.text(price.toLocaleString('ru')+' '+(activeCurrency||'PLN'),W-M-2,y,{align:'right'});
       y+=5;
     });
     y+=2;drawLine(y);y+=4;
-    addRow('ИТОГО оборудование',t.equip.toLocaleString('ru')+' PLN',true);
+    addRow('ИТОГО оборудование',t.equip.toLocaleString('ru')+' '+(activeCurrency||'PLN'),true);
   } else { addText('Оборудование не выбрано'); }
 
   // ══════ ПЕРСОНАЛ ══════
@@ -10088,12 +10328,12 @@ function exportPDF(){
       checkPage(6);
       setFont(9,'normal',DARK);doc.text((e.name||e.position||'').substring(0,50),M+2,y);
       setFont(8,'normal',GRAY);doc.text(e.type==='full'?'Полный':'Частичный',M+100,y);
-      setFont(9,'normal',GOLD);doc.text(((e.salary||0)*(p.qty||1)).toLocaleString('ru')+' PLN',W-M-2,y,{align:'right'});
+      setFont(9,'normal',GOLD);doc.text(((e.salary||0)*(p.qty||1)).toLocaleString('ru')+' '+(activeCurrency||'PLN'),W-M-2,y,{align:'right'});
       y+=5;
     });
     y+=2;drawLine(y);y+=4;
-    addRow('ФОТ/мес (брутто)',t.staff.toLocaleString('ru')+' PLN',true);
-    addRow('Налоги ZUS',t.fot.toLocaleString('ru')+' PLN');
+    addRow('ФОТ/мес (брутто)',t.staff.toLocaleString('ru')+' '+(activeCurrency||'PLN'),true);
+    addRow('Налоги ZUS',t.fot.toLocaleString('ru')+' '+(activeCurrency||'PLN'));
   } else { addText('Персонал не выбран'); }
 
   // ══════ УСЛУГИ ══════
@@ -10110,7 +10350,7 @@ function exportPDF(){
       const price=p.customPrice!=null?p.customPrice:s.price;
       setFont(8,'normal',DARK);doc.text((s.name||'').substring(0,45),M+2,y);
       setFont(7,'normal',GRAY);doc.text((s.category||'').substring(0,25),M+90,y);
-      setFont(8,'normal',GOLD);doc.text(price.toLocaleString('ru')+' PLN',W-M-2,y,{align:'right'});
+      setFont(8,'normal',GOLD);doc.text(price.toLocaleString('ru')+' '+(activeCurrency||'PLN'),W-M-2,y,{align:'right'});
       y+=5;
     });
   } else { addText('Услуги не выбраны'); }
@@ -10130,11 +10370,11 @@ function exportPDF(){
       checkPage(6);
       const cost=getRenItemCost(id);
       setFont(8,'normal',DARK);doc.text((r.name||'').substring(0,60),M+2,y);
-      setFont(8,'normal',GOLD);doc.text(cost.toLocaleString('ru')+' PLN',W-M-2,y,{align:'right'});
+      setFont(8,'normal',GOLD);doc.text(cost.toLocaleString('ru')+' '+(activeCurrency||'PLN'),W-M-2,y,{align:'right'});
       y+=5;
     });
     y+=2;drawLine(y);y+=4;
-    addRow('ИТОГО ремонт',t.renovation.toLocaleString('ru')+' PLN',true);
+    addRow('ИТОГО ремонт',t.renovation.toLocaleString('ru')+' '+(activeCurrency||'PLN'),true);
   } else { addText('Ремонтные работы не выбраны'); }
 
   // ══════ ДОКУМЕНТАЦИЯ ══════
@@ -10149,11 +10389,11 @@ function exportPDF(){
       if(!d)return;
       checkPage(6);
       setFont(8,'normal',DARK);doc.text((d.name||'').substring(0,60),M+2,y);
-      setFont(8,'normal',GOLD);doc.text((d.cost||d.price||0).toLocaleString('ru')+' PLN',W-M-2,y,{align:'right'});
+      setFont(8,'normal',GOLD);doc.text((d.cost||d.price||0).toLocaleString('ru')+' '+(activeCurrency||'PLN'),W-M-2,y,{align:'right'});
       y+=5;
     });
     y+=2;drawLine(y);y+=4;
-    addRow('ИТОГО документация',t.docs.toLocaleString('ru')+' PLN',true);
+    addRow('ИТОГО документация',t.docs.toLocaleString('ru')+' '+(activeCurrency||'PLN'),true);
   } else { addText('Документы не выбраны'); }
 
   // ══════ ПОШАГОВЫЙ ПЛАН ══════
