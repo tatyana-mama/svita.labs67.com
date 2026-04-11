@@ -44,11 +44,11 @@
 .lr-name{font-size:13px;font-weight:700}.lr-desc{font-size:10px;color:var(--tx3);margin-top:2px}
 
 /* SIDEBAR */
-.side{width:240px;flex-shrink:0;background:var(--sf);border-right:1px solid var(--bd);position:fixed;top:0;left:0;bottom:0;z-index:100;display:flex;flex-direction:column;overflow:hidden;box-shadow:1px 0 8px rgba(0,0,0,.03)}
-.side-head{padding:20px 24px 16px;border-bottom:1px solid var(--bd)}
-.side-logo{font-size:20px;font-weight:800;display:flex;align-items:center;gap:10px;color:var(--tx)}.side-logo .d{width:8px;height:8px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 3px var(--acbg)}
-.side-tag{font-size:9px;color:var(--tx3);letter-spacing:2px;text-transform:uppercase;margin-top:4px;font-weight:500}
-.stage-sw{display:flex;gap:3px;margin-top:10px;padding:3px;background:var(--sf2);border-radius:10px}
+.side{width:280px;flex-shrink:0;background:var(--sf);border-right:1px solid var(--bd);position:fixed;top:0;left:0;bottom:0;z-index:100;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;box-shadow:8px 0 30px rgba(0,0,0,.1);transform:translateX(-100%);transition:transform .25s cubic-bezier(.4,0,.2,1)}
+.side-head{padding:12px 16px 10px;border-bottom:1px solid var(--bd)}
+.side-logo{font-size:18px;font-weight:800;display:flex;align-items:center;gap:8px;color:var(--tx)}.side-logo .d{width:7px;height:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 3px var(--acbg)}
+.side-tag{font-size:8px;color:var(--tx3);letter-spacing:2px;text-transform:uppercase;margin-top:2px;font-weight:500}
+.stage-sw{display:flex;gap:2px;margin-top:6px;padding:2px;background:var(--sf2);border-radius:8px}
 .cab-tab{padding:7px 14px;border-radius:8px;border:1px solid transparent;background:transparent;color:var(--tx3);font-size:11px;font-weight:500;cursor:pointer;font-family:var(--f);transition:all .15s;white-space:nowrap}
 .cab-tab:hover{background:var(--sf2);color:var(--tx)}
 .cab-tab.active{background:var(--acbg);color:var(--ac2);font-weight:700;border-color:var(--ac)}
@@ -132,13 +132,22 @@
 .chat-msg.mine{align-self:flex-end;background:var(--ac);color:#fff;border-bottom-right-radius:4px}
 .chat-msg.theirs{align-self:flex-start;background:var(--sf2);color:var(--tx);border-bottom-left-radius:4px}
 .chat-msg .chat-attach{margin-top:6px;padding:6px 10px;background:rgba(0,0,0,.06);border-radius:6px;font-size:10px}
-.side-nav{flex:1;overflow-y:auto;padding:16px 12px}
-.side-sec{font-size:9px;font-weight:700;color:var(--tx2);letter-spacing:1.5px;text-transform:uppercase;padding:18px 12px 6px}
-.si{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:12.5px;font-weight:500;color:var(--tx2);border:none;transition:all .15s;user-select:none}.si.locked{opacity:.5}
+.side-nav{flex:1;overflow-y:auto;padding:6px 8px}
+.side-sec{font-size:8px;font-weight:700;color:var(--tx2);letter-spacing:1.5px;text-transform:uppercase;padding:10px 10px 3px}
+.si{display:flex;align-items:center;gap:8px;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:11.5px;font-weight:500;color:var(--tx2);border:none;transition:all .15s;user-select:none}.si.locked{opacity:.5}
 .si:hover{background:var(--sf2);color:var(--tx)}.si.act{background:var(--acbg);color:var(--ac2);font-weight:600}
 #sideTip{position:fixed;z-index:9000;background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:10px 14px;font-size:10px;color:var(--tx2);box-shadow:0 6px 20px rgba(0,0,0,.14);pointer-events:none;line-height:1.5;width:220px;white-space:normal;opacity:0;transition:opacity .15s;font-family:var(--f)}
 .si.si-clr{border-left:3px solid var(--si-clr);border-radius:0 8px 8px 0}.si.si-clr .sb{background:color-mix(in srgb,var(--si-clr) 12%,transparent);color:var(--si-clr)}.si.si-clr.act{background:color-mix(in srgb,var(--si-clr) 8%,transparent);color:var(--si-clr);border-left-color:var(--si-clr)}
-.si .ico{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+.si .ico{font-size:13px;width:18px;height:18px;text-align:center;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.si .ico img{width:16px;height:16px;object-fit:contain}
+/* Collapsible sidebar groups */
+.side-grp .side-sec{cursor:pointer;user-select:none;display:flex;align-items:center;padding:6px 10px 3px;margin:2px 0 0;border-radius:6px;transition:background .15s}
+.side-grp .side-sec:hover{background:var(--sf2)}
+.side-arr{margin-left:auto;font-size:11px;opacity:.5;transition:transform .25s;font-weight:700}
+.side-grp.collapsed .side-arr{transform:rotate(-90deg)}
+.side-grp.collapsed .side-sec{color:var(--tx3)}
+.side-grp-items{overflow:hidden;max-height:500px;opacity:1;transition:max-height .25s ease-out,opacity .15s ease}
+.side-grp.collapsed .side-grp-items{max-height:0;opacity:0;transition:max-height .2s ease-in,opacity .1s ease}
 .sn{width:24px;height:24px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;border:1.5px solid var(--bd2);color:var(--tx3);flex-shrink:0}
 .sn.ok{background:var(--gn);color:#fff;border:none}.sn.cur{background:var(--ac);color:#fff;border:none}
 .sl{flex:1}.sb{font-size:9px;padding:2px 7px;border-radius:8px;font-weight:600}
@@ -149,7 +158,7 @@
 .role-badge{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600}
 
 /* MAIN — 3 columns */
-.main{flex:1;margin-left:240px;margin-right:320px;min-height:100vh;min-width:0;overflow-x:hidden}
+.main{flex:1;margin-left:0;margin-right:320px;min-height:100vh;min-width:0;overflow-x:hidden}
 
 /* RIGHT PANEL */
 .rpanel{width:320px;flex-shrink:0;background:var(--sf);border-left:1px solid var(--bd);position:fixed;top:0;right:0;bottom:0;z-index:100;display:flex;flex-direction:column;overflow:hidden;box-shadow:-1px 0 8px rgba(0,0,0,.03)}
@@ -410,12 +419,12 @@
 @media(max-width:1400px){.rpanel{width:280px}.main{margin-right:280px}}
 @media(max-width:1100px){.sts{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:1fr}.rpanel{display:none}.main{margin-right:0}}
 /* Mobile burger */
-.mob-burger{display:none;background:none;border:none;font-size:22px;cursor:pointer;padding:4px 8px;color:var(--tx);line-height:1}
-.mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
-.side.mob-open{transform:translateX(0)!important;display:flex!important}
+.mob-burger{display:block;background:none;border:none;font-size:22px;cursor:pointer;padding:4px 8px;color:var(--tx);line-height:1}
+.mob-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:99;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+.mob-overlay.vis{display:block!important}
+.side.mob-open{transform:translateX(0)!important}
 @media(max-width:768px){
-.side{width:200px}
-.main{margin-left:200px!important}
+.side{width:260px}
 .sts{grid-template-columns:1fr 1fr}
 .g3{grid-template-columns:repeat(2,1fr)}
 .sec{padding:12px}
@@ -434,13 +443,9 @@
 .c{margin:0 0 8px}
 .modal-box{width:95%!important;max-height:90vh;overflow-y:auto}
 }
-/* ── 600px: Hide sidebar, show burger ── */
+/* ── 600px: Extra compact mobile ── */
 @media(max-width:600px){
-.mob-burger{display:block!important}
-.side{position:fixed;left:0;top:0;bottom:0;width:260px;z-index:100;transform:translateX(-100%);transition:transform .25s ease;overflow-y:auto}
-.side.mob-open{transform:translateX(0)!important}
-.mob-overlay.vis{display:block!important}
-.main{margin-left:0!important}
+.side{width:260px}
 .rpanel{display:none!important}
 }
 
@@ -551,7 +556,7 @@
   .modal-actions{flex-direction:column}
   .modal-actions .btn{width:100%;justify-content:center;text-align:center}
   .btn{padding:8px 12px;font-size:10px;min-height:36px}
-  .si{min-height:40px}
+  .si{min-height:32px}
   .sel{min-height:40px}
   #fpCanvas{min-height:150px;max-height:50vw}
   .db-card{padding:10px}
@@ -833,10 +838,10 @@ Apple</button>
 <div class="top-umenu-plan"><span class="top-umenu-plan-badge" id="topMenuPlan" style="background:var(--acbg);color:var(--ac2)">TRIAL</span></div>
 </div>
 <div class="top-umenu-body">
-<button class="top-umenu-item" onclick="event.stopPropagation();document.getElementById('topUser').classList.remove('open');nav('account')" style="font-weight:600;color:var(--ac2)">&#127968; Мой Кабинет</button>
+<button class="top-umenu-item" onclick="event.stopPropagation();document.getElementById('topUser').classList.remove('open');nav('account')" style="font-weight:600;color:var(--ac2)"><img src="icons/individual/account.png" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px">Мой Кабинет</button>
 <div class="top-umenu-sep"></div>
-<button class="top-umenu-item" onclick="event.stopPropagation();document.getElementById('topUser').classList.remove('open');nav('account');setTimeout(()=>switchCabTab('cab-concepts'),50)">&#128209; Мои концепции</button>
-<button class="top-umenu-item" onclick="event.stopPropagation();document.getElementById('topUser').classList.remove('open');nav('account');setTimeout(()=>switchCabTab('cab-profile'),50)">&#9881; Настройки</button>
+<button class="top-umenu-item" onclick="event.stopPropagation();document.getElementById('topUser').classList.remove('open');nav('account');setTimeout(()=>switchCabTab('cab-concepts'),50)"><img src="icons/individual/concepts.png" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px">Мои концепции</button>
+<button class="top-umenu-item" onclick="event.stopPropagation();document.getElementById('topUser').classList.remove('open');nav('account');setTimeout(()=>switchCabTab('cab-profile'),50)"><img src="icons/individual/settings.png" style="width:14px;height:14px;vertical-align:-2px;margin-right:6px">Настройки</button>
 <button class="top-umenu-item" onclick="event.stopPropagation();document.getElementById('topUser').classList.remove('open');nav('account');setTimeout(()=>switchCabTab('cab-plan'),50)">&#9889; Сменить тариф</button>
 <div class="top-umenu-sep"></div>
 <button class="top-umenu-item danger" onclick="event.stopPropagation();logout()">&#10140; Выход</button>
@@ -4043,8 +4048,9 @@ async function loginCheck(){
   const profile=await sb.from('profiles').select('display_name,role').eq('email',email).single();
   const role=profile.data?.role||'viewer';
   const name=profile.data?.display_name||data.user.user_metadata?.name||email.split('@')[0];
+  const isSuperAdmin=role==='superadmin';
   const isAdmin=role==='superadmin'||role==='admin';
-  currentUser={email,name,isAdmin,emailConfirmed:true,id:data.user.id};
+  currentUser={email,name,isAdmin,isSuperAdmin,emailConfirmed:true,id:data.user.id};
   localStorage.setItem('svita_session',JSON.stringify(currentUser));
   syncSessionCookie(currentUser);
   proceedToRoleSelect();
@@ -4372,7 +4378,9 @@ function enterApp(){
     sb.auth.getSession().then(({data:{session}})=>{
       if(!session)return;
       sb.from('user_sessions').insert({email:currentUser.email,user_agent:navigator.userAgent}).then(()=>{});
-      sb.from('profiles').upsert({email:currentUser.email,display_name:currentUser.name,role:currentRole,last_login:new Date().toISOString()},{onConflict:'email'}).then(()=>{});
+      const _profileData={email:currentUser.email,display_name:currentUser.name,last_login:new Date().toISOString()};
+      if(!currentUser.isAdmin)_profileData.role=currentRole;
+      sb.from('profiles').upsert(_profileData,{onConflict:'email'}).then(()=>{});
       sb.from('page_views').insert({page:'/dashboard',user_agent:navigator.userAgent,referrer:document.referrer||null}).then(()=>{});
     }).catch(()=>{});
     // Ensure current user is in DB.users
@@ -4380,12 +4388,12 @@ function enterApp(){
       DB.users.push({id:genUserId(),name:currentUser.name,email:currentUser.email,role:currentRole,plan:'trial',status:'Активен',created:new Date().toISOString().slice(0,10)});
     }
     // Load all users from admin_users for admin panel
-    if(currentRole==='admin'){
-      sb.from('admin_users').select('id,email,name,role,created_at').then(({data:rows})=>{
+    if(currentRole==='admin'||currentRole==='superadmin'){
+      sb.from('profiles').select('id,user_id,email,display_name,role,plan,status,created_at').then(({data:rows})=>{
         if(!rows||!rows.length)return;
         rows.forEach(r=>{
           if(!DB.users.find(u=>u.email===r.email)){
-            DB.users.push({id:r.id||genUserId(),name:r.name||r.email.split('@')[0],email:r.email,role:r.role||'viewer',plan:r.role==='superadmin'||r.role==='admin'?'admin':'trial',status:'Активен',created:(r.created_at||'').slice(0,10)});
+            DB.users.push({id:r.user_id||r.id||genUserId(),name:r.display_name||r.email.split('@')[0],email:r.email,role:r.role||'owner',plan:r.plan||'trial',status:r.status||'Активен',created:(r.created_at||'').slice(0,10)});
           }
         });
         renderUsers();if(currentRole)buildSidebar();
@@ -4554,8 +4562,9 @@ document.addEventListener('click',function(e){
           const name=su.user_metadata?.name||su.user_metadata?.full_name||email.split('@')[0];
           // Check profile in DB
           const{data:prof}=await sb.from('profiles').select('id,email,display_name,role').eq('email',email).single();
+          const isSuperAdmin=prof?.role==='superadmin';
           const isAdmin=prof?.role==='superadmin'||prof?.role==='admin';
-          currentUser={email,name:prof?.display_name||name,isAdmin,emailConfirmed:true,id:prof?.id||su.id};
+          currentUser={email,name:prof?.display_name||name,isAdmin,isSuperAdmin,emailConfirmed:true,id:su.id};
           localStorage.setItem('svita_session',JSON.stringify(currentUser));
           syncSessionCookie(currentUser);
           // Clean OAuth hash from URL
@@ -4580,17 +4589,18 @@ document.addEventListener('click',function(e){
         if(!session){localStorage.removeItem('svita_session');syncSessionCookie(null);return}
         const{data}=await sb.from('profiles').select('id,email,display_name,role').eq('email',session.user.email).single();
         if(data){
+          const isSuperAdmin=data.role==='superadmin';
           const isAdmin=data.role==='superadmin'||data.role==='admin';
-          currentUser={email:data.email,name:data.display_name||data.email.split('@')[0],isAdmin,emailConfirmed:true,id:data.id};
+          currentUser={email:data.email,name:data.display_name||data.email.split('@')[0],isAdmin,isSuperAdmin,emailConfirmed:true,id:session.user.id};
           localStorage.setItem('svita_session',JSON.stringify(currentUser));
           syncSessionCookie(currentUser);
         }else{localStorage.removeItem('svita_session');syncSessionCookie(null);return}
       }catch(e){
         // Server unreachable — use cached but strip admin (safe default)
-        currentUser={email:u.email,name:u.name,isAdmin:false,emailConfirmed:u.emailConfirmed,id:u.id};
+        currentUser={email:u.email,name:u.name,isAdmin:false,isSuperAdmin:false,emailConfirmed:u.emailConfirmed,id:u.id};
       }
     }else{
-      currentUser={email:u.email,name:u.name,isAdmin:false,emailConfirmed:u.emailConfirmed,id:u.id};
+      currentUser={email:u.email,name:u.name,isAdmin:false,isSuperAdmin:false,emailConfirmed:u.emailConfirmed,id:u.id};
     }
     // Restore biz type
     const sBiz=localStorage.getItem('svita_biz_type');
@@ -4630,109 +4640,134 @@ function switchStage(n){
   document.getElementById('tabBar').style.display=n===1&&(currentRole==='admin'||currentRole==='owner')?'flex':'none';
 }
 
-function toggleMobileSidebar(){
+function toggleMobileSidebar(forceClose){
   const s=document.getElementById('sidebar');
   const o=document.getElementById('mobOverlay');
+  if(forceClose){s.classList.remove('mob-open');o.classList.remove('vis');return}
   s.classList.toggle('mob-open');
   o.classList.toggle('vis');
 }
 let _sidebarBuilt=false;
+function _sideGrpState(){try{return JSON.parse(localStorage.getItem('svita_side_grp')||'{}')}catch(e){return{}}}
+function _grpOpen(key){return !_sideGrpState()[key]}
+const _grpDefaults={databases:true,execution:true};
+function _grpStart(key,label){
+  const st=_sideGrpState();
+  const isCollapsed=st.hasOwnProperty(key)?st[key]:!!_grpDefaults[key];
+  const c=isCollapsed?' collapsed':'';
+  return '<div class="side-grp'+c+'" data-grp="'+key+'"><div class="side-sec" onclick="toggleSideGrp(this.parentElement)">'+label+'<span class="side-arr">▾</span></div><div class="side-grp-items">';
+}
+function _grpEnd(){return '</div></div>'}
+function toggleSideGrp(el){
+  el.classList.toggle('collapsed');
+  const st=_sideGrpState();
+  st[el.dataset.grp]=el.classList.contains('collapsed');
+  localStorage.setItem('svita_side_grp',JSON.stringify(st));
+}
 function buildSidebar(){
   const n=document.getElementById('sideNav');
   if(!n||!currentRole)return;
   // Build structure only ONCE — after that only update badges
   if(_sidebarBuilt){updateSidebarBadges();return}
-  let html='<div class="si act" data-nav="overview" data-tip="Главная панель: прогресс, метрики и статус"><span class="ico">&#9673;</span><span class="sl">Обзор</span></div>';
-  html+='<div class="si" data-nav="news" data-tip="Свежие публикации и обновления платформы"><span class="ico">&#128240;</span><span class="sl">Новости</span></div>';
+  const _i=n=>'<img src="icons/individual/'+n+'.png" alt="">';
+  let html='<div class="si act" data-nav="overview" data-tip="Главная панель: прогресс, метрики и статус"><span class="ico">'+_i('overview')+'</span><span class="sl">Обзор</span></div>';
+  html+='<div class="si" data-nav="news" data-tip="Свежие публикации и обновления платформы"><span class="ico">'+_i('news')+'</span><span class="sl">Новости</span></div>';
 
   // ── STAGE 1: Формирование концепции ──
   if(currentStage===1&&(currentRole==='admin'||currentRole==='owner')){
-    html+='<div class="side-sec">Аналитика</div>';
-    html+='<div class="si" data-nav="budget" data-tip="Финансовый план: стартовые и операционные расходы"><span class="ico">&#128176;</span><span class="sl">Бюджет</span></div>';
-    html+='<div class="si" data-nav="profit" data-tip="Прогноз доходов, точка безубыточности, окупаемость"><span class="ico">&#128200;</span><span class="sl">Рентабельность</span></div>';
-    html+='<div class="si" data-nav="zones" data-tip="Функциональные зоны: разбивка помещения по назначению"><span class="ico">&#127968;</span><span class="sl">Зоны</span></div>';
-    const _ctIcon=currentBizType==='dental'?'🏥':'🏢';
+    html+=_grpStart('analytics','Аналитика');
+    html+='<div class="si" data-nav="budget" data-tip="Финансовый план: стартовые и операционные расходы"><span class="ico">'+_i('budget')+'</span><span class="sl">Бюджет</span></div>';
+    html+='<div class="si" data-nav="profit" data-tip="Прогноз доходов, точка безубыточности, окупаемость"><span class="ico">'+_i('profit')+'</span><span class="sl">Рентабельность</span></div>';
+    html+='<div class="si" data-nav="zones" data-tip="Функциональные зоны: разбивка помещения по назначению"><span class="ico">'+_i('zones')+'</span><span class="sl">Зоны</span></div>';
     const _ctLabel=currentBizType==='dental'?'Стоимость кабинетов':'Стоимость помещений';
-    html+='<div class="si" data-nav="cabinet-types" data-tip="Смета по каждому кабинету/помещению"><span class="ico">'+_ctIcon+'</span><span class="sl">'+_ctLabel+'</span><span class="sb wip" id="sbCab">0</span></div>';
+    html+='<div class="si" data-nav="cabinet-types" data-tip="Смета по каждому кабинету/помещению"><span class="ico">'+_i('cabinet-types')+'</span><span class="sl">'+_ctLabel+'</span><span class="sb wip" id="sbCab">0</span></div>';
+    html+=_grpEnd();
 
-    html+='<div class="side-sec">Базы данных</div>';
-    html+='<div class="si si-clr" style="--si-clr:#3b82f6" data-nav="db-premises" data-tip="Каталог коммерческой недвижимости для аренды"><span class="ico">&#127970;</span><span class="sl">Помещения</span><span class="sb wip" id="sbPrem">0</span></div>';
-    html+='<div class="si si-clr" style="--si-clr:#f59e0b" data-nav="db-renovations" data-tip="Ремонт и отделка: материалы, работы, цены"><span class="ico">&#128736;</span><span class="sl">Модернизация</span><span class="sb wip" id="sbReno">0</span></div>';
+    html+=_grpStart('databases','Базы данных');
+    html+='<div class="si si-clr" style="--si-clr:#3b82f6" data-nav="db-premises" data-tip="Каталог коммерческой недвижимости для аренды"><span class="ico">'+_i('db-premises')+'</span><span class="sl">Помещения</span><span class="sb wip" id="sbPrem">0</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#f59e0b" data-nav="db-renovations" data-tip="Ремонт и отделка: материалы, работы, цены"><span class="ico">'+_i('db-renovations')+'</span><span class="sl">Модернизация</span><span class="sb wip" id="sbReno">0</span></div>';
     const _svcLabel=currentBizType&&currentBizType!=='dental'?'Меню':'Услуги населению';
-    const _svcIcon=currentBizType&&currentBizType!=='dental'?'&#127860;':'&#128203;';
-    html+='<div class="si si-clr" style="--si-clr:#10b981" data-nav="db-services" data-tip="Прайс-лист услуг вашего заведения"><span class="ico">'+_svcIcon+'</span><span class="sl">'+_svcLabel+'</span><span class="sb wip" id="sbSvc">0</span></div>';
-    html+='<div class="si si-clr" style="--si-clr:#8b5cf6" data-nav="db-suppliers" data-tip="Каталог мебели и оборудования"><span class="ico">&#128230;</span><span class="sl">Оборудование</span><span class="sb wip" id="sbEquip">0</span></div>';
-    html+='<div class="si si-clr" style="--si-clr:#06b6d4" data-nav="db-employees" data-tip="Штатное расписание и зарплаты"><span class="ico">&#129489;</span><span class="sl">Сотрудники</span><span class="sb wip" id="sbEmp">0</span></div>';
-    html+='<div class="si si-clr" style="--si-clr:#ef4444" data-nav="db-docs" data-tip="Юридические документы и лицензии"><span class="ico">&#128203;</span><span class="sl">Документация</span><span class="sb wip" id="sbDocs">0</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#10b981" data-nav="db-services" data-tip="Прайс-лист услуг вашего заведения"><span class="ico">'+_i('db-services')+'</span><span class="sl">'+_svcLabel+'</span><span class="sb wip" id="sbSvc">0</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#8b5cf6" data-nav="db-suppliers" data-tip="Каталог мебели и оборудования"><span class="ico">'+_i('db-suppliers')+'</span><span class="sl">Оборудование</span><span class="sb wip" id="sbEquip">0</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#06b6d4" data-nav="db-employees" data-tip="Штатное расписание и зарплаты"><span class="ico">'+_i('db-employees')+'</span><span class="sl">Сотрудники</span><span class="sb wip" id="sbEmp">0</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#ef4444" data-nav="db-docs" data-tip="Юридические документы и лицензии"><span class="ico">'+_i('db-docs')+'</span><span class="sl">Документация</span><span class="sb wip" id="sbDocs">0</span></div>';
+    html+=_grpEnd();
   }
 
   // ── STAGE 2: Закупки и установка ──
   if(currentStage===2&&(currentRole==='admin'||currentRole==='owner')){
     const canC=currentRole==='admin'||(typeof userSubscription!=='undefined'&&userSubscription.contractors_access);
-    html+='<div class="si" data-nav="notes" data-tip="Записи о подрядчиках и поставщиках"><span class="ico">&#128221;</span><span class="sl">Заметки</span></div>';
-    html+='<div class="si" data-nav="exec-contractors" data-tip="Привязанные исполнители, задачи и счета"><span class="ico">&#128119;</span><span class="sl">Исполнители</span></div>';
-    html+='<div class="si'+(canC?'':' locked')+'" data-nav="'+(canC?'exec-chat':'upgrade-gate')+'" data-tip="Чат с подрядчиками и пост��вщиками"><span class="ico">&#128172;</span><span class="sl">Чат</span>'+(canC?'':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
-    html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
-    html+='<div class="side-sec">Исполнение</div>';
-    html+='<div class="si si-clr" style="--si-clr:#3b82f6" data-nav="exec-premises" data-tip="Поиск и аренда помещения"><span class="ico">&#127970;</span><span class="sl">Помещения</span><span class="sb wip" id="sbExPrem">0</span></div>';
-    html+='<div class="si si-clr" style="--si-clr:#f59e0b" data-nav="exec-renovations" data-tip="Выполнение ремонтных работ"><span class="ico">&#128736;</span><span class="sl">Модернизация</span><span class="sb wip" id="sbExReno">0</span></div>';
+    html+='<div class="si" data-nav="notes" data-tip="Записи о подрядчиках и поставщиках"><span class="ico">'+_i('notes')+'</span><span class="sl">Заметки</span></div>';
+    html+='<div class="si" data-nav="exec-contractors" data-tip="Привязанные исполнители, задачи и счета"><span class="ico">'+_i('exec-contractors')+'</span><span class="sl">Исполнители</span></div>';
+    html+='<div class="si'+(canC?'':' locked')+'" data-nav="'+(canC?'exec-chat':'upgrade-gate')+'" data-tip="Чат с подрядчиками и поставщиками"><span class="ico">'+_i('exec-chat')+'</span><span class="sl">Чат</span>'+(canC?'':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
+    html+='<div style="border-top:1px solid var(--bd);margin:4px 10px"></div>';
+    html+=_grpStart('execution','Исполнение');
+    html+='<div class="si si-clr" style="--si-clr:#3b82f6" data-nav="exec-premises" data-tip="Поиск и аренда помещения"><span class="ico">'+_i('exec-premises')+'</span><span class="sl">Помещения</span><span class="sb wip" id="sbExPrem">0</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#f59e0b" data-nav="exec-renovations" data-tip="Выполнение ремонтных работ"><span class="ico">'+_i('exec-renovations')+'</span><span class="sl">Модернизация</span><span class="sb wip" id="sbExReno">0</span></div>';
     const _svcL2=currentBizType&&currentBizType!=='dental'?'Меню':'Услуги';
-    html+='<div class="si si-clr" style="--si-clr:#10b981" data-nav="exec-services" data-tip="Запуск услуг и ценообразование"><span class="ico">&#128203;</span><span class="sl">'+_svcL2+'</span><span class="sb wip" id="sbExSvc">0</span></div>';
-    html+='<div class="si si-clr" style="--si-clr:#8b5cf6" data-nav="exec-equipment" data-tip="Закупка и установка оборудования"><span class="ico">&#128230;</span><span class="sl">Оборудование</span><span class="sb wip" id="sbExEquip">0</span></div>';
-    html+='<div class="si si-clr" style="--si-clr:#06b6d4" data-nav="exec-staff" data-tip="Найм и оформление сотрудников"><span class="ico">&#129489;</span><span class="sl">Сотрудники</span><span class="sb wip" id="sbExStaff">0</span></div>';
-    html+='<div class="si si-clr" style="--si-clr:#ef4444" data-nav="exec-docs" data-tip="Получение лицензий и оформление документов"><span class="ico">&#128203;</span><span class="sl">Документация</span><span class="sb wip" id="sbExDocs">0</span></div>';
-    html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
-    html+='<div class="side-sec">Исполнители</div>';
-    html+='<div class="si'+(canC?'':' locked')+'" data-nav="'+(canC?'db-contractors':'upgrade-gate')+'" data-tip="Компании для выполнения работ"><span class="ico">&#128736;</span><span class="sl">Подрядчики</span>'+(canC?'<span class="sb wip" id="sbContr">0</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
-    html+='<div class="si'+(canC?'':' locked')+'" data-nav="'+(canC?'db-vendor-companies':'upgrade-gate')+'" data-tip="Поставщики оборудования и материалов"><span class="ico">&#127970;</span><span class="sl">Поставщики</span>'+(canC?'<span class="sb wip" id="sbVend">0</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
+    html+='<div class="si si-clr" style="--si-clr:#10b981" data-nav="exec-services" data-tip="Запуск услуг и ценообразование"><span class="ico">'+_i('exec-services')+'</span><span class="sl">'+_svcL2+'</span><span class="sb wip" id="sbExSvc">0</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#8b5cf6" data-nav="exec-equipment" data-tip="Закупка и установка оборудования"><span class="ico">'+_i('exec-equipment')+'</span><span class="sl">Оборудование</span><span class="sb wip" id="sbExEquip">0</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#06b6d4" data-nav="exec-staff" data-tip="Найм и оформление сотрудников"><span class="ico">'+_i('exec-staff')+'</span><span class="sl">Сотрудники</span><span class="sb wip" id="sbExStaff">0</span></div>';
+    html+='<div class="si si-clr" style="--si-clr:#ef4444" data-nav="exec-docs" data-tip="Получение лицензий и оформление документов"><span class="ico">'+_i('exec-docs')+'</span><span class="sl">Документация</span><span class="sb wip" id="sbExDocs">0</span></div>';
+    html+=_grpEnd();
+    html+='<div style="border-top:1px solid var(--bd);margin:4px 10px"></div>';
+    html+=_grpStart('executors','Исполнители');
+    html+='<div class="si'+(canC?'':' locked')+'" data-nav="'+(canC?'db-contractors':'upgrade-gate')+'" data-tip="Компании для выполнения работ"><span class="ico">'+_i('exec-contractors')+'</span><span class="sl">Подрядчики</span>'+(canC?'<span class="sb wip" id="sbContr">0</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
+    html+='<div class="si'+(canC?'':' locked')+'" data-nav="'+(canC?'db-vendor-companies':'upgrade-gate')+'" data-tip="Поставщики оборудования и материалов"><span class="ico">'+_i('vendor-companies')+'</span><span class="sl">Поставщики</span>'+(canC?'<span class="sb wip" id="sbVend">0</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
+    html+=_grpEnd();
   }
 
   // ── Подрядчик ──
   if(currentRole==='contractor'){
-    html+='<div class="side-sec">Работа</div>';
-    html+='<div class="si" data-nav="contractor-works" data-tip="Тендеры и заказы от владельцев бизнеса"><span class="ico">&#128736;</span><span class="sl">Доступные работы</span></div>';
-    html+='<div class="si" data-nav="contractor-proposals" data-tip="Отправленные коммерческие предложения"><span class="ico">&#128196;</span><span class="sl">Мои предложения</span></div>';
-    html+='<div class="si" data-nav="contractor-orders" data-tip="Принятые заказы в работе"><span class="ico">&#128203;</span><span class="sl">Активные заказы</span></div>';
+    html+=_grpStart('work','Работа');
+    html+='<div class="si" data-nav="contractor-works" data-tip="Тендеры и заказы от владельцев бизнеса"><span class="ico">'+_i('contractor-works')+'</span><span class="sl">Доступные работы</span></div>';
+    html+='<div class="si" data-nav="contractor-proposals" data-tip="Отправленные коммерческие предложения"><span class="ico">'+_i('contractor-proposals')+'</span><span class="sl">Мои предложения</span></div>';
+    html+='<div class="si" data-nav="contractor-orders" data-tip="Принятые заказы в работе"><span class="ico">'+_i('contractor-orders')+'</span><span class="sl">Активные заказы</span></div>';
     const _canChat=typeof userSubscription!=='undefined'&&userSubscription.contractors_access;
-    html+='<div class="si'+(_canChat?'':' locked')+'" data-nav="'+(_canChat?'exec-chat':'upgrade-gate')+'" data-tip="Переписка с заказчиками"><span class="ico">&#128172;</span><span class="sl">Чат</span>'+(_canChat?'':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
+    html+='<div class="si'+(_canChat?'':' locked')+'" data-nav="'+(_canChat?'exec-chat':'upgrade-gate')+'" data-tip="Переписка с заказчиками"><span class="ico">'+_i('exec-chat')+'</span><span class="sl">Чат</span>'+(_canChat?'':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
+    html+=_grpEnd();
   }
   // ── Поставщик ──
   if(currentRole==='supplier'){
-    html+='<div class="side-sec">Каталог</div>';
-    html+='<div class="si" data-nav="db-suppliers" data-tip="Управление каталогом товаров"><span class="ico">&#128230;</span><span class="sl">Мой каталог</span></div>';
-    html+='<div class="si" data-nav="supplier-requests" data-tip="Запросы на поставку от заказчиков"><span class="ico">&#128229;</span><span class="sl">Входящие запросы</span></div>';
+    html+=_grpStart('catalog','Каталог');
+    html+='<div class="si" data-nav="db-suppliers" data-tip="Управление каталогом товаров"><span class="ico">'+_i('supplier-catalog')+'</span><span class="sl">Мой каталог</span></div>';
+    html+='<div class="si" data-nav="supplier-requests" data-tip="Запросы на поставку от заказчиков"><span class="ico">'+_i('supplier-requests')+'</span><span class="sl">Входящие запросы</span></div>';
     const _canChat2=typeof userSubscription!=='undefined'&&userSubscription.contractors_access;
-    html+='<div class="si'+(_canChat2?'':' locked')+'" data-nav="'+(_canChat2?'exec-chat':'upgrade-gate')+'" data-tip="Переписка с заказчиками"><span class="ico">&#128172;</span><span class="sl">Чат</span>'+(_canChat2?'':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
+    html+='<div class="si'+(_canChat2?'':' locked')+'" data-nav="'+(_canChat2?'exec-chat':'upgrade-gate')+'" data-tip="Переписка с заказчиками"><span class="ico">'+_i('exec-chat')+'</span><span class="sl">Чат</span>'+(_canChat2?'':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
+    html+=_grpEnd();
   }
 
   // ── Employee — на обоих этапах ──
   if(currentRole==='employee'){
-    html+='<div class="side-sec">Мой профиль</div>';
-    html+='<div class="si" data-nav="db-employees" data-tip="Ваш профиль сотрудника, навыки и контакты"><span class="ico">&#129489;</span><span class="sl">Мои данные</span></div>';
+    html+=_grpStart('myprofile','Мой профиль');
+    html+='<div class="si" data-nav="db-employees" data-tip="Ваш профиль сотрудника, навыки и контакты"><span class="ico">'+_i('employee-data')+'</span><span class="sl">Мои данные</span></div>';
+    html+=_grpEnd();
   }
 
   // ── Admin panel — visible when user IS admin, regardless of selected role ──
   if(currentUser&&currentUser.isAdmin){
-    html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
+    html+='<div style="border-top:1px solid var(--bd);margin:4px 10px"></div>';
     html+='<div class="side-sec">Администрирование</div>';
-    html+='<div class="si" data-nav="users" data-tip="Управление пользователями, ролями и подписками"><span class="ico">&#128101;</span><span class="sl">Пользователи</span><span class="sb wip" id="sbUsers">0</span></div>';
-    html+='<div class="si" data-nav="metrics" data-tip="Статистика посещений, источники трафика, SEO"><span class="ico">&#128202;</span><span class="sl">Метрики</span></div>';
-    html+='<div id="sideRoleSwitch" style="padding:8px 16px"></div>';
+    html+='<div class="si" data-nav="users" data-tip="Управление пользователями, ролями и подписками"><span class="ico">'+_i('users')+'</span><span class="sl">Пользователи</span><span class="sb wip" id="sbUsers">0</span></div>';
+    html+='<div class="si" data-nav="metrics" data-tip="Статистика посещений, источники трафика, SEO"><span class="ico">'+_i('metrics')+'</span><span class="sl">Метрики</span></div>';
+    if(currentUser.isSuperAdmin){
+      html+='<div id="sideRoleSwitch" style="padding:4px 10px"></div>';
+    }
   }
 
   // ── Мой Кабинет — для всех ──
-  html+='<div style="border-top:1px solid var(--bd);margin:8px 16px"></div>';
-  html+='<div class="si" data-nav="account" data-tip="Профиль, управление, концепции, тариф, безопасность"><span class="ico">&#127968;</span><span class="sl">Мой Кабинет</span></div>';
+  html+='<div style="border-top:1px solid var(--bd);margin:4px 10px"></div>';
+  html+='<div class="si" data-nav="account" data-tip="Профиль, управление, концепции, тариф, безопасность"><span class="ico">'+_i('account')+'</span><span class="sl">Мой Кабинет</span></div>';
   n.innerHTML=html;
-  n.querySelectorAll('[data-nav]').forEach(el=>{el.addEventListener('click',()=>nav(el.dataset.nav))});
-  // Render inline role switcher for admin
+  n.querySelectorAll('[data-nav]').forEach(el=>{el.addEventListener('click',()=>{nav(el.dataset.nav);toggleMobileSidebar(true)})});
+  // Render inline role switcher for superadmin only
   const _srs=document.getElementById('sideRoleSwitch');
-  if(_srs&&currentUser&&currentUser.isAdmin){
-    const roles=['admin','owner','contractor','supplier','employee'];
-    let rh='<div style="font-size:9px;font-weight:600;color:var(--tx3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px">Просмотр от роли</div><div style="display:flex;gap:4px;flex-wrap:wrap">';
+  if(_srs&&currentUser&&currentUser.isSuperAdmin){
+    const roles=['owner','admin','contractor','supplier','employee'];
+    let rh='<div style="font-size:8px;font-weight:600;color:var(--tx3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">Эмуляция роли</div><div style="display:flex;gap:3px;flex-wrap:wrap">';
     roles.forEach(r=>{
       const sel=r===currentRole;
-      rh+='<button onclick="switchAdminRole(\''+r+'\')" style="padding:4px 10px;border-radius:6px;font-size:10px;font-weight:'+(sel?'700':'400')+';border:1px solid '+(sel?'var(--ac)':'var(--bd)')+';background:'+(sel?'var(--acbg)':'transparent')+';color:'+(sel?'var(--ac2)':'var(--tx3)')+';cursor:pointer;font-family:var(--f);transition:all .15s">'+({admin:'Адм',owner:'Влд',contractor:'Подр',supplier:'Пост',employee:'Сотр'}[r]||r)+'</button>';
+      rh+='<button onclick="switchAdminRole(\''+r+'\')" style="padding:3px 8px;border-radius:5px;font-size:9px;font-weight:'+(sel?'700':'400')+';border:1px solid '+(sel?'var(--ac)':'var(--bd)')+';background:'+(sel?'var(--acbg)':'transparent')+';color:'+(sel?'var(--ac2)':'var(--tx3)')+';cursor:pointer;font-family:var(--f);transition:all .15s">'+({admin:'Адм',owner:'Влд',contractor:'Подр',supplier:'Пост',employee:'Сотр'}[r]||r)+'</button>';
     });
     rh+='</div>';
     _srs.innerHTML=rh;
@@ -4789,10 +4824,18 @@ function nav(id){
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('vis'));
   const el=document.getElementById('sec-'+id);
   if(el)el.classList.add('vis');
-  // Sidebar items
+  // Sidebar items — auto-expand collapsed group if needed
   document.querySelectorAll('.si').forEach(s=>s.classList.remove('act'));
   const si=document.querySelector('.si[data-nav="'+id+'"]');
-  if(si)si.classList.add('act');
+  if(si){
+    si.classList.add('act');
+    const grp=si.closest('.side-grp');
+    if(grp&&grp.classList.contains('collapsed')){
+      grp.classList.remove('collapsed');
+      const st=_sideGrpState();st[grp.dataset.grp]=false;
+      localStorage.setItem('svita_side_grp',JSON.stringify(st));
+    }
+  }
   // Tab bar
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('act'));
   const tab=document.querySelector('.tab[data-nav="'+id+'"]');
@@ -5436,7 +5479,7 @@ function _chatKey(email){
   const pair=[me,email].sort();
   return 'svita_chat_'+pair[0]+'__'+pair[1];
 }
-var _roleLabels={admin:'Админ',superadmin:'Админ',owner:'Владелец',contractor:'Подрядчик',supplier:'Поставщик',viewer:'Зритель',employee:'Сотрудник'};
+var _roleLabels={admin:'Админ',superadmin:'Суперадмин',owner:'Владелец',contractor:'Подрядчик',supplier:'Поставщик',viewer:'Зритель',employee:'Сотрудник'};
 var _groupLabels={owner:'Владельцы',admin:'Администраторы',contractor:'Подрядчики',supplier:'Поставщики',employee:'Сотрудники',viewer:'Зрители'};
 var _groupColors={contractor:'#f59e0b',supplier:'#8b5cf6',owner:'var(--ac)',admin:'#3b82f6',employee:'#06b6d4'};
 /* === Активные диалоги (основной список) === */
@@ -10818,8 +10861,9 @@ function tourRender(){
   document.getElementById('tourNext').textContent=tourCur===total-1?'Начать работу':'Далее';
   document.getElementById('tourDots').innerHTML=TOUR_STEPS.map(function(_,i){return '<div style="width:'+(i===tourCur?'14px':'6px')+';height:6px;border-radius:3px;background:'+(i===tourCur?'var(--ac)':'var(--bd)')+';transition:all .25s"></div>'}).join('');
 
-  // Find target
+  // Find target — auto-expand collapsed sidebar group if needed
   const el=s.target?document.querySelector(s.target):null;
+  if(el){const _g=el.closest('.side-grp');if(_g&&_g.classList.contains('collapsed')){_g.classList.remove('collapsed');const _st=_sideGrpState();_st[_g.dataset.grp]=false;localStorage.setItem('svita_side_grp',JSON.stringify(_st))}}
   const hasTarget=el&&el.offsetParent!==null; // visible element only
 
   if(hasTarget){
