@@ -1,101 +1,177 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="SVITA — AI-конструктор бизнес-концепций. Стоматология, кофейни, салоны красоты. Польша, Чехия, Германия.">
-<title>SVITA — AI Business Constructor</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<meta name="description" content="SVITA — AI-помощник открытия малого бизнеса. Планируй, контролируй, экономь. Всё в одном месте.">
+<meta name="keywords" content="открытие бизнеса, бизнес план, AI ассистент, стоматология, кофейня, салон красоты, бюджет, подрядчики, поставщики">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://svita.ai">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://svita.ai">
+<meta property="og:title" content="SVITA — Открой бизнес без потерь">
+<meta property="og:description" content="AI-ассистент запуска малого бизнеса. Планирование, подрядчики, поставщики, бюджет — в одном месте.">
+<meta property="og:image" content="https://svita.ai/favicon.svg">
+<meta property="og:site_name" content="SVITA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SVITA — Открой бизнес без потерь">
+<meta name="twitter:description" content="AI-ассистент запуска малого бизнеса.">
+<title>SVITA — Открой бизнес без потерь</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#f7f8fb;--sf:#ffffff;--sf2:#f0f2f7;--sf3:#e1e4ec;
-  --bd:rgba(0,0,0,.05);--bd2:rgba(0,0,0,.09);
-  --tx:#1a2332;--tx2:rgba(26,35,50,.58);--tx3:rgba(26,35,50,.32);
-  --ac:#4f6ef7;--ac2:#3b5ce4;--acbg:rgba(79,110,247,.05);--acbd:rgba(79,110,247,.14);
-  --gn:#1a9956;--gnbg:rgba(26,153,86,.05);
-  --r:14px;--f:'Inter',system-ui,sans-serif;
-  --shadow:0 1px 4px rgba(0,0,0,.05),0 0 1px rgba(0,0,0,.03);
-  --shadow-md:0 4px 12px rgba(0,0,0,.04),0 1px 3px rgba(0,0,0,.03);
+  --bg:#fafbfe;--sf:#ffffff;--sf2:#f3f5fa;--sf3:#e8ecf4;
+  --bd:rgba(0,0,0,.06);--bd2:rgba(0,0,0,.1);
+  --tx:#0f172a;--tx2:#64748b;--tx3:rgba(15,23,41,.3);
+  --ac:#4f6ef7;--ac2:#3b5ce4;--acd:#2845c7;--acbg:rgba(79,110,247,.06);--acbd:rgba(79,110,247,.15);
+  --gn:#16a34a;--gnbg:rgba(22,163,74,.06);
+  --or:#f59e0b;--orbg:rgba(245,158,11,.06);
+  --vi:#7c3aed;--vibg:rgba(124,58,237,.06);
+  --r:16px;--f:'Inter',system-ui,-apple-system,sans-serif;
 }
-body{font-family:var(--f);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth}
+body{font-family:var(--f);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;height:56px;background:rgba(255,255,255,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 40px}
-.nav-logo{font-size:18px;font-weight:800;display:flex;align-items:center;gap:8px}
-.nav-logo .dot{width:8px;height:8px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 3px var(--acbg)}
-.nav-links{display:flex;align-items:center;gap:24px}
-.nav-links a{font-size:13px;font-weight:500;color:var(--tx2);transition:color .15s}
-.nav-links a:hover{color:var(--tx)}
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:9px 20px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;border:none}
-.btn-primary{background:var(--ac);color:#fff}.btn-primary:hover{background:var(--ac2)}
-.btn-ghost{background:transparent;color:var(--tx2);border:1px solid var(--bd2)}.btn-ghost:hover{background:var(--sf2);color:var(--tx)}
+nav{position:fixed;top:0;left:0;right:0;height:60px;background:rgba(255,255,255,.8);backdrop-filter:blur(24px) saturate(1.4);border-bottom:1px solid var(--bd);z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,4vw,48px)}
+.nav-logo{font-size:20px;font-weight:900;display:flex;align-items:center;gap:10px;letter-spacing:-.02em}
+.nav-logo .dot{width:10px;height:10px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 3px var(--acbg)}
+.nav-r{display:flex;align-items:center;gap:16px}
+.nav-r a{font-size:13px;font-weight:500;color:var(--tx2);transition:color .15s}
+.nav-r a:hover{color:var(--tx)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 22px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;border:none;font-family:var(--f)}
+.btn-p{background:var(--ac);color:#fff;box-shadow:0 2px 8px rgba(79,110,247,.3)}.btn-p:hover{background:var(--ac2);box-shadow:0 4px 16px rgba(79,110,247,.35);transform:translateY(-1px)}
+.btn-g{background:transparent;color:var(--tx);border:1px solid var(--bd2)}.btn-g:hover{background:var(--sf2)}
+.btn-lg{padding:14px 32px;font-size:15px;border-radius:14px}
+.btn-gn{background:var(--gn);color:#fff;box-shadow:0 2px 8px rgba(22,163,74,.3)}.btn-gn:hover{background:#15803d;transform:translateY(-1px)}
+
+/* LANG SWITCHER — override labs67-i18n.js dark theme */
+.lang-current{border-color:var(--bd2)!important;color:var(--tx)!important;font-weight:600!important;border-radius:10px!important;padding:6px 12px!important}
+.lang-current:hover{border-color:var(--ac)!important}
+.lang-dropdown{background:rgba(255,255,255,.96)!important;backdrop-filter:blur(20px)!important;border:1px solid var(--bd)!important;border-radius:14px!important;box-shadow:0 12px 40px rgba(0,0,0,.1),0 0 0 1px rgba(0,0,0,.04)!important;padding:6px!important;min-width:140px!important}
+.lang-opt{color:var(--tx2)!important;border-radius:8px!important;padding:8px 14px!important;font-weight:500!important}
+.lang-opt:hover{background:var(--acbg)!important;color:var(--ac2)!important}
+.lang-opt.active{color:var(--ac2)!important;font-weight:700!important;background:var(--acbg)!important}
+.lang-dropdown::-webkit-scrollbar-thumb{background:var(--bd2)!important}
 
 /* HERO */
-.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(79,110,247,.06) 0%,transparent 70%);pointer-events:none}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;background:var(--acbg);border:1px solid var(--acbd);font-size:11px;font-weight:600;color:var(--ac2);margin-bottom:24px}
-.hero-badge .pulse{width:6px;height:6px;border-radius:50%;background:var(--gn);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.hero h1{font-size:clamp(36px,5vw,56px);font-weight:800;line-height:1.1;letter-spacing:-.02em;max-width:700px;margin-bottom:16px}
-.hero h1 .gradient{background:linear-gradient(135deg,var(--ac),#7c5cfc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero p{font-size:clamp(15px,1.8vw,18px);color:var(--tx2);max-width:520px;line-height:1.6;margin-bottom:36px;font-weight:400}
-.hero-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
-.hero-actions .btn{padding:12px 28px;font-size:14px;border-radius:12px}
-.hero-stats{display:flex;gap:48px;margin-top:64px}
-.hero-stat{text-align:center}
-.hero-stat .num{font-size:28px;font-weight:800;color:var(--ac2)}
-.hero-stat .label{font-size:11px;color:var(--tx3);margin-top:4px;font-weight:500}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 24px 80px;position:relative}
+.hero::before{content:'';position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:min(900px,140vw);height:min(900px,140vw);background:radial-gradient(circle,rgba(79,110,247,.07) 0%,rgba(124,58,237,.03) 40%,transparent 70%);pointer-events:none}
+.hero-inner{max-width:1100px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.hero-text{position:relative;z-index:1}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border-radius:100px;background:var(--acbg);border:1px solid var(--acbd);font-size:12px;font-weight:600;color:var(--ac2);margin-bottom:28px}
+.hero-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--gn);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-size:clamp(32px,4.5vw,56px);font-weight:900;line-height:1.08;letter-spacing:-.03em;margin-bottom:20px}
+.hero h1 .hl{background:linear-gradient(135deg,var(--ac) 0%,#7c5cfc 50%,#a855f7 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:clamp(15px,1.8vw,18px);color:var(--tx2);line-height:1.65;margin-bottom:36px;font-weight:400;max-width:480px}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+.hero-mascot{display:flex;align-items:center;justify-content:center;position:relative}
+.hero-mascot img{width:100%;max-width:420px;filter:drop-shadow(0 20px 40px rgba(79,110,247,.15));animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.hero-stats{display:flex;gap:32px;margin-top:40px}
+.hero-stat{display:flex;flex-direction:column}
+.hero-stat .big{font-size:28px;font-weight:900;color:var(--ac2)}
+.hero-stat .sm{font-size:11px;color:var(--tx3);margin-top:2px;font-weight:500}
 
-/* FEATURES */
-.features{padding:80px 24px;max-width:1100px;margin:0 auto}
-.section-label{font-size:11px;font-weight:700;color:var(--ac2);text-transform:uppercase;letter-spacing:2px;text-align:center;margin-bottom:12px}
-.section-title{font-size:clamp(24px,3vw,36px);font-weight:800;text-align:center;margin-bottom:48px;letter-spacing:-.01em}
-.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-.feature-card{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:28px;transition:all .2s}
-.feature-card:hover{border-color:var(--bd2);box-shadow:var(--shadow-md);transform:translateY(-2px)}
-.feature-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px}
-.feature-card h3{font-size:15px;font-weight:700;margin-bottom:8px}
-.feature-card p{font-size:13px;color:var(--tx2);line-height:1.6}
+/* PROBLEM */
+.problem{padding:100px 24px;background:linear-gradient(180deg,var(--bg) 0%,#f0f2fa 100%)}
+.problem-inner{max-width:900px;margin:0 auto;text-align:center}
+.eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px}
+.section-h2{font-size:clamp(24px,3.5vw,40px);font-weight:800;line-height:1.15;letter-spacing:-.02em;margin-bottom:20px}
+.lead{font-size:16px;color:var(--tx2);max-width:600px;margin:0 auto 48px;line-height:1.65}
+.pain-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:900px;margin:0 auto}
+.pain-card{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:28px 24px;text-align:left;position:relative;overflow:hidden;transition:all .25s}
+.pain-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.pain-card::before{content:attr(data-num);position:absolute;top:12px;right:16px;font-size:48px;font-weight:900;color:var(--sf2);line-height:1}
+.pain-card .ico{font-size:28px;margin-bottom:14px}
+.pain-card h4{font-size:15px;font-weight:700;margin-bottom:6px}
+.pain-card p{font-size:12px;color:var(--tx2);line-height:1.6}
 
-/* DOMAINS */
-.domains{padding:80px 24px;max-width:1100px;margin:0 auto}
-.domains-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
-.domain-card{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:24px;text-align:center;transition:all .2s}
-.domain-card:hover{border-color:var(--acbd);box-shadow:var(--shadow)}
-.domain-icon{font-size:32px;margin-bottom:12px}
-.domain-card h4{font-size:14px;font-weight:700;margin-bottom:4px}
-.domain-card p{font-size:11px;color:var(--tx3)}
+/* SOLUTION */
+.solution{padding:100px 24px}
+.solution-inner{max-width:1060px;margin:0 auto}
+.sol-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.sol-card{background:var(--sf);border:1px solid var(--bd);border-radius:18px;padding:32px 28px;transition:all .25s}
+.sol-card:hover{border-color:var(--acbd);box-shadow:0 8px 28px rgba(79,110,247,.08);transform:translateY(-3px)}
+.sol-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:18px}
+.sol-card h3{font-size:16px;font-weight:700;margin-bottom:8px}
+.sol-card p{font-size:13px;color:var(--tx2);line-height:1.65}
 
-/* COUNTRIES */
-.countries{padding:60px 24px;max-width:800px;margin:0 auto;text-align:center}
-.country-list{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
-.country-tag{padding:8px 18px;border-radius:10px;background:var(--sf);border:1px solid var(--bd);font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
-.country-tag .currency{font-size:11px;color:var(--ac2);font-weight:700}
+/* HOW */
+.how{padding:100px 24px;background:var(--sf)}
+.how-inner{max-width:900px;margin:0 auto}
+.steps{display:flex;flex-direction:column;gap:0;position:relative}
+.steps::before{content:'';position:absolute;left:28px;top:28px;bottom:28px;width:2px;background:linear-gradient(to bottom,var(--acbd),var(--acbd) 50%,transparent);z-index:0}
+.step{display:flex;gap:24px;align-items:flex-start;position:relative;z-index:1;padding:20px 0}
+.step-num{width:56px;height:56px;border-radius:16px;background:var(--acbg);border:2px solid var(--acbd);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:var(--ac2);flex-shrink:0}
+.step-body h4{font-size:16px;font-weight:700;margin-bottom:4px}
+.step-body p{font-size:13px;color:var(--tx2);line-height:1.6}
+
+/* SAVINGS */
+.savings{padding:100px 24px;background:linear-gradient(135deg,#0f172a 0%,#1a2744 100%);color:#fff}
+.savings-inner{max-width:900px;margin:0 auto;text-align:center}
+.savings-inner .lead{color:rgba(255,255,255,.55)}
+.savings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+.savings-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:28px 20px;text-align:center}
+.savings-card .num{font-size:36px;font-weight:900;margin-bottom:4px}
+.savings-card .num.green{color:#4ade80}.savings-card .num.orange{color:#fbbf24}.savings-card .num.blue{color:#60a5fa}
+.savings-card .label{font-size:12px;color:rgba(255,255,255,.45)}
+
+/* NICHES */
+.niches{padding:100px 24px}
+.niches-inner{max-width:900px;margin:0 auto;text-align:center}
+.niche-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}
+.niche-card{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:28px 16px;text-align:center;transition:all .2s}
+.niche-card:hover{border-color:var(--acbd);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.04)}
+.niche-card .ico{font-size:36px;margin-bottom:10px}
+.niche-card h4{font-size:14px;font-weight:700;margin-bottom:4px}
+.niche-card p{font-size:11px;color:var(--tx3)}
 
 /* CTA */
-.cta{padding:80px 24px;text-align:center}
-.cta-box{max-width:600px;margin:0 auto;background:var(--sf);border:1px solid var(--bd2);border-radius:20px;padding:48px 40px;box-shadow:var(--shadow-md)}
-.cta-box h2{font-size:24px;font-weight:800;margin-bottom:8px}
-.cta-box p{font-size:14px;color:var(--tx2);margin-bottom:28px}
+.cta{padding:100px 24px;text-align:center}
+.cta-box{max-width:680px;margin:0 auto;background:linear-gradient(135deg,var(--ac) 0%,#7c5cfc 100%);border-radius:24px;padding:56px 48px;box-shadow:0 16px 48px rgba(79,110,247,.25);color:#fff;position:relative;overflow:hidden}
+.cta-box::before{content:'';position:absolute;top:-50%;right:-20%;width:300px;height:300px;background:radial-gradient(circle,rgba(255,255,255,.1),transparent 60%);pointer-events:none}
+.cta-box h2{font-size:clamp(24px,3.5vw,36px);font-weight:800;margin-bottom:12px;letter-spacing:-.02em}
+.cta-box p{font-size:15px;opacity:.8;margin-bottom:32px;line-height:1.6}
+.cta-box .btn{background:#fff;color:var(--ac2);font-weight:700;box-shadow:0 4px 16px rgba(0,0,0,.12)}.cta-box .btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.cta-sub{margin-top:16px;font-size:12px;opacity:.5}
+.cta-mascot{position:absolute;bottom:-10px;right:24px;width:120px;opacity:.9}
 
 /* FOOTER */
-footer{padding:32px 40px;border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--tx3)}
-footer a{color:var(--tx2);font-weight:500}
-footer a:hover{color:var(--tx)}
+footer{padding:40px clamp(16px,4vw,48px);border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--tx3)}
+footer a{color:var(--tx2);font-weight:500;transition:color .15s}footer a:hover{color:var(--tx)}
 
 /* MOBILE */
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;text-align:center}
+  .hero-sub{margin-left:auto;margin-right:auto}
+  .hero-cta{justify-content:center}
+  .hero-mascot img{max-width:280px}
+  .hero-stats{justify-content:center}
+  .hero-mascot{order:-1}
+}
 @media(max-width:768px){
-  nav{padding:0 16px}
-  .nav-links a:not(.btn){display:none}
+  .nav-r a:not(.btn){display:none}
+  .lang-switcher{display:none}
+  .labs67-lang{display:none}
   .hero{padding:100px 16px 60px}
-  .hero-stats{gap:24px}
-  .hero-stat .num{font-size:22px}
-  .features,.domains,.countries,.cta{padding:48px 16px}
-  .cta-box{padding:32px 20px}
+  .hero-stats{gap:20px}
+  .hero-stat .big{font-size:22px}
+  .pain-cards{grid-template-columns:1fr}
+  .steps::before{left:24px}
+  .step-num{width:48px;height:48px;font-size:16px;border-radius:14px}
+  .savings-grid{grid-template-columns:repeat(2,1fr)}
+  .cta-box{padding:40px 24px;border-radius:20px}
+  .cta-mascot{display:none}
   footer{flex-direction:column;gap:8px;text-align:center}
+}
+@media(max-width:480px){
+  .niche-grid{grid-template-columns:repeat(2,1fr)}
+  .savings-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -104,156 +180,271 @@ footer a:hover{color:var(--tx)}
 <!-- NAV -->
 <nav>
   <div class="nav-logo"><span class="dot"></span> SVITA</div>
-  <div class="nav-links">
-    <a href="#features">Возможности</a>
-    <a href="#domains">Домены</a>
-    <span id="navAuth"></span>
+  <div class="nav-r">
+    <a href="#problem" data-i18n="nav.why">Зачем</a>
+    <a href="#how" data-i18n="nav.how">Как работает</a>
+    <div class="lang-switcher"></div>
+    <a href="https://dashboard.svita.ai" class="btn btn-g" data-i18n="nav.login">Войти</a>
+    <a href="https://dashboard.svita.ai#signup" class="btn btn-p" id="navCta" data-i18n="nav.try">Попробовать</a>
   </div>
 </nav>
-<script>
-(function(){
-  var el=document.getElementById('navAuth');
-  function _esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-  try{
-    var ck=document.cookie.match(/svita_session=([^;]+)/);
-    if(ck){
-      var u=JSON.parse(decodeURIComponent(ck[1]));
-      if(u&&u.name){
-        var initials=_esc(u.name.split(/[\s@]/)[0].slice(0,2).toUpperCase());
-        var name=_esc(u.name);
-        el.innerHTML='<a href="https://dashboard.svita.ai" class="btn btn-primary" style="display:inline-flex;align-items:center;gap:6px"><span style="width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.2);display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">'+initials+'</span>Дашборд</a>';
-        return;
-      }
-    }
-  }catch(e){}
-  el.innerHTML='<a href="https://dashboard.svita.ai" class="btn btn-ghost">Войти</a><a href="https://dashboard.svita.ai#signup" class="btn btn-primary">Начать бесплатно</a>';
-})();
-</script>
 
 <!-- HERO -->
-<section class="hero">
-  <div class="hero-badge"><span class="pulse"></span> AI-powered business constructor</div>
-  <h1>Создайте <span class="gradient">бизнес-концепцию</span> за минуты</h1>
-  <p>SVITA генерирует полную бизнес-модель: помещения, персонал, оборудование, услуги, финансы и документы</p>
-  <div class="hero-actions">
-    <a href="https://dashboard.svita.ai#signup" class="btn btn-primary">Попробовать бесплатно</a>
-    <a href="https://dashboard.svita.ai" class="btn btn-ghost">Войти в кабинет</a>
-  </div>
-  <div class="hero-stats">
-    <div class="hero-stat"><div class="num">6</div><div class="label">Этапов конструктора</div></div>
-    <div class="hero-stat"><div class="num">40+</div><div class="label">Стран Европы</div></div>
-    <div class="hero-stat"><div class="num">12</div><div class="label">Валют</div></div>
-  </div>
-</section>
-
-<!-- FEATURES -->
-<section class="features" id="features">
-  <div class="section-label">Возможности</div>
-  <div class="section-title">Всё для запуска бизнеса</div>
-  <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(79,110,247,.08);color:var(--ac2)">🏗</div>
-      <h3>Конструктор помещений</h3>
-      <p>Планировка зон, расчёт площадей, инженерные сети — с учётом санитарных норм</p>
+<section class="hero" id="top">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-pill"><span class="dot"></span> <span data-i18n="hero.pill">AI-консультант с детальным конструктором</span></div>
+      <h1 data-i18n="hero.h1">Создавайте бизнесы<br><span class="hl">и управляйте ими</span> качественно</h1>
+      <p class="hero-sub" data-i18n="hero.sub">SVITA &mdash; AI-конструктор, который проведёт вас от идеи до открытия. Заполните 7 этапов &mdash; получите готовую бизнес-модель с бюджетом, командой, поставщиками и планом запуска.</p>
+      <div class="hero-cta">
+        <a href="https://dashboard.svita.ai#signup" class="btn btn-p btn-lg" id="heroCta" data-i18n="cta.try">Попробовать бесплатно</a>
+        <a href="#how" class="btn btn-g btn-lg" data-i18n="cta.how">Как это работает</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="big">20%</div><div class="sm" data-i18n="hero.stat1">бюджета теряется<br>без планирования</div></div>
+        <div class="hero-stat"><div class="big">6</div><div class="sm" data-i18n="hero.stat2">месяцев экономии<br>на этапе запуска</div></div>
+        <div class="hero-stat"><div class="big">1</div><div class="sm" data-i18n="hero.stat3">место для всего<br>вместо 10 таблиц</div></div>
+      </div>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(26,153,86,.08);color:var(--gn)">👥</div>
-      <h3>Штатное расписание</h3>
-      <p>Подбор персонала, расчёт ФОТ, должностные обязанности по стандартам страны</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(124,92,252,.08);color:#7c5cfc">🔧</div>
-      <h3>Каталог оборудования</h3>
-      <p>База поставщиков, актуальные цены, спецификации и гарантии</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(192,138,16,.08);color:#c08a10">💰</div>
-      <h3>Финансовая модель</h3>
-      <p>Бюджет, рентабельность, ROI, окупаемость — всё считается автоматически</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(214,48,48,.08);color:#d63030">📋</div>
-      <h3>Документация</h3>
-      <p>Sanepid, лицензии, разрешения — чек-листы под каждую страну</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(79,110,247,.08);color:var(--ac2)">🤖</div>
-      <h3>AI-анализ</h3>
-      <p>SVITA AI анализирует концепцию, находит риски и предлагает оптимизации</p>
+    <div class="hero-mascot">
+      <img src="stickers/svitiks-hero.png" alt="Svitiks — AI-маскот SVITA" width="420" height="420">
     </div>
   </div>
 </section>
 
-<!-- DOMAINS -->
-<section class="domains" id="domains">
-  <div class="section-label">Домены</div>
-  <div class="section-title">Какой бизнес запустить?</div>
-  <div class="domains-grid">
-    <div class="domain-card">
-      <div class="domain-icon">🦷</div>
-      <h4>Стоматология</h4>
-      <p>Семейная, детская, ортодонтия</p>
-    </div>
-    <div class="domain-card">
-      <div class="domain-icon">☕</div>
-      <h4>Кофейня</h4>
-      <p>Specialty, to-go, кондитерская</p>
-    </div>
-    <div class="domain-card">
-      <div class="domain-icon">💇</div>
-      <h4>Салон красоты</h4>
-      <p>Premium, барбершоп, SPA</p>
-    </div>
-    <div class="domain-card">
-      <div class="domain-icon">🍽</div>
-      <h4>Общепит</h4>
-      <p>Ресторан, фастфуд, кейтеринг</p>
+<!-- PROBLEM -->
+<section class="problem" id="problem">
+  <div class="problem-inner">
+    <div class="eyebrow" style="color:var(--or)" data-i18n="problem.eyebrow">Проблема</div>
+    <h2 class="section-h2" data-i18n="problem.h2">Открытие бизнеса &mdash; это хаос.<br>И он стоит денег.</h2>
+    <p class="lead" data-i18n="problem.lead">Таблицы в Excel. Переписки в мессенджерах. Контакты подрядчиков на стикерах. Когда всё разбросано &mdash; вы платите дважды.</p>
+    <div class="pain-cards">
+      <div class="pain-card" data-num="01">
+        <div class="ico">&#128184;</div>
+        <h4 data-i18n="problem.c1.h">Лишняя аренда</h4>
+        <p data-i18n="problem.c1.p">Каждый месяц простоя помещения &mdash; это аренда, коммуналка и упущенная выручка. Без плана ремонт затягивается на 2-4 месяца.</p>
+      </div>
+      <div class="pain-card" data-num="02">
+        <div class="ico">&#128200;</div>
+        <h4 data-i18n="problem.c2.h">Перерасход бюджета</h4>
+        <p data-i18n="problem.c2.p">Без единой картины расходов легко потратить на 15-20% больше. Подрядчик закладывает лишнее, поставщик навязывает ненужное.</p>
+      </div>
+      <div class="pain-card" data-num="03">
+        <div class="ico">&#128337;</div>
+        <h4 data-i18n="problem.c3.h">Потеря времени</h4>
+        <p data-i18n="problem.c3.p">Поиск поставщиков, сравнение цен, координация подрядчиков. Без системы это съедает 30+ часов в неделю.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- COUNTRIES -->
-<section class="countries">
-  <div class="section-label">География</div>
-  <div class="section-title">Вся Европа, 12 валют</div>
-  <div class="country-list">
-    <div class="country-tag">Польша <span class="currency">PLN</span></div>
-    <div class="country-tag">Чехия <span class="currency">CZK</span></div>
-    <div class="country-tag">Германия <span class="currency">EUR</span></div>
-    <div class="country-tag">Франция <span class="currency">EUR</span></div>
-    <div class="country-tag">Италия <span class="currency">EUR</span></div>
-    <div class="country-tag">Испания <span class="currency">EUR</span></div>
-    <div class="country-tag">Великобритания <span class="currency">GBP</span></div>
-    <div class="country-tag">Швейцария <span class="currency">CHF</span></div>
-    <div class="country-tag">Швеция <span class="currency">SEK</span></div>
-    <div class="country-tag">Норвегия <span class="currency">NOK</span></div>
-    <div class="country-tag">Дания <span class="currency">DKK</span></div>
-    <div class="country-tag">Венгрия <span class="currency">HUF</span></div>
-    <div class="country-tag">Румыния <span class="currency">RON</span></div>
-    <div class="country-tag">Болгария <span class="currency">BGN</span></div>
-    <div class="country-tag">Австрия <span class="currency">EUR</span></div>
-    <div class="country-tag">Нидерланды <span class="currency">EUR</span></div>
-    <div class="country-tag">Бельгия <span class="currency">EUR</span></div>
-    <div class="country-tag">Португалия <span class="currency">EUR</span></div>
+<!-- SOLUTION -->
+<section class="solution" id="solution">
+  <div class="solution-inner">
+    <div class="eyebrow" style="color:var(--gn);text-align:center" data-i18n="solution.eyebrow">Детальный конструктор</div>
+    <h2 class="section-h2" style="text-align:center" data-i18n="solution.h2">7 этапов. Один AI-консультант.<br>Полная картина бизнеса.</h2>
+    <p class="lead" style="text-align:center" data-i18n="solution.lead">Наполните конструктор &mdash; и SVITA рассчитает бюджет, подберёт исполнителей, составит план запуска. Чем детальнее вы заполните &mdash; тем точнее результат.</p>
+    <div class="sol-grid">
+      <div class="sol-card">
+        <div class="sol-icon" style="background:var(--acbg);color:var(--ac2)">&#128203;</div>
+        <h3 data-i18n="sol.c1.h">Конструктор концепции</h3>
+        <p data-i18n="sol.c1.p">Помещение, зоны, кабинеты, оборудование, персонал, услуги &mdash; заполняйте пошагово. AI анализирует и считает за вас.</p>
+      </div>
+      <div class="sol-card">
+        <div class="sol-icon" style="background:var(--orbg);color:var(--or)">&#128736;</div>
+        <h3 data-i18n="sol.c2.h">Подрядчики и поставщики</h3>
+        <p data-i18n="sol.c2.p">Каталог исполнителей с рейтингами. Назначайте работы, создавайте счета, общайтесь в чате.</p>
+      </div>
+      <div class="sol-card">
+        <div class="sol-icon" style="background:var(--gnbg);color:var(--gn)">&#128176;</div>
+        <h3 data-i18n="sol.c3.h">Бюджет и рентабельность</h3>
+        <p data-i18n="sol.c3.p">Стартовые вложения, ФОТ, выручка, ROI, точка безубыточности &mdash; всё считается автоматически.</p>
+      </div>
+      <div class="sol-card">
+        <div class="sol-icon" style="background:var(--vibg);color:var(--vi)">&#127968;</div>
+        <h3 data-i18n="sol.c4.h">Схема помещения</h3>
+        <p data-i18n="sol.c4.p">Разметьте зоны, расставьте кабинеты, посчитайте площади. Планировка синхронизирована с бюджетом.</p>
+      </div>
+      <div class="sol-card">
+        <div class="sol-icon" style="background:rgba(239,68,68,.06);color:#ef4444">&#128221;</div>
+        <h3 data-i18n="sol.c5.h">AI-заметки и досье</h3>
+        <p data-i18n="sol.c5.p">AI анализирует каждого подрядчика и поставщика: чем занимается, для чего подходит, на что обратить внимание.</p>
+      </div>
+      <div class="sol-card">
+        <div class="sol-icon" style="background:rgba(6,182,212,.06);color:#06b6d4">&#128197;</div>
+        <h3 data-i18n="sol.c6.h">Контроль исполнения</h3>
+        <p data-i18n="sol.c6.p">Трекайте работы подрядчиков, документы, закупки &mdash; всё привязано к датам открытия.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="how-inner">
+    <div class="eyebrow" style="color:var(--vi);text-align:center" data-i18n="how.eyebrow">Как это работает</div>
+    <h2 class="section-h2" style="text-align:center;margin-bottom:56px" data-i18n="how.h2">Изучите. Наполните. Управляйте.</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4 data-i18n="how.s1.h">Изучите конструктор</h4>
+          <p data-i18n="how.s1.p">7 этапов: концепция, помещение, ремонт, оборудование, персонал, услуги, документы. Каждый &mdash; детальный раздел с AI-подсказками.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4 data-i18n="how.s2.h">Наполните данными</h4>
+          <p data-i18n="how.s2.p">Чем детальнее вы заполните &mdash; тем точнее расчёты. AI-консультант анализирует каждый параметр и рассчитывает бюджет в реальном времени.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4 data-i18n="how.s3.h">Получите готовую модель</h4>
+          <p data-i18n="how.s3.p">Бюджет, рентабельность, план помещения, список подрядчиков и поставщиков &mdash; полная картина для принятия решений.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4 data-i18n="how.s4.h">Управляйте запуском</h4>
+          <p data-i18n="how.s4.p">Назначайте исполнителей, контролируйте сроки и закупки, ведите документацию. Всё в одном месте до и после открытия.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SAVINGS -->
+<section class="savings">
+  <div class="savings-inner">
+    <div class="eyebrow" style="color:var(--or)" data-i18n="savings.eyebrow">Экономия</div>
+    <h2 class="section-h2" data-i18n="savings.h2">Планирование &mdash; это деньги</h2>
+    <p class="lead" data-i18n="savings.lead">Каждый день простоя &mdash; аренда без дохода. Каждый неучтённый расход &mdash; удар по бюджету.</p>
+    <div class="savings-grid">
+      <div class="savings-card"><div class="num green">-20%</div><div class="label" data-i18n="savings.c1">перерасхода бюджета<br>при планировании</div></div>
+      <div class="savings-card"><div class="num orange">-2 мес.</div><div class="label" data-i18n="savings.c2">сокращение сроков<br>подготовки</div></div>
+      <div class="savings-card"><div class="num blue">30+ ч.</div><div class="label" data-i18n="savings.c3">экономия времени<br>в неделю</div></div>
+      <div class="savings-card"><div class="num green">1</div><div class="label" data-i18n="savings.c4">место вместо<br>10 таблиц и чатов</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR WHO -->
+<section class="niches" id="niches">
+  <div class="niches-inner">
+    <div class="eyebrow" style="color:var(--ac2)" data-i18n="niches.eyebrow">Для кого</div>
+    <h2 class="section-h2" data-i18n="niches.h2">Любой малый бизнес</h2>
+    <p class="lead" data-i18n="niches.lead">SVITA адаптируется под вашу нишу. Готовые шаблоны, нормативы и каталоги для каждого формата.</p>
+    <div class="niche-grid">
+      <div class="niche-card"><div class="ico">&#129463;</div><h4 data-i18n="niche.1">Стоматология</h4><p>Клиники, кабинеты</p></div>
+      <div class="niche-card"><div class="ico">&#9749;</div><h4 data-i18n="niche.2">Кофейня</h4><p>Specialty, to-go</p></div>
+      <div class="niche-card"><div class="ico">&#128135;</div><h4 data-i18n="niche.3">Салон красоты</h4><p>Premium, SPA</p></div>
+      <div class="niche-card"><div class="ico">&#128170;</div><h4 data-i18n="niche.4">Фитнес</h4><p>Зал, студия, йога</p></div>
+      <div class="niche-card"><div class="ico">&#127860;</div><h4 data-i18n="niche.5">Общепит</h4><p>Ресторан, кафе</p></div>
+      <div class="niche-card"><div class="ico">&#10024;</div><h4 data-i18n="niche.6">Ваша ниша</h4><p>Любой формат</p></div>
+    </div>
   </div>
 </section>
 
 <!-- CTA -->
-<section class="cta">
+<section class="cta" id="cta">
   <div class="cta-box">
-    <h2>Готовы начать?</h2>
-    <p>Создайте первую бизнес-концепцию бесплатно. Без карты, без ограничений.</p>
-    <a href="https://dashboard.svita.ai#signup" class="btn btn-primary" style="padding:14px 36px;font-size:15px">Создать концепцию</a>
+    <h2 data-i18n="cta.h2">Начните сегодня. Бесплатно.</h2>
+    <p data-i18n="cta.p">Без привязки карты. Полный доступ к конструктору &mdash; прямо сейчас.</p>
+    <a href="https://dashboard.svita.ai#signup" class="btn btn-lg" id="bottomCta" data-i18n="cta.try">Попробовать бесплатно</a>
+    <div class="cta-sub" data-i18n="cta.sub">Работает на телефоне, планшете и компьютере</div>
+    <img src="stickers/svitiks-rocket.png" class="cta-mascot" alt="Svitiks на ракете" width="140" height="140">
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div>SVITA &copy; 2026 &mdash; LABS67</div>
-  <div>
-    <a href="https://labs67.com" target="_blank">LABS67</a>
+  <div>SVITA &copy; 2026 &mdash; <a href="https://labs67.com" target="_blank" rel="noopener">LABS67</a></div>
+  <div style="display:flex;gap:16px">
+    <a href="https://dashboard.svita.ai">Dashboard</a>
+    <a href="mailto:hey@labs67.com" data-i18n="footer.contact">Контакт</a>
   </div>
 </footer>
 
+<script>
+window.I18N={
+"hero.pill":{ru:"AI-консультант с детальным конструктором",en:"AI consultant with a detailed builder",be:"AI-кансультант з дэталёвым канструктарам",de:"AI-Berater mit detailliertem Baukasten",es:"Consultor IA con constructor detallado",fr:"Consultant IA avec constructeur d\u00e9taill\u00e9",it:"Consulente AI con costruttore dettagliato",ja:"AI\u30b3\u30f3\u30b5\u30eb\u30bf\u30f3\u30c8",ko:"AI \ucee8\uc124\ud134\ud2b8",pl:"Konsultant AI ze szczeg\u00f3\u0142owym konstruktorem",pt:"Consultor IA com construtor detalhado",uk:"AI-\u043a\u043e\u043d\u0441\u0443\u043b\u044c\u0442\u0430\u043d\u0442 \u0437 \u0434\u0435\u0442\u0430\u043b\u044c\u043d\u0438\u043c \u043a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0442\u043e\u0440\u043e\u043c"},
+"hero.h1":{ru:"C\u043e\u0437\u0434\u0430\u0432\u0430\u0439\u0442\u0435 \u0431\u0438\u0437\u043d\u0435\u0441\u044b <span class=\"hl\">\u0438 \u0443\u043f\u0440\u0430\u0432\u043b\u044f\u0439\u0442\u0435 \u0438\u043c\u0438</span> \u043a\u0430\u0447\u0435\u0441\u0442\u0432\u0435\u043d\u043d\u043e",en:"Build businesses <span class=\"hl\">and manage them</span> with confidence",be:"\u0421\u0442\u0432\u0430\u0440\u0430\u0439\u0446\u0435 \u0431\u0456\u0437\u043d\u0435\u0441\u044b <span class=\"hl\">\u0456 \u043a\u0456\u0440\u0443\u0439\u0446\u0435 \u0456\u043c\u0456</span> \u044f\u043a\u0430\u0441\u043d\u0430",de:"Unternehmen gr\u00fcnden <span class=\"hl\">und professionell</span> f\u00fchren",es:"Crea negocios <span class=\"hl\">y gest\u00ed\u00f3nalos</span> con calidad",fr:"Cr\u00e9ez des entreprises <span class=\"hl\">et g\u00e9rez-les</span> avec qualit\u00e9",it:"Crea imprese <span class=\"hl\">e gestiscile</span> con qualit\u00e0",ja:"\u30d3\u30b8\u30cd\u30b9\u3092<span class=\"hl\">\u4f5c\u308a\u3001\u7ba1\u7406</span>\u3059\u308b",ko:"\ube44\uc988\ub2c8\uc2a4\ub97c <span class=\"hl\">\ub9cc\ub4e4\uace0 \uad00\ub9ac</span>\ud558\uc138\uc694",pl:"Tworzenie biznesu <span class=\"hl\">i zarz\u0105dzanie nim</span> na najwy\u017cszym poziomie",pt:"Crie neg\u00f3cios <span class=\"hl\">e gerencie-os</span> com qualidade",uk:"\u0421\u0442\u0432\u043e\u0440\u044e\u0439\u0442\u0435 \u0431\u0456\u0437\u043d\u0435\u0441\u0438 <span class=\"hl\">\u0442\u0430 \u043a\u0435\u0440\u0443\u0439\u0442\u0435 \u043d\u0438\u043c\u0438</span> \u044f\u043a\u0456\u0441\u043d\u043e"},
+"hero.sub":{ru:"SVITA \u2014 AI-\u043a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0442\u043e\u0440, \u043a\u043e\u0442\u043e\u0440\u044b\u0439 \u043f\u0440\u043e\u0432\u0435\u0434\u0451\u0442 \u0432\u0430\u0441 \u043e\u0442 \u0438\u0434\u0435\u0438 \u0434\u043e \u043e\u0442\u043a\u0440\u044b\u0442\u0438\u044f. \u0417\u0430\u043f\u043e\u043b\u043d\u0438\u0442\u0435 7 \u044d\u0442\u0430\u043f\u043e\u0432 \u2014 \u043f\u043e\u043b\u0443\u0447\u0438\u0442\u0435 \u0433\u043e\u0442\u043e\u0432\u0443\u044e \u0431\u0438\u0437\u043d\u0435\u0441-\u043c\u043e\u0434\u0435\u043b\u044c \u0441 \u0431\u044e\u0434\u0436\u0435\u0442\u043e\u043c, \u043a\u043e\u043c\u0430\u043d\u0434\u043e\u0439 \u0438 \u043f\u043b\u0430\u043d\u043e\u043c \u0437\u0430\u043f\u0443\u0441\u043a\u0430.",en:"SVITA is an AI builder that guides you from idea to launch. Complete 7 stages \u2014 get a ready business model with budget, team, suppliers, and a launch plan.",be:"SVITA \u2014 AI-\u043a\u0430\u043d\u0441\u0442\u0440\u0443\u043a\u0442\u0430\u0440, \u044f\u043a\u0456 \u043f\u0440\u0430\u0432\u044f\u0434\u0437\u0435 \u0432\u0430\u0441 \u0430\u0434 \u0456\u0434\u044d\u0456 \u0434\u0430 \u0430\u0434\u043a\u0440\u044b\u0446\u0446\u044f. \u0417\u0430\u043f\u043e\u045e\u043d\u0456\u0446\u0435 7 \u044d\u0442\u0430\u043f\u0430\u045e \u2014 \u0430\u0442\u0440\u044b\u043c\u0430\u0435\u0446\u0435 \u0433\u0430\u0442\u043e\u0432\u0443\u044e \u043c\u0430\u0434\u044d\u043b\u044c.",de:"SVITA ist ein AI-Baukasten, der Sie von der Idee bis zur Er\u00f6ffnung begleitet. 7 Schritte \u2014 fertiges Gesch\u00e4ftsmodell.",es:"SVITA es un constructor IA que te gu\u00eda desde la idea hasta la apertura. 7 etapas \u2014 modelo de negocio listo.",fr:"SVITA est un constructeur IA qui vous guide de l'id\u00e9e \u00e0 l'ouverture. 7 \u00e9tapes \u2014 mod\u00e8le d'affaires pr\u00eat.",it:"SVITA \u00e8 un costruttore AI che ti guida dall'idea all'apertura. 7 fasi \u2014 modello di business pronto.",ja:"SVITA\u306f\u30a2\u30a4\u30c7\u30a2\u304b\u3089\u958b\u696d\u307e\u3067\u5c0e\u304fAI\u30d3\u30eb\u30c0\u30fc\u3002",ko:"SVITA\ub294 \uc544\uc774\ub514\uc5b4\uc5d0\uc11c \uc624\ud508\uae4c\uc9c0 \uc548\ub0b4\ud558\ub294 AI \ube4c\ub354\uc785\ub2c8\ub2e4.",pl:"SVITA to AI-konstruktor, kt\u00f3ry poprowadzi Ci\u0119 od pomys\u0142u do otwarcia. 7 etap\u00f3w \u2014 gotowy model biznesowy.",pt:"SVITA \u00e9 um construtor IA que guia voc\u00ea da ideia \u00e0 abertura. 7 etapas \u2014 modelo de neg\u00f3cio pronto.",uk:"SVITA \u2014 AI-\u043a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0442\u043e\u0440, \u0449\u043e \u043f\u0440\u043e\u0432\u0435\u0434\u0435 \u0432\u0456\u0434 \u0456\u0434\u0435\u0457 \u0434\u043e \u0432\u0456\u0434\u043a\u0440\u0438\u0442\u0442\u044f. 7 \u0435\u0442\u0430\u043f\u0456\u0432 \u2014 \u0433\u043e\u0442\u043e\u0432\u0430 \u043c\u043e\u0434\u0435\u043b\u044c."},
+"cta.try":{ru:"\u041f\u043e\u043f\u0440\u043e\u0431\u043e\u0432\u0430\u0442\u044c \u0431\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u043e",en:"Try for free",be:"\u0421\u043f\u0440\u0430\u0431\u0430\u0432\u0430\u0446\u044c \u0431\u044f\u0441\u043f\u043b\u0430\u0442\u043d\u0430",de:"Kostenlos testen",es:"Probar gratis",fr:"Essayer gratuitement",it:"Prova gratis",ja:"\u7121\u6599\u3067\u8a66\u3059",ko:"\ubb34\ub8cc\ub85c \uc2dc\ub3c4",pl:"Wypr\u00f3buj za darmo",pt:"Experimentar gr\u00e1tis",uk:"\u0421\u043f\u0440\u043e\u0431\u0443\u0432\u0430\u0442\u0438 \u0431\u0435\u0437\u043a\u043e\u0448\u0442\u043e\u0432\u043d\u043e"},
+"cta.how":{ru:"\u041a\u0430\u043a \u044d\u0442\u043e \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442",en:"How it works",be:"\u042f\u043a \u0433\u044d\u0442\u0430 \u043f\u0440\u0430\u0446\u0443\u0435",de:"So funktioniert es",es:"C\u00f3mo funciona",fr:"Comment \u00e7a marche",it:"Come funziona",ja:"\u4ed5\u7d44\u307f",ko:"\uc791\ub3d9 \ubc29\uc2dd",pl:"Jak to dzia\u0142a",pt:"Como funciona",uk:"\u042f\u043a \u0446\u0435 \u043f\u0440\u0430\u0446\u044e\u0454"},
+"nav.why":{ru:"\u0417\u0430\u0447\u0435\u043c",en:"Why",be:"\u041d\u0430\u0432\u043e\u0448\u0442\u0430",de:"Warum",es:"Por qu\u00e9",fr:"Pourquoi",it:"Perch\u00e9",ja:"\u306a\u305c",ko:"\uc774\uc720",pl:"Dlaczego",pt:"Por qu\u00ea",uk:"\u041d\u0430\u0432\u0456\u0449\u043e"},
+"nav.how":{ru:"\u041a\u0430\u043a \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442",en:"How it works",be:"\u042f\u043a \u043f\u0440\u0430\u0446\u0443\u0435",de:"So geht's",es:"C\u00f3mo funciona",fr:"Fonctionnement",it:"Come funziona",ja:"\u4ed5\u7d44\u307f",ko:"\ubc29\ubc95",pl:"Jak dzia\u0142a",pt:"Como funciona",uk:"\u042f\u043a \u043f\u0440\u0430\u0446\u044e\u0454"},
+"nav.login":{ru:"\u0412\u043e\u0439\u0442\u0438",en:"Log in",be:"\u0423\u0432\u0430\u0439\u0441\u0446\u0456",de:"Anmelden",es:"Entrar",fr:"Connexion",it:"Accedi",ja:"\u30ed\u30b0\u30a4\u30f3",ko:"\ub85c\uadf8\uc778",pl:"Zaloguj",pt:"Entrar",uk:"\u0423\u0432\u0456\u0439\u0442\u0438"},
+"nav.try":{ru:"\u041f\u043e\u043f\u0440\u043e\u0431\u043e\u0432\u0430\u0442\u044c",en:"Try it",be:"\u0421\u043f\u0440\u0430\u0431\u0430\u0432\u0430\u0446\u044c",de:"Testen",es:"Probar",fr:"Essayer",it:"Prova",ja:"\u8a66\u3059",ko:"\uc2dc\ub3c4",pl:"Spr\u00f3buj",pt:"Testar",uk:"\u0421\u043f\u0440\u043e\u0431\u0443\u0432\u0430\u0442\u0438"},
+"problem.eyebrow":{ru:"\u041f\u0440\u043e\u0431\u043b\u0435\u043c\u0430",en:"The problem",be:"\u041f\u0440\u0430\u0431\u043b\u0435\u043c\u0430",de:"Das Problem",es:"El problema",fr:"Le probl\u00e8me",it:"Il problema",ja:"\u554f\u984c",ko:"\ubb38\uc81c",pl:"Problem",pt:"O problema",uk:"\u041f\u0440\u043e\u0431\u043b\u0435\u043c\u0430"},
+"problem.h2":{ru:"\u041e\u0442\u043a\u0440\u044b\u0442\u0438\u0435 \u0431\u0438\u0437\u043d\u0435\u0441\u0430 \u2014 \u044d\u0442\u043e \u0445\u0430\u043e\u0441.<br>\u0418 \u043e\u043d \u0441\u0442\u043e\u0438\u0442 \u0434\u0435\u043d\u0435\u0433.",en:"Starting a business is chaos.<br>And it costs money.",be:"\u0410\u0434\u043a\u0440\u044b\u0446\u0446\u0451 \u0431\u0456\u0437\u043d\u0435\u0441\u0443 \u2014 \u0433\u044d\u0442\u0430 \u0445\u0430\u043e\u0441.<br>\u0406 \u0451\u043d \u043a\u0430\u0448\u0442\u0443\u0435 \u0433\u0440\u043e\u0448\u044b.",de:"Ein Gesch\u00e4ft er\u00f6ffnen ist Chaos.<br>Und es kostet Geld.",es:"Abrir un negocio es caos.<br>Y cuesta dinero.",fr:"Ouvrir une entreprise, c'est le chaos.<br>Et \u00e7a co\u00fbte cher.",it:"Aprire un'attivit\u00e0 \u00e8 caos.<br>E costa caro.",ja:"\u8d77\u696d\u306f\u6df7\u4e71\u3002<br>\u305d\u308c\u306f\u304a\u91d1\u304c\u304b\u304b\u308b\u3002",ko:"\uc0ac\uc5c5 \uc2dc\uc791\uc740 \ud63c\ub780\uc785\ub2c8\ub2e4.<br>\uadf8\ub9ac\uace0 \ub3c8\uc774 \ub4ed\ub2c8\ub2e4.",pl:"Otwarcie biznesu to chaos.<br>A chaos kosztuje.",pt:"Abrir um neg\u00f3cio \u00e9 caos.<br>E custa dinheiro.",uk:"\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0442\u044f \u0431\u0456\u0437\u043d\u0435\u0441\u0443 \u2014 \u0446\u0435 \u0445\u0430\u043e\u0441.<br>\u0406 \u0432\u0456\u043d \u043a\u043e\u0448\u0442\u0443\u0454 \u0433\u0440\u043e\u0448\u0435\u0439."},
+"problem.lead":{ru:"\u0422\u0430\u0431\u043b\u0438\u0446\u044b \u0432 Excel. \u041f\u0435\u0440\u0435\u043f\u0438\u0441\u043a\u0438 \u0432 \u043c\u0435\u0441\u0441\u0435\u043d\u0434\u0436\u0435\u0440\u0430\u0445. \u041a\u043e\u043d\u0442\u0430\u043a\u0442\u044b \u043f\u043e\u0434\u0440\u044f\u0434\u0447\u0438\u043a\u043e\u0432 \u043d\u0430 \u0441\u0442\u0438\u043a\u0435\u0440\u0430\u0445. \u041a\u043e\u0433\u0434\u0430 \u0432\u0441\u0451 \u0440\u0430\u0437\u0431\u0440\u043e\u0441\u0430\u043d\u043e \u2014 \u0432\u044b \u043f\u043b\u0430\u0442\u0438\u0442\u0435 \u0434\u0432\u0430\u0436\u0434\u044b.",en:"Spreadsheets. Messenger chats. Contacts on sticky notes. When everything is scattered \u2014 you pay twice.",be:"\u0422\u0430\u0431\u043b\u0456\u0446\u044b \u045e Excel. \u041f\u0435\u0440\u0430\u043f\u0456\u0441\u043a\u0456 \u045e \u043c\u0435\u0441\u0435\u043d\u0434\u0436\u0430\u0440\u0430\u0445. \u041a\u0430\u043b\u0456 \u045e\u0441\u0451 \u0440\u0430\u0437\u043a\u0456\u0434\u0430\u043d\u0430 \u2014 \u0432\u044b \u043f\u043b\u0430\u0446\u0456\u0446\u0435 \u0434\u0432\u043e\u0439\u0447\u044b.",de:"Excel-Tabellen. Chats. Kontakte auf Klebezetteln. Wenn alles verstreut ist \u2014 zahlen Sie doppelt.",es:"Hojas de c\u00e1lculo. Chats. Contactos en notas adhesivas. Cuando todo est\u00e1 disperso \u2014 pagas el doble.",fr:"Tableurs. Messageries. Contacts sur des post-it. Quand tout est \u00e9parpill\u00e9 \u2014 vous payez deux fois.",it:"Fogli di calcolo. Chat. Contatti sui post-it. Quando tutto \u00e8 sparso \u2014 paghi il doppio.",ja:"\u30b9\u30d7\u30ec\u30c3\u30c9\u30b7\u30fc\u30c8\u3002\u30c1\u30e3\u30c3\u30c8\u3002\u4ed8\u7b8b\u306e\u9023\u7d61\u5148\u3002\u3059\u3079\u3066\u304c\u30d0\u30e9\u30d0\u30e9\u306a\u3089\u3001\u4e8c\u91cd\u306b\u6255\u3046\u3002",ko:"\uc2a4\ud504\ub808\ub4dc\uc2dc\ud2b8. \uba54\uc2e0\uc800. \ud3ec\uc2a4\ud2b8\uc787 \uc5f0\ub77d\ucc98. \ud769\uc5b4\uc838 \uc788\uc73c\uba74 \ub450 \ubc30\ub85c \uc9c0\ubd88\ud569\ub2c8\ub2e4.",pl:"Arkusze. Czaty. Kontakty na karteczkach. Gdy wszystko jest rozsiane \u2014 p\u0142acisz podw\u00f3jnie.",pt:"Planilhas. Chats. Contatos em post-its. Quando tudo est\u00e1 espalhado \u2014 voc\u00ea paga em dobro.",uk:"\u0422\u0430\u0431\u043b\u0438\u0446\u0456 \u0432 Excel. \u041b\u0438\u0441\u0442\u0443\u0432\u0430\u043d\u043d\u044f. \u041a\u043e\u043d\u0442\u0430\u043a\u0442\u0438 \u043d\u0430 \u0441\u0442\u0456\u043a\u0435\u0440\u0430\u0445. \u041a\u043e\u043b\u0438 \u0432\u0441\u0435 \u0440\u043e\u0437\u043a\u0438\u0434\u0430\u043d\u043e \u2014 \u043f\u043b\u0430\u0442\u0438\u0442\u0435 \u0434\u0432\u0456\u0447\u0456."},
+"problem.c1.h":{ru:"\u041b\u0438\u0448\u043d\u044f\u044f \u0430\u0440\u0435\u043d\u0434\u0430",en:"Wasted rent",be:"\u041b\u0456\u0448\u043d\u044f\u044f \u0430\u0440\u044d\u043d\u0434\u0430",de:"\u00dcberfl\u00fcssige Miete",es:"Alquiler desperdiciado",fr:"Loyer gaspill\u00e9",it:"Affitto sprecato",ja:"\u7121\u99c4\u306a\u5bb6\u8cc3",ko:"\ub0ad\ube44\ub418\ub294 \uc784\ub300\ub8cc",pl:"Zbyteczny czynsz",pt:"Aluguel desperdi\u00e7ado",uk:"\u0417\u0430\u0439\u0432\u0430 \u043e\u0440\u0435\u043d\u0434\u0430"},
+"problem.c2.h":{ru:"\u041f\u0435\u0440\u0435\u0440\u0430\u0441\u0445\u043e\u0434 \u0431\u044e\u0434\u0436\u0435\u0442\u0430",en:"Budget overrun",be:"\u041f\u0435\u0440\u0430\u0440\u0430\u0441\u0445\u043e\u0434 \u0431\u044e\u0434\u0436\u044d\u0442\u0443",de:"Budget\u00fcberschreitung",es:"Sobrecostos",fr:"D\u00e9passement de budget",it:"Sforamento budget",ja:"\u4e88\u7b97\u8d85\u904e",ko:"\uc608\uc0b0 \ucd08\uacfc",pl:"Przekroczenie bud\u017cetu",pt:"Estouro de or\u00e7amento",uk:"\u041f\u0435\u0440\u0435\u0432\u0438\u0442\u0440\u0430\u0442\u0430 \u0431\u044e\u0434\u0436\u0435\u0442\u0443"},
+"problem.c3.h":{ru:"\u041f\u043e\u0442\u0435\u0440\u044f \u0432\u0440\u0435\u043c\u0435\u043d\u0438",en:"Time wasted",be:"\u0421\u0442\u0440\u0430\u0442\u0430 \u0447\u0430\u0441\u0443",de:"Zeitverlust",es:"P\u00e9rdida de tiempo",fr:"Perte de temps",it:"Perdita di tempo",ja:"\u6642\u9593\u306e\u7121\u99c4",ko:"\uc2dc\uac04 \ub0ad\ube44",pl:"Strata czasu",pt:"Perda de tempo",uk:"\u0412\u0442\u0440\u0430\u0442\u0430 \u0447\u0430\u0441\u0443"},
+"solution.eyebrow":{ru:"\u0414\u0435\u0442\u0430\u043b\u044c\u043d\u044b\u0439 \u043a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0442\u043e\u0440",en:"Detailed builder",be:"\u0414\u044d\u0442\u0430\u043b\u0451\u0432\u044b \u043a\u0430\u043d\u0441\u0442\u0440\u0443\u043a\u0442\u0430\u0440",de:"Detaillierter Baukasten",es:"Constructor detallado",fr:"Constructeur d\u00e9taill\u00e9",it:"Costruttore dettagliato",ja:"\u8a73\u7d30\u30d3\u30eb\u30c0\u30fc",ko:"\uc0c1\uc138 \ube4c\ub354",pl:"Szczeg\u00f3\u0142owy konstruktor",pt:"Construtor detalhado",uk:"\u0414\u0435\u0442\u0430\u043b\u044c\u043d\u0438\u0439 \u043a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0442\u043e\u0440"},
+"solution.h2":{ru:"7 \u044d\u0442\u0430\u043f\u043e\u0432. \u041e\u0434\u0438\u043d AI-\u043a\u043e\u043d\u0441\u0443\u043b\u044c\u0442\u0430\u043d\u0442.<br>\u041f\u043e\u043b\u043d\u0430\u044f \u043a\u0430\u0440\u0442\u0438\u043d\u0430 \u0431\u0438\u0437\u043d\u0435\u0441\u0430.",en:"7 stages. One AI consultant.<br>Complete business picture.",be:"7 \u044d\u0442\u0430\u043f\u0430\u045e. \u0410\u0434\u0437\u0456\u043d AI-\u043a\u0430\u043d\u0441\u0443\u043b\u044c\u0442\u0430\u043d\u0442.<br>\u041f\u043e\u045e\u043d\u0430\u044f \u043a\u0430\u0440\u0446\u0456\u043d\u0430 \u0431\u0456\u0437\u043d\u0435\u0441\u0443.",de:"7 Schritte. Ein AI-Berater.<br>Vollst\u00e4ndiges Gesch\u00e4ftsbild.",es:"7 etapas. Un consultor IA.<br>Panorama completo del negocio.",fr:"7 \u00e9tapes. Un consultant IA.<br>Vue compl\u00e8te de l'entreprise.",it:"7 fasi. Un consulente AI.<br>Quadro completo del business.",ja:"7\u30b9\u30c6\u30c3\u30d7\u30021\u3064\u306eAI\u30b3\u30f3\u30b5\u30eb\u30bf\u30f3\u30c8\u3002<br>\u5b8c\u5168\u306a\u30d3\u30b8\u30cd\u30b9\u50cf\u3002",ko:"7\ub2e8\uacc4. \ud558\ub098\uc758 AI \ucee8\uc124\ud134\ud2b8.<br>\uc644\uc804\ud55c \ube44\uc988\ub2c8\uc2a4 \uadf8\ub9bc.",pl:"7 etap\u00f3w. Jeden konsultant AI.<br>Pe\u0142ny obraz biznesu.",pt:"7 etapas. Um consultor IA.<br>Vis\u00e3o completa do neg\u00f3cio.",uk:"7 \u0435\u0442\u0430\u043f\u0456\u0432. \u041e\u0434\u0438\u043d AI-\u043a\u043e\u043d\u0441\u0443\u043b\u044c\u0442\u0430\u043d\u0442.<br>\u041f\u043e\u0432\u043d\u0430 \u043a\u0430\u0440\u0442\u0438\u043d\u0430 \u0431\u0456\u0437\u043d\u0435\u0441\u0443."},
+"how.eyebrow":{ru:"\u041a\u0430\u043a \u044d\u0442\u043e \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442",en:"How it works",be:"\u042f\u043a \u0433\u044d\u0442\u0430 \u043f\u0440\u0430\u0446\u0443\u0435",de:"So funktioniert es",es:"C\u00f3mo funciona",fr:"Comment \u00e7a marche",it:"Come funziona",ja:"\u4ed5\u7d44\u307f",ko:"\uc791\ub3d9 \ubc29\uc2dd",pl:"Jak to dzia\u0142a",pt:"Como funciona",uk:"\u042f\u043a \u0446\u0435 \u043f\u0440\u0430\u0446\u044e\u0454"},
+"how.h2":{ru:"\u0418\u0437\u0443\u0447\u0438\u0442\u0435. \u041d\u0430\u043f\u043e\u043b\u043d\u0438\u0442\u0435. \u0423\u043f\u0440\u0430\u0432\u043b\u044f\u0439\u0442\u0435.",en:"Explore. Fill in. Manage.",be:"\u0412\u044b\u0432\u0443\u0447\u044b\u0446\u0435. \u041d\u0430\u043f\u043e\u045e\u043d\u0456\u0446\u0435. \u041a\u0456\u0440\u0443\u0439\u0446\u0435.",de:"Erkunden. Ausf\u00fcllen. Verwalten.",es:"Explora. Completa. Gestiona.",fr:"Explorez. Remplissez. G\u00e9rez.",it:"Esplora. Compila. Gestisci.",ja:"\u63a2\u7d22\u3002\u5165\u529b\u3002\u7ba1\u7406\u3002",ko:"\ud0d0\uc0c9. \uc785\ub825. \uad00\ub9ac.",pl:"Poznaj. Wype\u0142nij. Zarz\u0105dzaj.",pt:"Explore. Preencha. Gerencie.",uk:"\u0412\u0438\u0432\u0447\u0456\u0442\u044c. \u041d\u0430\u043f\u043e\u0432\u043d\u0456\u0442\u044c. \u041a\u0435\u0440\u0443\u0439\u0442\u0435."},
+"savings.eyebrow":{ru:"\u042d\u043a\u043e\u043d\u043e\u043c\u0438\u044f",en:"Savings",be:"\u042d\u043a\u0430\u043d\u043e\u043c\u0456\u044f",de:"Einsparungen",es:"Ahorro",fr:"\u00c9conomies",it:"Risparmio",ja:"\u7bc0\u7d04",ko:"\uc808\uc57d",pl:"Oszcz\u0119dno\u015bci",pt:"Economia",uk:"\u0415\u043a\u043e\u043d\u043e\u043c\u0456\u044f"},
+"savings.h2":{ru:"\u041f\u043b\u0430\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435 \u2014 \u044d\u0442\u043e \u0434\u0435\u043d\u044c\u0433\u0438",en:"Planning saves money",be:"\u041f\u043b\u0430\u043d\u0430\u0432\u0430\u043d\u043d\u0435 \u2014 \u0433\u044d\u0442\u0430 \u0433\u0440\u043e\u0448\u044b",de:"Planung ist Geld",es:"Planificar es ahorrar",fr:"Planifier, c'est \u00e9conomiser",it:"Pianificare \u00e8 risparmiare",ja:"\u8a08\u753b\u304c\u304a\u91d1\u3092\u5b88\u308b",ko:"\uacc4\ud68d\uc774 \ub3c8\uc744 \uc808\uc57d\ud569\ub2c8\ub2e4",pl:"Planowanie to pieni\u0105dze",pt:"Planejar \u00e9 economizar",uk:"\u041f\u043b\u0430\u043d\u0443\u0432\u0430\u043d\u043d\u044f \u2014 \u0446\u0435 \u0433\u0440\u043e\u0448\u0456"},
+"niches.eyebrow":{ru:"\u0414\u043b\u044f \u043a\u043e\u0433\u043e",en:"For whom",be:"\u0414\u043b\u044f \u043a\u0430\u0433\u043e",de:"F\u00fcr wen",es:"Para qui\u00e9n",fr:"Pour qui",it:"Per chi",ja:"\u5bfe\u8c61",ko:"\ub204\uad6c\ub97c \uc704\ud574",pl:"Dla kogo",pt:"Para quem",uk:"\u0414\u043b\u044f \u043a\u043e\u0433\u043e"},
+"niches.h2":{ru:"\u041b\u044e\u0431\u043e\u0439 \u043c\u0430\u043b\u044b\u0439 \u0431\u0438\u0437\u043d\u0435\u0441",en:"Any small business",be:"\u041b\u044e\u0431\u044b \u043c\u0430\u043b\u044b \u0431\u0456\u0437\u043d\u0435\u0441",de:"Jedes kleine Unternehmen",es:"Cualquier peque\u00f1o negocio",fr:"Toute petite entreprise",it:"Qualsiasi piccola impresa",ja:"\u3042\u3089\u3086\u308b\u4e2d\u5c0f\u4f01\u696d",ko:"\ubaa8\ub4e0 \uc18c\uaddc\ubaa8 \ube44\uc988\ub2c8\uc2a4",pl:"Ka\u017cdy ma\u0142y biznes",pt:"Qualquer pequeno neg\u00f3cio",uk:"\u0411\u0443\u0434\u044c-\u044f\u043a\u0438\u0439 \u043c\u0430\u043b\u0438\u0439 \u0431\u0456\u0437\u043d\u0435\u0441"},
+"cta.h2":{ru:"\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u0441\u0435\u0433\u043e\u0434\u043d\u044f. \u0411\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u043e.",en:"Start today. For free.",be:"\u041f\u0430\u0447\u043d\u0456\u0446\u0435 \u0441\u0451\u043d\u043d\u044f. \u0411\u044f\u0441\u043f\u043b\u0430\u0442\u043d\u0430.",de:"Starten Sie heute. Kostenlos.",es:"Empiece hoy. Gratis.",fr:"Commencez aujourd'hui. Gratuitement.",it:"Inizia oggi. Gratis.",ja:"\u4eca\u65e5\u59cb\u3081\u307e\u3057\u3087\u3046\u3002\u7121\u6599\u3067\u3059\u3002",ko:"\uc624\ub298 \uc2dc\uc791\ud558\uc138\uc694. \ubb34\ub8cc\uc785\ub2c8\ub2e4.",pl:"Zacznij dzi\u015b. Za darmo.",pt:"Comece hoje. Gr\u00e1tis.",uk:"\u041f\u043e\u0447\u043d\u0456\u0442\u044c \u0441\u044c\u043e\u0433\u043e\u0434\u043d\u0456. \u0411\u0435\u0437\u043a\u043e\u0448\u0442\u043e\u0432\u043d\u043e."},
+"cta.p":{ru:"\u0411\u0435\u0437 \u043f\u0440\u0438\u0432\u044f\u0437\u043a\u0438 \u043a\u0430\u0440\u0442\u044b. \u041f\u043e\u043b\u043d\u044b\u0439 \u0434\u043e\u0441\u0442\u0443\u043f \u043a \u043a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0442\u043e\u0440\u0443 \u2014 \u043f\u0440\u044f\u043c\u043e \u0441\u0435\u0439\u0447\u0430\u0441.",en:"No credit card. Full access to the builder \u2014 right now.",be:"\u0411\u0435\u0437 \u043f\u0440\u044b\u0432\u044f\u0437\u043a\u0456 \u043a\u0430\u0440\u0442\u043a\u0456. \u041f\u043e\u045e\u043d\u044b \u0434\u043e\u0441\u0442\u0443\u043f \u0434\u0430 \u043a\u0430\u043d\u0441\u0442\u0440\u0443\u043a\u0442\u0430\u0440\u0430.",de:"Ohne Kreditkarte. Voller Zugang zum Baukasten.",es:"Sin tarjeta. Acceso completo al constructor.",fr:"Sans carte. Acc\u00e8s complet au constructeur.",it:"Senza carta. Accesso completo al costruttore.",ja:"\u30ab\u30fc\u30c9\u4e0d\u8981\u3002\u30d3\u30eb\u30c0\u30fc\u3078\u306e\u30d5\u30eb\u30a2\u30af\u30bb\u30b9\u3002",ko:"\uce74\ub4dc \ud544\uc694 \uc5c6\uc74c. \ube4c\ub354 \uc804\uccb4 \uc561\uc138\uc2a4.",pl:"Bez karty. Pe\u0142ny dost\u0119p do konstruktora.",pt:"Sem cart\u00e3o. Acesso total ao construtor.",uk:"\u0411\u0435\u0437 \u043a\u0430\u0440\u0442\u043a\u0438. \u041f\u043e\u0432\u043d\u0438\u0439 \u0434\u043e\u0441\u0442\u0443\u043f \u0434\u043e \u043a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0442\u043e\u0440\u0430."},
+"footer.contact":{ru:"\u041a\u043e\u043d\u0442\u0430\u043a\u0442",en:"Contact",be:"\u041a\u0430\u043d\u0442\u0430\u043a\u0442",de:"Kontakt",es:"Contacto",fr:"Contact",it:"Contatto",ja:"\u9023\u7d61\u5148",ko:"\uc5f0\ub77d\ucc98",pl:"Kontakt",pt:"Contato",uk:"\u041a\u043e\u043d\u0442\u0430\u043a\u0442"},
+"hero.stat1":{ru:"\u0431\u044e\u0434\u0436\u0435\u0442\u0430 \u0442\u0435\u0440\u044f\u0435\u0442\u0441\u044f<br>\u0431\u0435\u0437 \u043f\u043b\u0430\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f",en:"of budget lost<br>without planning",be:"\u0431\u044e\u0434\u0436\u044d\u0442\u0443 \u0441\u0442\u0440\u0430\u0447\u0432\u0430\u0435\u0446\u0446\u0430<br>\u0431\u0435\u0437 \u043f\u043b\u0430\u043d\u0430\u0432\u0430\u043d\u043d\u044f",de:"des Budgets gehen<br>ohne Planung verloren",es:"del presupuesto se pierde<br>sin planificaci\u00f3n",fr:"du budget perdu<br>sans planification",it:"del budget perso<br>senza pianificazione",ja:"\u306e\u4e88\u7b97\u304c<br>\u8a08\u753b\u306a\u3057\u3067\u5931\u308f\u308c\u308b",ko:"\uc608\uc0b0\uc774<br>\uacc4\ud68d \uc5c6\uc774 \uc190\uc2e4",pl:"bud\u017cetu tracone<br>bez planowania",pt:"do or\u00e7amento perdido<br>sem planejamento",uk:"\u0431\u044e\u0434\u0436\u0435\u0442\u0443 \u0432\u0442\u0440\u0430\u0447\u0430\u0454\u0442\u044c\u0441\u044f<br>\u0431\u0435\u0437 \u043f\u043b\u0430\u043d\u0443\u0432\u0430\u043d\u043d\u044f"},
+"hero.stat2":{ru:"\u043c\u0435\u0441\u044f\u0446\u0435\u0432 \u044d\u043a\u043e\u043d\u043e\u043c\u0438\u0438<br>\u043d\u0430 \u044d\u0442\u0430\u043f\u0435 \u0437\u0430\u043f\u0443\u0441\u043a\u0430",en:"months saved<br>at launch stage",be:"\u043c\u0435\u0441\u044f\u0446\u0430\u045e \u044d\u043a\u0430\u043d\u043e\u043c\u0456\u0456<br>\u043f\u0440\u044b \u0437\u0430\u043f\u0443\u0441\u043a\u0443",de:"Monate gespart<br>in der Startphase",es:"meses ahorrados<br>en el lanzamiento",fr:"mois \u00e9conomis\u00e9s<br>au lancement",it:"mesi risparmiati<br>al lancio",ja:"\u30f6\u6708\u306e\u7bc0\u7d04<br>\u7acb\u3061\u4e0a\u3052\u6642",ko:"\uac1c\uc6d4 \uc808\uc57d<br>\ub7f0\uce6d \ub2e8\uacc4\uc5d0\uc11c",pl:"miesi\u0119cy oszcz\u0119dno\u015bci<br>na etapie startu",pt:"meses economizados<br>no lan\u00e7amento",uk:"\u043c\u0456\u0441\u044f\u0446\u0456\u0432 \u0435\u043a\u043e\u043d\u043e\u043c\u0456\u0457<br>\u043d\u0430 \u0435\u0442\u0430\u043f\u0456 \u0437\u0430\u043f\u0443\u0441\u043a\u0443"},
+"hero.stat3":{ru:"\u043c\u0435\u0441\u0442\u043e \u0434\u043b\u044f \u0432\u0441\u0435\u0433\u043e<br>\u0432\u043c\u0435\u0441\u0442\u043e 10 \u0442\u0430\u0431\u043b\u0438\u0446",en:"place for everything<br>instead of 10 spreadsheets",be:"\u043c\u0435\u0441\u0446\u0430 \u0434\u043b\u044f \u045e\u0441\u044f\u0433\u043e<br>\u0437\u0430\u043c\u0435\u0441\u0442 10 \u0442\u0430\u0431\u043b\u0456\u0446",de:"Ort f\u00fcr alles<br>statt 10 Tabellen",es:"lugar para todo<br>en vez de 10 hojas",fr:"endroit pour tout<br>au lieu de 10 tableurs",it:"posto per tutto<br>invece di 10 fogli",ja:"\u3059\u3079\u3066\u304c1\u3064\u306b<br>10\u306e\u8868\u306e\u4ee3\u308f\u308a",ko:"\ubaa8\ub4e0 \uac83\uc744 \ud55c \uacf3\uc5d0<br>10\uac1c \uc2a4\ud504\ub808\ub4dc\uc2dc\ud2b8 \ub300\uc2e0",pl:"miejsce na wszystko<br>zamiast 10 arkuszy",pt:"lugar para tudo<br>em vez de 10 planilhas",uk:"\u043c\u0456\u0441\u0446\u0435 \u0434\u043b\u044f \u0432\u0441\u044c\u043e\u0433\u043e<br>\u0437\u0430\u043c\u0456\u0441\u0442\u044c 10 \u0442\u0430\u0431\u043b\u0438\u0446\u044c"}
+};
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"SVITA","applicationCategory":"BusinessApplication","description":"AI-ассистент открытия малого бизнеса. Планирование бюджета, подрядчики, поставщики — в одном месте.","url":"https://dashboard.svita.ai","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"PLN"}}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+  var SB_URL='https://ctdleobjnzniqkqomlrq.supabase.co';
+  var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZGxlb2JqbnpuaXFrcW9tbHJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMzE4MTEsImV4cCI6MjA4NzgwNzgxMX0.AMHtY7zGPemKYCxMy2bqRTOEAp8trA_Slor9wmg7C38';
+  // Page view
+  fetch(SB_URL+'/rest/v1/page_views',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=minimal'},body:JSON.stringify({page:'/landing',user_agent:navigator.userAgent,referrer:document.referrer||null})}).catch(function(){});
+  // Auth check
+  var sb=supabase.createClient(SB_URL,SB_KEY);
+  sb.auth.getSession().then(function(res){
+    var s=res.data&&res.data.session;
+    if(!s)return;
+    var email=s.user.email||'';
+    var meta=s.user.user_metadata||{};
+    var name=meta.display_name||email.split('@')[0];
+    var initials=(name||'?').split(' ').map(function(w){return w[0]}).join('').substring(0,2).toUpperCase();
+    // Nav — clean replace: avatar + name + Dashboard
+    var navR=document.querySelector('.nav-r');
+    if(navR){
+      // Remove Войти and Попробовать
+      var loginBtn=navR.querySelector('.btn-g');
+      if(loginBtn)loginBtn.remove();
+      var navCta=document.getElementById('navCta');
+      if(navCta)navCta.remove();
+      // Add user block
+      var userBlock=document.createElement('a');
+      userBlock.href='index.html';
+      userBlock.className='btn btn-g';
+      userBlock.style.cssText='gap:10px;padding:6px 16px 6px 6px;color:var(--tx);font-weight:700';
+      userBlock.innerHTML='<span style="width:32px;height:32px;border-radius:9px;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800">'+initials+'</span>Dashboard';
+      navR.appendChild(userBlock);
+    }
+    // Hero + bottom CTA
+    var heroCta=document.getElementById('heroCta');
+    if(heroCta){heroCta.textContent='Открыть Dashboard';heroCta.href='index.html';heroCta.removeAttribute('data-i18n')}
+    var bottomCta=document.getElementById('bottomCta');
+    if(bottomCta){bottomCta.textContent='Открыть Dashboard';bottomCta.href='index.html';bottomCta.removeAttribute('data-i18n')}
+  });
+})();
+</script>
+<script src="labs67-i18n.js"></script>
 </body>
 </html>
