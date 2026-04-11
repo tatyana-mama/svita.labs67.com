@@ -412,14 +412,20 @@ window.I18N={
   var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZGxlb2JqbnpuaXFrcW9tbHJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIyMzE4MTEsImV4cCI6MjA4NzgwNzgxMX0.AMHtY7zGPemKYCxMy2bqRTOEAp8trA_Slor9wmg7C38';
   // Page view
   fetch(SB_URL+'/rest/v1/page_views',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=minimal'},body:JSON.stringify({page:'/landing',user_agent:navigator.userAgent,referrer:document.referrer||null})}).catch(function(){});
-  // Auth check
+  // Auth check — read cross-subdomain cookie set by dashboard.svita.ai
+  var cookieMatch=document.cookie.match(/svita_session=([^;]+)/);
+  var sessionData=null;
+  if(cookieMatch){try{sessionData=JSON.parse(decodeURIComponent(cookieMatch[1]))}catch(e){}}
+  // Fallback: also try Supabase JS session (if on same domain)
   var sb=supabase.createClient(SB_URL,SB_KEY);
-  sb.auth.getSession().then(function(res){
+  (sessionData?Promise.resolve(sessionData):sb.auth.getSession().then(function(res){
     var s=res.data&&res.data.session;
-    if(!s)return;
-    var email=s.user.email||'';
-    var meta=s.user.user_metadata||{};
-    var name=meta.display_name||email.split('@')[0];
+    if(!s)return null;
+    return{email:s.user.email||'',name:(s.user.user_metadata||{}).display_name||s.user.email.split('@')[0]};
+  })).then(function(u){
+    if(!u)return;
+    var email=u.email||'';
+    var name=u.name||email.split('@')[0];
     var initials=(name||'?').split(' ').map(function(w){return w[0]}).join('').substring(0,2).toUpperCase();
     // Nav — clean replace: avatar + name + Dashboard
     var navR=document.querySelector('.nav-r');
@@ -431,7 +437,7 @@ window.I18N={
       if(navCta)navCta.remove();
       // Add user block
       var userBlock=document.createElement('a');
-      userBlock.href='index.html';
+      userBlock.href='https://dashboard.svita.ai';
       userBlock.className='btn btn-g';
       userBlock.style.cssText='gap:10px;padding:6px 16px 6px 6px;color:var(--tx);font-weight:700';
       userBlock.innerHTML='<span style="width:32px;height:32px;border-radius:9px;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800">'+initials+'</span>Dashboard';
@@ -439,9 +445,9 @@ window.I18N={
     }
     // Hero + bottom CTA
     var heroCta=document.getElementById('heroCta');
-    if(heroCta){heroCta.textContent='Открыть Dashboard';heroCta.href='index.html';heroCta.removeAttribute('data-i18n')}
+    if(heroCta){heroCta.textContent='Открыть Dashboard';heroCta.href='https://dashboard.svita.ai';heroCta.removeAttribute('data-i18n')}
     var bottomCta=document.getElementById('bottomCta');
-    if(bottomCta){bottomCta.textContent='Открыть Dashboard';bottomCta.href='index.html';bottomCta.removeAttribute('data-i18n')}
+    if(bottomCta){bottomCta.textContent='Открыть Dashboard';bottomCta.href='https://dashboard.svita.ai';bottomCta.removeAttribute('data-i18n')}
   });
 })();
 </script>
