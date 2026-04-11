@@ -1505,16 +1505,9 @@ Apple</button>
 })();
 function switchAdminRole(role){
   if(!currentUser||!currentUser.isAdmin)return;
+  resetRoleOverview();
   currentRole=role;
   localStorage.setItem('svita_role',role);
-  // Contractors/suppliers have no Stage 1 content — force Stage 2
-  if((role==='contractor'||role==='supplier')&&currentStage===1){
-    currentStage=2;localStorage.setItem('svita_stage','2');
-    document.querySelectorAll('.stage-btn').forEach(b=>{b.classList.toggle('active',parseInt(b.dataset.stage)===2)});
-    const tags={1:'Формирование концепции',2:'Закупки и установка',3:'В разработке'};
-    document.getElementById('sideTag').textContent=tags[2];
-    const _bizRow=document.getElementById('sideBizRow');if(_bizRow)_bizRow.style.display='none';
-  }
   _sidebarBuilt=false;
   buildSidebar();
   enterApp();
@@ -1742,6 +1735,20 @@ function switchAdminRole(role){
 <div class="bk" onclick="nav('overview')">&larr; Обзор</div>
 <div class="ph"><div><h2>&#128196; Мои предложения</h2><div class="ph-s">Коммерческие предложения, отправленные заказчикам</div></div></div>
 <div id="contractorProposalsList"></div>
+</div>
+
+<!-- ═══ CONTRACTOR: Active orders ═══ -->
+<div class="sec" id="sec-contractor-orders">
+<div class="bk" onclick="nav('overview')">&larr; Обзор</div>
+<div class="ph"><div><h2>&#128203; Активные заказы</h2><div class="ph-s">Принятые заказы — текущий ход работ</div></div></div>
+<div id="contractorOrdersList"></div>
+</div>
+
+<!-- ═══ SUPPLIER: Incoming requests ═══ -->
+<div class="sec" id="sec-supplier-requests">
+<div class="bk" onclick="nav('overview')">&larr; Обзор</div>
+<div class="ph"><div><h2>&#128230; Входящие запросы</h2><div class="ph-s">Запросы на поставку от владельцев бизнеса</div></div></div>
+<div id="supplierRequestsList"></div>
 </div>
 
 <div class="sec" id="sec-db-contractors">
@@ -4417,7 +4424,9 @@ function enterApp(){
   buildSidebar();
   try{renderAll()}catch(e){console.error('[SVITA] renderAll:',e)}
   try{recalc()}catch(e){console.error('[SVITA] recalc:',e)}
-  nav('overview');
+  // Restore last page or go to overview
+  const _lastPage=localStorage.getItem('svita_page')||'overview';
+  nav(_lastPage);
   loadSupabaseData();
   // i18n: set lang button text and apply
   const _lb=document.getElementById('langBtn');if(_lb)_lb.textContent=_lang.toUpperCase();
@@ -4678,15 +4687,22 @@ function buildSidebar(){
     html+='<div class="si'+(canC?'':' locked')+'" data-nav="'+(canC?'db-vendor-companies':'upgrade-gate')+'" data-tip="Поставщики оборудования и материалов"><span class="ico">&#127970;</span><span class="sl">Поставщики</span>'+(canC?'<span class="sb wip" id="sbVend">0</span>':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
   }
 
-  // ── Роли contractor/supplier — только на Stage 2 ──
-  if(currentStage===2&&currentRole==='contractor'){
-    html+='<div class="side-sec">Мои данные</div>';
-    html+='<div class="si" data-nav="contractor-works" data-tip="Заказы от владельцев, доступные для выполнения"><span class="ico">&#128736;</span><span class="sl">Доступные работы</span></div>';
-    html+='<div class="si" data-nav="contractor-proposals" data-tip="Ваши коммерческие предложения и статусы"><span class="ico">&#128196;</span><span class="sl">Мои предложения</span></div>';
+  // ── Подрядчик ──
+  if(currentRole==='contractor'){
+    html+='<div class="side-sec">Работа</div>';
+    html+='<div class="si" data-nav="contractor-works" data-tip="Тендеры и заказы от владельцев бизнеса"><span class="ico">&#128736;</span><span class="sl">Доступные работы</span></div>';
+    html+='<div class="si" data-nav="contractor-proposals" data-tip="Отправленные коммерческие предложения"><span class="ico">&#128196;</span><span class="sl">Мои предложения</span></div>';
+    html+='<div class="si" data-nav="contractor-orders" data-tip="Принятые заказы в работе"><span class="ico">&#128203;</span><span class="sl">Активные заказы</span></div>';
+    const _canChat=typeof userSubscription!=='undefined'&&userSubscription.contractors_access;
+    html+='<div class="si'+(_canChat?'':' locked')+'" data-nav="'+(_canChat?'exec-chat':'upgrade-gate')+'" data-tip="Переписка с заказчиками"><span class="ico">&#128172;</span><span class="sl">Чат</span>'+(_canChat?'':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
   }
-  if(currentStage===2&&currentRole==='supplier'){
-    html+='<div class="side-sec">Мои данные</div>';
-    html+='<div class="si" data-nav="db-suppliers" data-tip="Каталог вашего оборудования и расходных материалов"><span class="ico">&#128230;</span><span class="sl">Мой каталог</span></div>';
+  // ── Поставщик ──
+  if(currentRole==='supplier'){
+    html+='<div class="side-sec">Каталог</div>';
+    html+='<div class="si" data-nav="db-suppliers" data-tip="Управление каталогом товаров"><span class="ico">&#128230;</span><span class="sl">Мой каталог</span></div>';
+    html+='<div class="si" data-nav="supplier-requests" data-tip="Запросы на поставку от заказчиков"><span class="ico">&#128229;</span><span class="sl">Входящие запросы</span></div>';
+    const _canChat2=typeof userSubscription!=='undefined'&&userSubscription.contractors_access;
+    html+='<div class="si'+(_canChat2?'':' locked')+'" data-nav="'+(_canChat2?'exec-chat':'upgrade-gate')+'" data-tip="Переписка с заказчиками"><span class="ico">&#128172;</span><span class="sl">Чат</span>'+(_canChat2?'':'<span class="sb" style="background:rgba(201,169,110,.15);color:#c9a96e;font-size:8px">&#128274; PRO</span>')+'</div>';
   }
 
   // ── Employee — на обоих этапах ──
@@ -4756,7 +4772,7 @@ function updateSidebarBadges(){
 // ═══════════════ NAVIGATION ═══════════════
 function getSecNames(){
   const isCoffee=currentBizType&&currentBizType!=='dental';
-  return{overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:isCoffee?'Меню':'Услуги населению',s6:'Концепция',s7:'Документация',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны',news:'Новости','db-premises':'БД Помещений','db-renovations':'Модернизация и услуги','db-services':isCoffee?'Меню':'Каталог услуг','db-docs':'Каталог документов','db-contractors':'БД Подрядчиков','db-suppliers':'Каталог оборудования','db-employees':'БД Сотрудников','db-vendor-companies':'Поставщики',users:'Пользователи','cabinet-types':isCoffee?'Стоимость помещений':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения','exec-premises':'Помещения','exec-renovations':'Модернизация','exec-services':'Услуги','exec-equipment':'Оборудование','exec-staff':'Сотрудники','exec-docs':'Документация','exec-contractors':'Исполнители','exec-chat':'Чат',notes:'Заметки',metrics:'Метрики'};
+  return{overview:'Обзор',s1:'Помещение',s2:'Модернизация',s3:'Оснащение',s4:'Персонал',s5:isCoffee?'Меню':'Услуги населению',s6:'Концепция',s7:'Документация',account:'Личный кабинет',budget:'Бюджет',profit:'Рентабельность',zones:'Зоны',news:'Новости','db-premises':'БД Помещений','db-renovations':'Модернизация и услуги','db-services':isCoffee?'Меню':'Каталог услуг','db-docs':'Каталог документов','db-contractors':'БД Подрядчиков','db-suppliers':'Каталог оборудования','db-employees':'БД Сотрудников','db-vendor-companies':'Поставщики',users:'Пользователи','cabinet-types':isCoffee?'Стоимость помещений':'Типы кабинетов','contractor-works':'Доступные работы','contractor-proposals':'Мои предложения','exec-premises':'Помещения','exec-renovations':'Модернизация','exec-services':'Услуги','exec-equipment':'Оборудование','exec-staff':'Сотрудники','exec-docs':'Документация','exec-contractors':'Исполнители','exec-chat':'Чат',notes:'Заметки',metrics:'Метрики','contractor-orders':'Активные заказы','supplier-requests':'Входящие запросы'};
 }
 const secNames=getSecNames();
 const stageOrder=['s1','s2','s3','s4','s5','s6','s7'];
@@ -4769,6 +4785,7 @@ function nav(id){
   const _sb=document.getElementById('sidebar');if(_sb)_sb.classList.remove('mob-open');
   const _mo=document.getElementById('mobOverlay');if(_mo)_mo.classList.remove('vis');
   cur=id;
+  localStorage.setItem('svita_page',id);
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('vis'));
   const el=document.getElementById('sec-'+id);
   if(el)el.classList.add('vis');
@@ -4804,7 +4821,10 @@ function nav(id){
   if(id==='exec-chat')renderChatContacts();
   if(id==='exec-contractors')renderAssignedContractors();
   if(id==='metrics')loadMetrics();
-  if(id==='overview'&&currentStage===2)renderExecOverview();
+  if(id==='contractor-orders')renderContractorOrders();
+  if(id==='supplier-requests')renderSupplierRequests();
+  if(id==='overview'&&(currentRole==='contractor'||currentRole==='supplier'))renderRoleOverview();
+  if(id==='overview'&&currentStage===2&&currentRole!=='contractor'&&currentRole!=='supplier')renderExecOverview();
   updateSumbar();
   updateRightPanel();
 }
@@ -6101,6 +6121,88 @@ function renderContractorProposals(){
 ${(p.items||[]).map(i=>`<div style="padding:8px 10px;border:1px solid var(--bd);border-radius:6px;font-size:11px"><div style="font-weight:600">${esc(i.name)}</div><div style="color:var(--tx3);margin-top:2px">${esc(i.cat)} · ${i.price.toLocaleString()} PLN</div>${i.note?`<div style="color:var(--tx2);margin-top:2px;font-style:italic">${esc(i.note)}</div>`:''}</div>`).join('')}
 </div><div style="text-align:right;font-size:14px;font-weight:700">Итого: ${p.total.toLocaleString()} PLN</div></div></div>`;
   }).join('');
+}
+
+function renderContractorOrders(){
+  const c=document.getElementById('contractorOrdersList');if(!c)return;
+  const mine=(DB.proposals||[]).filter(p=>p.contractor_email===currentUser?.email&&p.status==='accepted');
+  if(!mine.length){c.innerHTML='<div class="c"><div class="cb" style="padding:40px;text-align:center"><div style="font-size:36px;margin-bottom:12px;opacity:.3">&#128203;</div><div style="color:var(--tx3);font-size:13px">Нет активных заказов</div><div style="color:var(--tx3);font-size:11px;margin-top:4px">Отправьте КП в «Доступные работы» — принятые заказы появятся здесь</div></div></div>';return}
+  c.innerHTML=mine.map(p=>{
+    return '<div class="c" style="margin-bottom:12px"><div class="ch"><h3>Заказ от '+new Date(p.created_at).toLocaleDateString()+'</h3><span style="font-size:10px;padding:3px 8px;border-radius:5px;background:rgba(34,197,94,.1);color:var(--gn);font-weight:600">В работе</span></div><div class="cb" style="padding:12px">'+(p.items||[]).map(function(i){return '<div style="padding:8px;border:1px solid var(--bd);border-radius:6px;font-size:11px;margin-bottom:6px"><div style="font-weight:600">'+esc(i.name)+'</div><div style="color:var(--tx3);margin-top:2px">'+i.price.toLocaleString()+' PLN</div></div>'}).join('')+'<div style="text-align:right;font-size:14px;font-weight:700;margin-top:8px">'+p.total.toLocaleString()+' PLN</div></div></div>';
+  }).join('');
+}
+
+function renderSupplierRequests(){
+  const c=document.getElementById('supplierRequestsList');if(!c)return;
+  // Placeholder — requests will come from owner actions
+  c.innerHTML='<div class="c"><div class="cb" style="padding:40px;text-align:center"><div style="font-size:36px;margin-bottom:12px;opacity:.3">&#128229;</div><div style="color:var(--tx3);font-size:13px">Нет входящих запросов</div><div style="color:var(--tx3);font-size:11px;margin-top:4px">Когда владелец бизнеса запросит товары из вашего каталога — запросы появятся здесь</div></div></div>';
+}
+
+function renderRoleOverview(){
+  const ov=document.getElementById('sec-overview');if(!ov)return;
+  // Hide admin-only blocks
+  const grids=ov.querySelectorAll('.g3,.sts');
+  grids.forEach(function(g){g.style.display='none'});
+  const cards=ov.querySelectorAll('.c');
+  cards.forEach(function(c){c.style.display='none'});
+  // Find or create role overview container
+  let ro=document.getElementById('roleOverviewContent');
+  if(!ro){ro=document.createElement('div');ro.id='roleOverviewContent';ov.appendChild(ro)}
+
+  if(currentRole==='contractor'){
+    const proposals=(DB.proposals||[]).filter(function(p){return p.contractor_email===currentUser?.email});
+    const sent=proposals.filter(function(p){return p.status==='sent'}).length;
+    const accepted=proposals.filter(function(p){return p.status==='accepted'}).length;
+    const total=proposals.length;
+    const availWorks=DB.renovations?DB.renovations.length:0;
+
+    ro.innerHTML='<div class="sts" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px">'+
+    '<div class="st"><div class="st-l">Доступных работ</div><div class="st-v" style="color:var(--ac2)">'+availWorks+'</div><div class="st-s">тендеров</div></div>'+
+    '<div class="st"><div class="st-l">Отправлено КП</div><div class="st-v" style="color:var(--or)">'+sent+'</div><div class="st-s">на рассмотрении</div></div>'+
+    '<div class="st"><div class="st-l">В работе</div><div class="st-v" style="color:var(--gn)">'+accepted+'</div><div class="st-s">принятых</div></div>'+
+    '<div class="st"><div class="st-l">Всего КП</div><div class="st-v">'+total+'</div><div class="st-s">за всё время</div></div>'+
+    '</div>'+
+    '<div class="c" style="margin-bottom:16px"><div class="ch"><h3>&#128736; Свежие тендеры</h3><button class="btn sm pr" onclick="nav(\'contractor-works\')">Все работы &rarr;</button></div><div class="cb">';
+    const recent=DB.renovations?DB.renovations.slice(0,5):[];
+    if(recent.length){
+      ro.innerHTML+=recent.map(function(r){return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)"><div><div style="font-weight:600;font-size:13px">'+esc(r.name)+'</div><div style="font-size:11px;color:var(--tx3)">'+esc(r.cat)+'</div></div><div style="font-size:13px;font-weight:600;color:var(--ac2)">'+r.price.toLocaleString()+' PLN</div></div>'}).join('')+'</div></div>';
+    }else{
+      ro.innerHTML+='<div style="padding:20px;text-align:center;color:var(--tx3);font-size:12px">Нет доступных работ</div></div></div>';
+    }
+
+    if(proposals.length){
+      ro.innerHTML+='<div class="c"><div class="ch"><h3>&#128196; Последние КП</h3><button class="btn sm" onclick="nav(\'contractor-proposals\')">Все &rarr;</button></div><div class="cb">'+
+      proposals.slice(0,3).map(function(p){
+        var sc=p.status==='accepted'?'var(--gn)':p.status==='rejected'?'var(--rd)':'var(--or)';
+        var st=p.status==='accepted'?'Принято':p.status==='rejected'?'Отклонено':'На рассмотрении';
+        return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)"><div><div style="font-weight:600;font-size:13px">КП от '+new Date(p.created_at).toLocaleDateString()+'</div><div style="font-size:11px;color:var(--tx3)">'+(p.items||[]).length+' работ</div></div><div style="display:flex;align-items:center;gap:10px"><span style="font-weight:600;font-size:13px">'+p.total.toLocaleString()+' PLN</span><span style="font-size:10px;padding:3px 8px;border-radius:5px;background:'+sc+'18;color:'+sc+';font-weight:600">'+st+'</span></div></div>'
+      }).join('')+'</div></div>';
+    }
+  }
+
+  if(currentRole==='supplier'){
+    var catCount=DB.suppliers?DB.suppliers.length:0;
+    var vendorCount=DB.vendorCompanies?DB.vendorCompanies.length:0;
+    ro.innerHTML='<div class="sts" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">'+
+    '<div class="st"><div class="st-l">В каталоге</div><div class="st-v" style="color:var(--ac2)">'+catCount+'</div><div class="st-s">товаров</div></div>'+
+    '<div class="st"><div class="st-l">Компания</div><div class="st-v" style="color:var(--vi)">'+vendorCount+'</div><div class="st-s">карточек</div></div>'+
+    '<div class="st"><div class="st-l">Запросов</div><div class="st-v" style="color:var(--or)">0</div><div class="st-s">входящих</div></div>'+
+    '</div>'+
+    '<div class="c"><div class="ch"><h3>&#128230; Мой каталог</h3><button class="btn sm pr" onclick="nav(\'db-suppliers\')">Управление &rarr;</button></div><div class="cb">';
+    var items=DB.suppliers?DB.suppliers.slice(0,5):[];
+    if(items.length){
+      ro.innerHTML+=items.map(function(s){return '<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd)"><div><div style="font-weight:600;font-size:13px">'+esc(s.name)+'</div><div style="font-size:11px;color:var(--tx3)">'+esc(s.cat||'')+'</div></div><div style="font-size:13px;font-weight:600;color:var(--ac2)">'+s.price.toLocaleString()+' PLN</div></div>'}).join('')+'</div></div>';
+    }else{
+      ro.innerHTML+='<div style="padding:20px;text-align:center;color:var(--tx3);font-size:12px">Каталог пуст — добавьте товары</div></div></div>';
+    }
+  }
+}
+
+// Restore admin overview when switching back
+function resetRoleOverview(){
+  const ro=document.getElementById('roleOverviewContent');if(ro)ro.remove();
+  const ov=document.getElementById('sec-overview');if(!ov)return;
+  ov.querySelectorAll('.g3,.sts,.c').forEach(function(g){g.style.display=''});
 }
 
 function renderContractors(){
