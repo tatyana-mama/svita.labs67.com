@@ -1,0 +1,198 @@
+{
+  "country": "ES",
+  "lang": "es",
+  "currency": "EUR",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "SL / SRL — Sociedad de Responsabilidad Limitada",
+      "desc": "Мин. капитал: €1 (mínimo legal desde Ley 18/2022; recomendable €3.000). 10-20 días hábiles (3-5 días si se usa constitución telemática PAE/CIRCE)",
+      "price": 400,
+      "required": true,
+      "note": "Ответственность: Limitada al capital aportado\nСроки: 10-20 días hábiles (3-5 días si se usa constitución telemática PAE/CIRCE)\nСтоимость: €400 - €1.000 (notario €150-300, Registro Mercantil €150-300, certificado denominación €17, BORME €60-100)\nШаги регистрации:\nSolicitar el Certificado Negativo de Denominación Social en el Registro Mercantil Central\nAbrir cuenta bancaria y depositar el capital social\nOtorgar la Escritura Pública de Constitución ante notario\nObtener el NIF provisional en la Agencia Tributaria (modelo 036)\nLiquidar el Impuesto sobre Transmisiones Patrimoniales y Actos Jurídicos Documentados (exento para constitución desde 2010)\nInscribir la sociedad en el Registro Mercantil Provincial\nObtener el NIF definitivo\nAlta en el censo de actividades económicas (IAE) — modelo 036/037\nSolicitar la Licencia de Apertura / Declaración Responsable en el Ayuntamiento\nAlta en la Seguridad Social (régimen de autónomos para administradores y/o régimen general para empleados)"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "SA — Sociedad Anónima",
+      "desc": "Мин. капитал: €60.000 (desembolso mínimo 25% en la constitución). 20-30 días hábiles",
+      "price": 1500,
+      "required": true,
+      "note": "Ответственность: Limitada al capital suscrito\nСроки: 20-30 días hábiles\nСтоимость: €1.500 - €3.500 (notario €600-1.000, Registro Mercantil €300-600)\nШаги регистрации:\nCertificado Negativo de Denominación Social\nDepósito del capital en cuenta bancaria\nEscritura Pública de Constitución ante notario\nNIF provisional en Agencia Tributaria\nInscripción en el Registro Mercantil Provincial\nNIF definitivo\nAlta censal IAE\nLicencia de Apertura / Declaración Responsable\nAlta en la Seguridad Social"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "Autónomo — Empresario Individual (Autónomo)",
+      "desc": "Мин. капитал: Sin mínimo legal. 1-5 días hábiles",
+      "price": 50,
+      "required": true,
+      "note": "Ответственность: Ilimitada — el empresario responde con todo su patrimonio personal\nСроки: 1-5 días hábiles\nСтоимость: €50 - €300 (sin notario ni Registro Mercantil obligatorio)\nШаги регистрации:\nAlta en el Censo de Empresarios (modelo 036/037) en la Agencia Tributaria\nAlta en el Régimen Especial de Trabajadores Autónomos (RETA) de la Seguridad Social\nDeclaración Responsable o Licencia de Apertura en el Ayuntamiento\nInscripción en el Registro Mercantil (opcional, obligatorio si es naviero)"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "CB — Comunidad de Bienes",
+      "desc": "Мин. капитал: Sin mínimo legal. 3-7 días hábiles",
+      "price": 100,
+      "required": true,
+      "note": "Ответственность: Ilimitada y solidaria entre los comuneros\nСроки: 3-7 días hábiles\nСтоимость: €100 - €500\nШаги регистрации:\nContrato privado de constitución (o Escritura Pública si se aportan inmuebles)\nAlta en el Censo de Empresarios (modelo 036)\nAlta de los comuneros en RETA\nDeclaración Responsable o Licencia de Apertura"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Declaración Responsable de Apertura / Licencia de Actividad",
+      "desc": "[Розничная торговля] Ayuntamiento competente",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Ayuntamiento competente\nТребования:\n• Proyecto técnico firmado por técnico competente (para actividades clasificadas)\n• Certificado de compatibilidad urbanística\n• Cumplimiento de normativa de accesibilidad\n• Medidas de protección contra incendios\n• Certificado de eficiencia energética del local\nСрок действия: Declaración Responsable: inicio inmediato. Licencia de Actividad (actividades clasificadas): 30-90 días\nСтоимость: €100 - €1.500 (tasa municipal variable según superficie y actividad)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Inscripción en el Registro de Comerciantes y Actividades Comerciales",
+      "desc": "[Розничная торговля] Comunidad Autónoma (Consejería de Comercio)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Comunidad Autónoma (Consejería de Comercio)\nТребования:\n• Estar dado de alta en la actividad comercial\n• Disponer de establecimiento comercial\n• Cumplir la normativa autonómica de comercio\nСрок действия: 15-30 días\nСтоимость: Gratuita o tasa simbólica según Comunidad Autónoma"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licencia de Actividad para establecimientos de hostelería",
+      "desc": "[HoReCa (общепит)] Ayuntamiento",
+      "price": 300,
+      "required": true,
+      "note": "Выдаёт: Ayuntamiento\nТребования:\n• Proyecto técnico de actividad\n• Certificado de solidez y seguridad estructural\n• Plan de emergencia y evacuación\n• Insonorización según normativa municipal de ruidos\n• Certificación de instalación eléctrica\n• Licencia de terraza (si aplica)\nСрок действия: 30-90 días (Declaración Responsable: inicio inmediato)\nСтоимость: €300 - €2.000"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Registro Sanitario / Alta en el RGSEAA",
+      "desc": "[HoReCa (общепит)] Consejería de Sanidad de la Comunidad Autónoma",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Consejería de Sanidad de la Comunidad Autónoma\nТребования:\n• Sistema de autocontrol APPCC (HACCP)\n• Manipulador de alimentos: formación del personal\n• Condiciones higiénico-sanitarias del local\nСрок действия: 15-30 días\nСтоимость: €0 - €200"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Inscripción en el Registro de Empresas y Actividades Turísticas",
+      "desc": "[HoReCa (общепит)] Consejería de Turismo de la Comunidad Autónoma",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Consejería de Turismo de la Comunidad Autónoma\nТребования:\n• Declaración Responsable de inicio de actividad turística\n• Clasificación del establecimiento (estrellas, llaves, etc.)\n• Cumplimiento de requisitos mínimos autonómicos\nСрок действия: Inmediata con Declaración Responsable\nСтоимость: Gratuita o tasa simbólica"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Declaración Responsable de Apertura",
+      "desc": "[Услуги и ремёсла] Ayuntamiento",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Ayuntamiento\nТребования:\n• Local con certificado de compatibilidad urbanística\n• Accesibilidad para personas con discapacidad\n• Normativa de seguridad contra incendios\nСрок действия: Inicio inmediato\nСтоимость: €50 - €500"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Colegiación Profesional (actividades reguladas)",
+      "desc": "[Услуги и ремёсла] Colegio Profesional correspondiente",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Colegio Profesional correspondiente\nТребования:\n• Titulación oficial habilitante\n• Seguro de responsabilidad civil profesional\n• Pago de cuota colegial\nСрок действия: 7-15 días\nСтоимость: €200 - €1.000/año (cuota colegial variable por profesión)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorización Ambiental Integrada (AAI) / Licencia Ambiental",
+      "desc": "[Производство] Comunidad Autónoma (Consejería de Medio Ambiente)",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: Comunidad Autónoma (Consejería de Medio Ambiente)\nТребования:\n• Estudio de impacto ambiental\n• Proyecto técnico de la actividad industrial\n• Plan de gestión de residuos\n• Plan de prevención y control de emisiones\nСрок действия: 90-180 días\nСтоимость: €500 - €5.000 (tasa autonómica variable)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Inscripción en el Registro Industrial",
+      "desc": "[Производство] Consejería de Industria de la Comunidad Autónoma",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Consejería de Industria de la Comunidad Autónoma\nТребования:\n• Acta de puesta en marcha de las instalaciones\n• Certificados de instalaciones (eléctrica, gas, climatización)\n• Certificado de dirección de obra\nСрок действия: 15-30 días\nСтоимость: €100 - €500"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Marcado CE (productos regulados)",
+      "desc": "[Производство] Organismo Notificado acreditado por ENAC",
+      "price": 1000,
+      "required": true,
+      "note": "Выдаёт: Organismo Notificado acreditado por ENAC\nТребования:\n• Evaluación de conformidad del producto\n• Documentación técnica completa\n• Declaración de conformidad UE\nСрок действия: 30-120 días\nСтоимость: €1.000 - €10.000"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorización de Transporte Público de Mercancías (MDL/MDP)",
+      "desc": "[Логистика и склад] Dirección General de Transporte Terrestre / Comunidad Autónoma",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Dirección General de Transporte Terrestre / Comunidad Autónoma\nТребования:\n• Requisito de honorabilidad\n• Capacitación profesional (certificado de competencia profesional)\n• Capacidad financiera (€9.000 primer vehículo, €5.000 cada adicional)\n• Disponibilidad de al menos un vehículo\n• Disponer de dirección y local para el archivo documental\nСрок действия: 15-30 días\nСтоимость: €100 - €300"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licencia Comunitaria para transporte internacional",
+      "desc": "[Логистика и склад] Ministerio de Transportes y Movilidad Sostenible",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Ministerio de Transportes y Movilidad Sostenible\nТребования:\n• Autorización MDL/MDP vigente\n• Vehículos con MMA superior a 3.500 kg\n• Capacidad financiera acreditada\nСрок действия: 15-30 días\nСтоимость: €100 - €200"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorización de Operador de Transporte (OT)",
+      "desc": "[Логистика и склад] Comunidad Autónoma",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Comunidad Autónoma\nТребования:\n• Capacitación profesional del operador\n• Seguro de responsabilidad civil\n• Alta en IAE como agencia de transporte\nСрок действия: 15-30 días\nСтоимость: €100 - €300"
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21% (IVA general)\nvat_reduced: 10% (alimentos, transporte, hostelería), 4% (pan, leche, libros, medicamentos, vivienda protegida)\ncorporate_tax: Impuesto sobre Sociedades: 25% (tipo general). Micro-empresas 2026: 19% primeros €50.000, 21% resto (facturación < €1M). PYMES (€1M-€10M): 23%. Nuevas empresas: 15% los dos primeros ejercicios con beneficios\nnotes: Los autónomos tributan por IRPF (escala progresiva 19%-47%). Cuota de autónomo: sistema de cotización por ingresos reales desde 2023, desde €230/mes (tramo mínimo). Recargo de equivalencia aplicable al comercio minorista (5,2% tipo general, 1,4% reducido, 0,5% superreducido)."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21%\nvat_reduced: 10% (servicios de restauración, alojamiento hotelero, comidas preparadas para consumo inmediato)\ncorporate_tax: 25% (general); micro-empresas 19%/21%; startups 15%\nnotes: El IVA en hostelería es del 10% para comidas y alojamiento. Impuesto sobre estancias turísticas aplicable en Cataluña, Baleares, Valencia y otras CCAA (€0,50-4/noche). Los autónomos hosteleros pueden aplicar módulos (estimación objetiva) si cumplen requisitos."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21%\nvat_reduced: 10% (algunos servicios de reparación), 4% (prótesis dentales, servicios funerarios)\ncorporate_tax: 25% (SL); autónomos tributan por IRPF (19%-47%)\nnotes: Los profesionales autónomos aplican retención del 15% en sus facturas (7% los tres primeros años). Sistema de módulos disponible para determinados oficios artesanales. Cuota de autónomo desde €230/mes."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21%\nvat_reduced: 10% (alimentos elaborados), 4% (pan, leche, medicamentos)\ncorporate_tax: 25% (general); micro-empresas 19%/21%; PYMES 23%; startups 15%\nnotes: Deducciones por I+D+i (25%-42% del gasto). Incentivos fiscales para inversiones en Zonas Francas. Patent Box: reducción del 60% en rentas de cesión de activos intangibles. Bonificaciones en cotizaciones por contratación indefinida."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21%\nvat_reduced: 10% (transporte de viajeros), exento para transporte internacional de mercancías (art. 22 Ley 37/1992)\ncorporate_tax: 25% (general); micro-empresas 19%/21%\nnotes: El transporte internacional de mercancías está exento de IVA. Deducibilidad del combustible con tarjeta de pago. Sistema de módulos disponible para autónomos transportistas con limitaciones de flota. Peajes deducibles como gasto."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — España",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "Испания: основные формы — SL (от €1, рекомендуется €3.000), SA (€60.000), Autónomo (без мин. капитала), Comunidad de Bienes. Регистрация через Registro Mercantil, ускоренная — через CIRCE/PAE за 3-5 дней. Для открытия — Declaración Responsable (начало немедленно) или Licencia de Actividad. Налоги: IS 25% (микро 19%/21%, стартапы 15%), IVA 21%/10%/4%. Автономос платят IRPF + взнос от €230/мес. Компетенции распределены между 17 автономными сообществами — нормы различаются. В 2026 введены сниженные ставки для микропредприятий (оборот < €1M)."
+    }
+  ]
+}

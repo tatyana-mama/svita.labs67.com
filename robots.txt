@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /data/
+Disallow: /sql/
+Disallow: /templates/
+
+Sitemap: https://dashboard.svita.ai/sitemap.xml

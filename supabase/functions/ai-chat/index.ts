@@ -1,18 +1,22 @@
 import "@supabase/functions-js/edge-runtime.d.ts"
 
-const CORS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
+const ALLOWED_ORIGINS = ['https://dashboard.svita.ai','https://svita.ai','https://news.svita.ai','https://svita.labs67.com'];
+function corsHeaders(req: Request){
+  const origin=req.headers.get('origin')||'';
+  return {
+    "Access-Control-Allow-Origin": ALLOWED_ORIGINS.includes(origin)?origin:ALLOWED_ORIGINS[0],
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+  }
 }
 
-// Jetson SVITA AI proxy (public Tailscale Funnel)
-const JETSON_URL = "https://scyraai-desktop.tail2060da.ts.net/svita-ai"
+// Jetson SVITA AI proxy
+const JETSON_URL = Deno.env.get("JETSON_URL") || "https://scyraai-desktop.tail2060da.ts.net/svita-ai"
 const JETSON_TIMEOUT = 90_000
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response(null, { status: 204, headers: CORS })
+    return new Response(null, { status: 204, headers: corsHeaders(req) })
   }
 
   try {
@@ -21,7 +25,7 @@ Deno.serve(async (req) => {
     if (!message || typeof message !== "string") {
       return new Response(JSON.stringify({ reply: "Пустое сообщение" }), {
         status: 400,
-        headers: { ...CORS, "Content-Type": "application/json" },
+        headers: { ...corsHeaders(req), "Content-Type": "application/json" },
       })
     }
 
@@ -30,11 +34,11 @@ Deno.serve(async (req) => {
       const result = await tryActionsMode(message, context, history)
       if (result) {
         return new Response(JSON.stringify(result), {
-          headers: { ...CORS, "Content-Type": "application/json" },
+          headers: { ...corsHeaders(req), "Content-Type": "application/json" },
         })
       }
       return new Response(JSON.stringify({ reply: "Не удалось сгенерировать действия", actions: [] }), {
-        headers: { ...CORS, "Content-Type": "application/json" },
+        headers: { ...corsHeaders(req), "Content-Type": "application/json" },
       })
     }
 
@@ -42,7 +46,7 @@ Deno.serve(async (req) => {
     const jetsonReply = await tryJetson(message, context, history)
     if (jetsonReply) {
       return new Response(JSON.stringify({ reply: jetsonReply, source: "jetson" }), {
-        headers: { ...CORS, "Content-Type": "application/json" },
+        headers: { ...corsHeaders(req), "Content-Type": "application/json" },
       })
     }
 
@@ -50,19 +54,19 @@ Deno.serve(async (req) => {
     const claudeReply = await tryClaude(message, context, history)
     if (claudeReply) {
       return new Response(JSON.stringify({ reply: claudeReply, source: "claude" }), {
-        headers: { ...CORS, "Content-Type": "application/json" },
+        headers: { ...corsHeaders(req), "Content-Type": "application/json" },
       })
     }
 
     return new Response(JSON.stringify({ reply: "AI сервис временно недоступен" }), {
       status: 502,
-      headers: { ...CORS, "Content-Type": "application/json" },
+      headers: { ...corsHeaders(req), "Content-Type": "application/json" },
     })
   } catch (e) {
     console.error("Function error:", e)
     return new Response(JSON.stringify({ reply: "Внутренняя ошибка" }), {
       status: 500,
-      headers: { ...CORS, "Content-Type": "application/json" },
+      headers: { ...corsHeaders(req), "Content-Type": "application/json" },
     })
   }
 })
@@ -333,16 +337,23 @@ function buildSystemPrompt(ctx: Record<string, unknown> | undefined): string {
 1. Определи что пользователь реально спрашивает (намерение > буквальные слова)
 2. Оцени текущее состояние его концепции по контексту
 3. Дай конкретный ответ с цифрами и фактами
-4. Укажи риски или пробелы если видишь
-5. Перед выводом — проверь: цифры реалистичны? Нет противоречий? Ответ на заданный вопрос?
+4. Если просят подобрать/рекомендовать — дай КОНКРЕТНЫЕ модели, бренды, цены
+5. Укажи риски или пробелы если видишь
+6. Перед выводом — проверь: цифры реалистичны? Нет противоречий? Ответ на заданный вопрос?
+
+ПОВЕДЕНИЕ:
+- Если пользователь просит подобрать оборудование, персонал, услуги — ДАВАЙ конкретные списки с ценами и моделями
+- Если спрашивает совет — анализируй и советуй с цифрами
+- Если просит заполнить/сгенерировать — помоги, не отказывай
+- НИКОГДА не отвечай "я аналитик, не генератор" — ты эксперт, который помогает ПОЛНОСТЬЮ
 
 ФОРМАТ:
-- Русский язык, максимум 200 слов
+- Русский язык, максимум 300 слов
 - **Жирный** для ключевого, списки (- пункт), ## заголовки
 - Цифры > общие слова. "Аренда 60-90 PLN/м²" > "аренда зависит от района"
+- Конкретные бренды и модели > общие описания. "KaVo ESTETICA E50 — 85 000 PLN" > "dental unit"
 - Если не знаешь — скажи. Не выдумывай
-- Если данные могут быть устаревшими — предупреди
-- НЕ генерируй концепции. Анализируй и советуй`
+- Если данные могут быть устаревшими — предупреди`
 
   if (!ctx) return base
 

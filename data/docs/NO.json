@@ -1,0 +1,230 @@
+{
+  "country": "NO",
+  "lang": "no",
+  "currency": "NOK",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "AS — Aksjeselskap",
+      "desc": "Мин. капитал: NOK 30 000. 1–2 uker (elektronisk via Altinn)",
+      "price": 6,
+      "required": true,
+      "note": "Ответственность: Begrenset til aksjekapital\nСроки: 1–2 uker (elektronisk via Altinn)\nСтоимость: NOK 6 825 (elektronisk registrering) eller NOK 7 912 (papir)\nШаги регистрации:\nVelg firmanavn og sjekk tilgjengelighet i Brønnøysundregistrene\nUtarbeid stiftelsesdokument og vedtekter\nInnbetal aksjekapital (minimum NOK 30 000) til selskapets bankkonto\nRegistrer selskapet i Foretaksregisteret via Altinn\nRegistrer i Merverdiavgiftsregisteret (MVA) hvis omsetning over NOK 50 000\nRegistrer i Arbeidsgiver- og arbeidstakerregisteret (Aa-registeret) ved ansettelser\nOpprett bedriftskonto i bank"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "ENK — Enkeltpersonforetak",
+      "desc": "Мин. капитал: Ingen. 1–5 virkedager",
+      "price": 2,
+      "required": true,
+      "note": "Ответственность: Ubegrenset personlig ansvar\nСроки: 1–5 virkedager\nСтоимость: Gratis (Enhetsregisteret); NOK 2 250 valgfri Foretaksregisteret\nШаги регистрации:\nRegistrer foretaket i Enhetsregisteret via Altinn (Samordnet registermelding)\nMeld fra til Skatteetaten for forskuddsskatt\nRegistrer for MVA hvis omsetning over NOK 50 000\nValgfritt: registrer i Foretaksregisteret (NOK 2 250)"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "ANS — Ansvarlig selskap",
+      "desc": "Мин. капитал: Ingen. 1–2 uker",
+      "price": 6,
+      "required": true,
+      "note": "Ответственность: Ubegrenset solidarisk ansvar for alle deltakere\nСроки: 1–2 uker\nСтоимость: NOK 6 825 registreringsgebyr\nШаги регистрации:\nUtarbeid selskapsavtale\nRegistrer i Foretaksregisteret via Altinn\nRegistrer for MVA og skatt"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "DA — Selskap med delt ansvar",
+      "desc": "Мин. капитал: Ingen. 1–2 uker",
+      "price": 6,
+      "required": true,
+      "note": "Ответственность: Ansvar delt mellom deltakere (pro rata)\nСроки: 1–2 uker\nСтоимость: NOK 6 825 registreringsgebyr\nШаги регистрации:\nUtarbeid selskapsavtale med ansvarsfordeling\nRegistrer i Foretaksregisteret via Altinn\nRegistrer for MVA og skatt"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Salgsbevilling (alkoholholdig drikke gruppe 1)",
+      "desc": "[Розничная торговля] Kommunen",
+      "price": 1,
+      "required": true,
+      "note": "Выдаёт: Kommunen\nТребования:\n• Styrer og stedfortreder må ha bestått kunnskapsprøven i alkoholloven\n• Begge må være over 20 år og arbeide i virksomheten\n• Vandelsattest (politiattest) for eiere og ansvarlige\n• Kommunal godkjenning av lokaler\nСрок действия: Inntil 4 år (følger kommunestyreperioden)\nСтоимость: Minimumsgebyr NOK 1 790/år; beregnes etter omsatt volum"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Serveringsbevilling",
+      "desc": "[Розничная торговля] Kommunen",
+      "price": 4,
+      "required": true,
+      "note": "Выдаёт: Kommunen\nТребования:\n• Daglig leder må ha bestått etablererprøven for serveringsvirksomhet\n• Godkjent lokale (helse, brann, plan- og bygningsloven)\n• Politiattest\nСрок действия: Ubegrenset (så lenge vilkårene oppfylles)\nСтоимость: NOK 4 200 (engangsgebyr ved søknad, varierer per kommune)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Næringsmiddeltilsyn (matregistrering)",
+      "desc": "[Розничная торговля] Mattilsynet",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Mattilsynet\nТребования:\n• Meld virksomheten til Mattilsynet før oppstart\n• Internkontrollsystem basert på HACCP\n• Overholdelse av matloven og hygieneforskriften\nСрок действия: Løpende\nСтоимость: Gratis registrering; tilsynsgebyr ved inspeksjon"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Skjenkebevilling",
+      "desc": "[HoReCa (общепит)] Kommunen",
+      "price": 5,
+      "required": true,
+      "note": "Выдаёт: Kommunen\nТребования:\n• Styrer og stedfortreder må ha bestått kunnskapsprøven i alkoholloven\n• Begge må være over 20 år og arbeide i virksomheten\n• Serveringsbevilling må være på plass først\n• Vandelssjekk av eiere, styremedlemmer og daglig leder\n• Godkjente lokaler (brann, helse, plan og bygg)\nСрок действия: Inntil 4 år (kommunestyreperioden)\nСтоимость: Minimumsgebyr NOK 5 600/år for skjenking; beregnes etter omsatt liter alkohol"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Registrering hos Mattilsynet",
+      "desc": "[HoReCa (общепит)] Mattilsynet (Norwegian Food Safety Authority)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Mattilsynet (Norwegian Food Safety Authority)\nТребования:\n• Meld virksomheten minimum 14 dager før oppstart\n• Internkontrollsystem (IK-mat) basert på HACCP-prinsipper\n• Overholdelse av næringsmiddelhygieneforskriften\nСрок действия: Løpende\nСтоимость: Gratis registrering"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Brannvernkontroll og tillatelse",
+      "desc": "[HoReCa (общепит)] Lokalt brannvesen",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Lokalt brannvesen\nТребования:\n• Brannteknisk risikovurdering\n• Godkjent rømningsplan og brannslokkingsutstyr\n• Personlig ansvar for brannvern (internkontrollforskriften)\nСрок действия: Løpende (årlig tilsyn)\nСтоимость: Tilsynsgebyr varierer per kommune"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Sentral godkjenning for ansvarsrett (bygg og anlegg)",
+      "desc": "[Услуги и ремёсла] Direktoratet for byggkvalitet (DiBK)",
+      "price": 3,
+      "required": true,
+      "note": "Выдаёт: Direktoratet for byggkvalitet (DiBK)\nТребования:\n• Dokumentert faglig kompetanse (utdanning og praksis)\n• Kvalitetssikringssystem\n• Godkjenning i relevante tiltaksklasser og funksjoner\nСрок действия: 3 år (fornybar)\nСтоимость: NOK 3 200 (søknadsgebyr)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Elektroinstallatør (registrert i Elvirksomhetsregisteret)",
+      "desc": "[Услуги и ремёсла] Direktoratet for samfunnssikkerhet og beredskap (DSB)",
+      "price": 1,
+      "required": true,
+      "note": "Выдаёт: Direktoratet for samfunnssikkerhet og beredskap (DSB)\nТребования:\n• Kvalifisert faglig ansvarlig med elektroinstallatørautorisasjon\n• Registrering i Elvirksomhetsregisteret\n• Internkontrollsystem for elektroarbeid\nСрок действия: Løpende (så lenge krav oppfylles)\nСтоимость: NOK 1 000–3 000 registrering"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Rørleggersertifikat",
+      "desc": "[Услуги и ремёсла] Kommunen / DSB",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Kommunen / DSB\nТребования:\n• Fagbrev som rørlegger\n• Godkjenning av foretak som utfører VVS-arbeid\n• Overholdelse av tekniske forskrifter (TEK17)\nСрок действия: Løpende\nСтоимость: Varierer"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Mesterbrev",
+      "desc": "[Услуги и ремёсла] Mesterbrevnemnda",
+      "price": 4,
+      "required": true,
+      "note": "Выдаёт: Mesterbrevnemnda\nТребования:\n• Fagbrev + relevant praksis + mesterutdanning\n• Ikke obligatorisk, men gir kvalitetsstempel og rett til å bruke mestertittelen\nСрок действия: Livsvarig\nСтоимость: NOK 4 400 (søknadsgebyr)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Utslippstillatelse",
+      "desc": "[Производство] Miljødirektoratet / Statsforvalteren",
+      "price": 10,
+      "required": true,
+      "note": "Выдаёт: Miljødirektoratet / Statsforvalteren\nТребования:\n• Påkrevd for virksomheter med forurensende utslipp\n• Konsekvensutredning kan være nødvendig\n• Overholdelse av forurensningsloven og forskrifter\n• Offentlig høring\nСрок действия: Løpende (vilkår kan revideres)\nСтоимость: NOK 10 000–100 000+ avhengig av virksomhetstype"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "CE-merking (EØS-produktsamsvar)",
+      "desc": "[Производство] Relevante tilsynsmyndigheter (DSB, Arbeidstilsynet, osv.)",
+      "price": 10,
+      "required": true,
+      "note": "Выдаёт: Relevante tilsynsmyndigheter (DSB, Arbeidstilsynet, osv.)\nТребования:\n• Obligatorisk for produkter regulert av EØS-harmoniserte direktiver\n• Samsvarsvurdering av akkreditert teknisk kontrollorgan\n• Teknisk dokumentasjon og samsvarserklæring\nСрок действия: Produktspesifikt\nСтоимость: NOK 10 000–200 000+ avhengig av produkt"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Arbeidstilsynet — godkjenning og tilsyn",
+      "desc": "[Производство] Arbeidstilsynet",
+      "price": 1,
+      "required": true,
+      "note": "Выдаёт: Arbeidstilsynet\nТребования:\n• Systematisk HMS-arbeid (internkontrollforskriften)\n• Risikovurderinger for arbeidsmiljø\n• Bedriftshelsetjeneste (BHT) for risikoutsatte bransjer\n• Verneombud ved 10+ ansatte\nСрок действия: Løpende\nСтоимость: Ingen søknadsgebyr; BHT-kostnader NOK 1 500–3 000/ansatt/år"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Godstransportløyve",
+      "desc": "[Логистика и склад] Statens vegvesen / Fylkeskommunen",
+      "price": 3,
+      "required": true,
+      "note": "Выдаёт: Statens vegvesen / Fylkeskommunen\nТребования:\n• Faglig kompetanse: transportledereksamen\n• Økonomisk garanti: NOK 80 000 for første kjøretøy + NOK 45 000 per ekstra\n• God vandel (politiattest)\n• Fast forretningsadresse i Norge\nСрок действия: 10 år (fornybar)\nСтоимость: NOK 3 400 (søknadsgebyr)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Yrkessjåførkompetanse (YSK)",
+      "desc": "[Логистика и склад] Statens vegvesen",
+      "price": 300,
+      "required": true,
+      "note": "Выдаёт: Statens vegvesen\nТребования:\n• Grunnutdanning for yrkessjåfører\n• 35 timer etterutdanning hvert 5. år\n• Yrkessjåførbevis må medbringes under kjøring\nСрок действия: 5 år\nСтоимость: NOK 300 bevisgebyr + kursavgift NOK 5 000–15 000"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Felleseuropeisk transporttillatelse (CEMT / EØS)",
+      "desc": "[Логистика и склад] Statens vegvesen",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Statens vegvesen\nТребования:\n• Norsk godsløyve som grunnlag\n• Gyldig for internasjonal transport innenfor EØS\n• Cabotasjeregler gjelder (maks 3 oppdrag i 7 dager i annet EØS-land)\nСрок действия: Følger godsløyvet\nСтоимость: Inkludert i godsløyvegebyr"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Tollagerordning",
+      "desc": "[Логистика и склад] Tolletaten",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Tolletaten\nТребования:\n• Godkjenning av lokaler og prosedyrer\n• Sikkerhetsstillelse (bankgaranti)\n• Regnskapssystem for tollvarer\nСрок действия: Løpende (vilkår kan revideres)\nСтоимость: Søknaden er gebyrfri; garanti varierer"
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 25% (MVA)\nvat_reduced: 15% (matvarer og alkoholfrie drikkevarer); 12% (persontransport, overnatting, kino, kultur, idrettsarrangementer)\ncorporate_tax: 22% (selskapsskatt)\nnotes: MVA-registrering er obligatorisk når omsetning overstiger NOK 50 000 i en 12-månedersperiode. Norge er ikke EU-medlem, men del av EØS (Europeisk økonomisk samarbeidsområde) — fri bevegelse av varer, tjenester, kapital og personer innenfor EØS. Toll på import fra land utenfor EØS. Arbeidsgiveravgift varierer fra 0% til 14,1% avhengig av sone. Trinnskatt på personlig inntekt (for ENK). Utbytteskatt: 22% × 1,72 justeringsfaktor = effektiv ca. 37,8%."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 25% (MVA)\nvat_reduced: 15% (mat servert i restaurant); 12% (overnattingstjenester, kultur)\ncorporate_tax: 22% (selskapsskatt)\nnotes: Serveringstjenester (mat og drikke) beskattes med 25% MVA, men næringsmidler har 15% sats. Alkoholholdige drikkevarer har i tillegg særavgifter. Arbeidsgiveravgift 0–14,1% avhengig av sone. Feriepenger: arbeidsgiver plikter å sette av 10,2% (12% for over 60 år). Tips er skattepliktig inntekt for ansatte."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 25% (MVA)\nvat_reduced: Ingen redusert sats for generelle tjenester\ncorporate_tax: 22% (selskapsskatt)\nnotes: Håndverkertjenester (arbeid på bolig) gir privatpersoner rett til skattefradrag på inntil NOK 6 000/år. Næringsdrivende i ENK beskattes via trinnskatt og trygdeavgift. Yrkesskadeforsikring er obligatorisk for alle arbeidsgivere. SkatteFUNN: 19% skattefradrag for FoU-kostnader."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 25% (MVA)\nvat_reduced: 0% på eksport utenfor Norge; 15% på næringsmiddelproduksjon\ncorporate_tax: 22% (selskapsskatt)\nnotes: SkatteFUNN: 19% skattefradrag for godkjente FoU-prosjekter. Innovasjon Norge tilbyr tilskudd, lån og garantier til industribedrifter. EØS-medlemskap gir tollfri adgang til EU-markedet for industrivarer. Særavgifter på CO2-utslipp og miljøskadelige stoffer. Avskrivninger: saldoavskrivning på driftsmidler (maskiner 20%, bygg 2–4%)."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 25% (MVA)\nvat_reduced: 12% (persontransport); 0% på internasjonal godstransport\ncorporate_tax: 22% (selskapsskatt)\nnotes: Veibruksavgift på drivstoff (bensin/diesel). Bompenger og vektårsavgift for tunge kjøretøy. EØS-medlemskap: tollfri transport av industrivarer innenfor EØS-området. Norske transportører kan utføre kabotasje i EU/EØS under gjeldende regler. CO2-avgift på fossilt drivstoff. Elektronisk fraktbrev (e-CMR) aksepteres."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — Norge",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "Норвегия: регистрация AS через Brønnøysundregistrene (Altinn) — NOK 6 825, минимальный капитал NOK 30 000. ENK — бесплатно. Налог на прибыль 22%. МVА (НДС) 25% стандартный, 15% продукты питания, 12% транспорт/проживание/культура. Порог регистрации MVA: NOK 50 000. Не член ЕС, но в ЕЭЗ — свободный доступ к внутреннему рынку ЕС. Лицензия на алкоголь (skjenkebevilling) через коммуну — от NOK 5 600/год. Транспортный лицензия (godsløyve) — NOK 3 400 + гарантия NOK 80 000."
+    }
+  ]
+}

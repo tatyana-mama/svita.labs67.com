@@ -77,7 +77,7 @@ body{font-family:var(--fb);background:var(--bk);color:var(--wh);-webkit-font-smo
   .stats{grid-template-columns:1fr 1fr}
 }
 </style></head><body>
-
+<div id="adminWrap" style="display:none">
 <div class="side">
   <div class="side-logo">SVITA<small>admin panel</small></div>
   <div class="side-section">пользователи</div>
@@ -91,7 +91,7 @@ body{font-family:var(--fb);background:var(--bk);color:var(--wh);-webkit-font-smo
   <button class="side-btn" onclick="showTab('unanswered')">Неотвеченные <span class="cnt" id="cntUn">0</span></button>
   <div class="side-section">ссылки</div>
   <button class="side-btn" onclick="window.open('index.html','_blank')">Сайт &#8599;</button>
-  <button class="side-btn" onclick="window.open('dashboard.html','_blank')">Dashboard &#8599;</button>
+  <button class="side-btn" onclick="window.open('https://dashboard.svita.ai','_blank')">Dashboard &#8599;</button>
   <button class="side-btn" onclick="window.open('https://supabase.com/dashboard/project/ctdleobjnzniqkqomlrq','_blank')">Supabase &#8599;</button>
   <div class="side-footer"><a href="//labs67.com">labs67.com</a> &middot; v1.0</div>
 </div>
@@ -239,6 +239,20 @@ body{font-family:var(--fb);background:var(--bk);color:var(--wh);-webkit-font-smo
   function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(function(){t.classList.remove('on')},2500)}
 
   var sb=supabase.createClient(SB,SK);
+
+  // ── AUTH GATE: verify admin session before rendering ──
+  (async function(){
+    try{
+      var s=await sb.auth.getSession();
+      if(!s.data.session){document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:monospace;color:#e74c3c">Access denied. <a href="/dashboard.html" style="margin-left:8px;color:#4f6ef7">Login</a></div>';return}
+      var p=await sb.from('profiles').select('role').eq('id',s.data.session.user.id).single();
+      if(!p.data||!['admin','superadmin'].includes(p.data.role)){await sb.auth.signOut();document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:monospace;color:#e74c3c">Forbidden: admin only. <a href="/dashboard.html" style="margin-left:8px;color:#4f6ef7">Back</a></div>';return}
+      // Update H with user JWT for RLS
+      H['Authorization']='Bearer '+s.data.session.access_token;
+      document.getElementById('adminWrap').style.display='block';
+      showTab('blocks');
+    }catch(e){document.body.innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:monospace;color:#e74c3c">Auth error. <a href="/dashboard.html" style="margin-left:8px;color:#4f6ef7">Login</a></div>'}
+  })();
 
   /* ── TABS ── */
   window.showTab=function(tab){
@@ -480,7 +494,7 @@ body{font-family:var(--fb);background:var(--bk);color:var(--wh);-webkit-font-smo
   window.sendPasswordReset=function(){
     var email=document.getElementById('resetEmail').value;
     if(!email){toast('Email не указан');return}
-    sb.auth.resetPasswordForEmail(email,{redirectTo:'https://svita.labs67.com/dashboard.html'}).then(function(res){
+    sb.auth.resetPasswordForEmail(email,{redirectTo:'https://dashboard.svita.ai'}).then(function(res){
       if(res.error){
         document.getElementById('resetResult').style.color='var(--red)';
         document.getElementById('resetResult').textContent='Ошибка: '+res.error.message;
@@ -583,4 +597,5 @@ body{font-family:var(--fb);background:var(--bk);color:var(--wh);-webkit-font-smo
   }).catch(function(){document.getElementById('sVisitors').textContent='0'});
 })();
 </script>
+</div><!-- /adminWrap -->
 </body></html>

@@ -1,0 +1,718 @@
+{
+  "country": "DE",
+  "lang": "de",
+  "currency": "EUR",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Unternehmensgründung",
+      "name": "GmbH-Gründung (Notar + Handelsregister)",
+      "desc": "Gesellschaftsvertrag, notarielle Beurkundung, Eintragung im Handelsregister",
+      "price": 2500,
+      "required": true,
+      "note": "Wofür: Rechtsform für die Zahnarztpraxis — GmbH oder Zahnärztliche MVZ GmbH.\nWo: Notar (Beurkundung) + Amtsgericht (Handelsregister).\nFristen: 2–4 Wochen nach Beurkundung. Stammkapital mind. 25.000 EUR (12.500 EUR bei Gründung einzuzahlen).\nWichtig: Berufsrechtliche Genehmigung der Zahnärztekammer erforderlich, bevor eine zahnärztliche GmbH gegründet werden kann."
+    },
+    {
+      "cat": "Unternehmensgründung",
+      "name": "Einzelpraxis / Freiberufler-Anmeldung",
+      "desc": "Alternative zur GmbH — freiberufliche Niederlassung als Zahnarzt",
+      "price": 0,
+      "required": false,
+      "note": "Wofür: Zahnärzte sind Freiberufler (§ 18 EStG) — keine Gewerbesteuer, kein Handelsregister.\nWo: Finanzamt (Fragebogen zur steuerlichen Erfassung).\nFristen: Innerhalb eines Monats nach Aufnahme der Tätigkeit.\nWichtig: Häufigste Rechtsform für Einzelpraxen. Keine GmbH-Pflicht. Bei BAG: GbR oder PartG mbB."
+    },
+    {
+      "cat": "Unternehmensgründung",
+      "name": "Steuerliche Anmeldung beim Finanzamt",
+      "desc": "Fragebogen zur steuerlichen Erfassung, Steuernummer, USt-ID",
+      "price": 0,
+      "required": true,
+      "note": "Wofür: Steuernummer und ggf. USt-ID für Rechnungsstellung und Steuererklärungen.\nWo: Zuständiges Finanzamt am Praxisort — online über ELSTER (elster.de).\nFristen: Innerhalb eines Monats nach Praxisgründung.\nWichtig: Zahnärztliche Heilbehandlungen sind umsatzsteuerbefreit (§ 4 Nr. 14 UStG). Ästhetische Leistungen (Bleaching) sind steuerpflichtig."
+    },
+    {
+      "cat": "Unternehmensgründung",
+      "name": "IHK-Mitgliedschaft (nur bei GmbH)",
+      "desc": "Pflichtmitgliedschaft bei Industrie- und Handelskammer für GmbH",
+      "price": 200,
+      "required": false,
+      "note": "Wofür: GmbH ist automatisch IHK-Mitglied (Pflicht). Freiberufler sind befreit.\nWo: Zuständige IHK am Sitz der GmbH.\nFristen: Automatische Anmeldung nach Handelsregistereintragung.\nWichtig: Mindestbeitrag ca. 150–200 EUR/Jahr. Für Einzelpraxis/PartG mbB nicht relevant."
+    },
+    {
+      "cat": "Unternehmensgründung",
+      "name": "Geschäftskonto eröffnen",
+      "desc": "Geschäftskonto bei einer Bank — Pflicht für GmbH, empfohlen für Freiberufler",
+      "price": 150,
+      "required": true,
+      "note": "Wofür: Trennung von privaten und geschäftlichen Finanzen, Pflicht bei GmbH.\nWo: Deutsche Bank, Commerzbank, Sparkasse, Volksbank oder Online-Banken (Fyrst, Kontist).\nFristen: Vor Aufnahme der Tätigkeit.\nWichtig: Bei GmbH: Einzahlung des Stammkapitals vor Eintragung. Kontoauszüge 10 Jahre aufbewahren."
+    },
+    {
+      "cat": "Unternehmensgründung",
+      "name": "Steuerberater (Jahrespauschale)",
+      "desc": "Steuerberatung, Buchhaltung, Jahresabschluss, Steuererklärungen",
+      "price": 6000,
+      "required": true,
+      "note": "Wofür: Laufende Buchhaltung, Einkommensteuererklärung, BWA, Jahresabschluss.\nWo: Steuerberater mit Erfahrung im Gesundheitswesen (Empfehlung über Zahnärztekammer).\nFristen: Vertrag vor Praxiseröffnung abschließen. Monatliche Buchführung.\nWichtig: Kostet ca. 400–600 EUR/Monat. Spezialkenntnisse bei § 4 Nr. 14 UStG, GOZ/BEMA-Abrechnung nötig."
+    },
+    {
+      "cat": "Unternehmensgründung",
+      "name": "Praxisstempel",
+      "desc": "Stempel mit Name, Anschrift, Zahnärztekammer-Nr., Telefon",
+      "price": 80,
+      "required": true,
+      "note": "Wofür: Für Rezepte, Überweisungen, Bescheinigungen, AU-Bescheinigungen.\nWo: Stempelgeschäft oder Online-Bestellung.\nFristen: Vor Praxiseröffnung bestellen.\nWichtig: Angaben: Name, Titel (Dr. med. dent.), Fachbezeichnung, Anschrift, Telefon, LANR (lebenslange Arztnummer)."
+    },
+    {
+      "cat": "Kassenzahnärztliche Vereinigung (KZV)",
+      "name": "Kassenzulassung (KZV)",
+      "desc": "Zulassung als Vertragszahnarzt bei der KZV — Voraussetzung für GKV-Abrechnung",
+      "price": 0,
+      "required": true,
+      "note": "Wofür: Ohne Kassenzulassung keine Behandlung von GKV-Patienten (ca. 90% der Bevölkerung).\nWo: Zulassungsausschuss der zuständigen KZV (je Bundesland).\nFristen: Antrag mind. 3 Monate vor geplantem Start. Sitzungen des Zulassungsausschusses quartalsweise.\nWichtig: Voraussetzungen: Approbation, 2 Jahre Vorbereitungszeit (Assistenzzeit), Eintragung im Zahnarztregister. SGB V § 95."
+    },
+    {
+      "cat": "Kassenzahnärztliche Vereinigung (KZV)",
+      "name": "Eintragung ins Zahnarztregister",
+      "desc": "Registrierung bei der KZV als Voraussetzung für die Kassenzulassung",
+      "price": 0,
+      "required": true,
+      "note": "Wofür: Pflichtregistrierung gemäß § 95 SGB V — Voraussetzung für den Zulassungsantrag.\nWo: Zuständige KZV des Bundeslandes.\nFristen: Möglichst frühzeitig beantragen — kann mehrere Wochen dauern.\nWichtig: Erforderlich: Approbationsurkunde, Nachweis der Vorbereitungszeit (2 Jahre), polizeiliches Führungszeugnis."
+    },
+    {
+      "cat": "Kassenzahnärztliche Vereinigung (KZV)",
+      "name": "BEMA-Abrechnungsgenehmigung",
+      "desc": "Genehmigung zur Abrechnung nach BEMA (Bewertungsmaßstab zahnärztlicher Leistungen)",
+      "price": 0,
+      "required": true,
+      "note": "Wofür: Abrechnung von GKV-Leistungen über BEMA-Punktwerte.\nWo: KZV — automatisch mit Kassenzulassung.\nFristen: Mit Kassenzulassung aktiv.\nWichtig: Abrechnungssoftware muss BEMA- und GOZ-konform sein. KZV-Abrechnungshotline nutzen. Quartalsmäßige Abrechnung."
+    },
+    {
+      "cat": "Kassenzahnärztliche Vereinigung (KZV)",
+      "name": "KZV-Abrechnungssoftware",
+      "desc": "KZV-zertifizierte Software für BEMA/GOZ-Abrechnung und eHKP",
+      "price": 3500,
+      "required": true,
+      "note": "Wofür: Pflichtmäßige elektronische Abrechnung mit der KZV, eHKP (elektronischer Heil- und Kostenplan).\nWo: Zugelassene Anbieter: Dampsoft, CGM Z1, Charly by solutio, EVIDENT.\nFristen: Einrichtung mind. 4 Wochen vor Praxisstart.\nWichtig: Software muss KZV-zertifiziert und TI-kompatibel sein. Kosten: ca. 200–400 EUR/Monat Lizenz."
+    },
+    {
+      "cat": "Kassenzahnärztliche Vereinigung (KZV)",
+      "name": "Praxisbegehung durch KZV",
+      "desc": "KZV kann vor oder nach Zulassung die Praxisräume begutachten",
+      "price": 0,
+      "required": false,
+      "note": "Wofür: Die KZV prüft, ob die Praxis für die vertragszahnärztliche Versorgung geeignet ist.\nWo: In der Praxis — KZV-Gutachter kommt vor Ort.\nFristen: Kann vor oder nach Zulassung angesetzt werden.\nWichtig: Prüfung: Behandlungsplätze, Ausstattung, Hygiene, Barrierefreiheit. Mängel können zur Zulassungsverweigerung führen."
+    },
+    {
+      "cat": "Approbation und Berufserlaubnis",
+      "name": "Approbation als Zahnarzt",
+      "desc": "Staatliche Berufszulassung — Voraussetzung für jede zahnärztliche Tätigkeit",
+      "price": 200,
+      "required": true,
+      "note": "Wofür: Ohne Approbation darf keine zahnärztliche Tätigkeit ausgeübt werden (§ 1 ZHG).\nWo: Zuständige Landesbehörde (Regierungspräsidium, Landesamt für Gesundheit).\nFristen: Bei deutschem Studium: Antrag nach Staatsexamen. Bei ausländischem Abschluss: Anerkennungsverfahren (3–12 Monate).\nWichtig: Für EU-Abschlüsse: automatische Anerkennung (Richtlinie 2005/36/EG). Für Drittstaaten: Gleichwertigkeitsprüfung + Kenntnisprüfung."
+    },
+    {
+      "cat": "Approbation und Berufserlaubnis",
+      "name": "Mitgliedschaft Zahnärztekammer",
+      "desc": "Pflichtmitgliedschaft in der Landeszahnärztekammer",
+      "price": 600,
+      "required": true,
+      "note": "Wofür: Gesetzliche Pflichtmitgliedschaft für alle approbierten Zahnärzte (Kammergesetz).\nWo: Landeszahnärztekammer des Bundeslandes, in dem die Praxis liegt.\nFristen: Anmeldung vor Aufnahme der Tätigkeit.\nWichtig: Beitrag ca. 400–800 EUR/Jahr (einkommensabhängig). Kammer überwacht Berufsordnung, Fortbildungspflicht, Qualitätssicherung."
+    },
+    {
+      "cat": "Approbation und Berufserlaubnis",
+      "name": "Fortbildungspflicht (125 Punkte / 5 Jahre)",
+      "desc": "Zahnärztliche Fortbildung — 125 Punkte in 5 Jahren Pflicht",
+      "price": 2000,
+      "required": true,
+      "note": "Wofür: Gesetzliche Fortbildungspflicht gemäß § 95d SGB V — 125 Fortbildungspunkte in 5 Jahren.\nWo: Zahnärztekammer, SOWIE anerkannte Fortbildungsanbieter (APW, Dental-Online-College).\nFristen: Nachweisfrist: 5-Jahres-Zyklus. Bei Nicht-Erfüllung: KZV-Honorarkürzung.\nWichtig: Empfehlung: 25 Punkte/Jahr. Kurse, Kongresse, E-Learning. Punkte-Nachweis über Fortbildungspass der Kammer."
+    },
+    {
+      "cat": "Approbation und Berufserlaubnis",
+      "name": "Berufsordnung der Zahnärztekammer",
+      "desc": "Kenntnis und Einhaltung der Berufsordnung — Pflicht für zugelassene Zahnärzte",
+      "price": 0,
+      "required": true,
+      "note": "Wofür: Regelt Berufspflichten, Werbung, Schweigepflicht, Kollegialität, Dokumentation.\nWo: Zahnärztekammer — Berufsordnung auf Kammer-Website verfügbar.\nFristen: Gilt ab Tag der Niederlassung.\nWichtig: Verstöße: Kammer-Disziplinarverfahren. Besonders beachten: Werberecht (§ 21 MBO-Z), Schweigepflicht (§ 203 StGB), Dokumentationspflicht."
+    },
+    {
+      "cat": "Hygiene",
+      "name": "Hygieneplan nach RKI-Richtlinien",
+      "desc": "Praxisspezifischer Hygieneplan gemäß RKI-Empfehlungen für die Zahnheilkunde",
+      "price": 3000,
+      "required": true,
+      "note": "Wofür: Pflichtdokument — Grundlage für alle Hygienemaßnahmen der Praxis (§ 36 IfSG).\nWo: Erstellen mit Hygienefachkraft oder Berater. Vorlage: RKI-Empfehlung \"Infektionsprävention in der Zahnheilkunde\".\nFristen: Vor Praxiseröffnung fertigstellen. Jährlich aktualisieren.\nWichtig: Enthält: Händehygiene, Flächendesinfektion, Aufbereitung von Medizinprodukten, Schutzkleidung, Umgang mit Abfällen, Wasserhygiene."
+    },
+    {
+      "cat": "Hygiene",
+      "name": "Aufbereitung von Medizinprodukten (MPBetreibV)",
+      "desc": "Validierung der Aufbereitung: Autoklav, Thermodesinfektor, Dokumentation",
+      "price": 5000,
+      "required": true,
+      "note": "Wofür: Gesetzliche Pflicht zur validierten Aufbereitung aller Medizinprodukte (§ 8 MPBetreibV, KRINKO/BfArM-Empfehlung).\nWo: Praxis intern + externe Validierung durch akkreditiertes Labor.\nFristen: Validierung vor Erstbetrieb, danach jährlich.\nWichtig: Risikoeinstufung (semikritisch A/B, kritisch A/B/C), Chargen-Dokumentation, Freigabe durch sachkundige Person."
+    },
+    {
+      "cat": "Hygiene",
+      "name": "Sachkundenachweis Aufbereitung",
+      "desc": "Fortbildung für die sachkundige Aufbereitung von Medizinprodukten (40 Std.)",
+      "price": 1500,
+      "required": true,
+      "note": "Wofür: Mindestens eine Person in der Praxis muss Sachkunde nachweisen (DGSV-Fachkunde-Lehrgang).\nWo: DGSV-zertifizierte Bildungseinrichtungen (z.B. DGQ, melag Academy).\nFristen: Vor Aufnahme der Aufbereitung.\nWichtig: Fachkunde I (40 Std.) für Zahnarztpraxen ausreichend. Auffrischung alle 5 Jahre empfohlen."
+    },
+    {
+      "cat": "Hygiene",
+      "name": "Validierung Autoklav / Sterilisator",
+      "desc": "Erstvalidierung und jährliche Re-Validierung des Sterilisators (DIN EN 17665)",
+      "price": 1800,
+      "required": true,
+      "note": "Wofür: Nachweis der korrekten Sterilisationsleistung gemäß DIN EN 17665 und MPBetreibV.\nWo: Akkreditiertes Prüflabor (z.B. HygCen, SMP GmbH).\nFristen: Erstvalidierung vor Betrieb, Revalidierung jährlich, nach Reparatur.\nWichtig: Routineprüfungen täglich (Bowie-Dick-Test, Vakuumtest). Chargenfreigabe dokumentieren."
+    },
+    {
+      "cat": "Hygiene",
+      "name": "Validierung Thermodesinfektor (RDG)",
+      "desc": "Validierung des Reinigungs- und Desinfektionsgerätes nach DIN EN ISO 15883",
+      "price": 1500,
+      "required": true,
+      "note": "Wofür: Nachweis der korrekten Reinigungs- und Desinfektionsleistung.\nWo: Akkreditiertes Prüflabor.\nFristen: Erstvalidierung vor Betrieb, jährliche Re-Validierung.\nWichtig: Routinekontrolle: Prozesschemikalien, Dosierung, Temperatur. Batch-Protokolle aufbewahren."
+    },
+    {
+      "cat": "Hygiene",
+      "name": "Trinkwasseruntersuchung (Legionellen)",
+      "desc": "Jährliche Legionellenprüfung der wasserführenden Systeme (TrinkwV)",
+      "price": 500,
+      "required": true,
+      "note": "Wofür: Pflicht gemäß Trinkwasserverordnung (TrinkwV) und RKI-Empfehlung — Legionellenprüfung.\nWo: Akkreditiertes Labor (z.B. Eurofins, ALS, lokales Gesundheitsamt).\nFristen: Erstuntersuchung vor Betrieb, danach jährlich (bei Großanlagen).\nWichtig: Bei positivem Befund: sofortige Meldung an Gesundheitsamt. Zahnarzt-Einheiten: Entkeimungsanlage empfohlen."
+    },
+    {
+      "cat": "Hygiene",
+      "name": "Wasserführende Systeme der Behandlungseinheiten",
+      "desc": "Spülung und Desinfektion der Dentalunit-Wasserleitungen",
+      "price": 800,
+      "required": true,
+      "note": "Wofür: Vermeidung von Biofilmbildung in wasserführenden Systemen der Behandlungseinheiten.\nWo: Herstellervorgaben (KaVo, Sirona/Dentsply, Planmeca) + Wasseraufbereitung.\nFristen: Tägliches Spülen, wöchentliche Desinfektion, jährliche Beprobung.\nWichtig: RKI empfiehlt <100 KBE/ml. Desinfektionsmittel (z.B. Alpro, Oxygenal) dokumentiert einsetzen."
+    },
+    {
+      "cat": "Hygiene",
+      "name": "Hygienebegehung durch Gesundheitsamt",
+      "desc": "Unangekündigte oder geplante Hygieneinspektion durch das Gesundheitsamt",
+      "price": 0,
+      "required": true,
+      "note": "Wofür: Das Gesundheitsamt überwacht die Einhaltung des IfSG und der Hygienevorgaben.\nWo: Gesundheitsamt des Landkreises / der kreisfreien Stadt.\nFristen: Kann jederzeit unangekündigt erfolgen. Vorbereitet sein ab Tag 1.\nWichtig: Prüfung: Hygieneplan, Aufbereitungsdokumentation, Sterilisationsprotokolle, Impfstatus Personal, Abfallentsorgung."
+    },
+    {
+      "cat": "Brandschutz",
+      "name": "Brandschutzkonzept",
+      "desc": "Brandschutzkonzept mit Flucht- und Rettungswegen, Feuerlöschern, Brandmeldeanlage",
+      "price": 2000,
+      "required": true,
+      "note": "Wofür: Pflicht gemäß Landesbauordnung und ArbStättV — Brandschutzkonzept für Sonderbau.\nWo: Brandschutzingenieur oder Sachverständiger für vorbeugenden Brandschutz.\nFristen: Vor Praxiseröffnung, ggf. als Teil des Bauantrags.\nWichtig: Enthält: Flucht- und Rettungsplan, Feuerlöscher-Standorte, Brandabschnitte, Notbeleuchtung, Verhalten im Brandfall."
+    },
+    {
+      "cat": "Brandschutz",
+      "name": "Feuerlöscher (Anschaffung + Wartung)",
+      "desc": "Feuerlöscher alle 50 m², Wartung alle 2 Jahre, Prüfung nach DIN 14406",
+      "price": 600,
+      "required": true,
+      "note": "Wofür: Pflichtausstattung gemäß ASR A2.2 — mindestens 1 Feuerlöscher pro 50 m² Nutzfläche.\nWo: Brandschutzfirma (z.B. Minimax, Total, lokale Anbieter).\nFristen: Anschaffung vor Eröffnung, Wartung alle 2 Jahre, Innere Prüfung alle 5 Jahre.\nWichtig: Typ ABC-Pulver oder CO2 (für Elektronik). 6 kg Standardgröße. Anbringung in max. 1,2 m Höhe."
+    },
+    {
+      "cat": "Brandschutz",
+      "name": "Flucht- und Rettungsplan",
+      "desc": "Aushang nach DIN ISO 23601 — Fluchtwege, Sammelplatz, Verhalten im Notfall",
+      "price": 500,
+      "required": true,
+      "note": "Wofür: Aushangpflicht in Arbeitsstätten gemäß ArbStättV und ASR A2.3.\nWo: Erstellen durch Brandschutzingenieur oder Sicherheitsfachkraft.\nFristen: Vor Betriebsaufnahme. Aktualisierung bei baulichen Änderungen.\nWichtig: An jeder Etage und an gut sichtbaren Stellen aushängen. Mindestgröße DIN A3."
+    },
+    {
+      "cat": "Brandschutz",
+      "name": "Brandschutzunterweisung Personal",
+      "desc": "Jährliche Unterweisung aller Mitarbeiter zum Verhalten im Brandfall",
+      "price": 300,
+      "required": true,
+      "note": "Wofür: Pflicht gemäß § 12 ArbSchG und ASR A2.2 — jährliche Brandschutzunterweisung.\nWo: Durch Brandschutzbeauftragten oder externe Brandschutzfirma.\nFristen: Vor Arbeitsaufnahme jedes Mitarbeiters, danach jährlich.\nWichtig: Dokumentation der Unterweisung aufbewahren. Inhalt: Alarmierung, Evakuierung, Feuerlöscher-Handhabung."
+    },
+    {
+      "cat": "Datenschutz (DSGVO)",
+      "name": "Datenschutzkonzept (DSGVO)",
+      "desc": "Verarbeitungsverzeichnis, Datenschutzerklärung, TOM gemäß DSGVO",
+      "price": 3000,
+      "required": true,
+      "note": "Wofür: Pflicht gemäß Art. 30 DSGVO — Verzeichnis der Verarbeitungstätigkeiten und technisch-organisatorische Maßnahmen.\nWo: Datenschutzbeauftragter oder spezialisierter Berater.\nFristen: Vor Praxiseröffnung fertigstellen.\nWichtig: Besondere Kategorie: Gesundheitsdaten (Art. 9 DSGVO). Aufbewahrungsfristen: 10 Jahre nach letzter Behandlung."
+    },
+    {
+      "cat": "Datenschutz (DSGVO)",
+      "name": "Datenschutzbeauftragter (DSB)",
+      "desc": "Ab 20 Mitarbeitern mit Datenzugang Pflicht — extern oder intern",
+      "price": 2000,
+      "required": false,
+      "note": "Wofür: Pflicht ab 20 Personen, die ständig mit personenbezogenen Daten arbeiten (§ 38 BDSG).\nWo: Externer DSB (Datenschutzkanzlei, IT-Dienstleister) oder interner Mitarbeiter mit Qualifikation.\nFristen: Bestellung vor Erreichen der Schwelle.\nWichtig: In Zahnarztpraxen: Bereits ab 1 Mitarbeiter empfohlen wegen Gesundheitsdaten. Kosten extern: 150–250 EUR/Monat."
+    },
+    {
+      "cat": "Datenschutz (DSGVO)",
+      "name": "Einwilligungserklärungen Patienten",
+      "desc": "DSGVO-konforme Einwilligungen für Datenverarbeitung, Fotos, Röntgen",
+      "price": 500,
+      "required": true,
+      "note": "Wofür: Rechtskonforme Einwilligungserklärungen für Datenverarbeitung und spezielle Verarbeitungen.\nWo: Vorlagen von Datenschutzberater oder Zahnärztekammer.\nFristen: Vor Praxiseröffnung vorbereiten.\nWichtig: Getrennte Einwilligungen für: Behandlung, Fotos, Röntgen, Weitergabe an Labor/Überweiser, Newsletter, Online-Terminbuchung."
+    },
+    {
+      "cat": "Datenschutz (DSGVO)",
+      "name": "Auftragsverarbeitungsverträge (AVV)",
+      "desc": "Verträge mit allen Dienstleistern, die Patientendaten verarbeiten",
+      "price": 500,
+      "required": true,
+      "note": "Wofür: Pflicht gemäß Art. 28 DSGVO — mit jedem Auftragsverarbeiter muss ein AVV bestehen.\nWo: Erstellen mit Datenschutzberater oder Vorlagen der KZBV.\nFristen: Vor Datenübermittlung abschließen.\nWichtig: Typische Auftragsverarbeiter: IT-Dienstleister, Abrechnungsunternehmen, Cloud-Anbieter, Dental-Labor, Terminbuchungs-Tool."
+    },
+    {
+      "cat": "Datenschutz (DSGVO)",
+      "name": "Meldung beim Landesdatenschutzbeauftragten",
+      "desc": "Ggf. Meldepflicht des DSB und Verarbeitungsverzeichnis",
+      "price": 0,
+      "required": false,
+      "note": "Wofür: Meldung des bestellten DSB an die zuständige Datenschutzaufsichtsbehörde.\nWo: Landesbeauftragter für Datenschutz des Bundeslandes.\nFristen: Unverzüglich nach Bestellung des DSB.\nWichtig: Kein Meldepflicht für das Verzeichnis selbst — aber auf Anfrage vorlegen können. Verzeichnis muss aktuell sein."
+    },
+    {
+      "cat": "Abfallentsorgung",
+      "name": "Abfallentsorgungskonzept (medizinische Abfälle)",
+      "desc": "Entsorgungsplan nach LAGA-Richtlinie M 18 für Praxisabfälle",
+      "price": 500,
+      "required": true,
+      "note": "Wofür: Pflicht zur ordnungsgemäßen Entsorgung medizinischer Abfälle gemäß KrWG und LAGA M 18.\nWo: Erstellen mit Entsorgungsfachbetrieb oder Berater.\nFristen: Vor Praxiseröffnung.\nWichtig: Klassifizierung: AS 18 01 01 (spitze/scharfe Gegenstände), AS 18 01 03* (infektiöse Abfälle), AS 18 01 04 (nicht infektiöse). Getrennte Sammlung Pflicht."
+    },
+    {
+      "cat": "Abfallentsorgung",
+      "name": "Vertrag mit Entsorgungsfachbetrieb",
+      "desc": "Regelmäßige Abholung und Entsorgung kontaminierter Abfälle",
+      "price": 1800,
+      "required": true,
+      "note": "Wofür: Fachgerechte Entsorgung von infektiösen und spitzen Abfällen.\nWo: Zertifizierter Entsorgungsfachbetrieb (z.B. Remondis, Veolia, lokale Entsorger).\nFristen: Vertrag vor Praxiseröffnung. Abholung: je nach Abfallmenge 2-wöchentlich bis monatlich.\nWichtig: Nachweispflicht: Entsorgungsbelege 5 Jahre aufbewahren. Sicherheitsbehälter für Kanülen (gelbe Boxen) vorhalten."
+    },
+    {
+      "cat": "Abfallentsorgung",
+      "name": "Amalgam-Abscheider und Entsorgung",
+      "desc": "Pflicht-Amalgamabscheider gemäß EU-Verordnung 2017/852 + Entsorgung",
+      "price": 2500,
+      "required": true,
+      "note": "Wofür: EU-Verordnung 2017/852 (Quecksilberverordnung) — Amalgamabscheider mit mind. 95% Rückhaltung.\nWo: Dental-Depot (z.B. Metasys, Dürr Dental). Entsorgung: zertifizierter Sondermüllentsorger.\nFristen: Installation vor Betriebsaufnahme. Entsorgung bei Bedarf, mind. jährlich.\nWichtig: Wartung gemäß Herstellervorgaben. Nachweis der ordnungsgemäßen Entsorgung aufbewahren."
+    },
+    {
+      "cat": "Versicherungen",
+      "name": "Berufshaftpflichtversicherung",
+      "desc": "Pflichtversicherung für Zahnärzte — Deckungssumme mind. 3 Mio. EUR",
+      "price": 1800,
+      "required": true,
+      "note": "Wofür: Absicherung gegen Behandlungsfehler und Haftungsansprüche — Pflicht gemäß Berufsordnung.\nWo: Spezialisierte Versicherungen: Deutsche Ärzteversicherung, HDI, Allianz, AXA.\nFristen: Vor Aufnahme der Tätigkeit abschließen.\nWichtig: Deckungssumme mind. 3 Mio. EUR (Personen) / 1 Mio. EUR (Sach). Nachhaftung beachten bei Praxisaufgabe."
+    },
+    {
+      "cat": "Versicherungen",
+      "name": "Betriebshaftpflichtversicherung",
+      "desc": "Absicherung gegen Schäden an Dritten in Praxisräumen (Sturz, Sachschäden)",
+      "price": 600,
+      "required": true,
+      "note": "Wofür: Absicherung gegen Personen- und Sachschäden in der Praxis (z.B. Patient stürzt).\nWo: Versicherungsmakler oder direkt (Allianz, AXA, Gothaer).\nFristen: Vor Praxiseröffnung.\nWichtig: Oft in Berufshaftpflicht integriert — prüfen. Sonst separater Vertrag: ca. 300–600 EUR/Jahr."
+    },
+    {
+      "cat": "Versicherungen",
+      "name": "Praxisausfallversicherung",
+      "desc": "Absicherung der laufenden Kosten bei Arbeitsunfähigkeit des Zahnarztes",
+      "price": 1200,
+      "required": false,
+      "note": "Wofür: Weiterlaufende Kosten (Miete, Personal, Leasing) bei längerer Arbeitsunfähigkeit.\nWo: Deutsche Ärzteversicherung, Continentale, Swiss Life.\nFristen: Empfehlung: vor Praxisstart abschließen.\nWichtig: Karenzzeit wählen (14/28/42 Tage). Tagessatz an Fixkosten anpassen (ca. 200–500 EUR/Tag)."
+    },
+    {
+      "cat": "Versicherungen",
+      "name": "Praxisinhaltsversicherung",
+      "desc": "Versicherung für Einrichtung, Geräte, Vorräte gegen Feuer, Wasser, Einbruch",
+      "price": 800,
+      "required": false,
+      "note": "Wofür: Schutz des Praxisinventars (Behandlungsstühle, Röntgen, CAD/CAM) gegen Elementarschäden.\nWo: Versicherungsmakler spezialisiert auf Heilberufe.\nFristen: Vor Einrichtung der Praxis.\nWichtig: Neuwertentschädigung vereinbaren. Inventarliste pflegen. Bei Leasing: ggf. gesonderte Absicherung nötig."
+    },
+    {
+      "cat": "Versicherungen",
+      "name": "Cyber-Versicherung",
+      "desc": "Absicherung gegen Datenverlust, Hackerangriffe, IT-Ausfall",
+      "price": 500,
+      "required": false,
+      "note": "Wofür: Schutz gegen Cyberangriffe, Datenverlust, Erpressungstrojaner (Ransomware).\nWo: Hiscox, Allianz Cyber, AXA.\nFristen: Empfohlen vor TI-Anbindung.\nWichtig: Gesundheitsdaten = hohes Risiko. DSGVO-Bußgelder mitversichern. Kosten: 300–600 EUR/Jahr je nach Praxisgröße."
+    },
+    {
+      "cat": "Versicherungen",
+      "name": "Rechtsschutzversicherung",
+      "desc": "Berufs- und Praxisrechtsschutz für Streitigkeiten mit Patienten, Kassen, Behörden",
+      "price": 700,
+      "required": false,
+      "note": "Wofür: Kostenübernahme bei Rechtsstreitigkeiten (Patientenbeschwerden, KZV-Konflikte, Arbeitsrecht).\nWo: ARAG, DAS, Roland — Spezial-Tarife für Heilberufe.\nFristen: Vor Praxiseröffnung empfohlen.\nWichtig: Wartezeiten beachten (3 Monate). Arbeitsrecht, Vertragsrecht, Sozialrecht einschließen."
+    },
+    {
+      "cat": "Versicherungen",
+      "name": "Versorgungswerk der Zahnärztekammer",
+      "desc": "Befreiung von der gesetzlichen Rentenversicherung + Pflichtbeiträge Versorgungswerk",
+      "price": 12000,
+      "required": true,
+      "note": "Wofür: Zahnärzte sind Pflichtmitglied im Versorgungswerk (Altersvorsorge statt gesetzl. Rentenversicherung).\nWo: Versorgungswerk der Zahnärztekammer des Bundeslandes.\nFristen: Anmeldung bei Kammerbeitritt. Befreiungsantrag bei DRV innerhalb 3 Monaten.\nWichtig: Beitrag: ca. 18,6% des Einkommens (2025: bis ca. 1.400 EUR/Monat). Befreiung von DRV beantragen!"
+    },
+    {
+      "cat": "Röntgen (Strahlenschutz)",
+      "name": "Fachkunde im Strahlenschutz (Zahnarzt)",
+      "desc": "Nachweis der Fachkunde gemäß StrlSchV — Voraussetzung für Röntgenbetrieb",
+      "price": 800,
+      "required": true,
+      "note": "Wofür: Ohne Fachkunde kein Betrieb von Röntgengeräten (§ 47 StrlSchV).\nWo: Zahnärztekammer — Fachkundekurs im Strahlenschutz.\nFristen: Vor Inbetriebnahme des Röntgengerätes. Aktualisierung alle 5 Jahre.\nWichtig: Zahnärzte erwerben Fachkunde i.d.R. im Studium (Nachweis über Kammer). Aktualisierungskurs: 8 Stunden / 5 Jahre."
+    },
+    {
+      "cat": "Röntgen (Strahlenschutz)",
+      "name": "Anzeige des Röntgenbetriebs",
+      "desc": "Anzeige beim zuständigen Landesamt gemäß § 19 StrlSchG",
+      "price": 0,
+      "required": true,
+      "note": "Wofür: Jeder Betrieb von Röntgeneinrichtungen muss angezeigt werden (§ 19 StrlSchG).\nWo: Zuständige Behörde: Landesamt für Umwelt / Gewerbeaufsichtsamt / Regierungspräsidium (je nach Bundesland).\nFristen: Mindestens 4 Wochen vor Inbetriebnahme.\nWichtig: Unterlagen: Fachkundenachweis, Geräte-Typprüfung, Strahlenschutzanweisung, Raumplan mit Abschirmberechnung."
+    },
+    {
+      "cat": "Röntgen (Strahlenschutz)",
+      "name": "Strahlenschutzanweisung",
+      "desc": "Schriftliche Anweisung zum Umgang mit Röntgenstrahlung für das Personal",
+      "price": 500,
+      "required": true,
+      "note": "Wofür: Pflicht gemäß § 45 StrlSchV — schriftliche Anweisung für alle Mitarbeiter, die mit Röntgen arbeiten.\nWo: Erstellen mit Strahlenschutzbeauftragtem oder Berater.\nFristen: Vor Inbetriebnahme der Röntgenanlage.\nWichtig: Inhalt: Bedienung, Schutzmaßnahmen, Personendosimetrie, Verhalten bei Störfällen, Schwangere."
+    },
+    {
+      "cat": "Röntgen (Strahlenschutz)",
+      "name": "Abnahmeprüfung Röntgengerät",
+      "desc": "Erstprüfung durch Sachverständigen nach DIN 6868 vor Inbetriebnahme",
+      "price": 600,
+      "required": true,
+      "note": "Wofür: Pflichtprüfung vor Erstbetrieb jedes Röntgengerätes (§ 88 StrlSchV, DIN 6868).\nWo: Sachverständiger / Sachverständigenorganisation (TÜV, DEKRA, MedTÜV).\nFristen: Vor erster Anwendung am Patienten.\nWichtig: Prüfung: Bildqualität, Dosis, mechanische Sicherheit. Prüfprotokoll aufbewahren. Gilt für OPG, DVT, Intraoral-Röntgen."
+    },
+    {
+      "cat": "Röntgen (Strahlenschutz)",
+      "name": "Konstanzprüfung Röntgen (monatlich/arbeitstäglich)",
+      "desc": "Regelmäßige Qualitätsprüfung der Röntgengeräte nach DIN 6868-5/151",
+      "price": 300,
+      "required": true,
+      "note": "Wofür: Sicherstellung gleichbleibender Bildqualität und korrekter Strahlendosis.\nWo: Praxisintern durch geschultes Personal + dokumentieren.\nFristen: Arbeitstäglich (Sichtprüfung), monatlich (Messungen), jährlich (Sachverständigenprüfung).\nWichtig: Prüfkörper beschaffen (Prüfkörper nach DIN 6868). Ergebnisse 10 Jahre aufbewahren."
+    },
+    {
+      "cat": "Röntgen (Strahlenschutz)",
+      "name": "Personendosimetrie",
+      "desc": "Dosimeter für strahlenexponiertes Personal — monatliche Auswertung",
+      "price": 400,
+      "required": true,
+      "note": "Wofür: Überwachung der Strahlenbelastung des Personals (§ 64 StrlSchV).\nWo: Amtliche Messstelle (z.B. Materialprüfungsamt NRW, Helmholtz München).\nFristen: Dosimeter monatlich wechseln und zur Auswertung einsenden.\nWichtig: Pflicht für alle Personen im Kontrollbereich. Kosten: ca. 30 EUR/Person/Monat. Ergebnisse in Strahlenschutzkartei dokumentieren."
+    },
+    {
+      "cat": "Röntgen (Strahlenschutz)",
+      "name": "DVT-Fachkunde (Digitale Volumentomographie)",
+      "desc": "Zusätzliche Fachkunde für 3D-Röntgen (DVT) — Kurs + Prüfung",
+      "price": 2500,
+      "required": false,
+      "note": "Wofür: Für den Betrieb eines DVT-Gerätes ist eine Zusatz-Fachkunde erforderlich (§ 47 StrlSchV).\nWo: Zahnärztekammer — spezielle DVT-Fachkundekurse (ca. 25 Stunden + Fallbeispiele).\nFristen: Vor Inbetriebnahme des DVT.\nWichtig: Nur bei Anschaffung eines DVT nötig. Aktualisierung alle 5 Jahre. Indikationsstellung dokumentieren."
+    },
+    {
+      "cat": "Arzneimittel und Betäubungsmittel",
+      "name": "Notfallkoffer / Notfallmedikamente",
+      "desc": "Notfallausrüstung für die Zahnarztpraxis inkl. Adrenalin, Sauerstoff, AED",
+      "price": 2500,
+      "required": true,
+      "note": "Wofür: Pflicht zur Vorhaltung von Notfallausrüstung für medizinische Notfälle in der Praxis.\nWo: Dental-Depot oder Medizintechnik-Anbieter.\nFristen: Vor Praxiseröffnung. Verfallsdaten monatlich prüfen.\nWichtig: Enthält: Adrenalin, Nitroglycerin, Antihistaminikum, Cortison, Sauerstoff, Beatmungsbeutel, AED. Team jährlich schulen."
+    },
+    {
+      "cat": "Arzneimittel und Betäubungsmittel",
+      "name": "Arzneimittel-Buchführung",
+      "desc": "Dokumentation aller Medikamente: Bezug, Lagerung, Verbrauch, Verfallsdaten",
+      "price": 300,
+      "required": true,
+      "note": "Wofür: Nachweispflicht über Bezug, Lagerung und Verbrauch von Arzneimitteln.\nWo: Praxisinterne Dokumentation (analog oder digital).\nFristen: Fortlaufend ab Praxiseröffnung.\nWichtig: Lokalanästhetika (Articain, Lidocain, Mepivacain): Chargennummer, Verfallsdatum, Verbrauch dokumentieren. Kühlpflichtige Medikamente: Temperaturprotokoll."
+    },
+    {
+      "cat": "Arzneimittel und Betäubungsmittel",
+      "name": "Pharmazeutischer Kühlschrank",
+      "desc": "Medikamentenkühlschrank 2–8 °C mit Temperaturprotokoll",
+      "price": 1500,
+      "required": true,
+      "note": "Wofür: Sachgerechte Lagerung kühlpflichtiger Medikamente (Adrenalin, Impfstoffe, Anästhetika).\nWo: Medizintechnik-Fachhandel (Liebherr, Dometic, Kirsch).\nFristen: Vor Praxiseröffnung.\nWichtig: Tägliche Temperaturkontrolle (morgens/abends). Temperaturlogger mit Alarm empfohlen. Bei Stromausfall: Kühlkette dokumentieren."
+    },
+    {
+      "cat": "Arzneimittel und Betäubungsmittel",
+      "name": "BtM-Genehmigung (bei Sedierung)",
+      "desc": "Erlaubnis zum Erwerb von Betäubungsmitteln (BtMG) bei Einsatz von Lachgas/Midazolam",
+      "price": 200,
+      "required": false,
+      "note": "Wofür: Beim Einsatz von BtM-pflichtigen Substanzen (z.B. Midazolam) benötigt man eine Erlaubnis nach § 3 BtMG.\nWo: Bundesinstitut für Arzneimittel und Medizinprodukte (BfArM).\nFristen: Antrag vor Beschaffung. Bearbeitungszeit: 4–8 Wochen.\nWichtig: BtM-Anforderungsscheine, tresorartige Aufbewahrung, lückenlose Buchführung (BtM-Buch). Revision durch Landesgesundheitsbehörde."
+    },
+    {
+      "cat": "Personal",
+      "name": "Anmeldung bei der Berufsgenossenschaft (BGW)",
+      "desc": "Pflichtmitgliedschaft bei der BGW — gesetzliche Unfallversicherung für Gesundheitsberufe",
+      "price": 0,
+      "required": true,
+      "note": "Wofür: Gesetzliche Unfallversicherung für alle Beschäftigten (§ 2 SGB VII).\nWo: Berufsgenossenschaft für Gesundheitsdienst und Wohlfahrtspflege (BGW).\nFristen: Innerhalb einer Woche nach Einstellung des ersten Mitarbeiters.\nWichtig: Beiträge: abhängig von Lohnsumme und Gefahrtarif. Arbeitsunfälle und Berufskrankheiten melden."
+    },
+    {
+      "cat": "Personal",
+      "name": "Arbeitsmedizinische Vorsorge (ArbMedVV)",
+      "desc": "Pflichtvorsorge und Angebotsvorsorge für Praxismitarbeiter",
+      "price": 1500,
+      "required": true,
+      "note": "Wofür: Pflichtvorsorge für Beschäftigte mit Infektionsgefährdung, Gefahrstoffen, Strahlenschutz (ArbMedVV).\nWo: Betriebsarzt / arbeitsmedizinischer Dienst (z.B. B·A·D, AMD).\nFristen: Vor Aufnahme der Tätigkeit (Erstuntersuchung), danach in festgelegten Intervallen.\nWichtig: Pflichtvorsorge: Hepatitis B (G42), Gefahrstoffe (G24/G38), Strahlenschutz (G26). Impfangebot: Hepatitis B, Grippe, COVID-19."
+    },
+    {
+      "cat": "Personal",
+      "name": "Gefährdungsbeurteilung (ArbSchG)",
+      "desc": "Dokumentierte Gefährdungsbeurteilung aller Arbeitsplätze nach § 5 ArbSchG",
+      "price": 1000,
+      "required": true,
+      "note": "Wofür: Gesetzliche Pflicht des Arbeitgebers — alle Gefährdungen ermitteln und Schutzmaßnahmen festlegen.\nWo: Fachkraft für Arbeitssicherheit (SiFa) oder Betriebsarzt.\nFristen: Vor Arbeitsaufnahme. Aktualisierung bei Änderungen, mind. jährlich überprüfen.\nWichtig: Bereiche: biologische Arbeitsstoffe, Gefahrstoffe (Desinfektionsmittel, Amalgam), Ergonomie, psychische Belastung."
+    },
+    {
+      "cat": "Personal",
+      "name": "Fachkraft für Arbeitssicherheit (SiFa)",
+      "desc": "Betreuung durch SiFa gemäß DGUV Vorschrift 2 — Pflicht ab 1 Mitarbeiter",
+      "price": 1200,
+      "required": true,
+      "note": "Wofür: Pflichtbetreuung gemäß Arbeitssicherheitsgesetz (ASiG) und DGUV Vorschrift 2.\nWo: Externe SiFa / überbetrieblicher Dienst (z.B. B·A·D, TÜV, DEKRA).\nFristen: Ab dem ersten Mitarbeiter.\nWichtig: Alternative: Unternehmermodell (bis 50 Mitarbeiter) — Zahnarzt übernimmt Aufgaben nach Schulung bei BGW (24 Lehreinheiten)."
+    },
+    {
+      "cat": "Personal",
+      "name": "Betriebsarztbetreuung (ASiG)",
+      "desc": "Arbeitsmedizinische Regelbetreuung durch Betriebsarzt",
+      "price": 1000,
+      "required": true,
+      "note": "Wofür: Pflichtbetreuung gemäß ASiG und DGUV Vorschrift 2.\nWo: Betriebsarzt / arbeitsmedizinischer Dienst.\nFristen: Ab dem ersten Mitarbeiter.\nWichtig: Einsatzzeiten abhängig von Mitarbeiterzahl und Gefährdungsbeurteilung. Alternative: Unternehmermodell bei BGW."
+    },
+    {
+      "cat": "Personal",
+      "name": "Ersthelfer-Ausbildung",
+      "desc": "Mindestens ein ausgebildeter Ersthelfer pro Praxis (DGUV Vorschrift 1)",
+      "price": 50,
+      "required": true,
+      "note": "Wofür: Pflicht gemäß DGUV Vorschrift 1 — mindestens ein Ersthelfer je Betriebsstätte.\nWo: Anerkannte Ausbildungsstellen: DRK, ASB, Johanniter, Malteser.\nFristen: Vor Arbeitsaufnahme. Auffrischung alle 2 Jahre.\nWichtig: Bei 2–20 Mitarbeitern: 1 Ersthelfer. Kosten werden von der BGW übernommen."
+    },
+    {
+      "cat": "Personal",
+      "name": "Arbeitsschutz-Unterweisung",
+      "desc": "Jährliche Unterweisung aller Mitarbeiter (§ 12 ArbSchG)",
+      "price": 0,
+      "required": true,
+      "note": "Wofür: Gesetzliche Pflicht — Unterweisung über Gefahren, Schutzmaßnahmen, Verhalten im Notfall.\nWo: Durch den Arbeitgeber / SiFa — in der Praxis.\nFristen: Vor Aufnahme der Tätigkeit, bei Änderungen, danach mindestens jährlich.\nWichtig: Dokumentieren! Datum, Thema, Teilnehmer, Unterschriften. Themen: Hygiene, Strahlenschutz, Gefahrstoffe, Brandschutz, Ergonomie."
+    },
+    {
+      "cat": "Personal",
+      "name": "Gefahrstoffverzeichnis und Betriebsanweisungen",
+      "desc": "Verzeichnis aller Gefahrstoffe + Betriebsanweisungen nach GefStoffV",
+      "price": 500,
+      "required": true,
+      "note": "Wofür: Pflicht gemäß § 6 GefStoffV — alle Gefahrstoffe erfassen und Betriebsanweisungen erstellen.\nWo: Erstellen mit SiFa oder Betriebsarzt.\nFristen: Vor Verwendung der Gefahrstoffe.\nWichtig: Typische Stoffe: Desinfektionsmittel, Amalgam, Komposite, Säuren, Lösungsmittel. Sicherheitsdatenblätter sammeln."
+    },
+    {
+      "cat": "Praxisräume und Bau",
+      "name": "Mietvertrag (Gewerbe)",
+      "desc": "Gewerbemietvertrag mit Erlaubnis zur Nutzung als Zahnarztpraxis",
+      "price": 0,
+      "required": true,
+      "note": "Wofür: Rechtliche Grundlage für die Nutzung der Räume als Zahnarztpraxis.\nWo: Vermieter / Immobilienverwaltung. Prüfung durch Rechtsanwalt empfohlen.\nFristen: Vor Umbau und Investitionen.\nWichtig: Nutzungsart \"Zahnarztpraxis\" explizit aufnehmen. Laufzeit mind. 10 Jahre. Umbauerlaubnis, Konkurrenzschutz, Nachfolgerklausel prüfen."
+    },
+    {
+      "cat": "Praxisräume und Bau",
+      "name": "Nutzungsänderung (Bauordnung)",
+      "desc": "Genehmigung der Nutzungsänderung beim Bauamt, wenn Räume nicht als Praxis genehmigt sind",
+      "price": 1500,
+      "required": false,
+      "note": "Wofür: Wenn die Räume bisher als Büro, Wohnung oder Laden genutzt wurden — Nutzungsänderung erforderlich.\nWo: Untere Bauaufsichtsbehörde (Bauamt der Stadt/Gemeinde).\nFristen: 4–12 Wochen Bearbeitungszeit. Vor Umbaubeginn beantragen.\nWichtig: Prüfung: Stellplätze, Brandschutz, Schallschutz, Lüftung, Barrierefreiheit. Kann Baugenehmigung erfordern."
+    },
+    {
+      "cat": "Praxisräume und Bau",
+      "name": "Baugenehmigung (bei Umbau)",
+      "desc": "Baugenehmigung bei tragenden Wänden, Fassadenänderungen, Lüftungsanlagen",
+      "price": 2000,
+      "required": false,
+      "note": "Wofür: Bei Eingriffen in tragende Substanz, Änderung der Gebäudehülle, größere technische Anlagen.\nWo: Untere Bauaufsichtsbehörde über Architekten (bauvorlageberechtigt).\nFristen: 4–12 Wochen (vereinfachtes Verfahren), bis 3 Monate (regulär).\nWichtig: Statik, Brandschutz, Schallschutz, Entwässerung prüfen lassen. Kosten: Gebühren + Architektenhonorar."
+    },
+    {
+      "cat": "Praxisräume und Bau",
+      "name": "Praxisplanung durch Fachplaner",
+      "desc": "Raumplanung, Behandlungsplätze, Sterilisation, Technikräume, Elektro, Sanitär",
+      "price": 8000,
+      "required": true,
+      "note": "Wofür: Professionelle Planung der Praxisräume — Funktionszonen, Workflow, Technik.\nWo: Fachplaner für Zahnarztpraxen (z.B. über Dental-Depot, Planeco,1A-Praxisplanung).\nFristen: 4–8 Wochen Planungszeit. Vor Umbaubeginn.\nWichtig: Zonen: Empfang/Wartezimmer, Behandlung, Sterilisation, Röntgen, Labor, Sozialraum, Technik. Mindestflächen beachten."
+    },
+    {
+      "cat": "Praxisräume und Bau",
+      "name": "Raumluft-/Lüftungskonzept",
+      "desc": "Lüftungsanlage nach DIN 1946-4 für Behandlungsräume und Sterilisationsraum",
+      "price": 3000,
+      "required": true,
+      "note": "Wofür: Ausreichende Belüftung der Behandlungs- und Aufbereitungsräume — Pflicht.\nWo: HLS-Fachplaner (Heizung, Lüftung, Sanitär) oder TGA-Ingenieur.\nFristen: In der Planungsphase.\nWichtig: Behandlungsraum: mind. 6-facher Luftwechsel/h. Sterilisation: 10-fach. Aerosolabsaugung am Behandlungsplatz empfohlen."
+    },
+    {
+      "cat": "Praxisräume und Bau",
+      "name": "Schallisolierung (Schallschutznachweis)",
+      "desc": "Schallschutz für Kompressor, Absauganlage und Behandlungsräume",
+      "price": 1500,
+      "required": false,
+      "note": "Wofür: Lärmschutz für Patienten, Personal und Nachbarn — besonders Kompressor und Absaugung.\nWo: Akustik-Ingenieur oder TGA-Planer.\nFristen: In der Planungsphase. Bei Wohngebäuden: Schallschutznachweis ggf. Pflicht.\nWichtig: Kompressor und Absauganlage in separatem Technikraum mit Schalldämmung. DIN 4109 beachten."
+    },
+    {
+      "cat": "Barrierefreiheit",
+      "name": "Barrierefreier Zugang (DIN 18040-1)",
+      "desc": "Stufenloser Zugang, Aufzug, Türbreite mind. 90 cm, taktile Leitsysteme",
+      "price": 10000,
+      "required": true,
+      "note": "Wofür: Barrierefreiheit für Patienten mit Behinderung — Pflicht bei Neubauten und wesentlichen Umbauten (Landesbauordnung).\nWo: Berücksichtigung in der Planung durch Architekten.\nFristen: In der Planungsphase.\nWichtig: Stufenloser Zugang (Rampe/Aufzug), Türbreite mind. 90 cm, Bewegungsfläche 150×150 cm, Behinderten-WC, kontrastreiche Beschilderung."
+    },
+    {
+      "cat": "Barrierefreiheit",
+      "name": "Barrierefreies WC",
+      "desc": "Behinderten-WC mit ausreichender Bewegungsfläche nach DIN 18040-1",
+      "price": 5000,
+      "required": true,
+      "note": "Wofür: Pflicht in öffentlich zugänglichen Gebäuden (Arztpraxis = öffentlich zugänglich).\nWo: Einplanung durch Architekten, Ausführung durch Sanitärfirma.\nFristen: Bei Neubau/Umbau.\nWichtig: Bewegungsfläche mind. 150×150 cm neben WC, Haltegriffe, unterfahrbares Waschbecken, Notrufanlage."
+    },
+    {
+      "cat": "Barrierefreiheit",
+      "name": "Digitale Barrierefreiheit (Website WCAG 2.1 AA)",
+      "desc": "Barrierefreie Praxis-Website gemäß WCAG 2.1 AA — Empfehlung",
+      "price": 2000,
+      "required": false,
+      "note": "Wofür: Barrierefreie digitale Kommunikation — ab Juni 2025 EU-Richtlinie für Dienstleistungen (EAA/BFSG).\nWo: Webentwickler mit Barrierefreiheits-Erfahrung.\nFristen: Empfohlen bei Praxisstart, gesetzliche Pflicht schrittweise ab 2025.\nWichtig: Kontraste, Schriftgröße, Tastaturnavigation, Screenreader-Kompatibilität, Alt-Texte."
+    },
+    {
+      "cat": "IT und Telematik",
+      "name": "TI-Anbindung (Telematikinfrastruktur)",
+      "desc": "Pflichtanbindung an die TI: Konnektor, eHBA, SMC-B, VPN-Zugangsdienst",
+      "price": 4500,
+      "required": true,
+      "note": "Wofür: Pflicht für alle Vertragszahnärzte — elektronische Kommunikation im Gesundheitswesen (§ 291 SGB V).\nWo: TI-Anbieter: CGM, Rise (ehemals KoCo), secunet; Konnektor + Kartenterminal.\nFristen: Vor Praxiseröffnung einrichten. Übergangsfrist ggf. über KZV erfragen.\nWichtig: Komponenten: Konnektor, Kartenterminal, eHBA (elektronischer Heilberufsausweis), SMC-B (Praxisausweis), VPN-Zugangsdienst."
+    },
+    {
+      "cat": "IT und Telematik",
+      "name": "Elektronischer Heilberufsausweis (eHBA)",
+      "desc": "Persönlicher Ausweis des Zahnarztes für die TI — Signatur, Verschlüsselung",
+      "price": 500,
+      "required": true,
+      "note": "Wofür: Persönliche Identifikation und qualifizierte elektronische Signatur in der TI.\nWo: Zahnärztekammer → Kartenherausgeber (medisign, D-Trust).\nFristen: Beantragung 4–6 Wochen vor Praxisstart.\nWichtig: eHBA Generation 2.0 erforderlich. Gültigkeitsdauer: 5 Jahre. Verlust sofort melden."
+    },
+    {
+      "cat": "IT und Telematik",
+      "name": "SMC-B (Praxisausweis)",
+      "desc": "Institutionelle Karte der Praxis für TI-Zugang und -Authentifizierung",
+      "price": 500,
+      "required": true,
+      "note": "Wofür: Identifikation der Praxis als Institution in der TI.\nWo: Zahnärztekammer / KZV → Kartenherausgeber.\nFristen: Zusammen mit eHBA beantragen.\nWichtig: SMC-B wird im Konnektor oder Kartenterminal eingesteckt. Eine Karte pro Praxisstandort."
+    },
+    {
+      "cat": "IT und Telematik",
+      "name": "KIM (Kommunikation im Medizinwesen)",
+      "desc": "Sicherer E-Mail-Dienst für Arztbriefe, Überweisungen, Befunde über die TI",
+      "price": 300,
+      "required": true,
+      "note": "Wofür: Pflicht-Kommunikationsdienst der TI — sicherer Austausch medizinischer Dokumente.\nWo: KIM-Anbieter: CGM (KIM), kv.dox, Telekom (TI-Messenger), Arvato.\nFristen: Ab TI-Anbindung einrichten.\nWichtig: Ersetzt Fax für medizinische Kommunikation. Pflicht für eAU, eArztbrief. Kosten: ca. 10–25 EUR/Monat."
+    },
+    {
+      "cat": "IT und Telematik",
+      "name": "ePA-Anbindung (elektronische Patientenakte)",
+      "desc": "Anbindung an die ePA gemäß § 341 SGB V — Pflicht ab 2025",
+      "price": 800,
+      "required": true,
+      "note": "Wofür: Ab 2025 Pflicht: ePA für alle GKV-Versicherten. Praxis muss befüllen und lesen können.\nWo: Über Praxisverwaltungssystem (PVS) + TI-Anbindung.\nFristen: Stufenweiser Rollout ab 15.01.2025. Praxis muss bereit sein.\nWichtig: PVS muss ePA-fähig sein (Update prüfen). Befunde, Behandlungsdokumentation, Röntgenbilder einstellen. Patienten haben Opt-out-Recht."
+    },
+    {
+      "cat": "IT und Telematik",
+      "name": "E-Rezept (eRp)",
+      "desc": "Elektronisches Rezept über die TI — Pflicht für Zahnärzte",
+      "price": 0,
+      "required": true,
+      "note": "Wofür: Pflicht zur Ausstellung elektronischer Rezepte über die TI (§ 360 SGB V).\nWo: Über PVS + TI + eHBA.\nFristen: Pflicht seit 01.01.2024 für alle Vertragsärzte/Zahnärzte.\nWichtig: PVS muss eRp-Modul haben. Signatur über eHBA oder Komfort-Signatur. Ausnahmen: BtM-Rezepte (Übergangsregelung)."
+    },
+    {
+      "cat": "IT und Telematik",
+      "name": "IT-Sicherheitsrichtlinie (KBV/KZBV)",
+      "desc": "Umsetzung der IT-Sicherheitsrichtlinie nach § 75b SGB V",
+      "price": 1500,
+      "required": true,
+      "note": "Wofür: Pflicht gemäß § 75b SGB V — IT-Sicherheitsanforderungen für Zahnarztpraxen.\nWo: IT-Dienstleister mit Erfahrung im Gesundheitswesen.\nFristen: Bereits in Kraft. Vollständige Umsetzung vor Praxiseröffnung.\nWichtig: 5 Bereiche: Netzwerk, Endgeräte, Apps, Zugriffskontrolle, Datensicherung. Firewall, Virenscanner, Verschlüsselung, Backup. Jährliche Überprüfung."
+    },
+    {
+      "cat": "IT und Telematik",
+      "name": "Datensicherung / Backup-Konzept",
+      "desc": "Regelmäßiges Backup aller Patientendaten — mind. täglich, verschlüsselt, extern",
+      "price": 500,
+      "required": true,
+      "note": "Wofür: Schutz gegen Datenverlust — gesetzliche Aufbewahrungspflicht 10 Jahre.\nWo: IT-Dienstleister oder Cloud-Anbieter (DSGVO-konform, Serverstandort Deutschland).\nFristen: Vor Praxiseröffnung einrichten.\nWichtig: Tägliches Backup, verschlüsselt, extern (nicht nur lokal). Restore-Test mind. halbjährlich. 3-2-1-Regel: 3 Kopien, 2 Medien, 1 extern."
+    },
+    {
+      "cat": "Sonstiges",
+      "name": "Praxisschild / Außenwerbung",
+      "desc": "Praxisschild mit Name, Fachbezeichnung, Sprechzeiten — berufsrechtlich reguliert",
+      "price": 2000,
+      "required": true,
+      "note": "Wofür: Praxiskennzeichnung — berufsrechtlich vorgeschrieben (Berufsordnung der Zahnärztekammer).\nWo: Werbetechnik-Firma. Genehmigung: Vermieter, ggf. Bauamt (Werbeanlage).\nFristen: Vor Praxiseröffnung.\nWichtig: Erlaubte Angaben: Name, Fachbezeichnung (z.B. \"Zahnarzt\", \"Kieferorthopäde\"), Sprechzeiten. Werberecht der Berufsordnung beachten (§ 21 MBO-Z)."
+    },
+    {
+      "cat": "Sonstiges",
+      "name": "Praxis-Website (Impressum, DSGVO, Preisliste)",
+      "desc": "Website mit Impressum, Datenschutzerklärung, Online-Terminbuchung",
+      "price": 4000,
+      "required": true,
+      "note": "Wofür: Patienten-Akquise, Online-Terminbuchung, gesetzliche Informationspflichten.\nWo: Webdesigner oder Website-Baukasten (Jimdo, Squarespace, WordPress).\nFristen: Zum Praxisstart.\nWichtig: Pflicht: Impressum (TMG), Datenschutzerklärung (DSGVO), Berufsbezeichnung, Kammerzugehörigkeit. Empfohlen: Doctolib, Jameda-Profil."
+    },
+    {
+      "cat": "Sonstiges",
+      "name": "Telefon und Internet (Jahrespauschale)",
+      "desc": "Mindestens 100 Mbit/s + Backup-LTE für TI, eRp, ePA",
+      "price": 2400,
+      "required": true,
+      "note": "Wofür: Stabile Internetverbindung — kritisch für TI, eRp, ePA, KIM, Praxissoftware.\nWo: Telekom, Vodafone, 1&1, O2 Business — Geschäftstarif.\nFristen: Vor TI-Anbindung.\nWichtig: Mind. 100 Mbit/s. Backup-LTE-Router empfohlen (bei Ausfall: kein eRp, keine ePA). Ca. 100–200 EUR/Monat."
+    },
+    {
+      "cat": "Sonstiges",
+      "name": "GEMA-Lizenz (Wartebereich-Musik)",
+      "desc": "Lizenz für Musikwiedergabe im Wartezimmer",
+      "price": 300,
+      "required": false,
+      "note": "Wofür: Öffentliche Musikwiedergabe im Wartezimmer erfordert GEMA-Lizenz.\nWo: gema.de — Online-Anmeldung.\nFristen: Vor Musikwiedergabe.\nWichtig: Ohne Lizenz: Abmahnung. Alternative: GEMA-freie Musik (Epidemic Sound, Artlist). Kosten: ca. 200–400 EUR/Jahr je nach Raumgröße."
+    },
+    {
+      "cat": "Sonstiges",
+      "name": "Videoüberwachung (DSGVO-konform)",
+      "desc": "Kameras nur in Gemeinschaftsbereichen — DSGVO-Hinweisschilder Pflicht",
+      "price": 3000,
+      "required": false,
+      "note": "Wofür: Einbruchschutz, Sicherheit — nur in Fluren und Eingangsbereich, NICHT in Behandlungsräumen.\nWo: Sicherheitstechnik-Firma + DSGVO-Beratung.\nFristen: Bei Einrichtung der Praxis.\nWichtig: Hinweisschilder Pflicht (Art. 13 DSGVO). Speicherdauer max. 72 Stunden. Datenschutz-Folgenabschätzung ggf. erforderlich. Keine Aufnahme in Behandlungsräumen!"
+    },
+    {
+      "cat": "Sonstiges",
+      "name": "Alarmanlage",
+      "desc": "Einbruchmeldeanlage + Aufschaltung auf Notrufzentrale",
+      "price": 3500,
+      "required": false,
+      "note": "Wofür: Schutz der Praxisausstattung (Behandlungsstühle, Röntgen, CAD/CAM: 200.000–500.000 EUR).\nWo: Sicherheitsfirma (Securitas, Kötter, lokale Anbieter).\nFristen: Bei Einrichtung.\nWichtig: Bewegungsmelder, Magnetkontakte, Sirene, 24/7-Aufschaltung. Kosten: ca. 3.000 EUR Einrichtung + 50 EUR/Monat Monitoring."
+    },
+    {
+      "cat": "Sonstiges",
+      "name": "Beschwerdemanagement",
+      "desc": "Verfahren für Patientenbeschwerden — Pflicht gemäß Patientenrechtegesetz",
+      "price": 0,
+      "required": true,
+      "note": "Wofür: Patientenrechtegesetz (§ 630a ff. BGB) — Patienten haben Recht auf Behandlungsdokumentation und Beschwerde.\nWo: Internes Verfahren erstellen. Hinweis auf Zahnärztekammer-Schlichtungsstelle.\nFristen: Vor Praxiseröffnung.\nWichtig: Hinweis auf: Schlichtungsstelle der Zahnärztekammer, Patientenbeauftragter der Bundesregierung, Gutachterkommission der Kammer."
+    },
+    {
+      "cat": "Sonstiges",
+      "name": "Qualitätsmanagement (QM-System)",
+      "desc": "Pflicht-QM-System gemäß § 135a SGB V und QM-Richtlinie des G-BA",
+      "price": 2000,
+      "required": true,
+      "note": "Wofür: Gesetzliche Pflicht für alle Vertragszahnärzte — systematisches Qualitätsmanagement.\nWo: Aufbau mit QM-Berater oder QM-Software (z.b. QM-Bausteine KZBV, QMPilot, visotec).\nFristen: Aufbau innerhalb der ersten 3 Jahre nach Zulassung. Empfehlung: sofort beginnen.\nWichtig: G-BA QM-Richtlinie: Patientensicherheit, Fehlermanagement, Beschwerdemanagement, Notfallmanagement. Keine Zertifizierung Pflicht, aber empfohlen."
+    },
+    {
+      "cat": "Sonstiges",
+      "name": "Aushangpflichtige Gesetze",
+      "desc": "Aushang von Arbeitsschutzgesetz, ArbZG, MuSchG, AGG in der Praxis",
+      "price": 50,
+      "required": true,
+      "note": "Wofür: Arbeitgeber müssen bestimmte Gesetze für Mitarbeiter zugänglich machen.\nWo: Im Personalbereich aushängen oder digital bereitstellen.\nFristen: Ab dem ersten Mitarbeiter.\nWichtig: Pflichtaushänge: ArbSchG, ArbZG, MuSchG, AGG, ArbStättV, ASiG, Unfallverhütungsvorschriften. Als Sammelband bestellbar."
+    }
+  ]
+}

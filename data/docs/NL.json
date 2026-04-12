@@ -1,0 +1,206 @@
+{
+  "country": "NL",
+  "lang": "nl",
+  "currency": "EUR",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "BV — Besloten Vennootschap",
+      "desc": "Мин. капитал: €0,01. 1–2 weken",
+      "price": 1200,
+      "required": true,
+      "note": "Ответственность: Beperkte aansprakelijkheid (tot inbreng)\nСроки: 1–2 weken\nСтоимость: €1.200–€2.500 (notaris €500–€1.500, KVK €85,15)\nШаги регистрации:\nOpstellen statuten bij notaris\nOprichten BV via notariële akte\nStorten aandelenkapitaal op zakelijke rekening\nInschrijving bij Kamer van Koophandel (KVK)\nRegistratie UBO-register\nAanmelding bij Belastingdienst (BTW, VPB, loonheffing)"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "NV — Naamloze Vennootschap",
+      "desc": "Мин. капитал: €45.000. 2–4 weken",
+      "price": 3000,
+      "required": true,
+      "note": "Ответственность: Beperkte aansprakelijkheid (tot inbreng)\nСроки: 2–4 weken\nСтоимость: €3.000–€7.000 (notaris + accountant)\nШаги регистрации:\nOpstellen statuten bij notaris\nOprichten NV via notariële akte\nStorten minimaal 20% aandelenkapitaal (€45.000 geplaatst)\nBankverklaring of accountantsverklaring bij inbreng in natura\nInschrijving bij KVK\nRegistratie UBO-register\nAanmelding bij Belastingdienst"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "Eenmanszaak",
+      "desc": "Мин. капитал: Geen. 1 dag",
+      "price": 8515,
+      "required": true,
+      "note": "Ответственность: Volledige persoonlijke aansprakelijkheid (privévermogen)\nСроки: 1 dag\nСтоимость: €85,15 (KVK-inschrijving)\nШаги регистрации:\nInschrijving bij KVK (online afspraak)\nAutomatische registratie bij Belastingdienst\nOntvangst BTW-nummer"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "VOF — Vennootschap onder Firma",
+      "desc": "Мин. капитал: Geen. 1–3 dagen",
+      "price": 8515,
+      "required": true,
+      "note": "Ответственность: Hoofdelijke aansprakelijkheid van alle vennoten\nСроки: 1–3 dagen\nСтоимость: €85,15 + juridisch advies €200–€800\nШаги регистрации:\nOpstellen vennootschapsovereenkomst (aanbevolen)\nInschrijving bij KVK\nAanmelding bij Belastingdienst"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "Maatschap",
+      "desc": "Мин. капитал: Geen. 1–3 dagen",
+      "price": 8515,
+      "required": true,
+      "note": "Ответственность: Iedere maat aansprakelijk voor eigen deel; bij wanprestatie hoofdelijk\nСроки: 1–3 dagen\nСтоимость: €85,15 + juridisch advies €200–€800\nШаги регистрации:\nOpstellen maatschapsovereenkomst\nInschrijving bij KVK\nAanmelding bij Belastingdienst"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Exploitatievergunning",
+      "desc": "[Розничная торговля] Gemeente",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Gemeente\nТребования:\n• Aanvraag bij gemeente\n• Voldoen aan bestemmingsplan\n• Brandveiligheidseisen\nСрок действия: Onbeperkt (tenzij ingetrokken)\nСтоимость: €100–€1.000 (afhankelijk van gemeente)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Alcoholvergunning (voorheen Drank- en Horecavergunning)",
+      "desc": "[HoReCa (общепит)] Gemeente",
+      "price": 300,
+      "required": true,
+      "note": "Выдаёт: Gemeente\nТребования:\n• Diploma Sociale Hygiëne (leidinggevenden, minimaal 21 jaar)\n• Inschrijving Register Sociale Hygiëne\n• Inrichtingseisen (ventilatie, toiletten, oppervlakte)\n• Geen relevant strafrechtelijk verleden\nСрок действия: Onbeperkt (persoonsgebonden, niet overdraagbaar)\nСтоимость: €300–€1.500 (afhankelijk van gemeente)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Exploitatievergunning horeca",
+      "desc": "[HoReCa (общепит)] Gemeente",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Gemeente\nТребования:\n• Aanvraag bij gemeente\n• Voldoen aan bestemmingsplan en APV-voorschriften\nСрок действия: Onbeperkt\nСтоимость: €100–€1.000"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Terrasvergunning",
+      "desc": "[HoReCa (общепит)] Gemeente",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Gemeente\nТребования:\n• Aanvraag bij gemeente\n• Situatietekening terras\nСрок действия: Jaarlijks of seizoensgebonden\nСтоимость: €50–€500 per jaar"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "HACCP-certificering (voedselveiligheid)",
+      "desc": "[HoReCa (общепит)] Nederlandse Voedsel- en Warenautoriteit (NVWA)",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Nederlandse Voedsel- en Warenautoriteit (NVWA)\nТребования:\n• Voedselveiligheidsplan opstellen\n• Hygiënecode horeca naleven\nСрок действия: Doorlopend (controle door NVWA)\nСтоимость: €200–€1.000 (training + implementatie)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Vakbekwaamheidsdiploma (indien vereist)",
+      "desc": "[Услуги и ремёсла] Brancheorganisatie / SBB",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: Brancheorganisatie / SBB\nТребования:\n• Erkend diploma of certificaat voor gereglementeerde beroepen (bijv. elektricien, installateur)\nСрок действия: Permanent\nСтоимость: Variabel (opleiding €500–€5.000)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Beroepsaansprakelijkheidsverzekering",
+      "desc": "[Услуги и ремёсла] Verzekeraar (wettelijk aanbevolen/vereist voor bepaalde beroepen)",
+      "price": 300,
+      "required": true,
+      "note": "Выдаёт: Verzekeraar (wettelijk aanbevolen/vereist voor bepaalde beroepen)\nТребования:\n• Afsluiten dekking voor beroepsfouten\nСрок действия: Jaarlijks\nСтоимость: €300–€2.000 per jaar"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Omgevingsvergunning (milieu)",
+      "desc": "[Производство] Gemeente / Provincie / Omgevingsdienst",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: Gemeente / Provincie / Omgevingsdienst\nТребования:\n• Milieueffectrapportage (indien nodig)\n• Voldoen aan Omgevingswet\n• Emissie- en geluidsnormen\nСрок действия: Onbeperkt (periodieke herziening)\nСтоимость: €500–€25.000 (afhankelijk van categorie)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "CE-markering (productveiligheid)",
+      "desc": "[Производство] EU / Nederlandse conformiteitsbeoordelingsinstanties",
+      "price": 1000,
+      "required": true,
+      "note": "Выдаёт: EU / Nederlandse conformiteitsbeoordelingsinstanties\nТребования:\n• Voldoen aan EU-richtlijnen voor productveiligheid\n• Technisch dossier opstellen\nСрок действия: Doorlopend (per productlijn)\nСтоимость: €1.000–€10.000 per productcategorie"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "REACH-registratie (chemische stoffen)",
+      "desc": "[Производство] ECHA (Europees Agentschap voor chemische stoffen)",
+      "price": 1600,
+      "required": true,
+      "note": "Выдаёт: ECHA (Europees Agentschap voor chemische stoffen)\nТребования:\n• Registratie van chemische stoffen >1 ton/jaar\n• Veiligheidsinformatieblad\nСрок действия: Doorlopend\nСтоимость: €1.600–€31.000 (afhankelijk van tonnage)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Eurovergunning / NIWO-vergunning (beroepsgoederenvervoer)",
+      "desc": "[Логистика и склад] Nationale en Internationale Wegvervoer Organisatie (NIWO)",
+      "price": 300,
+      "required": true,
+      "note": "Выдаёт: Nationale en Internationale Wegvervoer Organisatie (NIWO)\nТребования:\n• Bewijs vakbekwaamheid ondernemer\n• Financiële draagkracht (€9.000 per eerste voertuig, €5.000 per extra)\n• Betrouwbaarheid (Verklaring Omtrent Gedrag)\nСрок действия: 5 jaar (verlengbaar)\nСтоимость: €300–€600 per jaar"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Taxivergunning (personenvervoer)",
+      "desc": "[Логистика и склад] ILT (Inspectie Leefomgeving en Transport)",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: ILT (Inspectie Leefomgeving en Transport)\nТребования:\n• Bewijs vakbekwaamheid (taxichauffeursdiploma)\n• Ondernemersvergunning taxi\nСрок действия: 5 jaar\nСтоимость: €500–€1.500"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "AEO-certificaat (douanevergunning)",
+      "desc": "[Логистика и склад] Douane (Belastingdienst)",
+      "price": 2000,
+      "required": true,
+      "note": "Выдаёт: Douane (Belastingdienst)\nТребования:\n• Betrouwbaarheid bedrijf\n• Financiële soliditeit\n• Beveiligingsnormen\nСрок действия: Onbeperkt (periodieke herbeoordeling)\nСтоимость: €2.000–€10.000 (advieskosten)"
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21% (BTW)\nvat_reduced: 9% (levensmiddelen, boeken, cultuur)\ncorporate_tax: 19% (tot €200.000) / 25,8% (boven €200.000) — VPB\nnotes: Innovatiebox: 9% over kwalificerende winst uit IP. Kleinschaligheidsinvesteringsaftrek (KIA) beschikbaar."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21% (BTW)\nvat_reduced: 9% (voedsel in restaurants, hotelaccommodatie)\ncorporate_tax: 19% (tot €200.000) / 25,8% (boven €200.000)\nnotes: Horecadiensten (eten/drinken in restaurant) vallen onder 9% BTW-tarief. Alcoholische dranken in de detailhandel: 21%."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21% (BTW)\nvat_reduced: 9% (schilders- en stucwerk aan woningen ouder dan 2 jaar)\ncorporate_tax: 19% (tot €200.000) / 25,8% (boven €200.000)\nnotes: Zelfstandigenaftrek beschikbaar voor IB-ondernemers. Kleinschaligheidsinvesteringsaftrek (KIA) voor investeringen."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21% (BTW)\nvat_reduced: 9% (bepaalde goederen)\ncorporate_tax: 19% (tot €200.000) / 25,8% (boven €200.000)\nnotes: WBSO (R&D aftrek) beschikbaar voor innovatieve bedrijven. Energie-investeringsaftrek (EIA) voor duurzame investeringen."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21% (BTW)\nvat_reduced: 9% (personenvervoer binnenlands)\ncorporate_tax: 19% (tot €200.000) / 25,8% (boven €200.000)\nnotes: Intracommunautair goederenvervoer: BTW-verlegd. Accijnzen van toepassing op brandstof."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — Nederland",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "Нидерланды: BV — самая популярная форма (мин. капитал €0,01), регистрация через KVK (€85,15). НДС (BTW) 21%/9%. Налог на прибыль (VPB) 19% до €200 тыс., 25,8% сверх. Для HoReCa обязательна алкогольная лицензия (диплом Sociale Hygiëne). Транспорт требует лицензии NIWO. Производство — экологические разрешения через Omgevingswet."
+    }
+  ]
+}

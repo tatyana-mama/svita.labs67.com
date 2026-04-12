@@ -1,0 +1,222 @@
+{
+  "country": "IT",
+  "lang": "it",
+  "currency": "EUR",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "SRL — Società a Responsabilità Limitata",
+      "desc": "Мин. капитал: €10.000 (versamento minimo 25% alla costituzione). 15-30 giorni lavorativi",
+      "price": 2500,
+      "required": true,
+      "note": "Ответственность: Limitata al capitale conferito\nСроки: 15-30 giorni lavorativi\nСтоимость: €2.500 - €4.000 (notaio €1.500-2.500, diritti camerali €200, bolli e tasse €300-500)\nШаги регистрации:\nOttenere il Codice Fiscale e la Partita IVA presso l'Agenzia delle Entrate\nRedazione dell'atto costitutivo e dello statuto tramite notaio\nDeposito dell'atto costitutivo presso il Registro delle Imprese della Camera di Commercio\nIscrizione al REA (Repertorio Economico Amministrativo)\nComunicazione Unica per INPS, INAIL e Agenzia delle Entrate\nOttenere il Codice ATECO corrispondente all'attività\nPresentazione della SCIA (Segnalazione Certificata di Inizio Attività) al SUAP del Comune"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "SRLS — Società a Responsabilità Limitata Semplificata",
+      "desc": "Мин. капитал: Da €1 a €9.999. 10-20 giorni lavorativi",
+      "price": 500,
+      "required": true,
+      "note": "Ответственность: Limitata al capitale conferito\nСроки: 10-20 giorni lavorativi\nСтоимость: €500 - €1.000 (notaio gratuito o ridotto, diritti camerali €200, bolli €156)\nШаги регистрации:\nOttenere il Codice Fiscale presso l'Agenzia delle Entrate\nAtto costitutivo con modello standard ministeriale (notaio senza onorario)\nIscrizione al Registro delle Imprese della Camera di Commercio\nComunicazione Unica per INPS, INAIL, Agenzia delle Entrate\nAttribuzione Codice ATECO\nPresentazione SCIA al SUAP del Comune"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "SPA — Società per Azioni",
+      "desc": "Мин. капитал: €50.000 (versamento minimo 25% alla costituzione). 30-45 giorni lavorativi",
+      "price": 5000,
+      "required": true,
+      "note": "Ответственность: Limitata al capitale sottoscritto\nСроки: 30-45 giorni lavorativi\nСтоимость: €5.000 - €10.000 (notaio €3.000-5.000, diritti camerali €200, tasse e bolli €600-1.000)\nШаги регистрации:\nRedazione dello statuto e dell'atto costitutivo tramite notaio\nVersamento del 25% del capitale in conto corrente vincolato\nDeposito presso il Registro delle Imprese della Camera di Commercio\nNomina degli organi sociali (CdA, collegio sindacale, revisore legale)\nComunicazione Unica\nAttribuzione Codice ATECO e presentazione SCIA"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "SAS — Società in Accomandita Semplice",
+      "desc": "Мин. капитал: Nessun minimo legale. 10-20 giorni lavorativi",
+      "price": 1500,
+      "required": true,
+      "note": "Ответственность: Illimitata per i soci accomandatari, limitata per i soci accomandanti\nСроки: 10-20 giorni lavorativi\nСтоимость: €1.500 - €2.500\nШаги регистрации:\nRedazione dell'atto costitutivo (scrittura privata autenticata o atto pubblico)\nRegistrazione presso l'Agenzia delle Entrate\nIscrizione al Registro delle Imprese della Camera di Commercio\nComunicazione Unica per INPS e INAIL\nPresentazione SCIA al SUAP"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "DI — Ditta Individuale",
+      "desc": "Мин. капитал: Nessun minimo. 5-10 giorni lavorativi",
+      "price": 300,
+      "required": true,
+      "note": "Ответственность: Illimitata — il titolare risponde con il proprio patrimonio personale\nСроки: 5-10 giorni lavorativi\nСтоимость: €300 - €800 (diritti camerali €120, bolli €18, consulente €200-500)\nШаги регистрации:\nApertura della Partita IVA presso l'Agenzia delle Entrate\nAttribuzione del Codice ATECO\nIscrizione al Registro delle Imprese della Camera di Commercio\nIscrizione alla Gestione Commercianti INPS\nPresentazione SCIA al SUAP del Comune"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "SCIA Commerciale (Segnalazione Certificata di Inizio Attività)",
+      "desc": "[Розничная торговля] SUAP del Comune competente",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: SUAP del Comune competente\nТребования:\n• Possesso dei requisiti morali e professionali (art. 71 D.Lgs. 59/2010)\n• Idoneità del locale (agibilità, destinazione d'uso commerciale)\n• Conformità urbanistica ed edilizia\n• Rispetto norme igienico-sanitarie (ASL)\nСрок действия: Immediata dalla presentazione (silenzio-assenso entro 60 giorni)\nСтоимость: Diritti SUAP €50 - €200 a seconda del Comune"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorizzazione per grandi strutture di vendita (oltre 250 mq)",
+      "desc": "[Розничная торговля] Regione / Comune",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: Regione / Comune\nТребования:\n• Conferenza dei servizi con Comune, Regione, ASL, VVF\n• Valutazione impatto commerciale e urbanistico\n• Piano di parcheggio e accessibilità\nСрок действия: 90-180 giorni\nСтоимость: €500 - €2.000 (oneri istruttori variabili per Regione)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "SCIA per somministrazione di alimenti e bevande",
+      "desc": "[HoReCa (общепит)] SUAP del Comune",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: SUAP del Comune\nТребования:\n• Requisiti morali e professionali (corso SAB o esperienza nel settore)\n• Idoneità igienico-sanitaria del locale (parere ASL)\n• Piano HACCP obbligatorio\n• Agibilità e conformità urbanistica del locale\n• Rispetto norme anti-inquinamento acustico e canna fumaria\nСрок действия: Immediata (controllo entro 60 giorni)\nСтоимость: €100 - €300"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Notifica sanitaria (Reg. CE 852/2004)",
+      "desc": "[HoReCa (общепит)] ASL / ATS competente",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: ASL / ATS competente\nТребования:\n• Planimetria del locale con indicazione attrezzature\n• Piano di autocontrollo HACCP\n• Formazione del personale in materia igienico-sanitaria\nСрок действия: Contestuale alla SCIA\nСтоимость: Inclusa nella SCIA o €50 - €100"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Certificato di Prevenzione Incendi (CPI)",
+      "desc": "[HoReCa (общепит)] Comando Provinciale dei Vigili del Fuoco",
+      "price": 300,
+      "required": true,
+      "note": "Выдаёт: Comando Provinciale dei Vigili del Fuoco\nТребования:\n• Progetto antincendio a firma di professionista abilitato\n• Impianti conformi alle norme di sicurezza\n• Capienza superiore a 100 persone o superficie superiore a 400 mq\nСрок действия: 60-90 giorni\nСтоимость: €300 - €1.000 (sopralluogo + diritti)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licenza per strutture ricettive (alberghi, B&B, affittacamere)",
+      "desc": "[HoReCa (общепит)] Comune / Regione",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Comune / Regione\nТребования:\n• SCIA turistica al Comune\n• Classificazione stellare (per alberghi)\n• Requisiti minimi strutturali e igienico-sanitari regionali\n• Iscrizione al portale regionale del turismo\nСрок действия: 30-60 giorni\nСтоимость: €100 - €500 (variabile per Regione)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "SCIA per attività di servizi",
+      "desc": "[Услуги и ремёсла] SUAP del Comune",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: SUAP del Comune\nТребования:\n• Requisiti morali\n• Idoneità del locale\n• Eventuali abilitazioni professionali (es. estetista, acconciatore, impiantista)\nСрок действия: Immediata dalla presentazione\nСтоимость: €50 - €200"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Iscrizione all'Albo delle Imprese Artigiane",
+      "desc": "[Услуги и ремёсла] Camera di Commercio — Commissione Provinciale Artigianato",
+      "price": 80,
+      "required": true,
+      "note": "Выдаёт: Camera di Commercio — Commissione Provinciale Artigianato\nТребования:\n• Prevalenza del lavoro manuale del titolare\n• Limiti dimensionali di dipendenti (variabili per settore)\n• Codice ATECO artigianale\nСрок действия: 15-30 giorni\nСтоимость: €80 - €150 (diritti annuali)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Abilitazione professionale (per mestieri regolamentati)",
+      "desc": "[Услуги и ремёсла] Camera di Commercio / Regione",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: Camera di Commercio / Regione\nТребования:\n• Qualifica professionale o diploma specifico\n• Corso di formazione abilitante\n• Esame di idoneità (ove previsto)\nСрок действия: Variabile (corso 300-900 ore)\nСтоимость: €500 - €2.000 (costo del corso)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "SCIA per attività produttiva",
+      "desc": "[Производство] SUAP del Comune",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: SUAP del Comune\nТребования:\n• Conformità urbanistica e destinazione d'uso industriale/artigianale\n• Agibilità del fabbricato\n• Conformità impianti elettrici, idraulici, termici (DM 37/2008)\nСрок действия: Immediata (controllo entro 60 giorni)\nСтоимость: €100 - €300"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorizzazione Unica Ambientale (AUA)",
+      "desc": "[Производство] Provincia / Città Metropolitana",
+      "price": 300,
+      "required": true,
+      "note": "Выдаёт: Provincia / Città Metropolitana\nТребования:\n• Autorizzazione emissioni in atmosfera\n• Autorizzazione scarichi idrici\n• Documentazione sulla gestione rifiuti\n• Impatto acustico\nСрок действия: 90-150 giorni\nСтоимость: €300 - €1.500"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Marcatura CE (per prodotti regolamentati)",
+      "desc": "[Производство] Organismo Notificato accreditato",
+      "price": 1000,
+      "required": true,
+      "note": "Выдаёт: Organismo Notificato accreditato\nТребования:\n• Valutazione di conformità del prodotto\n• Fascicolo tecnico completo\n• Dichiarazione di conformità UE\nСрок действия: 30-120 giorni\nСтоимость: €1.000 - €10.000 (variabile per complessità del prodotto)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Iscrizione all'Albo Nazionale degli Autotrasportatori",
+      "desc": "[Логистика и склад] Ministero delle Infrastrutture e dei Trasporti — Motorizzazione Civile",
+      "price": 300,
+      "required": true,
+      "note": "Выдаёт: Ministero delle Infrastrutture e dei Trasporti — Motorizzazione Civile\nТребования:\n• Requisito di onorabilità\n• Requisito di capacità finanziaria (€9.000 primo veicolo, €5.000 per ogni successivo)\n• Requisito di idoneità professionale (attestato di capacità professionale)\n• Almeno un veicolo in disponibilità\nСрок действия: 30-60 giorni\nСтоимость: €300 - €500 (diritti di iscrizione)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licenza comunitaria per trasporto internazionale",
+      "desc": "[Логистика и склад] Ministero delle Infrastrutture e dei Trasporti",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Ministero delle Infrastrutture e dei Trasporti\nТребования:\n• Iscrizione all'Albo Autotrasportatori\n• Capacità finanziaria adeguata\n• Veicoli conformi alle normative UE sulle emissioni\nСрок действия: 30-60 giorni\nСтоимость: €200 - €400"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorizzazione per deposito e magazzino",
+      "desc": "[Логистика и склад] SUAP del Comune / ASL (per merci alimentari)",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: SUAP del Comune / ASL (per merci alimentari)\nТребования:\n• Conformità urbanistica (zona industriale/commerciale)\n• Agibilità del fabbricato\n• Norme antincendio per depositi > 500 mq\n• HACCP per depositi alimentari\nСрок действия: 30-60 giorni\nСтоимость: €200 - €800"
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 22% (IVA ordinaria)\nvat_reduced: 10% (alimentari, ristrutturazioni), 5% (erbe aromatiche, prestazioni socio-sanitarie), 4% (beni di prima necessità, pane, latte)\ncorporate_tax: IRES 24% + IRAP 3,9% (aliquota standard regionale)\nnotes: Regime forfettario disponibile per ricavi fino a €85.000 con imposta sostitutiva al 15% (5% per nuove attività nei primi 5 anni). Le Regioni possono variare l'IRAP di ±0,92%."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 22% (bevande alcoliche, servizi generali)\nvat_reduced: 10% (somministrazione pasti e bevande, pernottamenti alberghieri), 5% (alcune prestazioni sociali), 4% (beni prima necessità)\ncorporate_tax: IRES 24% + IRAP 3,9%\nnotes: L'IVA sulla somministrazione di cibi e bevande è al 10%. L'IVA sugli alloggi è al 10%. Tassa di soggiorno applicabile in molti Comuni (€1-7/notte a persona)."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 22%\nvat_reduced: 10% (manutenzione ordinaria su immobili residenziali), 5%, 4%\ncorporate_tax: IRES 24% + IRAP 3,9% (riduzione IRAP per imprese artigiane in alcune Regioni)\nnotes: Regime forfettario molto diffuso tra artigiani e professionisti (imposta sostitutiva 15% o 5% per i primi 5 anni). Contributi INPS Gestione Artigiani: circa 24% sul reddito."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 22%\nvat_reduced: 10% (alcuni prodotti alimentari trasformati), 4% (beni di prima necessità)\ncorporate_tax: IRES 24% + IRAP 3,9%\nnotes: Crediti d'imposta per investimenti in beni strumentali nuovi (Industria 4.0/Transizione 5.0). Patent box: detassazione 50% dei redditi da beni immateriali. Superbonus e incentivi per efficientamento energetico degli stabilimenti."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 22%\nvat_reduced: 10% (trasporto urbano passeggeri), esente per trasporti internazionali di merci (art. 9 DPR 633/72)\ncorporate_tax: IRES 24% + IRAP 3,9%\nnotes: Credito d'imposta per investimenti in veicoli a basse emissioni. Deducibilità costi carburante tramite carte di pagamento tracciate. L'IVA sul trasporto internazionale di merci è non imponibile."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — Italia",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "Италия: основные формы — SRL (€10.000 мин. капитал), SRLS (от €1, упрощённая), SPA (€50.000), SAS, Ditta Individuale. Регистрация через Торговую палату (Camera di Commercio) и систему ComUnica. Для начала деятельности подаётся SCIA в SUAP муниципалитета. Налоги: IRES 24% + IRAP 3,9%, IVA 22%/10%/5%/4%. Для микробизнеса доступен режим forfettario (15%, или 5% первые 5 лет). Бюрократия многоуровневая (государство/регион/муниципалитет), обязательна PEC, рекомендуется commercialista с первого дня."
+    }
+  ]
+}

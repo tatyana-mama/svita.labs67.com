@@ -1,0 +1,214 @@
+{
+  "country": "SK",
+  "lang": "sk",
+  "currency": "EUR",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "s.r.o. — Spoločnosť s ručením obmedzeným",
+      "desc": "Мин. капитал: 5 000 EUR. 5-10 pracovných dní (elektronicky) / 2-4 týždne (papierovo)",
+      "price": 300,
+      "required": true,
+      "note": "Ответственность: Ručenie obmedzené na vklad\nСроки: 5-10 pracovných dní (elektronicky) / 2-4 týždne (papierovo)\nСтоимость: 300-500 EUR (súdny poplatok 150 EUR elektronicky / 300 EUR papierovo + živnostenský poplatok + notár)\nШаги регистрации:\nOverenie a rezervácia obchodného mena\nSpísanie spoločenskej zmluvy / zakladateľskej listiny (notársky overené podpisy)\nZískanie živnostenského oprávnenia na živnostenskom úrade\nZloženie základného imania na bankový účet (min. 2 500 EUR pri zápise)\nPodanie návrhu na zápis do obchodného registra (elektronicky cez slovensko.sk)\nRegistrácia na daňovom úrade (daň z príjmov, DPH)"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "SZČO — Samostatne zárobkovo činná osoba",
+      "desc": "Мин. капитал: Bez požiadavky. 3-5 pracovných dní",
+      "price": 0,
+      "required": true,
+      "note": "Ответственность: Plná osobná zodpovednosť celým majetkom\nСроки: 3-5 pracovných dní\nСтоимость: 0-15 EUR (voľné živnosti bezplatne, viazané 7,50 EUR / elektronicky)\nШаги регистрации:\nOhlásenie živnosti na živnostenskom úrade (osobne alebo elektronicky)\nPridelenie IČO\nRegistrácia na daňovom úrade\nPrihlásenie do zdravotnej poisťovne\nPrihlásenie do Sociálnej poisťovne (po prekročení príjmového limitu)"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "a.s. — Akciová spoločnosť",
+      "desc": "Мин. капитал: 25 000 EUR. 2-6 týždňov",
+      "price": 1,
+      "required": true,
+      "note": "Ответственность: Ručenie obmedzené na vklad\nСроки: 2-6 týždňov\nСтоимость: 1 500-5 000 EUR\nШаги регистрации:\nSchválenie stanov zakladateľskou zmluvou (notársky zápis)\nSplatenie základného imania\nZápis do obchodného registra\nRegistrácia na daňovom úrade"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Živnostenské oprávnenie — voľná živnosť",
+      "desc": "[Розничная торговля] Živnostenský úrad (Okresný úrad — odbor živnostenského podnikania)",
+      "price": 5,
+      "required": true,
+      "note": "Выдаёт: Živnostenský úrad (Okresný úrad — odbor živnostenského podnikania)\nТребования:\n• Vek 18 rokov, spôsobilosť na právne úkony\n• Bezúhonnosť (výpis z registra trestov)\n• Predmet podnikania podľa zoznamu voľných živností\nСрок действия: Neobmedzená\nСтоимость: Bezplatne (elektronicky) / 5 EUR (osobne)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Povolenie na predaj alkoholických nápojov",
+      "desc": "[Розничная торговля] Obec / mesto",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Obec / mesto\nТребования:\n• Žiadosť s popisom prevádzkarne\n• Kolaudačné rozhodnutie\n• Súhlas regionálneho úradu verejného zdravotníctva\nСрок действия: Neobmedzená\nСтоимость: 50-100 EUR (správny poplatok)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Schválenie prevádzkarne — hygiena",
+      "desc": "[Розничная торговля] Regionálny úrad verejného zdravotníctva (RÚVZ)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Regionálny úrad verejného zdravotníctva (RÚVZ)\nТребования:\n• Oznámenie o začatí prevádzky\n• Prevádzkový poriadok\n• Splnenie hygienických požiadaviek\nСрок действия: Neobmedzená\nСтоимость: Bezplatne (oznámenie)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Remeselná živnosť — pohostinská činnosť",
+      "desc": "[HoReCa (общепит)] Živnostenský úrad",
+      "price": 750,
+      "required": true,
+      "note": "Выдаёт: Živnostenský úrad\nТребования:\n• Odborná spôsobilosť (výučný list v odbore / prax min. 5 rokov)\n• Bezúhonnosť\n• Prevádzkareň spĺňajúca hygienické požiadavky\nСрок действия: Neobmedzená\nСтоимость: 7,50 EUR (elektronicky) / 15 EUR (osobne)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Povolenie na predaj alkoholu",
+      "desc": "[HoReCa (общепит)] Obec / mesto",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Obec / mesto\nТребования:\n• Žiadosť s popisom prevádzkarne\n• Schválenie RÚVZ\n• Prevádzkový čas odsúhlasený obcou\nСрок действия: Neobmedzená\nСтоимость: 50-100 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Schválenie prevádzkarne RÚVZ",
+      "desc": "[HoReCa (общепит)] Regionálny úrad verejného zdravotníctva",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Regionálny úrad verejného zdravotníctva\nТребования:\n• Systém HACCP / správna hygienická prax\n• Zdravotné preukazy zamestnancov\n• Projekt kuchyne, prevádzkový poriadok\nСрок действия: Neobmedzená\nСтоимость: Bezplatne"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Kategorizácia ubytovacieho zariadenia",
+      "desc": "[HoReCa (общепит)] Ministerstvo dopravy SR / obec",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Ministerstvo dopravy SR / obec\nТребования:\n• Splnenie štandardov kategórie (1-5 hviezdičiek)\n• Požiarna bezpečnosť\n• Hygienické normy\nСрок действия: 3 roky (obnoviteľná)\nСтоимость: 100-500 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Remeselná živnosť",
+      "desc": "[Услуги и ремёсла] Živnostenský úrad",
+      "price": 750,
+      "required": true,
+      "note": "Выдаёт: Živnostenský úrad\nТребования:\n• Výučný list / maturita / VŠ diplom v odbore\n• Prax v odbore (1-5 rokov podľa typu)\n• Bezúhonnosť\nСрок действия: Neobmedzená\nСтоимость: 7,50-15 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Viazaná živnosť",
+      "desc": "[Услуги и ремёсла] Živnostenský úrad",
+      "price": 750,
+      "required": true,
+      "note": "Выдаёт: Živnostenský úrad\nТребования:\n• Odborná spôsobilosť podľa osobitného predpisu\n• Certifikácia / osvedčenie (napr. elektrikári, plynoinštalatéri)\nСрок действия: Neobmedzená\nСтоимость: 7,50-15 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Koncesovaná živnosť",
+      "desc": "[Услуги и ремёсла] Živnostenský úrad + príslušný orgán",
+      "price": 15,
+      "required": true,
+      "note": "Выдаёт: Živnostenský úrad + príslušný orgán\nТребования:\n• Splnenie koncesných podmienok\n• Súhlas príslušného orgánu (napr. dopravný úrad, MV SR)\nСрок действия: Podľa podmienok koncesie\nСтоимость: 15 EUR + poplatky orgánu"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Živnostenské oprávnenie pre výrobu",
+      "desc": "[Производство] Živnostenský úrad",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Živnostenský úrad\nТребования:\n• Voľná / remeselná / viazaná živnosť podľa typu výroby\n• Odborná spôsobilosť (pri remeselných a viazaných)\nСрок действия: Neobmedzená\nСтоимость: 0-15 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Integrované povolenie (IPKZ)",
+      "desc": "[Производство] Slovenská inšpekcia životného prostredia",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: Slovenská inšpekcia životného prostredia\nТребования:\n• Posúdenie vplyvov na životné prostredie (EIA)\n• Plán nakladania s odpadmi\n• Emisné limity\nСрок действия: Neobmedzená (s pravidelnými preskúmaniami)\nСтоимость: 500-2 000 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Schválenie potravinárskeho podniku",
+      "desc": "[Производство] Štátna veterinárna a potravinová správa SR (ŠVPS)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Štátna veterinárna a potravinová správa SR (ŠVPS)\nТребования:\n• Registrácia prevádzkarne\n• Systém HACCP\n• Splnenie hygienických a veterinárnych noriem\nСрок действия: Neobmedzená\nСтоимость: Bezplatne (registrácia)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Koncesia na cestnú motorovú dopravu",
+      "desc": "[Логистика и склад] Okresný úrad — odbor cestnej dopravy a pozemných komunikácií",
+      "price": 15,
+      "required": true,
+      "note": "Выдаёт: Okresný úrad — odbor cestnej dopravy a pozemných komunikácií\nТребования:\n• Osvedčenie o odbornej spôsobilosti\n• Finančná spoľahlivosť (9 000 EUR / prvé vozidlo, 5 000 EUR / ďalšie)\n• Dobrá povesť (bezúhonnosť)\n• Sídlo na území SR\nСрок действия: 10 rokov (obnoviteľná)\nСтоимость: 15 EUR (živnostenský poplatok)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licencia Spoločenstva (Eurolicencia)",
+      "desc": "[Логистика и склад] Ministerstvo dopravy SR / Okresný úrad",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Ministerstvo dopravy SR / Okresný úrad\nТребования:\n• Platná koncesia na cestnú dopravu\n• Finančná spoľahlivosť podľa nariadenia EÚ 1071/2009\nСрок действия: 10 rokov\nСтоимость: 100-300 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Povolenie prevádzkovateľa skladu",
+      "desc": "[Логистика и склад] Živnostenský úrad / colný úrad",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Živnostenský úrad / colný úrad\nТребования:\n• Voľná živnosť — skladovanie\n• Povolenie colného úradu (pre colné sklady)\nСрок действия: Neobmedzená\nСтоимость: 0-15 EUR"
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 23% DPH (od 2025)\nvat_reduced: 19% (potraviny, elektrina pre domácnosti) / 5% (vybrané základné potraviny, knihy, lieky)\ncorporate_tax: 21% daň z príjmov PO (10% pre príjmy do 100 000 EUR, 21% pre 100 000-5 000 000 EUR, 24% nad 5 000 000 EUR)\nnotes: Od 2026 trojstupňová sadzba dane z príjmov PO: 10% / 21% / 24%. Povinná registrácia k DPH pri obrate nad 50 000 EUR za 12 mesiacov. Minimálna daň pre PO: 340-11 520 EUR ročne podľa výšky zdaniteľných príjmov."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 23% DPH\nvat_reduced: 19% (stravovacie služby) / 5% (vybrané potraviny)\ncorporate_tax: 10% / 21% / 24% (podľa výšky príjmov)\nnotes: Stravovacie služby podliehajú sadzbe DPH 19%. Alkoholické nápoje — 23%. Ubytovacie služby — 19%. Povinná e-Kasa (online registračná pokladnica)."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 23% DPH\nvat_reduced: 19% (stavebné práce na obytných budovách)\ncorporate_tax: 10% / 21% / 24% (PO) / 15-25% (FO podľa príjmu)\nnotes: SZČO — paušálne výdavky 60% z príjmov (max. 20 000 EUR ročne). Daň z príjmov FO: 15% (príjmy do 100 000 EUR), 19% / 25% (nad limit). Nezdaniteľná časť základu dane: cca 4 900 EUR."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 23% DPH\nvat_reduced: 5% (vybrané potravinárske výrobky)\ncorporate_tax: 10% / 21% / 24%\nnotes: Investičná pomoc podľa zákona č. 57/2018 Z.z. — úľava na dani, dotácia na nové pracovné miesta. Superodpočet na výskum a vývoj 100% z vynaložených nákladov."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 23% DPH\nvat_reduced: 0% (medzinárodná preprava tovaru)\ncorporate_tax: 10% / 21% / 24%\nnotes: Medzinárodná preprava — oslobodenie od DPH s nárokom na odpočet. Mýto — elektronický systém pre vozidlá nad 3,5 t na vybraných úsekoch. Cestná daň — ročný poplatok podľa typu vozidla."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — Slovensko",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "Словакия 2026: основные формы — s.r.o. (мин. капитал 5 000 EUR, регистрация в торговом реестре), SZČO (živnostenský list, бесплатно электронно), a.s. (25 000 EUR). Трёхступенчатый налог на прибыль: 10% (до 100 000 EUR), 21% (100 000-5 000 000 EUR), 24% (свыше 5 000 000 EUR). НДС (DPH) 23%/19%/5%. Живности: voľné, remeselné, viazané, koncesované. Для общепита — remeselná živnosť + RÚVZ. Для транспорта — концессия + Eurolicencia. Минимальный налог для юрлиц: 340-11 520 EUR/год. Порог НДС — 50 000 EUR оборота за 12 месяцев."
+    }
+  ]
+}

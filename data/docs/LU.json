@@ -1,0 +1,246 @@
+{
+  "country": "LU",
+  "lang": "fr",
+  "currency": "EUR",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "SARL / S.à r.l. — Société à Responsabilité Limitée",
+      "desc": "Мин. капитал: 12 000 € (entièrement libéré à la constitution). 2 à 4 semaines (autorisation d'établissement : 4-8 semaines)",
+      "price": 1,
+      "required": true,
+      "note": "Ответственность: Limitée aux apports\nСроки: 2 à 4 semaines (autorisation d'établissement : 4-8 semaines)\nСтоимость: 1 500 € à 3 000 € (frais notariaux ~800-1 500 €, publication RESA ~200 €, RCS ~75 €, autorisation d'établissement ~24 €)\nШаги регистрации:\nRédiger les statuts (acte sous seing privé ou acte notarié)\nDéposer le capital social de 12 000 € minimum sur un compte bancaire bloqué au Luxembourg\nObtenir l'autorisation d'établissement auprès de la Direction générale PME et Entrepreneuriat du Ministère de l'Économie\nSigner l'acte constitutif (acte notarié obligatoire si apports en nature)\nPublier les statuts au Recueil Électronique des Sociétés et Associations (RESA) via le Registre de Commerce et des Sociétés (RCS)\nImmatriculation au RCS auprès du Luxembourg Business Registers (LBR)\nObtenir le numéro d'identification TVA auprès de l'Administration de l'Enregistrement, des Domaines et de la TVA (AED)\nS'affilier au Centre Commun de la Sécurité Sociale (CCSS)\nDéclarer l'entreprise à l'Administration des Contributions Directes (ACD)"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "SA — Société Anonyme",
+      "desc": "Мин. капитал: 30 000 € (au moins 25 % libéré à la constitution, soit 7 500 € minimum). 3 à 6 semaines",
+      "price": 3,
+      "required": true,
+      "note": "Ответственность: Limitée aux apports\nСроки: 3 à 6 semaines\nСтоимость: 3 000 € à 7 000 €\nШаги регистрации:\nRédiger les statuts par acte notarié obligatoire\nDéposer le capital sur un compte bloqué (minimum 25 %)\nObtenir l'autorisation d'établissement\nActe constitutif devant notaire\nPublication au RESA\nImmatriculation au RCS\nEnregistrement TVA auprès de l'AED\nAffiliation CCSS\nDéclaration à l'ACD"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "SCS — Société en Commandite Simple",
+      "desc": "Мин. капитал: Aucun minimum légal. 2 à 4 semaines",
+      "price": 500,
+      "required": true,
+      "note": "Ответственность: Commandités : illimitée et solidaire. Commanditaires : limitée aux apports\nСроки: 2 à 4 semaines\nСтоимость: 500 € à 1 500 €\nШаги регистрации:\nRédiger les statuts (sous seing privé possible)\nObtenir l'autorisation d'établissement\nPublication au RESA\nImmatriculation au RCS\nEnregistrement TVA et affiliation CCSS"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "S.à r.l.-S — Société Simplifiée (S.à r.l.-S)",
+      "desc": "Мин. капитал: 1 € à 12 000 € (réserve légale obligatoire de 5 % des bénéfices nets annuels jusqu'à atteindre 12 000 €). 1 à 3 semaines",
+      "price": 200,
+      "required": true,
+      "note": "Ответственность: Limitée aux apports\nСроки: 1 à 3 semaines\nСтоимость: 200 € à 500 €\nШаги регистрации:\nRéservée aux personnes physiques (1 seul associé, maximum 1 S.à r.l.-S par personne)\nStatuts sur base du modèle-type du Ministère de la Justice\nPas besoin de notaire (acte sous seing privé)\nAutorisation d'établissement requise\nPublication au RESA et immatriculation RCS\nEnregistrement TVA"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "EI — Entreprise individuelle (commerçant en nom personnel)",
+      "desc": "Мин. капитал: Aucun. 2 à 6 semaines",
+      "price": 100,
+      "required": true,
+      "note": "Ответственность: Illimitée (patrimoine personnel engagé)\nСроки: 2 à 6 semaines\nСтоимость: 100 € à 500 €\nШаги регистрации:\nObtenir l'autorisation d'établissement\nInscription au RCS (commerçant) ou immatriculation artisanale\nEnregistrement TVA\nAffiliation CCSS"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorisation d'établissement",
+      "desc": "[Розничная торговля] Direction générale PME et Entrepreneuriat — Ministère de l'Économie",
+      "price": 24,
+      "required": true,
+      "note": "Выдаёт: Direction générale PME et Entrepreneuriat — Ministère de l'Économie\nТребования:\n• Condition d'honorabilité professionnelle (extrait de casier judiciaire)\n• Qualification professionnelle : diplôme reconnu (DAP, DT, BTS, bachelor, master en gestion/commerce) ou expérience professionnelle suffisante\n• Preuve d'un local commercial approprié au Luxembourg\n• Formulaire de demande + pièces justificatives\n• Pour les non-résidents UE : titre de séjour avec autorisation de travail\nСрок действия: Illimitée (liée à la personne qualifiée — tout changement de dirigeant nécessite une nouvelle autorisation)\nСтоимость: 24 € (droit de timbre)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Inscription au Registre de Commerce et des Sociétés (RCS)",
+      "desc": "[Розничная торговля] Luxembourg Business Registers (LBR)",
+      "price": 75,
+      "required": true,
+      "note": "Выдаёт: Luxembourg Business Registers (LBR)\nТребования:\n• Acte constitutif (sociétés)\n• Autorisation d'établissement\n• Identité des dirigeants et bénéficiaires effectifs\n• Registre des bénéficiaires effectifs (RBE) obligatoire\nСрок действия: Durée de vie de l'entreprise\nСтоимость: 75 € (première immatriculation) + frais de publication RESA ~200 €"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Conformité sécurité et accessibilité du local commercial",
+      "desc": "[Розничная торговля] Commune / Inspection du Travail et des Mines (ITM)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Commune / Inspection du Travail et des Mines (ITM)\nТребования:\n• Commodo / Incommodo (autorisation d'exploitation) pour certains commerces\n• Respect des normes de sécurité incendie\n• Accessibilité aux personnes à mobilité réduite\nСрок действия: Variable\nСтоимость: Variable selon travaux nécessaires"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorisation d'établissement HoReCa",
+      "desc": "[HoReCa (общепит)] Direction générale PME et Entrepreneuriat — Ministère de l'Économie",
+      "price": 24,
+      "required": true,
+      "note": "Выдаёт: Direction générale PME et Entrepreneuriat — Ministère de l'Économie\nТребования:\n• Qualification professionnelle spécifique : DAP (Diplôme d'Aptitude Professionnelle) en hôtellerie-restauration, ou DT (Diplôme de Technicien), ou BTS, ou diplôme universitaire pertinent\n• Ou 3 ans d'expérience professionnelle dans le secteur HoReCa dans un pays de l'UE\n• Honorabilité professionnelle\n• Local adapté à l'activité\nСрок действия: Illimitée\nСтоимость: 24 €"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorisation de commerce (commodo/incommodo)",
+      "desc": "[HoReCa (общепит)] Administration communale",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Administration communale\nТребования:\n• Demande auprès du bourgmestre\n• Enquête de commodo et incommodo (impact sur le voisinage)\n• Plans du local, description de l'activité\n• Avis de l'ITM et de l'Administration de l'Environnement\nСрок действия: Variable (généralement liée au bail commercial)\nСтоимость: Variable selon commune (50 € à 500 €)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorisation de débit de boissons alcoolisées",
+      "desc": "[HoReCa (общепит)] Administration communale / Ministère de l'Intérieur",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Administration communale / Ministère de l'Intérieur\nТребования:\n• Demande au bourgmestre\n• Honorabilité du demandeur\n• Conformité du local (hygiène, sécurité, capacité)\n• Respect des distances avec écoles et lieux de culte (selon règlement communal)\nСрок действия: Illimitée (révocable)\nСтоимость: Variable selon commune"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Déclaration à la Division de la Sécurité Alimentaire",
+      "desc": "[HoReCa (общепит)] Ministère de la Santé — Direction de la Santé, Division de la Sécurité Alimentaire",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Ministère de la Santé — Direction de la Santé, Division de la Sécurité Alimentaire\nТребования:\n• Déclaration obligatoire avant le début de l'activité\n• Mise en place d'un système d'autocontrôle basé sur les principes HACCP\n• Guide de bonnes pratiques d'hygiène du secteur HoReCa\n• Traçabilité des denrées alimentaires\nСрок действия: Permanente (contrôles réguliers)\nСтоимость: Gratuit (déclaration)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Classement hôtelier (étoiles)",
+      "desc": "[HoReCa (общепит)] Ministère du Tourisme",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Ministère du Tourisme\nТребования:\n• Demande volontaire\n• Grille de classement luxembourgeoise (harmonisée avec Hotelstars Union)\n• 1 à 5 étoiles + Superior\nСрок действия: 5 ans\nСтоимость: Variable"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorisation d'établissement artisanale",
+      "desc": "[Услуги и ремёсла] Direction générale PME et Entrepreneuriat — Ministère de l'Économie",
+      "price": 24,
+      "required": true,
+      "note": "Выдаёт: Direction générale PME et Entrepreneuriat — Ministère de l'Économie\nТребования:\n• Brevet de maîtrise artisanale (délivré par la Chambre des Métiers) pour les métiers réglementés\n• Ou DAP + 6 ans d'expérience + cours de gestion complémentaires\n• Ou diplôme universitaire pertinent + expérience\n• Liste des métiers artisanaux réglementés : 75+ métiers (boulanger, coiffeur, électricien, plombier, carrossier, etc.)\n• Honorabilité professionnelle\nСрок действия: Illimitée\nСтоимость: 24 €"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Inscription à la Chambre des Métiers",
+      "desc": "[Услуги и ремёсла] Chambre des Métiers du Grand-Duché de Luxembourg",
+      "price": 120,
+      "required": true,
+      "note": "Выдаёт: Chambre des Métiers du Grand-Duché de Luxembourg\nТребования:\n• Autorisation d'établissement délivrée\n• Inscription automatique pour les entreprises artisanales\nСрок действия: Durée de l'activité\nСтоимость: Cotisation annuelle : 120 € à 350 € selon taille"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Assurance décennale (construction)",
+      "desc": "[Услуги и ремёсла] Assureur privé",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: Assureur privé\nТребования:\n• Obligatoire pour les entrepreneurs de construction\n• Couvre les vices cachés et malfaçons pendant 10 ans\nСрок действия: 10 ans par ouvrage\nСтоимость: 500 € à 3 000 €/an selon activité"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorisation d'exploitation (commodo/incommodo)",
+      "desc": "[Производство] Administration communale + Administration de l'Environnement + ITM",
+      "price": 4,
+      "required": true,
+      "note": "Выдаёт: Administration communale + Administration de l'Environnement + ITM\nТребования:\n• Classe 4 : déclaration simple (faible impact)\n• Classe 3 : autorisation du bourgmestre\n• Classe 2 : autorisation ministérielle (Ministre de l'Environnement)\n• Classe 1 : autorisation ministérielle + évaluation des incidences environnementales (EIE) complète\n• Étude de risques pour les établissements Seveso\nСрок действия: Illimitée pour les classes 3 et 4. Classe 1 et 2 : durée fixée dans l'autorisation (généralement 20-30 ans)\nСтоимость: Classe 4 : gratuit. Classe 3 : ~100 €. Classe 2/1 : 500 € à 5 000 € (+ études : 10 000 € à 100 000 €)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorisation relative aux émissions industrielles (IED)",
+      "desc": "[Производство] Administration de l'Environnement",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Administration de l'Environnement\nТребования:\n• Applicable aux grandes installations industrielles (directive IED transposée)\n• Meilleures Techniques Disponibles (MTD/BAT) obligatoires\n• Rapport de base sur l'état du sol et des eaux souterraines\nСрок действия: Réexamen périodique (4 ans après publication des conclusions BAT)\nСтоимость: Variable (conformité BAT : investissements importants)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Marquage CE",
+      "desc": "[Производство] ILNAS (Institut Luxembourgeois de la Normalisation, de l'Accréditation, de la Sécurité et qualité des produits et services)",
+      "price": 1,
+      "required": true,
+      "note": "Выдаёт: ILNAS (Institut Luxembourgeois de la Normalisation, de l'Accréditation, de la Sécurité et qualité des produits et services)\nТребования:\n• Conformité aux normes européennes harmonisées\n• Documentation technique\n• Déclaration de conformité UE\nСрок действия: Tant que le produit reste conforme\nСтоимость: 1 000 € à 10 000 €"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licence de transport (communautaire / nationale)",
+      "desc": "[Логистика и склад] Ministère de la Mobilité et des Travaux Publics — Direction de la Circulation et de la Sécurité Routières",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Ministère de la Mobilité et des Travaux Publics — Direction de la Circulation et de la Sécurité Routières\nТребования:\n• Autorisation d'établissement valide\n• Certificat de Compétence Professionnelle (CPC) du gestionnaire de transport\n• Capacité financière attestée (caution bancaire ou attestation comptable)\n• Honorabilité professionnelle (casier judiciaire vierge de certaines infractions)\n• Établissement effectif au Luxembourg\nСрок действия: 10 ans renouvelable\nСтоимость: Frais administratifs : ~50-100 €"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Certificat de Compétence Professionnelle (CPC)",
+      "desc": "[Логистика и склад] Ministère de la Mobilité / Chambre de Commerce",
+      "price": 150,
+      "required": true,
+      "note": "Выдаёт: Ministère de la Mobilité / Chambre de Commerce\nТребования:\n• Examen écrit organisé par la Chambre de Commerce\n• Matières : droit civil, droit commercial, droit social, droit fiscal, gestion, accès au marché, normes techniques, sécurité routière\n• Ou diplôme reconnu équivalent\n• Ou expérience de 10 ans de direction continue\nСрок действия: Permanente\nСтоимость: Examen : ~150 €. Formations : 500 € à 2 000 €"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorisation ADR (matières dangereuses)",
+      "desc": "[Логистика и склад] Ministère de la Mobilité / ITM",
+      "price": 300,
+      "required": true,
+      "note": "Выдаёт: Ministère de la Mobilité / ITM\nТребования:\n• Formation ADR spécifique\n• Examen réussi\n• Certificat de formation du conducteur\nСрок действия: 5 ans\nСтоимость: 300 € à 700 €"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorisation d'exploitation d'entrepôt logistique",
+      "desc": "[Логистика и склад] Administration communale / Administration de l'Environnement",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Administration communale / Administration de l'Environnement\nТребования:\n• Procédure commodo/incommodo selon classification\n• Conformité aux plans d'aménagement général (PAG) et plans d'aménagement particulier (PAP)\n• Zone d'activités économiques\nСрок действия: Variable\nСтоимость: Variable"
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 17 % (taux le plus bas de l'UE)\nvat_reduced: 14 % (vins, combustibles), 8 % (gaz, électricité, chaussures, vêtements), 3 % (alimentation, livres, transport de personnes, hébergement)\ncorporate_tax: IRC (Impôt sur le Revenu des Collectivités) : 15 % sur les revenus ≤ 175 000 €, 17 % au-delà. ICC (Impôt Commercial Communal) : variable ~6 % à 12 % selon commune (Luxembourg-Ville : ~6,75 %). Taux global effectif : ~22-24 % à Luxembourg-Ville\nnotes: Contribution au fonds pour l'emploi : 7 % de l'IRC (soit 1,19 % effectif). Impôt sur la fortune : 0,5 % de l'actif net (minimum 535 € pour les SARL/SA). Pas de précompte mobilier sur les dividendes versés par une SOPARFI sous conditions."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 17 % (boissons alcoolisées au comptoir)\nvat_reduced: 3 % (restauration — nourriture et boissons non alcoolisées servies sur place, hébergement hôtelier)\ncorporate_tax: IRC 15 %/17 % + ICC ~6-12 %. Taux effectif global : ~22-24 %\nnotes: Le taux super-réduit de 3 % applicable à la restauration et à l'hébergement est un avantage compétitif majeur du Luxembourg. Taxe de séjour communale applicable dans certaines communes. Cotisations sociales patronales : environ 12-15 % du salaire brut."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 17 %\nvat_reduced: 8 % (gaz, électricité), 3 % (réparations de vêtements/chaussures, coiffure — main-d'œuvre intensive)\ncorporate_tax: IRC 15 %/17 % + ICC ~6-12 %\nnotes: Cotisations sociales indépendants : environ 25 % du revenu (maladie, pension, dépendance). Chambre des Métiers obligatoire pour les artisans. Aides étatiques pour investissement (PME) : jusqu'à 25 % du montant investi."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 17 %\nvat_reduced: 8 % (énergie)\ncorporate_tax: IRC 15 %/17 % + ICC ~6-12 %. Taux effectif global ~22-24 %\nnotes: Régime de la propriété intellectuelle (IP Box) : exonération de 80 % des revenus nets de certains actifs de PI (brevets, logiciels). Bonification d'impôt pour investissement : 12 % sur les premiers 150 000 €, 8 % au-delà. Crédit d'impôt pour investissements R&D. Zone franche (port franc) disponible pour stockage et logistique."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 17 %\nvat_reduced: 3 % (transport intérieur de personnes)\ncorporate_tax: IRC 15 %/17 % + ICC ~6-12 %\nnotes: Le Luxembourg est un hub logistique européen stratégique : port franc (Freeport Luxembourg) avec régime douanier suspensif, Cargolux (compagnie cargo), CFL Multimodal (fret ferroviaire). Accises carburants inférieures aux pays voisins (avantage compétitif pour le ravitaillement). Taxe sur les véhicules automoteurs annuelle basée sur les émissions CO₂. Convention de double imposition avec 80+ pays."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — Luxembourg",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "Люксембург — ключевое требование для любого бизнеса: авторизация на учреждение (autorisation d'établissement) от Министерства экономики, подтверждающая квалификацию и деловую репутацию. SARL (S.à r.l.) — самая популярная форма, минимальный капитал 12 000 € (полностью оплаченный). SA требует 30 000 €. S.à r.l.-S позволяет начать с 1 €, но ограничена одним физическим лицом. НДС: 17 % (самый низкий в ЕС), супер-сниженная ставка 3 % (рестораны, отели, продукты питания). Налог на прибыль: IRC 15-17 % + ICC 6-12 % (коммунальный), эффективная ставка ~22-24 %. Для промышленности — разрешение commodo/incommodo (4 класса). Для транспорта — лицензия от Министерства мобильности + профессиональная компетенция (CPC). Люксембург — стратегический логистический хаб: свободный порт, низкие акцизы на топливо, 80+ соглашений об избежании двойного налогообложения. Администрация работает преимущественно на французском языке."
+    }
+  ]
+}

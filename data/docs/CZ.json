@@ -1,0 +1,462 @@
+{
+  "country": "CZ",
+  "lang": "cs",
+  "currency": "CZK",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Registrace firmy",
+      "name": "Zapis do obchodniho rejstriku (s.r.o.)",
+      "desc": "Zalozeni spolecnosti s rucenim omezenym u krajskeho soudu",
+      "price": 12000,
+      "required": true,
+      "note": "K cemu: pravni forma pro provozovani zubni ordinace.\nKde: Krajsky soud — podani navrhu na zapis do OR, notarsky zapis.\nLhuty: 5-10 pracovnich dnu od podani. Zakladni kapital min. 1 CZK (od 2014).\nDulezite: Pred zahajenim zdravotnicke cinnosti nutna registrace u krajskeho uradu."
+    },
+    {
+      "cat": "Registrace firmy",
+      "name": "Zivnostensky list (OSVČ)",
+      "desc": "Registrace na zivnostenskem urade — alternativa k s.r.o.",
+      "price": 1000,
+      "required": false,
+      "note": "K cemu: podnikani jako fyzicka osoba (OSVC).\nKde: Zivnostensky urad (CRM — Centralni registracni misto).\nLhuty: 5 pracovnich dnu. Poplatek 1 000 CZK za ohlaseni.\nDulezite: Zubar je svobodne povolani — regulovana zivnost vyzaduje odbornou zpusobilost."
+    },
+    {
+      "cat": "Registrace firmy",
+      "name": "Registrace na financnim urade (DIC)",
+      "desc": "Danove identifikacni cislo, registrace k DPH",
+      "price": 0,
+      "required": true,
+      "note": "K cemu: danovy subjekt — dan z prijmu, pripadne DPH.\nKde: Financni urad podle sidla.\nLhuty: Do 30 dnu od vzniku danove povinnosti.\nDulezite: Zdravotnicke sluzby jsou osvobozeny od DPH (§ 58 zakona o DPH). Registrace k DPH pri obratu nad 2 mil. CZK/rok."
+    },
+    {
+      "cat": "Registrace firmy",
+      "name": "Datova schranka",
+      "desc": "Povinna elektronicka schranka pro pravnicke osoby",
+      "price": 0,
+      "required": true,
+      "note": "K cemu: elektronicka komunikace s urady — podani, dorucovani.\nKde: mojedatovaschranka.cz — automaticky pri zapisu do OR.\nLhuty: Zrizena automaticky do 3 dnu od zapisu.\nDulezite: Od 2023 povinna i pro OSVC. Pravidelne kontrolujte — doklad se povazuje za doruceny 10. dnem."
+    },
+    {
+      "cat": "Registrace firmy",
+      "name": "Bankovni ucet firmy",
+      "desc": "Firemni ucet u ceske banky",
+      "price": 0,
+      "required": true,
+      "note": "K cemu: oddeleni firemních a osobnich financi, prijem plateb.\nKde: Kterakoliv banka v CR (CSOB, KB, Ceska sporitelna, Fio, mBank).\nLhuty: 1-3 dny.\nDulezite: Nutny pro zapis do OR (splaceni zakladniho kapitalu). Ucet uvadejte na fakturach."
+    },
+    {
+      "cat": "Krajsky urad — zdravotnictvi",
+      "name": "Registrace nestatutarniho zdravotnickeho zarizeni",
+      "desc": "Opravneni k poskytovani zdravotnich sluzeb od krajskeho uradu",
+      "price": 2000,
+      "required": true,
+      "note": "K cemu: zakladni podminka pro provozovani ordinace — bez toho nelze lecit.\nKde: Krajsky urad, odbor zdravotnictvi (podle mista provozovny).\nLhuty: 30-60 dnu. Nutne dokladat: odbornou zpusobilost, technicke vybaveni, provozni rad.\nDulezite: Zadost o opravneni podat az po schvaleni provozniho radu KHS."
+    },
+    {
+      "cat": "Krajsky urad — zdravotnictvi",
+      "name": "Ustanoveni odborneho zastupce",
+      "desc": "Jmenovani lekare s atestaci jako odborneho garanta",
+      "price": 0,
+      "required": true,
+      "note": "K cemu: kazde zdravotnicke zarizeni musi mit odborneho zastupce s prislusnou atestaci.\nKde: Uvadi se v zadosti o registraci u krajskeho uradu.\nLhuty: Soucasne se zadosti o registraci.\nDulezite: Odborny zastupce musi mit atestaci v oboru (MDDr./MUDr. + specializace). Zmena zastupce = nova zadost."
+    },
+    {
+      "cat": "Krajsky urad — zdravotnictvi",
+      "name": "Provozni rad zdravotnickeho zarizeni",
+      "desc": "Dokument popisujici provoz, hygienu, sterilizaci, odpady",
+      "price": 5000,
+      "required": true,
+      "note": "K cemu: povinny dokument pro kazdou ordinaci — popisuje provozni podminky.\nKde: Schvaluje Krajska hygienicka stanice (KHS).\nLhuty: Pred zadosti o registraci u krajskeho uradu.\nDulezite: Obsah: usporadani prostor, sterilizace, nakladani s odpady, BOZP, cisticí plán."
+    },
+    {
+      "cat": "Krajsky urad — zdravotnictvi",
+      "name": "Rozhodnuti o schvaleni prostor (KHS)",
+      "desc": "Hygienicka stanice schvaluje prostory pred zahajenim provozu",
+      "price": 0,
+      "required": true,
+      "note": "K cemu: KHS overuje, ze prostory splnuji hygienicke pozadavky.\nKde: Krajska hygienicka stanice — mistni setreni (inspekce).\nLhuty: 30 dnu od podani zadosti. Dohodne se termin mistniho setreni.\nDulezite: Nutne pred registraci u krajskeho uradu. Kontrola: plocha, osvetleni, ventilace, voda, odpady."
+    },
+    {
+      "cat": "KHS — hygiena",
+      "name": "Hygienicky audit ordinace",
+      "desc": "Pravidelna kontrola dodrzovani hygienickych norem",
+      "price": 0,
+      "required": true,
+      "note": "K cemu: overeni dodrzovani provozniho radu a hygienickych standardu.\nKde: KHS — planove i neplanove kontroly.\nLhuty: Prvni kontrola pri zahajeni provozu, dale nahodne (1-3x rocne).\nDulezite: Pokuty az 500 000 CZK za poruseni. Vest dokumentaci o sterilizaci, cisteni, odpadech."
+    },
+    {
+      "cat": "KHS — hygiena",
+      "name": "Sterilizacni rad a validace autoklávu",
+      "desc": "Dokumentace sterilizacnich postupu, pravidelne testy",
+      "price": 8000,
+      "required": true,
+      "note": "K cemu: prokazani spravne sterilizace nastroju — prevence infekcí.\nKde: Vlastni dokumentace + externi validace autoklávu.\nLhuty: Validace 1x rocne. Biologicke testy 1x tydne (spore testy).\nDulezite: Autokláv trida B (EN 13060). Vest protokoly o kazdém cyklu. Chemicke indikatory u kazdeho balení."
+    },
+    {
+      "cat": "KHS — hygiena",
+      "name": "Odvoz a likvidace zdravotnického odpadu",
+      "desc": "Smlouva s oprávnenou firmou na zdravotnicky odpad (katalog 180103*)",
+      "price": 15000,
+      "required": true,
+      "note": "K cemu: zdravotnicky odpad je nebezpecny — specialni sber, preprava, likvidace.\nKde: Opravnena firma (např. Stericycle, AVE, SUEZ).\nLhuty: Smlouva pred zahajenim provozu. Odvoz min. 1x za 14 dnu.\nDulezite: Katalogova cisla: 180103* (ostré predmety), 180104 (bezny zdrav. odpad). Vest evidenci odpadu (ISPOP/CENIA)."
+    },
+    {
+      "cat": "KHS — hygiena",
+      "name": "Rozbor vody v ordinaci",
+      "desc": "Kontrola kvality vody — legionely, kovy, mikrobiologie",
+      "price": 3000,
+      "required": true,
+      "note": "K cemu: overeni kvality vody v dental unitech a umyvadlech.\nKde: Akreditovana laborator (SZU, zdravotni ustav).\nLhuty: Pred zahajenim provozu, dale 1x rocne.\nDulezite: Dental unity mají vlastní vodní okruh — nutne dezinfikovat. Legionella test pri >50°C ohrevu."
+    },
+    {
+      "cat": "Pozarni ochrana",
+      "name": "Pozarne bezpecnostni reseni (PBR)",
+      "desc": "Projekt pozarni bezpecnosti stavby — hasicsky pristup, unikove cesty",
+      "price": 25000,
+      "required": true,
+      "note": "K cemu: overeni, ze prostory splnuji pozarni normy.\nKde: Autorizovany pozarni inzenyr (CSBS) — projekcni kancelar.\nLhuty: Pred kolaudaci nebo pred zahajenim uzivani prostor.\nDulezite: Soucást stavebniho povoleni. Pro zmenu uzivani prostor nutne nove PBR."
+    },
+    {
+      "cat": "Pozarni ochrana",
+      "name": "Revize hasicich pristroju a hydrantu",
+      "desc": "Rocni kontrola a 5-leta tlakova zkouska",
+      "price": 3000,
+      "required": true,
+      "note": "K cemu: funkcnost hasicich pristroju a vnitrnich hydrantu.\nKde: Opravnena osoba s osvedcenim (revizni technik).\nLhuty: Kontrola 1x rocne, tlakova zkouska 1x za 5 let.\nDulezite: Min. 1 hasici pristroj na 200 m2, typ dle rizika (pena/praskovy). Protokoly archivovat."
+    },
+    {
+      "cat": "Pozarni ochrana",
+      "name": "Evakuacni plan a skoleni zamestnancu",
+      "desc": "Plán evakuace, oznaceni unikovych cest, skolení BOZP/PO",
+      "price": 5000,
+      "required": true,
+      "note": "K cemu: priprava na mimoradne situace — pozar, unik plynu.\nKde: Skoleni provadi technik PO nebo externi firma BOZP.\nLhuty: Pred zahajením provozu, opakovani 1x za 2 roky.\nDulezite: Evakuacni plan vyvesit na viditelnem miste. Unikove cesty oznacit fotoluminiscencnimi tabulkami."
+    },
+    {
+      "cat": "GDPR / UOOU",
+      "name": "Zpracovani osobnich udaju — GDPR compliance",
+      "desc": "Zaznamy o cinnostech zpracovani, informacni povinnost",
+      "price": 15000,
+      "required": true,
+      "note": "K cemu: zdravotnicka data jsou zvlastni kategorie (citlive udaje) — prisnejsi rezim.\nKde: Interni dokumentace + DPO (poverenec). Dozor: UOOU (Urad pro ochranu osobnich udaju).\nLhuty: Pred zahajenim zpracovani dat pacientu.\nDulezite: Zaznamy o cinnostech (cl. 30 GDPR), DPIA pro zdravotnicka data, informovani pacientu o zpracovani."
+    },
+    {
+      "cat": "GDPR / UOOU",
+      "name": "Poverenec pro ochranu osobnich udaju (DPO)",
+      "desc": "Povinne jmenovani DPO pro zdravotnicka zarizeni",
+      "price": 24000,
+      "required": true,
+      "note": "K cemu: zdravotnicka zarizeni zpracovavaji citlive udaje ve velkem rozsahu — DPO je povinny.\nKde: Interni nebo externi DPO. Oznameni UOOU.\nLhuty: Pred zahajenim provozu.\nDulezite: DPO muze byt externi firma (cca 2 000 CZK/mesic). Kontakt DPO uvadejte na webovych strankach a v informacnim materialu."
+    },
+    {
+      "cat": "GDPR / UOOU",
+      "name": "Souhlas pacienta se zpracovanim dat",
+      "desc": "Formulare informovaneho souhlasu pro pacienty",
+      "price": 5000,
+      "required": true,
+      "note": "K cemu: pravni zaklad pro zpracovani zdravotnickych dat.\nKde: Interni formulare — soucast prijmu pacienta.\nLhuty: Pri prvni navsteve kazdeho pacienta.\nDulezite: Zpracovani pro ucely lecby = pravni zaklad cl. 9(2)(h) GDPR (neni nutny souhlas). Souhlas nutny pro marketing, foto, vyzkum."
+    },
+    {
+      "cat": "Odpadove hospodarstvi",
+      "name": "Registrace v systemu ISPOP/CENIA",
+      "desc": "Povinne hlaseni o produkci a nakladani s odpady",
+      "price": 0,
+      "required": true,
+      "note": "K cemu: evidence odpadu — zdravotnicky, komunalni, nebezpecny.\nKde: CENIA (Ceska informacni agentura ZP) — ispop.cz.\nLhuty: Rocni hlaseni do 15. unora nasledujiciho roku.\nDulezite: Povinne pri produkci >100 kg nebezpecneho odpadu/rok nebo >100 t ostatniho/rok. Amalgamove odpady = zvlast."
+    },
+    {
+      "cat": "Odpadove hospodarstvi",
+      "name": "Amalgamovy separator",
+      "desc": "Povinne zarizeni pro zachyceni amalgamu z odpadnich vod",
+      "price": 35000,
+      "required": true,
+      "note": "K cemu: EU narizeni 2017/852 — zachyceni 95% amalgamu pred vypustenim do kanalizace.\nKde: Instalace na odtoku dental unitu.\nLhuty: Povinne od 2019. Revize 1x rocne, vymena filtru dle vyrobce.\nDulezite: Certifikovany separator (ISO 11143). Evidovat mnozstvi zachyceneho amalgamu. Likvidace opravnenou firmou."
+    },
+    {
+      "cat": "Pojisteni",
+      "name": "Pojisteni odpovednosti za skodu (malpractice)",
+      "desc": "Profesni pojisteni lekare — povinne pro zdravotnicka zarizeni",
+      "price": 25000,
+      "required": true,
+      "note": "K cemu: kryti skod zpusobenych pri poskytovani zdravotnich sluzeb.\nKde: Pojistovna (Kooperativa, Generali, UNIQA, Ceska pojistovna).\nLhuty: Pred zahajenim provozu — smluvni povinnost.\nDulezite: Min. pojistne kryti 3 mil. CZK (doporuceno 10+ mil.). Cena cca 15-30 tis. CZK/rok dle rozsahu."
+    },
+    {
+      "cat": "Pojisteni",
+      "name": "Pojisteni majetku a zarizeni ordinace",
+      "desc": "Kryti skod na vybaveni — pozar, krádez, povoden",
+      "price": 20000,
+      "required": false,
+      "note": "K cemu: ochrana investice do vybaveni ordinace (dental unity, RTG, nastroje).\nKde: Pojistovna — majetkove pojisteni podnikatelu.\nLhuty: Pred zahajenim provozu nebo pri porisení vybaveni.\nDulezite: Pojistit na novou cenu. Zahrnout: pozar, voda, krádez, vandalismus, elektronika zvlast."
+    },
+    {
+      "cat": "Pojisteni",
+      "name": "Pojisteni odpovednosti zamestnavatele",
+      "desc": "Zákonné pojisteni za pracovni urazy a nemoci z povolani",
+      "price": 8000,
+      "required": true,
+      "note": "K cemu: zakonne pojisteni — zamestnavatel odpovida za urazy zamestnancu.\nKde: Kooperativa nebo Ceska pojistovna (zakonne pojisteni — neni volba).\nLhuty: Ode dne zamestnani prvniho zamestnance.\nDulezite: Sazba 4,2 promile z objemu mezd (zdravotnictvi). Platba ctvrtletne. Povinnost ze zakona c. 262/2006 Sb."
+    },
+    {
+      "cat": "Radiacni ochrana (SUJB)",
+      "name": "Povoleni k vyuzivani zdroju ionizujiciho zareni",
+      "desc": "Licence od SUJB pro provoz RTG pristroju",
+      "price": 5000,
+      "required": true,
+      "note": "K cemu: provoz intraoralnich a panoramatickych RTG — ionizujici zareni.\nKde: SUJB (Statni urad pro jadernou bezpecnost) — sujb.cz.\nLhuty: 30-60 dnu. Zadat pred instalaci RTG.\nDulezite: Typy povoleni: oznameni (intraoralni RTG), registrace (OPG), povoleni (CBCT). Kazdy typ ma jine naroky."
+    },
+    {
+      "cat": "Radiacni ochrana (SUJB)",
+      "name": "Program zabezpecovani jakosti (PZJ)",
+      "desc": "Dokumentace radiacni ochrany — postupy, evidence, dozimetrie",
+      "price": 8000,
+      "required": true,
+      "note": "K cemu: systemova dokumentace — jak zajistujete radiacni ochranu.\nKde: Zpracuje odborny konzultant (radiologicky fyzik).\nLhuty: Soucasne se zadosti o povoleni SUJB.\nDulezite: Obsah: provozni postupy, evidence davek, zkousky, udrzba, havrijni plany. Aktualizovat pri zmene pristroje."
+    },
+    {
+      "cat": "Radiacni ochrana (SUJB)",
+      "name": "Zkousky RTG pristroje (ZDS, ZPS, ZPZ)",
+      "desc": "Zkouska dlouhodobe stability, provozni stálosti, po zasahu",
+      "price": 12000,
+      "required": true,
+      "note": "K cemu: overeni spravne funkce RTG — kvalita snimku, radiacni bezpecnost.\nKde: Autorizovana osoba (radiologicky fyzik, akreditovana laborator).\nLhuty: ZDS pri uvedeni do provozu, ZPS 1x rocne (intraoral) nebo 1x za 2 roky (OPG).\nDulezite: Bez platnych zkousek nelze RTG provozovat. Vysledky archivovat po celou dobu provozu."
+    },
+    {
+      "cat": "Radiacni ochrana (SUJB)",
+      "name": "Osobni dozimetrie zamestnancu",
+      "desc": "Filmove nebo TLD dozimetry pro pracovniky s RTG",
+      "price": 6000,
+      "required": true,
+      "note": "K cemu: monitorovani radiacni zateze zamestnancu.\nKde: Akreditovana laborator (SZU, VF UK).\nLhuty: Dozimetry menit 1x mesicne, vyhodnoceni ctvrtletne.\nDulezite: Kategorii pracovniku A nutna pravidelna lekarska prohlidka. Zubar s RTG = typicky kategorie A."
+    },
+    {
+      "cat": "Leciva a farmaceutika",
+      "name": "Registrace u SUKL (leciva v ordinaci)",
+      "desc": "Evidence pouzivanych leciv a zdravotnickych prostredku",
+      "price": 0,
+      "required": true,
+      "note": "K cemu: zdravotnicke zarizeni pouziva leciva (anestetika, antibiotika) — evidence.\nKde: SUKL (Statni ustav pro kontrolu leciv) — sukl.cz.\nLhuty: Prubezne — vest evidenci prijmu a spotreby.\nDulezite: Narkotika a psychotropni latky (ketamin, midazolam) — zvlastni evidence dle zakona c. 167/1998 Sb."
+    },
+    {
+      "cat": "Leciva a farmaceutika",
+      "name": "Zdravotnicke prostredky — registrace a evidence",
+      "desc": "RZPRO registrace pouzivanych zdravotnickych prostredku",
+      "price": 0,
+      "required": true,
+      "note": "K cemu: evidence zdravotnickych prostredku (dental unity, nastroje, implantaty).\nKde: RZPRO — Registr zdravotnickych prostredku (rzpro.sukl.cz).\nLhuty: Prubezne pri porisení novych prostredku.\nDulezite: Doklady: prohlaseni o shode (CE), navod k pouziti, udrzba. Od 2021 platí EU MDR 2017/745."
+    },
+    {
+      "cat": "Leciva a farmaceutika",
+      "name": "Skladovani leciv a teplotni monitoring",
+      "desc": "Spravne skladovani leciv — teplotni podminky, expirace",
+      "price": 5000,
+      "required": true,
+      "note": "K cemu: leciva musi byt skladovana dle podminek vyrobce.\nKde: V ordinaci — vyhrazeny prostor (skrin s zamkem pro narkotika).\nLhuty: Prubezne — denni kontrola teploty, mesicni kontrola expirace.\nDulezite: Teplotni datalogger (2-8°C lednice, 15-25°C mistnost). Narkotika v trezoru. Evidence seriových cisel."
+    },
+    {
+      "cat": "Personal",
+      "name": "Pracovnelekarske sluzby (PLS)",
+      "desc": "Smlouva s poskytovatelem pracovnelekarskeho vysetreni",
+      "price": 8000,
+      "required": true,
+      "note": "K cemu: zamestnavatel je povinen zajistit pracovnelekarskou péci pro zamestnance.\nKde: Smluvni lekar — poskytovatel PLS.\nLhuty: Pred nastupem zamestnance (vstupni prohlidka). Periodicke dle kategorie prace.\nDulezite: Kategorie 2 (zdravotnictvi) — prohlidky 1x za 4 roky (do 50 let), 1x za 2 roky (nad 50 let). Dle vyhlasky 79/2013 Sb."
+    },
+    {
+      "cat": "Personal",
+      "name": "BOZP dokumentace a skoleni",
+      "desc": "Bezpecnost a ochrana zdravi pri praci — vnitrni predpisy, skoleni",
+      "price": 10000,
+      "required": true,
+      "note": "K cemu: zakonna povinnost — prevence pracovnich urazu a nemoci.\nKde: Externi firma BOZP nebo interni technik.\nLhuty: Skoleni pri nastupu, opakovani 1x za 2 roky. Aktualizace dokumentace pri zmene.\nDulezite: Obsah: rizikove faktory, ochranne pomucky, prvni pomoc, ergonomie. Kategorizace praci — podat na KHS."
+    },
+    {
+      "cat": "Personal",
+      "name": "Pracovni smlouvy a mzdova agenda",
+      "desc": "Smlouvy, mzdove listy, prihlaseni na OSSZ a zdravotni pojistovnu",
+      "price": 10000,
+      "required": true,
+      "note": "K cemu: formalni zamestnavatelske povinnosti.\nKde: Interni nebo externi mzdova uctarka.\nLhuty: Smlouva pred nastupem. Prihlasení na OSSZ a ZP do 8 dnu.\nDulezite: Pracovni smlouva pisemne! Minimalni mzda 2025: 20 800 CZK. Zubar — DPP/DPC pro externisty, HPP pro kmenovne."
+    },
+    {
+      "cat": "Personal",
+      "name": "Odborná zpusobilost — nostrifikace diplomu",
+      "desc": "Uznani zahranicniho vzdelani pro praci v CR",
+      "price": 5000,
+      "required": false,
+      "note": "K cemu: zahranicni zubar musi mit uznany diplom pro praci v CR.\nKde: Ministerstvo zdravotnictvi + Ceska stomatologicka komora.\nLhuty: 2-6 mesicu. EU diplomy — automaticke uznavani. Mimo EU — aprobacni zkouska.\nDulezite: Jazykova zkouska z cestiny (B2). Clenství v CSK povinne pro vsechny zubare v CR."
+    },
+    {
+      "cat": "Personal",
+      "name": "Clenství v Ceske stomatologicke komore",
+      "desc": "Povinna registrace kazdeho zubniho lekare v CSK",
+      "price": 6000,
+      "required": true,
+      "note": "K cemu: zakonná povinnost — bez clenství v CSK nelze vykonavat povolani.\nKde: Ceska stomatologicka komora — dfrks.cz.\nLhuty: Pred zahajenim praxe. Rocni prispevek cca 5-6 tis. CZK.\nDulezite: CSK vydava osvedceni o registraci. Povinne celozivotni vzdelavani (kreditni system)."
+    },
+    {
+      "cat": "Personal",
+      "name": "Skoleni hygiena rukou a prevence infekcí",
+      "desc": "Vstupni a pravidelne skoleni zdravotnickeho personálu",
+      "price": 3000,
+      "required": true,
+      "note": "K cemu: prevence krizovych nakaž — hepatitida B/C, HIV.\nKde: Interni skoleni nebo externi lektor.\nLhuty: Pri nastupu, opakovani 1x rocne.\nDulezite: WHO 5 moments of hand hygiene. Dokumentovat ucast. Ockovani HBV pro personál (doporucene, ne povinne)."
+    },
+    {
+      "cat": "Prostory",
+      "name": "Stavebni povoleni nebo ohlaseni stavby",
+      "desc": "Povoleni pro stavebni upravy prostor pod ordinaci",
+      "price": 15000,
+      "required": true,
+      "note": "K cemu: uprava prostor — pricky, rozvody vody, elektro, vzduchotechnika.\nKde: Stavebni urad (obec s rozsirenou pusobnosti).\nLhuty: 30-60 dnu (ohlaseni), 60-90 dnu (povoleni). Od 2024 novy stavebni zakon.\nDulezite: Zmena uzivani stavby (z kancelare na ordinaci) = povinne. Nutny projekt od autorizovaneho architekta."
+    },
+    {
+      "cat": "Prostory",
+      "name": "Kolaudacni souhlas / zmena uzivani",
+      "desc": "Schvaleni prostor pro zdravotnicke ucely",
+      "price": 5000,
+      "required": true,
+      "note": "K cemu: uradni potvrzeni, ze prostory splnuji pozadavky pro zdravotnicke zarizeni.\nKde: Stavebni urad — mistni setreni.\nLhuty: 30 dnu od podani zadosti.\nDulezite: Nutne pred zadosti o registraci u krajskeho uradu. Kontrola: dispozice, pristupnost, technicke parametry."
+    },
+    {
+      "cat": "Prostory",
+      "name": "Energeticky prukaz budovy (PENB)",
+      "desc": "Povinny energeticky stitek pri zmene uzivani",
+      "price": 8000,
+      "required": true,
+      "note": "K cemu: overeni energeticke narocnosti budovy.\nKde: Energeticky specialista (registr MPO).\nLhuty: Pred kolaudaci nebo zmenou uzivani. Platnost 10 let.\nDulezite: Tridy A-G. Pro zdravotnicke zarizeni doporucena trida C a lepsi. Cena 5-15 tis. CZK dle slozitosti."
+    },
+    {
+      "cat": "Prostory",
+      "name": "Vzduchotechnika a klimatizace — projekt a revize",
+      "desc": "Navrh VZT systemu, filtrace, tlakove pomery v ordinaci",
+      "price": 50000,
+      "required": true,
+      "note": "K cemu: kvalita vzduchu v ordinaci — filtrace aerosolu, odvod kontaminovaneho vzduchu.\nKde: Projektant VZT + revizni technik.\nLhuty: Soucást stavebniho projektu. Revize pred kolaudaci.\nDulezite: Chirurgicka mistnost: min. 6x vymena/h, HEPA filtrace. Bezna ordinace: 4x vymena/h. Podtlak v RTG mistnosti."
+    },
+    {
+      "cat": "Prostory",
+      "name": "Elektroinstalace — revizni zprava",
+      "desc": "Revize elektricke instalace pred uvedenim do provozu",
+      "price": 10000,
+      "required": true,
+      "note": "K cemu: bezpecnost elektricke instalace — prevence pozaru a urazu.\nKde: Revizni technik elektro (drzitel osvedceni dle vyhlasky 50/1978 Sb.).\nLhuty: Vychozi revize pred kolaudaci. Periodicka 1x za 5 let.\nDulezite: Zdravotnicke prostory = prostor se zvysenym rizikem. UPS pro kriticke pristroje. Proudovy chranic 30 mA."
+    },
+    {
+      "cat": "Prostory",
+      "name": "Rozvod medicinskeho plynu a stlaceneho vzduchu",
+      "desc": "Kompresor, rozvody, ventily — projekt a revize",
+      "price": 80000,
+      "required": true,
+      "note": "K cemu: dental unity potrebuji stlaceny vzduch (oil-free) a odsavani.\nKde: Specializovana firma (Dürr Dental, Cattani).\nLhuty: Soucasne se stavebnimi pracemi. Revize pred kolaudaci.\nDulezite: Kompresor oil-free min. 5 bar. Centralni odsavani — mokre nebo suche. Rozvody medi dle EN 7396."
+    },
+    {
+      "cat": "Pristupnost",
+      "name": "Bezbarierovy pristup (vyhlaska 398/2009 Sb.)",
+      "desc": "Pristupnost ordinace pro osoby se snizenou pohyblivosti",
+      "price": 30000,
+      "required": true,
+      "note": "K cemu: zdravotnicke zarizeni musi byt pristupne vsem pacientum.\nKde: Soucást stavebniho projektu — overuje stavebni urad.\nLhuty: Resit pri projektu, ne dodatecne.\nDulezite: Bezprahove dvere min. 900 mm, WC min. 1800x2150 mm, rampa max. 1:12. Vyhlaska 398/2009 Sb."
+    },
+    {
+      "cat": "Pristupnost",
+      "name": "Oznaceni ordinace a informacni tabule",
+      "desc": "Povinne oznaceni — jmeno lekare, ordinacni hodiny, nouzova cisla",
+      "price": 5000,
+      "required": true,
+      "note": "K cemu: informacni povinnost vuci pacientum.\nKde: Vstupni dvere, recepce, cekarna.\nLhuty: Pred zahajenim provozu.\nDulezite: Povinne udaje: jmeno poskytovatele, IČO, ordinacni hodiny, telefon, pohotovost. Cennik na viditelnem miste."
+    },
+    {
+      "cat": "Zdravotni pojistovny",
+      "name": "Smlouva s VZP a dalsimi pojistovnami",
+      "desc": "Uzavreni smluv s zdravotnimi pojistovnami pro uhrazeni péce",
+      "price": 0,
+      "required": false,
+      "note": "K cemu: uhrada vykonu z verejneho zdravotniho pojisteni.\nKde: VZP (111), VOZP (201), ČPZP (205), OZP (207), ZPS (209), ZPM-V (211), RBP (213).\nLhuty: 1-3 mesice vyjednavani po registraci.\nDulezite: Bez smlouvy = pouze prime platby pacientu. Smluvni pece = regulace, bodove hodnoty, limity. 2025: bod = cca 1,15 CZK."
+    },
+    {
+      "cat": "Zdravotni pojistovny",
+      "name": "Registrace v UZIS (NRPZS)",
+      "desc": "Narodni registr poskytovatelu zdravotnich sluzeb",
+      "price": 0,
+      "required": true,
+      "note": "K cemu: evidence v centralnim registru — nutna pro smluvni vztahy s pojistovnami.\nKde: UZIS — Ustav zdravotnickych informaci a statistiky (nrpzs.uzis.cz).\nLhuty: Automaticky pri registraci u krajskeho uradu.\nDulezite: UZIS prideluje IČZ (identifikacni cislo zarizeni). Bez IČZ nelze vykazovat pojistovnam."
+    },
+    {
+      "cat": "Zdravotni pojistovny",
+      "name": "Informacni system pro vykazovani (ISVS)",
+      "desc": "Software pro vykazovani vykonu zdravotnim pojistovnam",
+      "price": 30000,
+      "required": false,
+      "note": "K cemu: elektronicke vykazovani vykonu = podminka pro uhrazení péce.\nKde: Dodavatel SW (CompuGroup/CGM, Dentist+, Medicus, PlanMaker).\nLhuty: Pred zahajenim smluvni péce.\nDulezite: Musi podporovat VZP datove rozhrani (DASTA/NZIS format). eRecept pripojeni pres CÚKL. Cena 20-50 tis. CZK + rocni udrzba."
+    },
+    {
+      "cat": "Ostatni",
+      "name": "Ucetnictvi a danove poradenstvi",
+      "desc": "Vedeni ucetnictvi, danove priznani, DPH",
+      "price": 36000,
+      "required": true,
+      "note": "K cemu: zakonná povinnost — vest ucetnictvi (s.r.o.) nebo danovou evidenci (OSVC).\nKde: Externi ucetni firma nebo interni ucetni.\nLhuty: Prubezne. Danove priznani do 1. dubna (3. dubna s poradcem).\nDulezite: s.r.o. = podvojne ucetnictvi. Zdravotnicke DPH osvobozeni — sledovat rezim. Cena cca 3 000 CZK/mes."
+    },
+    {
+      "cat": "Ostatni",
+      "name": "EET / evidence trzeb (zruseno, ale...)",
+      "desc": "Elektronicka evidence trzeb — aktualne pozastavena",
+      "price": 0,
+      "required": false,
+      "note": "K cemu: evidence hotovostnich plateb.\nKde: Financni sprava — etrzby.cz.\nLhuty: Aktualne pozastaveno (od 2023 fakticky zruseno).\nDulezite: Sledujte legislativni vyvoj. Hotovostni platby vest v pokladni knize. Doporucena platba kartou/prevodem."
+    },
+    {
+      "cat": "Ostatni",
+      "name": "Webove stranky ordinace — informacni povinnost",
+      "desc": "Povinne udaje na webu — identifikace, GDPR, cookies",
+      "price": 15000,
+      "required": true,
+      "note": "K cemu: informacni povinnost vuci pacientum a verejnosti.\nKde: Vlastni webove stranky ordinace.\nLhuty: Pred zahajenim provozu.\nDulezite: Povinne: identifikace poskytovatele, registracni cislo, ordinacni hodiny, cennik, GDPR zasady, cookies souhlas. Doporuceno: online objednavani."
+    },
+    {
+      "cat": "Ostatni",
+      "name": "Pojisteni kybernetickych rizik",
+      "desc": "Ochrana proti kybernetickym utokum a unikum dat",
+      "price": 15000,
+      "required": false,
+      "note": "K cemu: ochrana proti ransomware, uniku pacientskych dat, phishingu.\nKde: Specializovane pojistovny (Colonnade, Chubb, AIG).\nLhuty: Doporuceno pred zahajenim provozu.\nDulezite: Zdravotnictvi = 3. nejcastejsi cil kybernetickych utoku. Kryti: forenzni analyza, GDPR pokuty, ztrata dat, vyderacsky SW."
+    },
+    {
+      "cat": "Ostatni",
+      "name": "Smlouva na servis a udrzbu pristrojů",
+      "desc": "Servisni smlouvy na dental unity, RTG, autoklavy",
+      "price": 50000,
+      "required": true,
+      "note": "K cemu: pravidelna udrzba = delsi zivotnost, mene poruch, plneni zaruk.\nKde: Autorizovany servis vyrobce (KaVo, Sirona, Planmeca, Durr).\nLhuty: Ihned po instalaci. Rocni servis min. 1x.\nDulezite: RTG — servis dle PZJ. Autoklavy — rocni validace. Udrzovat servisni knihy vsech pristroju."
+    },
+    {
+      "cat": "Ostatni",
+      "name": "Marketing a reklama — omezeni pro zdravotnictvi",
+      "desc": "Regulace reklamy zdravotnickych sluzeb",
+      "price": 0,
+      "required": true,
+      "note": "K cemu: reklama zdravotnickych sluzeb je regulovana — nesmí byt klamava.\nKde: Zakon c. 40/1995 Sb. o regulaci reklamy.\nLhuty: Prubezne — dodrzovat pri veskere komunikaci.\nDulezite: Zakazano: srovnavaci reklama lekaru, garantovani vysledku, sleva na zdravotni vykony. Povoleno: informovani o sluzbach, cenik, reference."
+    },
+    {
+      "cat": "Ostatni",
+      "name": "Pojisteni preruseni provozu",
+      "desc": "Kryti fixnich nakladu pri nucene odstavce ordinace",
+      "price": 12000,
+      "required": false,
+      "note": "K cemu: kryti nakladu (najem, mzdy) pri nemoznosti provozovat ordinaci (havarie, pozar).\nKde: Pojistovna — doplnek k majetkovemu pojisteni.\nLhuty: Doporuceno od zahajeni provozu.\nDulezite: Karence typicky 3 dny. Doba plneni 6-12 mesicu. Doporuceno pro ordinace s vysokym najem a fixnimi naklady."
+    },
+    {
+      "cat": "Ostatni",
+      "name": "Ochrana oznamovatelu (whistleblowing)",
+      "desc": "Vnitrni oznamovaci system pro firmy nad 50 zamestnancu",
+      "price": 5000,
+      "required": false,
+      "note": "K cemu: zakon c. 171/2023 Sb. — ochrana oznamovatelu (whistleblowerů).\nKde: Interni system — emailova schranka nebo specializovana platforma.\nLhuty: Povinne pro firmy s 50+ zamestnanci od 15.12.2023.\nDulezite: Male ordinace (pod 50 zamestnancu) nemaji povinnost. Doporuceno pro vetsi kliniky a retezce."
+    }
+  ]
+}

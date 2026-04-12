@@ -1,0 +1,206 @@
+{
+  "country": "HU",
+  "lang": "hu",
+  "currency": "HUF",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "Kft. — Korlátolt felelősségű társaság",
+      "desc": "Мин. капитал: 3 000 000 HUF. 1-5 munkanap (egyszerűsített eljárás) / 15 munkanap (általános)",
+      "price": 50,
+      "required": true,
+      "note": "Ответственность: Felelősség a törzsbetét erejéig\nСроки: 1-5 munkanap (egyszerűsített eljárás) / 15 munkanap (általános)\nСтоимость: 50 000 HUF (illeték — egyszerűsített) / 100 000 HUF (általános) + ügyvédi díj 50 000-200 000 HUF + közzétételi díj 5 000 HUF\nШаги регистрации:\nTársasági szerződés elkészítése ügyvéd által (kötelező jogi képviselet)\nTörzstőke biztosítása (min. 3 000 000 HUF, nem kell előre bankszámlára helyezni)\nCégbejegyzési kérelem benyújtása a cégbírósághoz elektronikusan\nAdószám és statisztikai szám automatikus kiadása\nNAV regisztráció (ÁFA, társasági adó)\nBankszámla nyitása"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "EV — Egyéni vállalkozó",
+      "desc": "Мин. капитал: Nincs előírás. 1 munkanap (azonnali)",
+      "price": 0,
+      "required": true,
+      "note": "Ответственность: Teljes személyes felelősség a teljes vagyonnal\nСроки: 1 munkanap (azonnali)\nСтоимость: Ingyenes (regisztráció díjmentes)\nШаги регистрации:\nOnline regisztráció a Webes Ügysegéden (ugyfelkapu.gov.hu) keresztül\nAdószám és nyilvántartási szám automatikus kiadása\nNAV bejelentés (ÁFA választás)\nTB bejelentés"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "Zrt. — Zártkörűen működő részvénytársaság",
+      "desc": "Мин. капитал: 5 000 000 HUF. 5-15 munkanap",
+      "price": 100,
+      "required": true,
+      "note": "Ответственность: Felelősség a részvény névértékéig\nСроки: 5-15 munkanap\nСтоимость: 100 000 HUF (illeték) + ügyvédi díj 150 000-500 000 HUF\nШаги регистрации:\nAlapszabály elkészítése ügyvéd által\nAlaptőke biztosítása (min. 5 000 000 HUF)\nIgazgatóság és felügyelőbizottság kinevezése\nCégbejegyzés a cégbíróságnál\nNAV regisztráció"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Működési engedély / bejelentés-köteles kereskedelem",
+      "desc": "[Розничная торговля] Jegyző (helyi önkormányzat)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Jegyző (helyi önkormányzat)\nТребования:\n• Bejelentés az üzlet működéséről a jegyzőnek\n• Kereskedelmi tevékenység megjelölése (210/2009. Korm. rendelet szerint)\n• Az üzlethelyiség használati jogának igazolása\nСрок действия: Határozatlan\nСтоимость: Díjmentes (bejelentés)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Jövedéki engedély (alkohol, dohány)",
+      "desc": "[Розничная торговля] NAV (Nemzeti Adó- és Vámhivatal)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: NAV (Nemzeti Adó- és Vámhivatal)\nТребования:\n• Jövedéki engedély iránti kérelem\n• Biztosíték nyújtása\n• Az értékesítési hely megfelelősége\nСрок действия: Határozatlan (évente felülvizsgálva)\nСтоимость: Illetékmentes (de biztosíték szükséges)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "ÁNTSZ (Népegészségügyi) engedély (élelmiszer-forgalmazás)",
+      "desc": "[Розничная торговля] Járási Hivatal Népegészségügyi Osztálya",
+      "price": 5,
+      "required": true,
+      "note": "Выдаёт: Járási Hivatal Népegészségügyi Osztálya\nТребования:\n• Élelmiszer-higiéniai előírások betartása\n• HACCP rendszer (élelmiszer-kereskedelem esetén)\n• Egészségügyi alkalmasság igazolása\nСрок действия: Határozatlan\nСтоимость: Díjmentes (bejelentés) / 5 000-30 000 HUF (engedélyezés)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Vendéglátó-ipari tevékenység bejelentése",
+      "desc": "[HoReCa (общепит)] Jegyző (helyi önkormányzat)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Jegyző (helyi önkormányzat)\nТребования:\n• Bejelentőlap kitöltése a jegyző részére\n• Üzlethelyiség használati jog igazolása\n• HACCP rendszer működtetése\n• Tűzvédelmi megfelelőség\nСрок действия: Határozatlan\nСтоимость: Díjmentes"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Szálláshely-szolgáltatási bejelentés",
+      "desc": "[HoReCa (общепит)] Jegyző (helyi önkormányzat)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Jegyző (helyi önkormányzat)\nТребования:\n• Bejelentés a szálláshely típusával (szálloda, panzió, kemping stb.)\n• Tűzvédelmi hatósági engedély\n• Közegészségügyi megfelelőség\n• Kategorizálás (1-5 csillag szállodák esetén)\nСрок действия: Határozatlan\nСтоимость: Díjmentes (bejelentés)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Zenés-táncos rendezvény engedélye",
+      "desc": "[HoReCa (общепит)] Jegyző",
+      "price": 3,
+      "required": true,
+      "note": "Выдаёт: Jegyző\nТребования:\n• Kérelem a jegyzőhöz\n• Zajvédelmi megfelelőség\n• Tűzvédelmi és biztonsági előírások\nСрок действия: Határozatlan / eseti\nСтоимость: 3 000 HUF (illeték)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Szolgáltatási tevékenység bejelentése",
+      "desc": "[Услуги и ремёсла] Jegyző / Járási Hivatal",
+      "price": 3,
+      "required": true,
+      "note": "Выдаёт: Jegyző / Járási Hivatal\nТребования:\n• Bejelentőlap a tevékenység megkezdéséről\n• Szakmai képesítés igazolása (ha szükséges)\n• Felelősségbiztosítás (bizonyos szakmáknál)\nСрок действия: Határozatlan\nСтоимость: Díjmentes (bejelentés) / 3 000 HUF (engedélyezés)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Mestervizsgával kötött tevékenységek",
+      "desc": "[Услуги и ремёсла] Magyar Kereskedelmi és Iparkamara (MKIK)",
+      "price": 5,
+      "required": true,
+      "note": "Выдаёт: Magyar Kereskedelmi és Iparkamara (MKIK)\nТребования:\n• Mestervizsga bizonyítvány az adott szakmában\n• Kamarai tagság\n• Igazolt szakmai gyakorlat\nСрок действия: Határozatlan\nСтоимость: 5 000 HUF/év (kamarai hozzájárulás)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Építőipari kivitelezői tevékenység regisztrációja",
+      "desc": "[Услуги и ремёсла] Magyar Kereskedelmi és Iparkamara / Lechner Tudásközpont",
+      "price": 10,
+      "required": true,
+      "note": "Выдаёт: Magyar Kereskedelmi és Iparkamara / Lechner Tudásközpont\nТребования:\n• Felelős műszaki vezető kinevezése\n• Megfelelő referenciák\n• Felelősségbiztosítás\nСрок действия: Határozatlan (évente megújítandó nyilvántartás)\nСтоимость: 10 000-50 000 HUF"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Telepengedély / telepbejelentés",
+      "desc": "[Производство] Jegyző (helyi önkormányzat)",
+      "price": 5,
+      "required": true,
+      "note": "Выдаёт: Jegyző (helyi önkormányzat)\nТребования:\n• Bejelentés vagy engedélykérelem a telephely üzemeltetéséhez\n• Környezeti hatásvizsgálat (szükség esetén)\n• Tűzvédelmi megfelelőség\n• Közegészségügyi megfelelőség\nСрок действия: Határozatlan\nСтоимость: Díjmentes (bejelentés) / 5 000 HUF (engedélyezés)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Környezetvédelmi engedély",
+      "desc": "[Производство] Katasztrófavédelmi Igazgatóság / Járási Hivatal",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Katasztrófavédelmi Igazgatóság / Járási Hivatal\nТребования:\n• Környezeti hatásvizsgálat (EIA)\n• Hulladékgazdálkodási terv\n• Levegőtisztaság-védelmi engedély\nСрок действия: 5-10 év (megújítható)\nСтоимость: 50 000-500 000 HUF (eljárási díj)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Élelmiszer-előállító üzem engedélye",
+      "desc": "[Производство] NÉBIH (Nemzeti Élelmiszerlánc-biztonsági Hivatal)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: NÉBIH (Nemzeti Élelmiszerlánc-biztonsági Hivatal)\nТребования:\n• Létesítmény regisztrációja / engedélyezése\n• HACCP rendszer\n• Élelmiszer-biztonsági és higiéniai megfelelőség\nСрок действия: Határozatlan\nСтоимость: Díjmentes (regisztráció)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Közúti áruszállítási engedély (belföldi/nemzetközi)",
+      "desc": "[Логистика и склад] Építési és Közlekedési Minisztérium / Kormányhivatal",
+      "price": 20,
+      "required": true,
+      "note": "Выдаёт: Építési és Közlekedési Minisztérium / Kormányhivatal\nТребования:\n• Szakmai irányító kinevezése (Közúti Közlekedési Szolgáltatói Igazolvány)\n• Pénzügyi alkalmasság (9 000 EUR / első jármű, 5 000 EUR / további)\n• Jó hírnév (erkölcsi bizonyítvány)\n• Telephely Magyarország területén\nСрок действия: 10 év (megújítható)\nСтоимость: 20 000-50 000 HUF (hatósági díj)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Közösségi engedély (EU-licenc)",
+      "desc": "[Логистика и склад] Építési és Közlekedési Minisztérium",
+      "price": 30,
+      "required": true,
+      "note": "Выдаёт: Építési és Közlekedési Minisztérium\nТребования:\n• Érvényes belföldi közúti fuvarozási engedély\n• Pénzügyi alkalmasság (EU 1071/2009 rendelet)\n• GKI vizsgabizonyítvány\nСрок действия: 10 év\nСтоимость: 30 000-60 000 HUF"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Raktár üzemeltetési engedély / bejelentés",
+      "desc": "[Логистика и склад] Jegyző / NAV (vámraktár esetén)",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Jegyző / NAV (vámraktár esetén)\nТребования:\n• Telephely-bejelentés a jegyzőnek\n• Tűzvédelmi megfelelőség\n• NAV engedély (vám- és jövedéki raktár esetén)\nСрок действия: Határozatlan\nСтоимость: Díjmentes (bejelentés) / 50 000 HUF (vámraktár)"
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 27% ÁFA (az EU legmagasabb mértéke)\nvat_reduced: 18% (tejtermékek, pékáruk, szálláshelyszolgáltatás) / 5% (gyógyszerek, könyvek, friss hús, tej, tojás, lakóingatlan értékesítése)\ncorporate_tax: 9% TAO (társasági adó — az EU legalacsonyabb mértéke)\nnotes: Társasági adó: egységes 9% kulcs. Helyi iparűzési adó (HIPA): max. 2% az árbevételre vetítve (önkormányzatonként eltérő). KIVA (kisvállalati adó): 10% — alternatíva a TAO+HIPA helyett, elérhető max. 6 Mrd HUF mérlegfőösszeg/árbevétel mellett. ÁFA mentesség: éves 20 000 000 HUF árbevételig választható (2026-tól emelt küszöb)."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 27% ÁFA\nvat_reduced: 18% (helyszíni vendéglátás, szálláshelyszolgáltatás) / 5% (bizonyos élelmiszerek)\ncorporate_tax: 9% TAO\nnotes: Vendéglátó-ipari szolgáltatások: 18% ÁFA (helyszíni fogyasztás). Szálláshelyszolgáltatás: 18% ÁFA. Alkoholtartalmú italok: 27% ÁFA. Turizmusfejlesztési hozzájárulás: 4% a vendéglátó és szállás árbevételre. Online pénztárgép kötelező."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 27% ÁFA\nvat_reduced: Nincs általános kedvezményes kulcs szolgáltatásokra\ncorporate_tax: 9% TAO / 10% KIVA (kisvállalati adó alternatíva)\nnotes: KATA (kisadózó vállalkozások tételes adója) 2022 óta csak egyéni vállalkozók számára elérhető, kizárólag magánszemélyeknek nyújtott szolgáltatásokra. KIVA: 10%, helyettesíti a TAO-t és a szociális hozzájárulási adót. Átalányadó: egyéni vállalkozóknak 40-80%-os költséghányad."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 27% ÁFA\nvat_reduced: 5% (bizonyos élelmiszeripari termékek)\ncorporate_tax: 9% TAO\nnotes: Fejlesztési adókedvezmény (EKD): nagybefektetések számára akár 80%-os TAO kedvezmény. HIPA: max. 2% árbevételre (önkormányzatonként eltérő). Fejlesztési tartalék: nyereség 50%-a elszámolható (max. 10 Mrd HUF). Szabad vállalkozási zónák kedvezményei. Pillar Two: 15% minimumadó 750 M EUR árbevétel felett."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 27% ÁFA\nvat_reduced: 0% (nemzetközi áruszállítás — EU-n kívül)\ncorporate_tax: 9% TAO\nnotes: Nemzetközi árufuvarozás: ÁFA-mentes (adólevonási joggal). Gépjárműadó: tehergépjárművekre súly alapján. Útdíj: HU-GO elektronikus útdíjrendszer 3,5 t feletti járművekre. EKÁER: elektronikus közúti áruforgalom-ellenőrző rendszer (adózási célú)."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — Magyarország",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "Венгрия 2026: основные формы — Kft. (мин. капитал 3 000 000 HUF (~7 500 EUR), регистрация в Cégbíróság), EV (бесплатно, мгновенно онлайн), Zrt. (5 000 000 HUF). Корпоративный налог TAO: 9% — самый низкий в ЕС! Местный налог HIPA: до 2% с оборота. KIVA (малый бизнес): 10% вместо TAO+соцвзносов. НДС (ÁFA) 27%/18%/5% — самый высокий стандартный НДС в ЕС. Регистрация Kft. через адвоката электронно за 1-5 дней. Для общепита — уведомление нотариуса + HACCP. Для транспорта — лицензия Мин. транспорта + Eurolicenc. Туристический сбор 4% для HoReCa. Порог освобождения от ÁFA — 20 000 000 HUF."
+    }
+  ]
+}

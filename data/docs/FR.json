@@ -1,0 +1,254 @@
+{
+  "country": "FR",
+  "lang": "fr",
+  "currency": "EUR",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "SAS — Société par Actions Simplifiée",
+      "desc": "Мин. капитал: 1 € (capital libre). 1 à 2 semaines",
+      "price": 250,
+      "required": true,
+      "note": "Ответственность: Limitée aux apports\nСроки: 1 à 2 semaines\nСтоимость: 250 € à 1 500 € (frais de greffe ~37,45 €, publication JAL ~150-250 €, honoraires juridiques optionnels)\nШаги регистрации:\nRédiger les statuts de la SAS et désigner le Président\nDéposer le capital social sur un compte bancaire bloqué\nPublier un avis de constitution dans un journal d'annonces légales (JAL)\nImmatriculer la société au Registre du Commerce et des Sociétés (RCS) via le Guichet Unique (INPI — formalites.entreprises.gouv.fr)\nObtenir le numéro SIRET et le code APE délivrés par l'INSEE\nDéclarer les bénéficiaires effectifs au RCS\nSouscrire une assurance responsabilité civile professionnelle"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "SARL — Société à Responsabilité Limitée",
+      "desc": "Мин. капитал: 1 € (capital libre). 1 à 2 semaines",
+      "price": 200,
+      "required": true,
+      "note": "Ответственность: Limitée aux apports\nСроки: 1 à 2 semaines\nСтоимость: 200 € à 1 200 €\nШаги регистрации:\nRédiger les statuts et nommer le(s) gérant(s)\nDéposer le capital social (au moins 20 % à la constitution, le reste sous 5 ans)\nPublier un avis de constitution dans un JAL\nDéposer le dossier d'immatriculation au Guichet Unique INPI\nObtenir l'extrait Kbis et le numéro SIRET\nDéclarer les bénéficiaires effectifs"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "EURL — Entreprise Unipersonnelle à Responsabilité Limitée",
+      "desc": "Мин. капитал: 1 € (capital libre). 1 à 2 semaines",
+      "price": 200,
+      "required": true,
+      "note": "Ответственность: Limitée aux apports\nСроки: 1 à 2 semaines\nСтоимость: 200 € à 1 000 €\nШаги регистрации:\nRédiger les statuts (associé unique = gérant par défaut)\nDéposer le capital social\nPublier un avis de constitution dans un JAL\nImmatriculation via le Guichet Unique INPI\nRéception du Kbis et du SIRET"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "SA — Société Anonyme",
+      "desc": "Мин. капитал: 37 000 € (50 % libéré à la constitution). 2 à 4 semaines",
+      "price": 2,
+      "required": true,
+      "note": "Ответственность: Limitée aux apports\nСроки: 2 à 4 semaines\nСтоимость: 2 000 € à 5 000 € (frais juridiques, commissaire aux comptes, publication)\nШаги регистрации:\nConstituer au minimum 2 actionnaires (7 si cotée)\nRédiger les statuts et désigner le conseil d'administration ou directoire/conseil de surveillance\nDéposer le capital social (50 % minimum à la constitution, solde sous 5 ans)\nNommer un commissaire aux comptes\nPublier un avis de constitution dans un JAL\nImmatriculation au RCS via le Guichet Unique INPI\nDéclarer les bénéficiaires effectifs"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "EI — Entreprise Individuelle",
+      "desc": "Мин. капитал: Aucun minimum requis. Quelques jours à 1 semaine",
+      "price": 0,
+      "required": true,
+      "note": "Ответственность: Patrimoine professionnel séparé du patrimoine personnel (loi du 14 février 2022)\nСроки: Quelques jours à 1 semaine\nСтоимость: 0 € à 100 € (gratuit pour les activités commerciales, frais de CMA pour les artisans ~130 €)\nШаги регистрации:\nDéclarer l'activité sur le Guichet Unique INPI\nObtenir le numéro SIRET\nOpter éventuellement pour le régime de la micro-entreprise\nSouscrire les assurances obligatoires"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "Micro — Micro-entreprise (Auto-entrepreneur)",
+      "desc": "Мин. капитал: Aucun. 24 à 72 heures",
+      "price": 0,
+      "required": true,
+      "note": "Ответственность: Patrimoine professionnel séparé (statut EI)\nСроки: 24 à 72 heures\nСтоимость: Gratuit (0 €)\nШаги регистрации:\nDéclarer l'activité en ligne sur le Guichet Unique (autoentrepreneur.urssaf.fr)\nRecevoir le SIRET sous quelques jours\nOuvrir un compte bancaire dédié si le CA dépasse 10 000 € pendant 2 ans consécutifs\nDéclarer le chiffre d'affaires mensuellement ou trimestriellement"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Inscription au Registre du Commerce et des Sociétés (RCS)",
+      "desc": "[Розничная торговля] Greffe du Tribunal de Commerce",
+      "price": 3745,
+      "required": true,
+      "note": "Выдаёт: Greffe du Tribunal de Commerce\nТребования:\n• Justificatif d'identité du dirigeant\n• Justificatif de domiciliation du siège social\n• Statuts signés\n• Attestation de dépôt des fonds\n• Déclaration de non-condamnation et de filiation\nСрок действия: Durée illimitée (mise à jour annuelle obligatoire)\nСтоимость: 37,45 € (personne morale) / gratuit (EI commerciale)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorisation d'Exploitation Commerciale (AEC)",
+      "desc": "[Розничная торговля] Commission Départementale d'Aménagement Commercial (CDAC)",
+      "price": 5,
+      "required": true,
+      "note": "Выдаёт: Commission Départementale d'Aménagement Commercial (CDAC)\nТребования:\n• Obligatoire pour toute surface de vente supérieure à 1 000 m²\n• Dossier comprenant : étude d'impact, plan de situation, description du projet\nСрок действия: Accordée pour la durée du projet\nСтоимость: Variable (frais d'instruction + études : 5 000 € à 20 000 €)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Conformité ERP (Établissement Recevant du Public)",
+      "desc": "[Розничная торговля] Mairie / Commission de sécurité départementale",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: Mairie / Commission de sécurité départementale\nТребования:\n• Respect des normes d'accessibilité PMR\n• Normes incendie et sécurité\n• Visite de la commission de sécurité avant ouverture\nСрок действия: Renouvelable périodiquement (3 à 5 ans selon catégorie ERP)\nСтоимость: 500 € à 5 000 € (mise en conformité)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licence de débit de boissons",
+      "desc": "[HoReCa (общепит)] Mairie / Préfecture",
+      "price": 250,
+      "required": true,
+      "note": "Выдаёт: Mairie / Préfecture\nТребования:\n• Licence III (petite licence restaurant) : boissons fermentées (vin, bière, cidre)\n• Licence IV (grande licence) : tous types d'alcool\n• Formation permis d'exploitation obligatoire (20h pour primo-accédant, 6h pour renouvellement)\n• Déclaration en mairie 15 jours avant ouverture\n• Respect des zones protégées (écoles, hôpitaux, lieux de culte)\nСрок действия: Licence III : illimitée. Licence IV : transférable, nombre limité par commune\nСтоимость: Formation : 250 € à 500 €. Transfert licence IV : 5 000 € à 100 000 € (selon localisation)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Formation Hygiène Alimentaire (HACCP)",
+      "desc": "[HoReCa (общепит)] DRAAF (Direction Régionale de l'Alimentation, de l'Agriculture et de la Forêt)",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: DRAAF (Direction Régionale de l'Alimentation, de l'Agriculture et de la Forêt)\nТребования:\n• Au moins une personne par établissement formée (14 heures minimum)\n• Formation dispensée par un organisme enregistré au ROFHYA\n• Attestation à conserver sur place\nСрок действия: Validité permanente (recommandé de renouveler tous les 5 ans)\nСтоимость: 200 € à 500 €"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Déclaration d'ouverture de restaurant",
+      "desc": "[HoReCa (общепит)] Mairie du lieu d'exploitation",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Mairie du lieu d'exploitation\nТребования:\n• Formulaire CERFA de déclaration préalable\n• Pièce d'identité du déclarant\n• Permis d'exploitation\n• Attestation de formation HACCP\nСрок действия: Avant chaque ouverture d'établissement\nСтоимость: Gratuit"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licence d'entrepreneur de spectacles vivants",
+      "desc": "[HoReCa (общепит)] DRAC (Direction Régionale des Affaires Culturelles)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: DRAC (Direction Régionale des Affaires Culturelles)\nТребования:\n• Obligatoire si l'établissement propose régulièrement de la musique vivante\n• Demande en ligne, récépissé sous 2 mois\nСрок действия: 5 ans renouvelable\nСтоимость: Gratuit"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Classement hôtelier (étoiles)",
+      "desc": "[HoReCa (общепит)] Atout France / organisme accrédité COFRAC",
+      "price": 1,
+      "required": true,
+      "note": "Выдаёт: Atout France / organisme accrédité COFRAC\nТребования:\n• Demande volontaire\n• Audit de classement selon 243 critères\n• 1 à 5 étoiles\nСрок действия: 5 ans\nСтоимость: 1 000 € à 3 000 € (audit)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Qualification professionnelle artisanale",
+      "desc": "[Услуги и ремёсла] Chambre de Métiers et de l'Artisanat (CMA)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Chambre de Métiers et de l'Artisanat (CMA)\nТребования:\n• CAP, BEP, titre homologué ou équivalent dans le métier exercé\n• Ou justification de 3 ans d'expérience professionnelle\n• Obligatoire pour les métiers réglementés : coiffure, boulangerie, plomberie, électricité, etc.\nСрок действия: Permanente\nСтоимость: Gratuit (présentation de diplômes)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Assurance décennale",
+      "desc": "[Услуги и ремёсла] Assureur privé agréé",
+      "price": 800,
+      "required": true,
+      "note": "Выдаёт: Assureur privé agréé\nТребования:\n• Obligatoire pour tous les métiers du bâtiment\n• Couvre les dommages compromettant la solidité de l'ouvrage pendant 10 ans\nСрок действия: Annuelle, renouvelable\nСтоимость: 800 € à 5 000 € par an (selon activité et CA)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Carte d'identification professionnelle BTP",
+      "desc": "[Услуги и ремёсла] CIBTP (Caisse des Congés du BTP)",
+      "price": 1080,
+      "required": true,
+      "note": "Выдаёт: CIBTP (Caisse des Congés du BTP)\nТребования:\n• Obligatoire pour tout salarié intervenant sur un chantier\n• Demande par l'employeur\nСрок действия: Durée du contrat de travail\nСтоимость: 10,80 € par carte"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorisation ICPE (Installation Classée pour la Protection de l'Environnement)",
+      "desc": "[Производство] Préfecture / DREAL",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: Préfecture / DREAL\nТребования:\n• Déclaration (régime D) : activités à faible risque, simple déclaration\n• Enregistrement (régime E) : risque moyen, dossier simplifié\n• Autorisation (régime A) : risque élevé, étude d'impact complète + enquête publique\n• Étude de dangers pour les installations Seveso\nСрок действия: Durée illimitée sauf conditions particulières\nСтоимость: 500 € (déclaration) à 50 000 €+ (autorisation avec étude d'impact)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Marquage CE",
+      "desc": "[Производство] Organisme notifié accrédité (AFNOR, Bureau Veritas, etc.)",
+      "price": 1,
+      "required": true,
+      "note": "Выдаёт: Organisme notifié accrédité (AFNOR, Bureau Veritas, etc.)\nТребования:\n• Obligatoire pour la mise sur le marché européen de produits industriels\n• Conformité aux directives européennes applicables\n• Documentation technique et déclaration de conformité\nСрок действия: Tant que le produit reste conforme\nСтоимость: 1 000 € à 10 000 € (selon complexité du produit)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Normes sanitaires et alimentaires",
+      "desc": "[Производство] DDPP (Direction Départementale de la Protection des Populations)",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: DDPP (Direction Départementale de la Protection des Populations)\nТребования:\n• Agrément sanitaire obligatoire pour les industries agroalimentaires\n• Plan de maîtrise sanitaire (PMS) incluant HACCP\n• Déclaration auprès de la DDPP avant ouverture\nСрок действия: Illimitée sous réserve de conformité\nСтоимость: Gratuit (déclaration), coûts de mise en conformité variables"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Attestation de capacité professionnelle de transport",
+      "desc": "[Логистика и склад] DREAL / Préfecture de région",
+      "price": 1,
+      "required": true,
+      "note": "Выдаёт: DREAL / Préfecture de région\nТребования:\n• Examen national (transport lourd > 3,5 t) ou attestation simplifiée (transport léger ≤ 3,5 t)\n• Formation de 105 heures + examen pour le transport lourd\n• Justification de 10 ans d'expérience de direction dans une entreprise de transport (dispense d'examen)\n• Diplôme de niveau III minimum en transport (dispense possible)\nСрок действия: Permanente\nСтоимость: Formation + examen : 1 500 € à 3 500 €"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licence de transport intérieur (LTI)",
+      "desc": "[Логистика и склад] DREAL",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: DREAL\nТребования:\n• Capacité professionnelle attestée\n• Capacité financière justifiée\n• Honorabilité professionnelle du gestionnaire de transport\n• Établissement stable en France\nСрок действия: Illimitée (copies conformes renouvelables tous les 5 ans)\nСтоимость: Gratuit (délivrance administrative)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licence communautaire de transport",
+      "desc": "[Логистика и склад] DREAL",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: DREAL\nТребования:\n• Identique à la LTI\n• Nécessaire pour le transport international au sein de l'UE\n• Véhicules de plus de 3,5 tonnes ou plus de 9 places\nСрок действия: 10 ans renouvelable\nСтоимость: Gratuit"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorisation d'exercer (commissionnaire de transport)",
+      "desc": "[Логистика и склад] DREAL",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: DREAL\nТребования:\n• Attestation de capacité professionnelle spécifique\n• Capacité financière de 22 800 €\n• Garantie financière ou caution bancaire\nСрок действия: Illimitée\nСтоимость: Frais de caution bancaire variables"
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 20 %\nvat_reduced: 10 % (produits alimentaires préparés), 5,5 % (produits de première nécessité), 2,1 % (médicaments remboursables, presse)\ncorporate_tax: 25 % (taux normal IS). PME : 15 % sur les premiers 42 500 € de bénéfice (sous conditions)\nnotes: Micro-entreprise : franchise de TVA sous seuils (91 900 € ventes, 36 800 € services en 2026). Cotisation Foncière des Entreprises (CFE) due dès la 2e année. CVAE supprimée progressivement."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 20 % (boissons alcoolisées)\nvat_reduced: 10 % (restauration sur place, hébergement), 5,5 % (ventes à emporter de produits alimentaires)\ncorporate_tax: 25 % (taux normal). 15 % sur les premiers 42 500 € pour les PME éligibles\nnotes: Taxe de séjour applicable aux hébergements touristiques (fixée par la commune, 0,20 € à 4,20 € par nuit et par personne). Contribution à l'audiovisuel public si TV dans l'établissement. SACEM si diffusion de musique."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 20 %\nvat_reduced: 10 % (travaux de rénovation de logements de plus de 2 ans), 5,5 % (travaux d'amélioration énergétique)\ncorporate_tax: 25 % (taux normal). Micro-entreprise : prélèvement forfaitaire libératoire possible (1 % à 2,2 % du CA)\nnotes: Cotisations sociales artisans : environ 22 % du bénéfice net (régime SSI). Micro-entreprise : 21,1 % du CA (prestations de services artisanales). Stage de préparation à l'installation (SPI) rendu facultatif depuis 2019."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 20 %\nvat_reduced: 5,5 % (produits alimentaires de base)\ncorporate_tax: 25 %. PME : 15 % sur les premiers 42 500 €\nnotes: Crédit d'Impôt Recherche (CIR) : 30 % des dépenses R&D jusqu'à 100 M€, puis 5 %. Crédit d'Impôt Innovation (CII) : 20 % des dépenses d'innovation (plafond 400 000 €). Exonérations ZFR (Zones France Ruralités) et BER (Bassins d'Emploi à Redynamiser) possibles."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 20 %\nvat_reduced: 10 % (transport de voyageurs)\ncorporate_tax: 25 %. PME : 15 % sur les premiers 42 500 €\nnotes: Taxe à l'essieu applicable aux véhicules de transport de marchandises de plus de 12 tonnes. Remboursement partiel de la TICPE (taxe intérieure de consommation sur les produits énergétiques) pour les transporteurs routiers. Écotaxe régionale possible selon zones."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — France",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "Франция предлагает широкий выбор организационно-правовых форм: от бесплатной микро-предприятия (автопредприниматель) до SA с минимальным капиталом 37 000 €. Все регистрации проходят через единый электронный портал Guichet Unique (INPI). SAS — самая популярная форма благодаря гибкости. IS (налог на прибыль) — 25 %, льготная ставка 15 % на первые 42 500 € для МСП. НДС: 20 % (стандарт), 10 %/5,5 %/2,1 % (сниженные). Для HoReCa обязательны: лицензия на продажу алкоголя, обучение HACCP, разрешение на эксплуатацию. Для транспорта — аттестация профессиональной компетенции и финансовая состоятельность. Для промышленности — разрешения ICPE (классифицированные установки). Сроки регистрации: от 24 часов (микро) до 12 недель (промышленность с ICPE)."
+    }
+  ]
+}

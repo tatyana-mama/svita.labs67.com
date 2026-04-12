@@ -1,0 +1,190 @@
+{
+  "country": "RO",
+  "lang": "ro",
+  "currency": "RON",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "SRL — Societate cu Răspundere Limitată",
+      "desc": "Мин. капитал: 500 RON (≈100 EUR); dacă cifra de afaceri depășește 400.000 RON — minim 5.000 RON. 3–7 zile lucrătoare (ONRC procesează în 1–3 zile dacă dosarul e complet)",
+      "price": 200,
+      "required": true,
+      "note": "Ответственность: Limitată la capitalul social subscris\nСроки: 3–7 zile lucrătoare (ONRC procesează în 1–3 zile dacă dosarul e complet)\nСтоимость: 200–300 RON taxe ONRC + 500 RON capital social + 500–1.500 EUR servicii juridice (opțional)\nШаги регистрации:\nVerificarea și rezervarea denumirii firmei la ONRC\nRedactarea actului constitutiv (statut/contract de societate)\nDepunerea capitalului social la bancă (minim 500 RON)\nObținerea declarațiilor asociaților și administratorilor (cazier fiscal, declarație pe proprie răspundere)\nDepunerea dosarului la Oficiul Registrului Comerțului (ONRC)\nObținerea certificatului de înmatriculare și a codului unic de înregistrare (CUI)\nÎnregistrarea la ANAF pentru obligații fiscale\nDeschiderea contului bancar al societății"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "SA — Societate pe Acțiuni",
+      "desc": "Мин. капитал: 90.000 RON (≈18.000 EUR). 2–4 săptămâni",
+      "price": 500,
+      "required": true,
+      "note": "Ответственность: Limitată la valoarea acțiunilor subscrise\nСроки: 2–4 săptămâni\nСтоимость: 500–1.000 RON taxe + 90.000 RON capital minim + servicii juridice\nШаги регистрации:\nRedactarea actului constitutiv de către minim 2 acționari\nDepunerea capitalului social (minim 30% la constituire)\nNumirea consiliului de administrație sau directoratului\nDepunerea dosarului la ONRC\nPublicarea în Monitorul Oficial\nObținerea certificatului de înmatriculare"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "PFA — Persoană Fizică Autorizată",
+      "desc": "Мин. капитал: Nu este necesar. 1–3 zile lucrătoare",
+      "price": 100,
+      "required": true,
+      "note": "Ответственность: Nelimitată — patrimoniul personal al titularului\nСроки: 1–3 zile lucrătoare\nСтоимость: 100–200 RON taxe ONRC\nШаги регистрации:\nObținerea cazierului fiscal de la ANAF\nDepunerea cererii la ONRC\nObținerea certificatului de înregistrare și a autorizației de funcționare"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "II — Întreprindere Individuală",
+      "desc": "Мин. капитал: Nu este necesar. 1–3 zile lucrătoare",
+      "price": 100,
+      "required": true,
+      "note": "Ответственность: Nelimitată — patrimoniul afectat activității\nСроки: 1–3 zile lucrătoare\nСтоимость: 100–200 RON taxe ONRC\nШаги регистрации:\nDepunerea cererii la ONRC cu documentele personale\nObținerea certificatului de înregistrare\nÎnregistrarea fiscală la ANAF"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorizație de funcționare pentru comerț",
+      "desc": "[Розничная торговля] Primăria locală (Direcția de Urbanism / Compartimentul Autorizări)",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Primăria locală (Direcția de Urbanism / Compartimentul Autorizări)\nТребования:\n• Certificat de înmatriculare ONRC\n• Contract de închiriere sau proprietate pentru spațiul comercial\n• Autorizație de securitate la incendiu (ISU) — pentru spații peste 200 mp\n• Aviz sanitar (Direcția de Sănătate Publică) — pentru alimentare\n• Autorizație de mediu (dacă e cazul)\nСрок действия: Nedeterminată (cu condiția respectării cerințelor)\nСтоимость: Variabil — taxe locale 50–500 RON"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorizație sanitară de funcționare",
+      "desc": "[Розничная торговля] Direcția de Sănătate Publică (DSP)",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Direcția de Sănătate Publică (DSP)\nТребования:\n• Documentație tehnică privind spațiul\n• Plan de autocontrol HACCP (pentru produse alimentare)\n• Contracte de dezinsecție/deratizare\n• Aviz medical pentru angajați\nСрок действия: Nedeterminată (control periodic)\nСтоимость: 100–500 RON"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorizație sanitară veterinară și de siguranță alimentară",
+      "desc": "[HoReCa (общепит)] Direcția Sanitar-Veterinară și pentru Siguranța Alimentelor (DSVSA)",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Direcția Sanitar-Veterinară și pentru Siguranța Alimentelor (DSVSA)\nТребования:\n• Proiect tehnic al spațiului de preparare\n• Sistem HACCP implementat\n• Personal instruit în igiena alimentelor\n• Contract dezinsecție/deratizare\nСрок действия: Nedeterminată (inspecții periodice)\nСтоимость: 200–1.000 RON"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorizație de funcționare pentru alimentație publică",
+      "desc": "[HoReCa (общепит)] Primăria locală",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Primăria locală\nТребования:\n• Certificat de înmatriculare\n• Contract spațiu comercial\n• Autorizație ISU\n• Aviz de mediu (dacă e cazul)\nСрок действия: Nedeterminată\nСтоимость: 100–500 RON"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licență pentru comercializarea băuturilor alcoolice",
+      "desc": "[HoReCa (общепит)] Primăria locală / Autoritatea Națională a Vămilor",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Primăria locală / Autoritatea Națională a Vămilor\nТребования:\n• Autorizație de funcționare valabilă\n• Declarație privind suprafața de servire\n• Conformitate cu reglementările de orar\nСрок действия: Anuală\nСтоимость: 100–2.000 RON (în funcție de localitate)"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Certificat de clasificare (pentru unități de cazare)",
+      "desc": "[HoReCa (общепит)] Ministerul Turismului / Autoritatea Națională pentru Turism",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: Ministerul Turismului / Autoritatea Națională pentru Turism\nТребования:\n• Documentație privind dotările și serviciile oferite\n• Inspecție la fața locului\n• Conformitate cu standardele de clasificare pe stele/margarete\nСрок действия: 5 ani\nСтоимость: 500–2.000 RON"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorizație profesională (pentru meșteșuguri reglementate)",
+      "desc": "[Услуги и ремёсла] Camera de Comerț și Industrie / Autorități sectoriale",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Camera de Comerț și Industrie / Autorități sectoriale\nТребования:\n• Diplome / certificate de calificare profesională\n• Experiență profesională dovedită\n• Asigurare de răspundere profesională (dacă e cazul)\nСрок действия: Variabilă (5–10 ani sau nedeterminată)\nСтоимость: 200–1.000 RON"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorizație de mediu",
+      "desc": "[Производство] Agenția pentru Protecția Mediului (APM)",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: Agenția pentru Protecția Mediului (APM)\nТребования:\n• Studiu de impact asupra mediului\n• Documentație tehnică privind emisiile\n• Plan de gestionare a deșeurilor\n• Conformitate cu normele de protecție a mediului\nСрок действия: 5–10 ani (reînnoire periodică)\nСтоимость: 500–5.000 RON"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorizație de securitate la incendiu",
+      "desc": "[Производство] Inspectoratul pentru Situații de Urgență (ISU)",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: Inspectoratul pentru Situații de Urgență (ISU)\nТребования:\n• Proiect de securitate la incendiu\n• Sisteme de stingere și alarmare funcționale\n• Personal instruit în PSI\nСрок действия: Nedeterminată (control periodic)\nСтоимость: 500–2.000 RON"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Autorizație sanitară de funcționare (producție alimentară)",
+      "desc": "[Производство] DSVSA",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: DSVSA\nТребования:\n• Implementare HACCP\n• Conformitate cu normele sanitare europene\n• Personal cu pregătire în siguranța alimentelor\nСрок действия: Nedeterminată\nСтоимость: 200–2.000 RON"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licență de transport rutier",
+      "desc": "[Логистика и склад] Autoritatea Rutieră Română (ARR)",
+      "price": 300,
+      "required": true,
+      "note": "Выдаёт: Autoritatea Rutieră Română (ARR)\nТребования:\n• Capacitate financiară dovedită (9.000 EUR pentru primul vehicul, 5.000 EUR pentru fiecare următor)\n• Certificat de competență profesională (manager de transport)\n• Bună reputație (cazier judiciar curat)\n• Sediu real cu documente de proprietate\nСрок действия: 10 ani\nСтоимость: 300–1.000 RON taxe ARR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licență de transport internațional (Licență comunitară)",
+      "desc": "[Логистика и склад] ARR",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: ARR\nТребования:\n• Licență de transport națională activă\n• Conformitate cu regulamentele UE (Regulamentul CE 1071/2009)\n• Vehicule conforme Euro 6\nСрок действия: 10 ani\nСтоимость: 500–2.000 RON"
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21% (TVA, din 1 august 2025)\nvat_reduced: 11% (produse alimentare, medicamente, cazare, transport)\ncorporate_tax: 16% impozit pe profit; microîntreprinderi (cifră de afaceri < 100.000 EUR): 1% din venituri\nnotes: Din 2026: regimul de microîntreprindere — cotă unică 1% (cota de 3% a fost eliminată). Condiții: cifra de afaceri < 100.000 EUR, cel puțin 1 angajat cu normă întreagă. Impozit pe dividende: 16%. Pragul de înregistrare în scopuri de TVA: 395.000 RON."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21%\nvat_reduced: 11% (servicii de cazare; în discuție dacă se aplică și pentru restaurante în 2026)\ncorporate_tax: 16% impozit pe profit / 1% microîntreprindere\nnotes: Sectorul HoReCa a beneficiat anterior de TVA redus la 5%/9%. Din august 2025, cota redusă unificată este 11%. Atenție la potențiale modificări legislative pentru restaurant/catering — posibilă aplicare a cotei standard de 21%."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21%\nvat_reduced: 11% (pentru anumite servicii culturale, sportive)\ncorporate_tax: 16% impozit pe profit / 1% microîntreprindere\nnotes: PFA plătește impozit pe venit 10% + CAS 25% + CASS 10%. SRL-urile mici beneficiază de regimul micro 1%."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21%\nvat_reduced: 11%\ncorporate_tax: 16% impozit pe profit / 1% microîntreprindere (dacă cifra de afaceri < 100.000 EUR)\nnotes: Activitățile de producție pot beneficia de facilități fiscale pentru investiții, zone defavorizate sau parcuri industriale."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 21%\nvat_reduced: 11%\ncorporate_tax: 16% impozit pe profit / 1% microîntreprindere\nnotes: Transportul internațional de bunuri beneficiază de TVA 0% (export/intra-comunitar). Accizele la carburanți se aplică suplimentar."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — România",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "Румыния 2026: SRL — мин. капитал 500 RON (≈100 EUR), регистрация через ONRC за 3–7 дней. Налог на прибыль 16%, микропредприятия (оборот < 100.000 EUR) — 1% от дохода (ставка 3% отменена). НДС (TVA): стандартный 21%, сниженный 11%. Дивиденды — 16%. SA — мин. капитал 90.000 RON. PFA/II — без мин. капитала, неограниченная ответственность. Для HoReCa, розницы и производства требуются санитарные, пожарные и экологические разрешения."
+    }
+  ]
+}

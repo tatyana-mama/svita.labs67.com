@@ -1,0 +1,174 @@
+{
+  "country": "HR",
+  "lang": "hr",
+  "currency": "EUR",
+  "bizTypes": [
+    "dental",
+    "medical",
+    "beauty",
+    "gastro",
+    "coffee"
+  ],
+  "items": [
+    {
+      "cat": "Регистрация компании",
+      "name": "d.o.o. — Društvo s ograničenom odgovornošću",
+      "desc": "Мин. капитал: 2.500 EUR (minimalno 1/4 uplaćeno pri osnivanju, tj. 625 EUR). 3–5 radnih dana (putem START sustava); 7–14 dana (tradicionalni postupak s javnim bilježnikom)",
+      "price": 2655,
+      "required": true,
+      "note": "Ответственность: Ograničena na iznos udjela u temeljnom kapitalu\nСроки: 3–5 radnih dana (putem START sustava); 7–14 dana (tradicionalni postupak s javnim bilježnikom)\nСтоимость: 26,55 EUR (online putem START-a za hrvatske državljane) / 300–800 EUR (s javnim bilježnikom + sudske pristojbe)\nШаги регистрации:\nProvjera i rezervacija naziva tvrtke pri Trgovačkom sudu ili putem sustava START\nIzrada i javnobilježnička ovjera Društvenog ugovora (Izjave o osnivanju za j.d.o.o.)\nUplata temeljnog kapitala na privremeni račun banke ili FINA-e\nPodnošenje prijave za upis u Sudski registar (Trgovački sud)\nPribavljanje OIB-a (osobnog identifikacijskog broja) za društvo\nPrijava u Registar poslovnih subjekata pri Državnom zavodu za statistiku\nPrijava u poreznu upravu (Porezna uprava)\nOtvaranje poslovnog računa u banci"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "j.d.o.o. — Jednostavno društvo s ograničenom odgovornošću",
+      "desc": "Мин. капитал: 1 EUR (od 2023. godine; do 3 člana). 3–7 radnih dana",
+      "price": 2655,
+      "required": true,
+      "note": "Ответственность: Ograničena na iznos udjela\nСроки: 3–7 radnih dana\nСтоимость: 26,55 EUR (online) / 200–500 EUR (s bilježnikom)\nШаги регистрации:\nIzrada Izjave o osnivanju (obrazac za j.d.o.o.)\nJavnobilježnička ovjera\nUplata temeljnog kapitala (min. 1 EUR)\nUpis u Sudski registar\nPrijava u poreznu upravu"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "d.d. — Dioničko društvo",
+      "desc": "Мин. капитал: 25.000 EUR. 2–4 tjedna",
+      "price": 1000,
+      "required": true,
+      "note": "Ответственность: Ograničena na vrijednost dionica\nСроки: 2–4 tjedna\nСтоимость: 1.000–3.000 EUR pristojbe + 25.000 EUR kapital\nШаги регистрации:\nOdržavanje osnivačke skupštine (min. 1 osnivač)\nDonošenje statuta društva\nUplata temeljnog kapitala (min. 25% pri osnivanju)\nImenovanje uprave i nadzornog odbora\nUpis u Sudski registar\nObjava u Narodnim novinama"
+    },
+    {
+      "cat": "Регистрация компании",
+      "name": "Obrt — Obrt",
+      "desc": "Мин. капитал: Nije potreban. 1–5 radnih dana",
+      "price": 50,
+      "required": true,
+      "note": "Ответственность: Neograničena — cjelokupna osobna imovina\nСроки: 1–5 radnih dana\nСтоимость: 50–100 EUR (upravne pristojbe)\nШаги регистрации:\nPodnošenje zahtjeva za otvaranje obrta u nadležnom uredu državne uprave (ili online putem e-Obrta)\nIspunjavanje uvjeta za obavljanje djelatnosti (kvalifikacije za vezane obrte)\nPribavljanje Obrtnice\nPrijava u Registar poreznih obveznika"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Minimalni tehnički uvjeti za prodavaonicu",
+      "desc": "[Розничная торговля] Nadležni ured državne uprave u županiji / Grad Zagreb",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Nadležni ured državne uprave u županiji / Grad Zagreb\nТребования:\n• Rješenje o ispunjavanju minimalnih tehničkih uvjeta\n• Ugovor o zakupu ili vlasništvu poslovnog prostora\n• Uporabna dozvola za poslovni prostor\n• Sukladnost s propisima o zaštiti na radu i protupožarnoj zaštiti\nСрок действия: Neodređeno (uz ispunjavanje uvjeta)\nСтоимость: 50–200 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Sanitarni uvjeti za trgovinu hranom",
+      "desc": "[Розничная торговля] Ministarstvo zdravstva / Hrvatski zavod za javno zdravstvo",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Ministarstvo zdravstva / Hrvatski zavod za javno zdravstvo\nТребования:\n• Registracija objekta u skladu sa Zakonom o hrani\n• Implementiran HACCP sustav\n• Sanitarne knjižice zaposlenika\n• Ugovori o DDD uslugama (dezinfekcija, dezinsekcija, deratizacija)\nСрок действия: Neodređeno\nСтоимость: 50–150 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Rješenje o ispunjavanju minimalnih uvjeta za ugostiteljski objekt",
+      "desc": "[HoReCa (общепит)] Nadležni ured državne uprave u županiji",
+      "price": 100,
+      "required": true,
+      "note": "Выдаёт: Nadležni ured državne uprave u županiji\nТребования:\n• Uporabna dozvola poslovnog prostora\n• Dokaz o vlasništvu ili zakupu prostora\n• Ispunjavanje minimalnih tehničkih uvjeta (oprema, ventilacija, sanitarije)\n• Suglasnost za zaštitu od požara\n• Dokaz o stručnoj osposobljenosti\nСрок действия: Neodređeno\nСтоимость: 100–300 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Rješenje o kategorizaciji ugostiteljskog objekta (za smještaj)",
+      "desc": "[HoReCa (общепит)] Ministarstvo turizma i sporta",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Ministarstvo turizma i sporta\nТребования:\n• Ispunjeni minimalni uvjeti za kategoriju (zvjezdice)\n• Inspekcijski pregled\n• Dokumentacija o kapacitetu i opremljenosti\nСрок действия: 5 godina\nСтоимость: 200–1.000 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Dozvola za prodaju alkoholnih pića",
+      "desc": "[HoReCa (общепит)] Nadležni ured državne uprave",
+      "price": 0,
+      "required": true,
+      "note": "Выдаёт: Nadležni ured državne uprave\nТребования:\n• Važeće rješenje o ispunjavanju minimalnih uvjeta\n• Poštivanje propisa o radnom vremenu ugostiteljskih objekata\nСрок действия: Uz važeće rješenje o min. uvjetima\nСтоимость: Uključeno u rješenje o min. uvjetima"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Obrtnica za vezane obrte",
+      "desc": "[Услуги и ремёсла] Ured državne uprave / Hrvatska obrtnička komora",
+      "price": 50,
+      "required": true,
+      "note": "Выдаёт: Ured državne uprave / Hrvatska obrtnička komora\nТребования:\n• Odgovarajuća stručna sprema ili majstorski ispit\n• Radno iskustvo u struci\n• Čisto uvjerenje o nekažnjavanju (za određene djelatnosti)\nСрок действия: Neodređeno\nСтоимость: 50–150 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Okolišna dozvola",
+      "desc": "[Производство] Ministarstvo gospodarstva i održivog razvoja",
+      "price": 500,
+      "required": true,
+      "note": "Выдаёт: Ministarstvo gospodarstva i održivog razvoja\nТребования:\n• Procjena utjecaja na okoliš (PUO)\n• Plan gospodarenja otpadom\n• Sukladnost s emisijskim normama\n• Tehnička dokumentacija proizvodnog procesa\nСрок действия: 5–10 godina (obnavljanje)\nСтоимость: 500–5.000 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Uporabna dozvola za proizvodni objekt",
+      "desc": "[Производство] Nadležno upravno tijelo za graditeljstvo",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Nadležno upravno tijelo za graditeljstvo\nТребования:\n• Građevinska dozvola\n• Tehnički pregled objekta\n• Sukladnost s propisima o zaštiti na radu\nСрок действия: Neodređeno\nСтоимость: 200–1.000 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licencija za obavljanje djelatnosti cestovnog prijevoza",
+      "desc": "[Логистика и склад] Ministarstvo mora, prometa i infrastrukture",
+      "price": 200,
+      "required": true,
+      "note": "Выдаёт: Ministarstvo mora, prometa i infrastrukture\nТребования:\n• Financijska sposobnost (9.000 EUR za prvo vozilo, 5.000 EUR za svako sljedeće)\n• Stručna osposobljenost (certifikat o stručnoj osposobljenosti za upravitelja prijevoza)\n• Dobar ugled (potvrda o nekažnjavanju)\n• Stvarno i stalno sjedište na području RH\nСрок действия: 10 godina\nСтоимость: 200–500 EUR"
+    },
+    {
+      "cat": "Лицензии и разрешения",
+      "name": "Licencija Zajednice za međunarodni prijevoz",
+      "desc": "[Логистика и склад] Ministarstvo mora, prometa i infrastrukture",
+      "price": 300,
+      "required": true,
+      "note": "Выдаёт: Ministarstvo mora, prometa i infrastrukture\nТребования:\n• Važeća nacionalna licencija\n• Sukladnost s Uredbom (EZ) 1071/2009\n• Vozila Euro 6 standarda\nСрок действия: 10 godina\nСтоимость: 300–800 EUR"
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Розничная торговля",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 25% (PDV)\nvat_reduced: 13% (ugostiteljske usluge, voda, ulaznice za kulturne događaje); 5% (kruh, mlijeko, lijekovi, knjige, dječja sjedala)\ncorporate_tax: 10% (dobit do 1.000.000 EUR) / 18% (dobit iznad 1.000.000 EUR)\nnotes: Porez na dividende: 10% (od 2025. godine; ranije 12%). Prag za obvezni ulazak u sustav PDV-a: 40.000 EUR godišnjeg prometa. Paušalni obrt: za obrtnike s prihodom do 40.000 EUR — paušalni porez na dohodak."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — HoReCa (общепит)",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 25%\nvat_reduced: 13% (usluge pripreme i usluživanja hrane i pića u ugostiteljskim objektima; usluge smještaja)\ncorporate_tax: 10% / 18%\nnotes: Ugostiteljske usluge pripreme hrane oporezuju se po sniženoj stopi od 13%. Smještaj također 13%. Bezalkoholna pića u restoranima — 13%, alkoholna — 25%."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Услуги и ремёсла",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 25%\nvat_reduced: 13% / 5% (ovisno o vrsti usluge)\ncorporate_tax: 10% / 18%\nnotes: Paušalni obrt: obrtnici s prihodom do 40.000 EUR mogu plaćati paušalni porez na dohodak (fiksni iznos ovisno o djelatnosti). Slobodna zanimanja (odvjetnici, arhitekti) moraju ispuniti dodatne uvjete komore."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Производство",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 25%\nvat_reduced: 13% / 5%\ncorporate_tax: 10% (dobit do 1.000.000 EUR) / 18% (iznad)\nnotes: Poticaji za ulaganja u potpomognutim područjima. Državne potpore za zapošljavanje i stručno usavršavanje. Slobodne zone s poreznim olakšicama."
+    },
+    {
+      "cat": "Налоги и отчётность",
+      "name": "Налоговый режим — Логистика и склад",
+      "desc": "НДС, корп. налог, соц. взносы",
+      "price": 0,
+      "required": true,
+      "note": "vat_standard: 25%\nvat_reduced: 13% (javni prijevoz putnika)\ncorporate_tax: 10% / 18%\nnotes: Međunarodni prijevoz robe oporezuje se po stopi od 0% PDV-a (izvoz/unutar EU). Trošarine na gorivo primjenjuju se dodatno."
+    },
+    {
+      "cat": "Общая информация",
+      "name": "Обзор бизнес-регистрации — Hrvatska",
+      "desc": "Сводка по регистрации, налогам, лицензиям",
+      "price": 0,
+      "required": false,
+      "note": "Хорватия 2026: d.o.o. — мин. капитал 2.500 EUR (мин. 625 EUR при регистрации), j.d.o.o. — от 1 EUR. Регистрация через Торговый суд (Sudski registar) или онлайн через START (26,55 EUR). Налог на прибыль: 10% (до 1 млн EUR) / 18% (свыше). НДС (PDV): стандартный 25%, сниженные 13% и 5%. Дивиденды — 10%. Obrt (ремесленник) — без мин. капитала, неограниченная ответственность. Паушальное налогообложение для оборота до 40.000 EUR."
+    }
+  ]
+}
