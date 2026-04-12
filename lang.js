@@ -72,3 +72,15 @@ cta_desc: { be:"Стварыце першую бізнес-канцэпцыю б
 cta_btn: { be:"Пачаць стварэнне", de:"Jetzt erstellen", en:"Start building", es:"Empezar a crear", fr:"Commencer à créer", it:"Inizia a creare", ja:"構築を始める", ko:"구축 시작", pl:"Zacznij tworzyć", pt:"Começar a criar", ru:"Начать создание", uk:"Почати створення" },
 
 };
+
+// ── Cross-domain lang sync via cookie (.svita.ai) ──
+window.onLangChange = function(lang) {
+  document.cookie = 'svita_lang=' + lang + ';path=/;max-age=31536000;domain=.svita.ai;SameSite=Lax';
+};
+// Read cookie on init — if user came from dashboard with a different lang
+(function(){
+  var m = document.cookie.match(/(?:^|;\s*)svita_lang=([a-z]{2})/);
+  if (m && m[1] && window.labs67i18n && m[1] !== window.labs67i18n.getLang()) {
+    window.labs67i18n.setLang(m[1]);
+  }
+})();

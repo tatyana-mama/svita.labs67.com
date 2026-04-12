@@ -46,7 +46,7 @@
       event: eventName,
       page: getPage(),
       referrer: document.referrer||null,
-      lang: localStorage.getItem('labs67lang')||'en',
+      lang: localStorage.getItem('svita_lang')||localStorage.getItem('labs67lang')||(document.cookie.match(/(?:^|;\s*)svita_lang=([a-z]{2})/)||[])[1]||'en',
       ua: navigator.userAgent,
       screen_w: screen.width,
       screen_h: screen.height,
