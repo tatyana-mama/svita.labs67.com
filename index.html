@@ -188,8 +188,8 @@ footer a:hover{color:var(--pr2)}
     <a href="#features" data-i18n="nav_features">Features</a>
     <a href="#how" data-i18n="nav_how">How it works</a>
     <a href="#domains" data-i18n="nav_domains">Domains</a>
-    <a href="https://dashboard.svita.ai" class="btn btn-ghost" data-i18n="nav_login">Log in</a>
-    <a href="https://dashboard.svita.ai#signup" class="btn btn-primary" data-i18n="nav_start">Start free</a>
+    <a href="https://dashboard.svita.ai" class="btn btn-ghost" data-i18n="nav_login" id="nav-login">Log in</a>
+    <a href="https://dashboard.svita.ai#signup" class="btn btn-primary" data-i18n="nav_start" id="nav-start">Start free</a>
   </div>
 </nav>
 
@@ -388,5 +388,21 @@ footer a:hover{color:var(--pr2)}
 <script src="lang.js"></script>
 <script src="labs67-i18n.js"></script>
 <script src="js/svita-log.js"></script>
+<script>
+// Auth-aware nav: show "Dashboard" if logged in via svita_session cookie
+(function(){
+  var s=document.cookie.match(/(?:^|;\s*)svita_session=/);
+  if(!s)return;
+  var login=document.getElementById('nav-login');
+  var start=document.getElementById('nav-start');
+  if(login){login.textContent='Dashboard';login.href='https://dashboard.svita.ai';login.className='btn btn-primary';login.removeAttribute('data-i18n')}
+  if(start)start.style.display='none';
+  // Also update hero buttons
+  var ha=document.querySelector('.hero-actions');
+  if(ha){
+    ha.innerHTML='<a href="https://dashboard.svita.ai" class="btn btn-cta" style="padding:14px 32px;font-size:15px;border-radius:14px">Dashboard</a>';
+  }
+})();
+</script>
 </body>
 </html>
