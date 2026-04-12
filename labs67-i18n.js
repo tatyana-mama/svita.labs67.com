@@ -186,6 +186,12 @@
     if (LANGS.indexOf(lang) === -1) return;
     cur = lang;
     localStorage.setItem(STORAGE_KEY, lang);
+    // Cross-subdomain sync for SVITA dashboard (svita_lang cookie on .svita.ai)
+    try {
+      var host = location.hostname;
+      var dom = (host.indexOf('svita.ai') >= 0) ? '.svita.ai' : '';
+      document.cookie = 'svita_lang=' + lang + ';path=/;max-age=31536000;SameSite=Lax' + (dom ? ';domain=' + dom : '');
+    } catch (e) {}
     document.documentElement.setAttribute('lang', lang);
 
     var mob = isMobile();

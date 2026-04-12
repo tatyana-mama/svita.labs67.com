@@ -577,12 +577,19 @@ footer a:hover{color:var(--pr2)}
         div.style.whiteSpace = 'pre-line';
         div.textContent = reply;
         msgs.appendChild(div);
-        // CTA after reply
+
+        // ── HANDOFF: store conversation in cross-subdomain cookie ──
+        try {
+          var handoff = JSON.stringify({ u: val, b: reply, k: detect(val), t: Date.now() });
+          document.cookie = 'svita_handoff=' + encodeURIComponent(handoff) + ';path=/;domain=.svita.ai;max-age=3600;SameSite=Lax';
+        } catch(e){}
+
+        // CTA after reply — continues chat in dashboard
         var cta = document.createElement('a');
-        cta.href = 'https://dashboard.svita.ai#signup';
+        cta.href = 'https://dashboard.svita.ai/?handoff=1#chat';
         cta.className = 'chat-msg bot';
         cta.style.cssText = 'background:linear-gradient(135deg,var(--cta),var(--cta2));color:#0F0F23;font-weight:700;text-decoration:none;display:inline-block;border:none;cursor:pointer';
-        cta.textContent = '→ ' + t('chat_cta', 'Open in Dashboard');
+        cta.textContent = '→ ' + t('chat_cta', 'Continue in Dashboard');
         msgs.appendChild(cta);
         msgs.scrollTop = msgs.scrollHeight;
         input.disabled = false;
