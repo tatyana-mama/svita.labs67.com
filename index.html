@@ -10,21 +10,22 @@
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <title>SVITA — Plan otwarcia gabinetu stomatologicznego w Polsce</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
+/* SVITA Design System v2 — POST-PIVOT 2026-04-12 — cyan + rose, dark mode */
 :root{
-  --bg:#0F0F23;--bg2:#161637;--bg3:#1E1E42;
-  --glass:rgba(139,92,246,.06);--glass2:rgba(139,92,246,.10);
-  --bd:rgba(139,92,246,.15);--bd2:rgba(139,92,246,.25);--bd-w:rgba(255,255,255,.06);
-  --tx:#F8FAFC;--tx2:rgba(248,250,252,.6);--tx3:rgba(248,250,252,.35);
-  --pr:#8B5CF6;--pr2:#A78BFA;--pr3:#7C3AED;
-  --cta:#FBBF24;--cta2:#F59E0B;
+  --bg:#0A0E1A;--bg2:#111827;--bg3:#1F2937;
+  --glass:rgba(34,211,238,.05);--glass2:rgba(34,211,238,.09);
+  --bd:rgba(34,211,238,.15);--bd2:rgba(34,211,238,.28);--bd-w:rgba(255,255,255,.06);
+  --tx:#E2E8F0;--tx2:rgba(226,232,240,.65);--tx3:rgba(226,232,240,.4);
+  --pr:#06B6D4;--pr2:#22D3EE;--pr3:#0891B2;          /* cyan — Svitiks circuit */
+  --cta:#F43F5E;--cta2:#E11D48;                       /* rose — buy/action */
   --gn:#34D399;--gnbg:rgba(52,211,153,.1);
-  --r:16px;
-  --f:'Poppins',system-ui,sans-serif;--f2:'Open Sans',system-ui,sans-serif;
-  --shadow:0 4px 30px rgba(0,0,0,.3);
-  --shadow-glow:0 0 60px rgba(139,92,246,.15);
+  --r:12px;
+  --f:'Plus Jakarta Sans',-apple-system,system-ui,sans-serif;--f2:'Plus Jakarta Sans',-apple-system,system-ui,sans-serif;
+  --shadow:0 4px 30px rgba(0,0,0,.4);
+  --shadow-glow:0 0 60px rgba(34,211,238,.15);
 }
 body{font-family:var(--f);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
@@ -33,7 +34,7 @@ a{color:inherit;text-decoration:none}
 .ambient{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0}
 .ambient .orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.35}
 .ambient .orb1{width:600px;height:600px;background:var(--pr);top:-200px;left:-100px;opacity:.12}
-.ambient .orb2{width:500px;height:500px;background:#6366F1;bottom:-150px;right:-100px;opacity:.08}
+.ambient .orb2{width:500px;height:500px;background:#0EA5E9;bottom:-150px;right:-100px;opacity:.08}
 .ambient .orb3{width:300px;height:300px;background:var(--cta);top:50%;left:60%;opacity:.05}
 
 /* NAV */
@@ -45,8 +46,8 @@ nav{position:fixed;top:16px;left:16px;right:16px;height:56px;background:rgba(15,
 .nav-links a{font-size:13px;font-weight:500;color:var(--tx2);transition:color .2s}
 .nav-links a:hover{color:var(--tx)}
 .btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 22px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;border:none;font-family:var(--f)}
-.btn-primary{background:var(--pr);color:#fff;box-shadow:0 0 20px rgba(139,92,246,.3)}.btn-primary:hover{background:var(--pr3);box-shadow:0 0 30px rgba(139,92,246,.5);transform:translateY(-1px)}
-.btn-cta{background:var(--cta);color:#0F0F23;font-weight:700;box-shadow:0 0 20px rgba(251,191,36,.2)}.btn-cta:hover{background:var(--cta2);box-shadow:0 0 30px rgba(251,191,36,.4);transform:translateY(-1px)}
+.btn-primary{background:var(--pr);color:#fff;box-shadow:0 0 20px rgba(34,211,238,.3)}.btn-primary:hover{background:var(--pr3);box-shadow:0 0 30px rgba(34,211,238,.5);transform:translateY(-1px)}
+.btn-cta{background:var(--cta);color:#fff;font-weight:700;box-shadow:0 0 20px rgba(244,63,94,.25)}.btn-cta:hover{background:var(--cta2);box-shadow:0 0 30px rgba(244,63,94,.45);transform:translateY(-1px)}
 .btn-ghost{background:transparent;color:var(--tx2);border:1px solid var(--bd)}.btn-ghost:hover{background:var(--glass);color:var(--tx);border-color:var(--bd2)}
 
 /* HERO */
@@ -62,10 +63,10 @@ nav{position:fixed;top:16px;left:16px;right:16px;height:56px;background:rgba(15,
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
 .hero-actions .btn{padding:14px 32px;font-size:15px;border-radius:14px}
 .hero-visual{position:relative;display:flex;align-items:center;justify-content:center}
-.hero-glow{position:absolute;width:520px;height:520px;background:radial-gradient(circle,rgba(139,92,246,.18) 0%,transparent 70%);border-radius:50%;z-index:0;pointer-events:none}
+.hero-glow{position:absolute;width:520px;height:520px;background:radial-gradient(circle,rgba(34,211,238,.18) 0%,transparent 70%);border-radius:50%;z-index:0;pointer-events:none}
 .chat-box{position:relative;z-index:2;width:100%;max-width:480px;background:rgba(15,15,35,.85);backdrop-filter:blur(24px) saturate(1.4);border:1px solid var(--bd2);border-radius:22px;box-shadow:var(--shadow-glow);overflow:hidden;display:flex;flex-direction:column;min-height:420px}
 .chat-head{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--bd)}
-.chat-head .avatar{width:40px;height:40px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.4),transparent);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chat-head .avatar{width:40px;height:40px;border-radius:50%;background:radial-gradient(circle,rgba(34,211,238,.4),transparent);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .chat-head .avatar img{width:36px;height:36px;object-fit:contain}
 .chat-head .who{font-size:14px;font-weight:700}
 .chat-head .who .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gn);margin-right:6px;animation:pulse 2s infinite}
@@ -140,7 +141,7 @@ nav{position:fixed;top:16px;left:16px;right:16px;height:56px;background:rgba(15,
 /* CTA */
 .cta{padding:100px 24px;text-align:center;position:relative;z-index:1}
 .cta-box{max-width:700px;margin:0 auto;background:rgba(22,22,55,.6);backdrop-filter:blur(24px);border:1px solid var(--bd2);border-radius:24px;padding:56px 48px;position:relative;overflow:hidden;box-shadow:var(--shadow-glow)}
-.cta-box::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(139,92,246,.05),transparent 30%);animation:spin 8s linear infinite}
+.cta-box::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(34,211,238,.05),transparent 30%);animation:spin 8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .cta-box h2{font-size:clamp(24px,3vw,36px);font-weight:800;margin-bottom:12px;position:relative}
 .cta-box p{font-size:15px;color:var(--tx2);margin-bottom:32px;font-family:var(--f2);position:relative}
@@ -264,7 +265,7 @@ footer a:hover{color:var(--pr2)}
 <!-- NAV -->
 <nav>
   <div class="nav-logo">
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="8" fill="#8B5CF6"/><path d="M8 10l6-4 6 4v8l-6 4-6-4V10z" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="14" cy="14" r="3" fill="#FBBF24"/></svg>
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="8" fill="#06B6D4"/><path d="M8 10l6-4 6 4v8l-6 4-6-4V10z" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="14" cy="14" r="3" fill="#F43F5E"/></svg>
     <span>SV<span class="accent">ITA</span></span>
   </div>
   <div class="nav-links">
@@ -602,7 +603,7 @@ footer a:hover{color:var(--pr2)}
         var cta = document.createElement('a');
         cta.href = 'https://dashboard.svita.ai/?handoff=1#chat';
         cta.className = 'chat-msg bot';
-        cta.style.cssText = 'background:linear-gradient(135deg,var(--cta),var(--cta2));color:#0F0F23;font-weight:700;text-decoration:none;display:inline-block;border:none;cursor:pointer';
+        cta.style.cssText = 'background:linear-gradient(135deg,var(--cta),var(--cta2));color:#fff;font-weight:700;text-decoration:none;display:inline-block;border:none;cursor:pointer';
         cta.textContent = '→ ' + t('chat_cta', 'Continue in Dashboard');
         msgs.appendChild(cta);
         msgs.scrollTop = msgs.scrollHeight;
