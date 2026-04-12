@@ -27,17 +27,11 @@
 (function () {
   'use strict';
 
-  var LANGS = ['be','de','en','es','fr','it','ja','ko','pl','pt','ru','uk'];
+  // PIVOT 2026-04-12: dental PL only — keep PL + EN, drop the other 10 languages.
+  var LANGS = ['pl','en'];
 
-  var LABELS = {
-    be: 'BY', de: 'DE', en: 'EN', es: 'ES', fr: 'FR', it: 'IT',
-    ja: 'JP', ko: 'KR', pl: 'PL', pt: 'PT', ru: 'RU', uk: 'UA'
-  };
-
-  var SHORT = {
-    be:'BY', de:'DE', en:'EN', es:'ES', fr:'FR', it:'IT',
-    ja:'JP', ko:'KR', pl:'PL', pt:'PT', ru:'RU', uk:'UA'
-  };
+  var LABELS = { pl: 'PL', en: 'EN' };
+  var SHORT  = { pl: 'PL', en: 'EN' };
 
   function isMobile() { return window.innerWidth <= 768; }
 
