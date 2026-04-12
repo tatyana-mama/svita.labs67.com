@@ -528,9 +528,9 @@ footer a:hover{color:var(--pr2)}
   }
 
   function buildReply(text){
-    var kind = detect(text);
-    var lang = window.labs67i18n.getLang();
-    return t('chat_reply_' + kind, t('chat_reply_generic', '✓ Analyzing your idea...\n\n📍 Premises: ~80 m², checking 14 districts\n👥 Staff: 3-5 people, payroll calculated\n🛠 Equipment: 24 items, ~€18,000\n📋 Documents: licenses for your country\n💰 Budget: €45,000-65,000 startup\n\nOpen Dashboard to see the full plan →'));
+    // Always return the short teaser. Full detailed plan is generated in the
+    // dashboard chat after handoff (frontend = preview, dashboard = depth).
+    return t('chat_reply_generic', '✓ Analyzing your idea...\n\n📍 Premises: calculating area & district\n👥 Team: building staff & payroll\n🛠 Equipment: matching suppliers\n📋 Documents: licenses for your country\n💰 Budget: startup cost & ROI\n\nOpen Dashboard for the full plan →');
   }
 
   function appendMsg(text, cls){
