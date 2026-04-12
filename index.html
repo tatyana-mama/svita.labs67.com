@@ -296,8 +296,23 @@ footer a:hover{color:var(--pr2)}
     </div>
     <div class="hero-visual">
       <div class="hero-glow"></div>
-      <div class="hero-cat float">
-        <img src="img/cybercat-22-buddha.png" alt="Svitiks — SVITA AI mascot meditating">
+      <div class="chat-box" id="heroChat">
+        <div class="chat-head">
+          <div class="avatar"><img src="img/cybercat-22-buddha.png" alt="Svitiks"></div>
+          <div>
+            <div class="who"><span class="dot"></span>SVITA AI</div>
+            <div class="status" data-i18n="chat_status">online · ready to help</div>
+          </div>
+        </div>
+        <div class="chat-msgs" id="chatMsgs">
+          <div class="chat-msg bot" data-i18n="chat_welcome">Hi! Tell me what kind of business you want to launch — café, dental clinic, fitness studio? I'll calculate everything: premises, staff, equipment, budget.</div>
+        </div>
+        <form class="chat-form" id="chatForm" autocomplete="off">
+          <input type="text" id="chatInput" data-i18n-placeholder="chat_placeholder" placeholder="Coffee shop in Warsaw, 80m²..." maxlength="200">
+          <button type="submit" aria-label="Send">
+            <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+          </button>
+        </form>
       </div>
     </div>
   </div>
@@ -488,6 +503,93 @@ footer a:hover{color:var(--pr2)}
   if(ha){
     ha.innerHTML='<a href="https://dashboard.svita.ai" class="btn btn-cta" style="padding:14px 32px;font-size:15px;border-radius:14px">Dashboard</a>';
   }
+})();
+
+// ── HERO CHAT — fake AI demo (sells the product, no API call) ──
+(function(){
+  var form = document.getElementById('chatForm');
+  var input = document.getElementById('chatInput');
+  var msgs = document.getElementById('chatMsgs');
+  if(!form || !input || !msgs) return;
+
+  function t(key, fallback){
+    try { return (window.I18N && window.I18N[key] && window.I18N[key][window.labs67i18n.getLang()]) || fallback; }
+    catch(e){ return fallback; }
+  }
+
+  function detect(text){
+    var s = text.toLowerCase();
+    if(/coffee|cafe|кофе|кав|káva|kawa|кафе|barista/.test(s)) return 'coffee';
+    if(/dental|dentist|стомат|зуб|клиник|clinic|zahnarzt|zubn/.test(s)) return 'dental';
+    if(/fitness|gym|зал|спорт|siłown|fitnes/.test(s)) return 'fitness';
+    if(/beauty|salon|салон|красот|spa|frisör|kosmet/.test(s)) return 'beauty';
+    if(/food|restaurant|ресторан|piekarnia|bakery|пекарн|hotel/.test(s)) return 'food';
+    return 'generic';
+  }
+
+  function buildReply(text){
+    var kind = detect(text);
+    var lang = window.labs67i18n.getLang();
+    return t('chat_reply_' + kind, t('chat_reply_generic', '✓ Analyzing your idea...\n\n📍 Premises: ~80 m², checking 14 districts\n👥 Staff: 3-5 people, payroll calculated\n🛠 Equipment: 24 items, ~€18,000\n📋 Documents: licenses for your country\n💰 Budget: €45,000-65,000 startup\n\nOpen Dashboard to see the full plan →'));
+  }
+
+  function appendMsg(text, cls){
+    var div = document.createElement('div');
+    div.className = 'chat-msg ' + cls;
+    div.textContent = text;
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+    return div;
+  }
+
+  function appendTyping(){
+    var div = document.createElement('div');
+    div.className = 'chat-msg bot typing';
+    div.innerHTML = '<span></span><span></span><span></span>';
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+    return div;
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var val = input.value.trim();
+    if(!val) return;
+    appendMsg(val, 'user');
+    input.value = '';
+    input.disabled = true;
+
+    // 1) "Анализирую..." status text
+    var statusEl = appendMsg(t('chat_analyzing', 'Analyzing...'), 'bot');
+    statusEl.style.opacity = '0.7';
+
+    // 2) typing dots
+    setTimeout(function(){
+      statusEl.remove();
+      var typing = appendTyping();
+      // 3) reply
+      setTimeout(function(){
+        typing.remove();
+        var reply = buildReply(val);
+        // multi-line reply with line breaks preserved
+        var div = document.createElement('div');
+        div.className = 'chat-msg bot';
+        div.style.whiteSpace = 'pre-line';
+        div.textContent = reply;
+        msgs.appendChild(div);
+        // CTA after reply
+        var cta = document.createElement('a');
+        cta.href = 'https://dashboard.svita.ai#signup';
+        cta.className = 'chat-msg bot';
+        cta.style.cssText = 'background:linear-gradient(135deg,var(--cta),var(--cta2));color:#0F0F23;font-weight:700;text-decoration:none;display:inline-block;border:none;cursor:pointer';
+        cta.textContent = '→ ' + t('chat_cta', 'Open in Dashboard');
+        msgs.appendChild(cta);
+        msgs.scrollTop = msgs.scrollHeight;
+        input.disabled = false;
+        input.focus();
+      }, 1400);
+    }, 900);
+  });
 })();
 </script>
 </body>
