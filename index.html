@@ -185,11 +185,11 @@ footer a:hover{color:var(--pr2)}
     <span>SV<span class="accent">ITA</span></span>
   </div>
   <div class="nav-links">
-    <a href="#features">Features</a>
-    <a href="#how">How it works</a>
-    <a href="#domains">Domains</a>
-    <a href="dashboard.html" class="btn btn-ghost">Log in</a>
-    <a href="dashboard.html#signup" class="btn btn-primary">Start free</a>
+    <a href="#features" data-i18n="nav_features">Features</a>
+    <a href="#how" data-i18n="nav_how">How it works</a>
+    <a href="#domains" data-i18n="nav_domains">Domains</a>
+    <a href="dashboard.html" class="btn btn-ghost" data-i18n="nav_login">Log in</a>
+    <a href="dashboard.html#signup" class="btn btn-primary" data-i18n="nav_start">Start free</a>
   </div>
 </nav>
 
@@ -197,17 +197,17 @@ footer a:hover{color:var(--pr2)}
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-text">
-      <div class="hero-badge"><span class="pulse"></span> AI-powered business constructor</div>
-      <h1>Build your <span class="gradient">business concept</span> in minutes</h1>
-      <p>SVITA generates a complete business model: premises, staff, equipment, services, financials and legal docs for any European country.</p>
+      <div class="hero-badge"><span class="pulse"></span> <span data-i18n="hero_badge">AI-powered business constructor</span></div>
+      <h1 data-i18n-html="hero_title">Build your <span class="gradient">business concept</span> in minutes</h1>
+      <p data-i18n="hero_desc">SVITA generates a complete business model: premises, staff, equipment, services, financials and legal docs for any European country.</p>
       <div class="hero-actions">
-        <a href="dashboard.html#signup" class="btn btn-cta">Start free</a>
-        <a href="dashboard.html" class="btn btn-ghost">Log in</a>
+        <a href="dashboard.html#signup" class="btn btn-cta" data-i18n="hero_cta">Start free</a>
+        <a href="dashboard.html" class="btn btn-ghost" data-i18n="nav_login">Log in</a>
       </div>
       <div class="hero-stats">
-        <div class="hero-stat"><div class="num">6</div><div class="label">Constructor stages</div></div>
-        <div class="hero-stat"><div class="num">40+</div><div class="label">European countries</div></div>
-        <div class="hero-stat"><div class="num">AI</div><div class="label">Powered analysis</div></div>
+        <div class="hero-stat"><div class="num">6</div><div class="label" data-i18n="stat_stages">Constructor stages</div></div>
+        <div class="hero-stat"><div class="num">40+</div><div class="label" data-i18n="stat_countries">European countries</div></div>
+        <div class="hero-stat"><div class="num">AI</div><div class="label" data-i18n="stat_ai">Powered analysis</div></div>
       </div>
     </div>
     <div class="hero-visual">
@@ -221,52 +221,52 @@ footer a:hover{color:var(--pr2)}
 
 <!-- FEATURES -->
 <section class="features" id="features">
-  <div class="section-label">Features</div>
-  <div class="section-title">Everything to launch a business</div>
-  <div class="section-sub">From premises layout to ROI calculations — SVITA handles the complexity so you can focus on your vision.</div>
+  <div class="section-label" data-i18n="feat_label">Features</div>
+  <div class="section-title" data-i18n="feat_title">Everything to launch a business</div>
+  <div class="section-sub" data-i18n="feat_sub">From premises layout to ROI calculations — SVITA handles the complexity so you can focus on your vision.</div>
   <div class="features-grid">
     <div class="glass-card feature-card">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>
       </div>
-      <h3>Premises Constructor</h3>
-      <p>Zone planning, area calculation, engineering networks — compliant with local sanitary standards.</p>
+      <h3 data-i18n="f1_t">Premises Constructor</h3>
+      <p data-i18n="f1_d">Zone planning, area calculation, engineering networks — compliant with local sanitary standards.</p>
     </div>
     <div class="glass-card feature-card">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
       </div>
-      <h3>Staff Planning</h3>
-      <p>Hiring plan, payroll calculation, job descriptions following country-specific labor regulations.</p>
+      <h3 data-i18n="f2_t">Staff Planning</h3>
+      <p data-i18n="f2_d">Hiring plan, payroll calculation, job descriptions following country-specific labor regulations.</p>
     </div>
     <div class="glass-card feature-card">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
       </div>
-      <h3>Equipment Catalog</h3>
-      <p>Supplier database with real prices, specifications, warranties and delivery timelines.</p>
+      <h3 data-i18n="f3_t">Equipment Catalog</h3>
+      <p data-i18n="f3_d">Supplier database with real prices, specifications, warranties and delivery timelines.</p>
       <img src="img/cybercat-03-thinking.png" alt="" class="cat-peek">
     </div>
     <div class="glass-card feature-card">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
       </div>
-      <h3>Financial Model</h3>
-      <p>Budget breakdown, profitability analysis, ROI calculation, payback period — fully automated.</p>
+      <h3 data-i18n="f4_t">Financial Model</h3>
+      <p data-i18n="f4_d">Budget breakdown, profitability analysis, ROI calculation, payback period — fully automated.</p>
     </div>
     <div class="glass-card feature-card">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
       </div>
-      <h3>Legal & Compliance</h3>
-      <p>Licenses, permits, health inspections — checklists tailored to each European country.</p>
+      <h3 data-i18n="f5_t">Legal & Compliance</h3>
+      <p data-i18n="f5_d">Licenses, permits, health inspections — checklists tailored to each European country.</p>
     </div>
     <div class="glass-card feature-card">
       <div class="feature-icon">
         <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 017 7c0 5-7 13-7 13S5 14 5 9a7 7 0 017-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
       </div>
-      <h3>AI Advisor</h3>
-      <p>SVITA AI analyzes your concept, finds risks and suggests optimizations based on market data.</p>
+      <h3 data-i18n="f6_t">AI Advisor</h3>
+      <p data-i18n="f6_d">SVITA AI analyzes your concept, finds risks and suggests optimizations based on market data.</p>
       <img src="img/cybercat-02-thumbsup.png" alt="" class="cat-peek">
     </div>
   </div>
@@ -275,29 +275,29 @@ footer a:hover{color:var(--pr2)}
 <!-- HOW IT WORKS -->
 <section class="how" id="how">
   <div class="how-inner">
-    <div class="section-label">How it works</div>
-    <div class="section-title">Three steps to your business plan</div>
-    <div class="section-sub">No expertise required. Our AI handles the research, calculations and compliance checks.</div>
+    <div class="section-label" data-i18n="how_label">How it works</div>
+    <div class="section-title" data-i18n="how_title">Three steps to your business plan</div>
+    <div class="section-sub" data-i18n="how_sub">No expertise required. Our AI handles the research, calculations and compliance checks.</div>
     <div class="steps">
       <div class="step">
         <div class="step-cat"><img src="img/cybercat-01-wave.png" alt="Svitiks waving"></div>
         <div class="step-num">1</div>
-        <h4>Set Parameters</h4>
-        <p>Choose business type, city, area, budget and target segment — the AI constructor does the rest.</p>
+        <h4 data-i18n="s1_t">Set Parameters</h4>
+        <p data-i18n="s1_d">Choose business type, city, area, budget and target segment — the AI constructor does the rest.</p>
         <div class="step-line"></div>
       </div>
       <div class="step">
         <div class="step-cat"><img src="img/cybercat-23-chef.png" alt="Svitiks chef"></div>
         <div class="step-num">2</div>
-        <h4>AI Generates Concept</h4>
-        <p>SVITA builds complete business model: rooms, staff, equipment, services, costs and documents.</p>
+        <h4 data-i18n="s2_t">AI Generates Concept</h4>
+        <p data-i18n="s2_d">SVITA builds complete business model: rooms, staff, equipment, services, costs and documents.</p>
         <div class="step-line"></div>
       </div>
       <div class="step">
         <div class="step-cat"><img src="img/cybercat-24-business.png" alt="Svitiks business"></div>
         <div class="step-num">3</div>
-        <h4>Launch & Scale</h4>
-        <p>Download your business plan, share with investors, and start building your dream business.</p>
+        <h4 data-i18n="s3_t">Launch & Scale</h4>
+        <p data-i18n="s3_d">Download your business plan, share with investors, and start building your dream business.</p>
       </div>
     </div>
   </div>
@@ -305,45 +305,45 @@ footer a:hover{color:var(--pr2)}
 
 <!-- DOMAINS -->
 <section class="domains" id="domains">
-  <div class="section-label">Domains</div>
-  <div class="section-title">What business to build?</div>
-  <div class="section-sub">SVITA supports multiple industries with specialized knowledge bases for each domain.</div>
+  <div class="section-label" data-i18n="dom_label">Domains</div>
+  <div class="section-title" data-i18n="dom_title">What business to build?</div>
+  <div class="section-sub" data-i18n="dom_sub">SVITA supports multiple industries with specialized knowledge bases for each domain.</div>
   <div class="domains-grid">
     <div class="glass-card domain-card">
       <div class="domain-img">
         <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--pr2)" stroke-width="1.5"><path d="M12 2C8 2 6 5 6 8c0 2 1 3 2 4l-1 8h10l-1-8c1-1 2-2 2-4 0-3-2-6-6-6z"/><path d="M9 22h6"/></svg>
       </div>
-      <h4>Dental Clinics</h4>
-      <p>Family, pediatric, orthodontics</p>
+      <h4 data-i18n="d1_t">Dental Clinics</h4>
+      <p data-i18n="d1_d">Family, pediatric, orthodontics</p>
     </div>
     <div class="glass-card domain-card">
       <div class="domain-img">
         <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--pr2)" stroke-width="1.5"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg>
       </div>
-      <h4>Coffee & Cafe</h4>
-      <p>Specialty, to-go, bakery</p>
+      <h4 data-i18n="d2_t">Coffee & Cafe</h4>
+      <p data-i18n="d2_d">Specialty, to-go, bakery</p>
     </div>
     <div class="glass-card domain-card">
       <div class="domain-img">
         <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--pr2)" stroke-width="1.5"><circle cx="12" cy="8" r="5"/><path d="M3 21c0-4.4 3.6-8 8-8h2c4.4 0 8 3.6 8 8"/><path d="M15 3l2 3-2 3"/></svg>
       </div>
-      <h4>Beauty Salon</h4>
-      <p>Premium, barbershop, SPA</p>
+      <h4 data-i18n="d3_t">Beauty Salon</h4>
+      <p data-i18n="d3_d">Premium, barbershop, SPA</p>
     </div>
     <div class="glass-card domain-card">
       <div class="domain-img">
         <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--pr2)" stroke-width="1.5"><path d="M18 2l3 3-3 3M6 22l-3-3 3-3"/><path d="M21 5H9a4 4 0 000 8h6a4 4 0 010 8H3"/></svg>
       </div>
-      <h4>Restaurant</h4>
-      <p>Fine dining, fast food, catering</p>
+      <h4 data-i18n="d4_t">Restaurant</h4>
+      <p data-i18n="d4_d">Fine dining, fast food, catering</p>
     </div>
   </div>
 </section>
 
 <!-- COUNTRIES -->
 <section class="countries">
-  <div class="section-label">Geography</div>
-  <div class="section-title">All of Europe, 12 currencies</div>
+  <div class="section-label" data-i18n="geo_label">Geography</div>
+  <div class="section-title" data-i18n="geo_title">All of Europe, 12 currencies</div>
   <div class="country-list">
     <div class="country-tag">Poland <span class="currency">PLN</span></div>
     <div class="country-tag">Czech Republic <span class="currency">CZK</span></div>
@@ -368,9 +368,9 @@ footer a:hover{color:var(--pr2)}
 <!-- CTA -->
 <section class="cta">
   <div class="cta-box">
-    <h2>Ready to build your concept?</h2>
-    <p>Create your first business concept for free. No card required, no limits on your first project.</p>
-    <a href="dashboard.html#signup" class="btn btn-cta" style="padding:16px 40px;font-size:16px">Start building</a>
+    <h2 data-i18n="cta_title">Ready to build your concept?</h2>
+    <p data-i18n="cta_desc">Create your first business concept for free. No card required, no limits on your first project.</p>
+    <a href="dashboard.html#signup" class="btn btn-cta" style="padding:16px 40px;font-size:16px" data-i18n="cta_btn">Start building</a>
     <img src="img/cybercat-06-celebrate.png" alt="" class="cta-cat">
   </div>
 </section>
@@ -385,6 +385,8 @@ footer a:hover{color:var(--pr2)}
 </footer>
 
 <div class="lang-switcher"></div>
+<script src="lang.js"></script>
 <script src="labs67-i18n.js"></script>
+<script src="js/svita-log.js"></script>
 </body>
 </html>
