@@ -4,238 +4,387 @@
 <meta charset="utf-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="SVITA — AI-конструктор бизнес-концепций. Стоматология, кофейни, салоны красоты. Польша, Чехия, Германия.">
+<meta name="description" content="SVITA — AI-powered business concept builder. Dental clinics, cafes, barbershops across Europe.">
+<meta property="og:title" content="SVITA — AI Business Constructor">
+<meta property="og:description" content="Build your business concept in minutes with AI. Equipment, staff, premises, financials — all automated.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <title>SVITA — AI Business Constructor</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#f7f8fb;--sf:#ffffff;--sf2:#f0f2f7;--sf3:#e1e4ec;
-  --bd:rgba(0,0,0,.05);--bd2:rgba(0,0,0,.09);
-  --tx:#1a2332;--tx2:rgba(26,35,50,.58);--tx3:rgba(26,35,50,.32);
-  --ac:#4f6ef7;--ac2:#3b5ce4;--acbg:rgba(79,110,247,.05);--acbd:rgba(79,110,247,.14);
-  --gn:#1a9956;--gnbg:rgba(26,153,86,.05);
-  --r:14px;--f:'Inter',system-ui,sans-serif;
-  --shadow:0 1px 4px rgba(0,0,0,.05),0 0 1px rgba(0,0,0,.03);
-  --shadow-md:0 4px 12px rgba(0,0,0,.04),0 1px 3px rgba(0,0,0,.03);
+  --bg:#0F0F23;--bg2:#161637;--bg3:#1E1E42;
+  --glass:rgba(139,92,246,.06);--glass2:rgba(139,92,246,.10);
+  --bd:rgba(139,92,246,.15);--bd2:rgba(139,92,246,.25);--bd-w:rgba(255,255,255,.06);
+  --tx:#F8FAFC;--tx2:rgba(248,250,252,.6);--tx3:rgba(248,250,252,.35);
+  --pr:#8B5CF6;--pr2:#A78BFA;--pr3:#7C3AED;
+  --cta:#FBBF24;--cta2:#F59E0B;
+  --gn:#34D399;--gnbg:rgba(52,211,153,.1);
+  --r:16px;
+  --f:'Poppins',system-ui,sans-serif;--f2:'Open Sans',system-ui,sans-serif;
+  --shadow:0 4px 30px rgba(0,0,0,.3);
+  --shadow-glow:0 0 60px rgba(139,92,246,.15);
 }
-body{font-family:var(--f);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased}
+body{font-family:var(--f);background:var(--bg);color:var(--tx);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 
+/* AMBIENT */
+.ambient{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0}
+.ambient .orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.35}
+.ambient .orb1{width:600px;height:600px;background:var(--pr);top:-200px;left:-100px;opacity:.12}
+.ambient .orb2{width:500px;height:500px;background:#6366F1;bottom:-150px;right:-100px;opacity:.08}
+.ambient .orb3{width:300px;height:300px;background:var(--cta);top:50%;left:60%;opacity:.05}
+
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;height:56px;background:rgba(255,255,255,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 40px}
-.nav-logo{font-size:18px;font-weight:800;display:flex;align-items:center;gap:8px}
-.nav-logo .dot{width:8px;height:8px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 3px var(--acbg)}
-.nav-links{display:flex;align-items:center;gap:24px}
-.nav-links a{font-size:13px;font-weight:500;color:var(--tx2);transition:color .15s}
+nav{position:fixed;top:16px;left:16px;right:16px;height:56px;background:rgba(15,15,35,.75);backdrop-filter:blur(24px) saturate(1.4);border:1px solid var(--bd);border-radius:16px;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 24px;transition:all .3s}
+.nav-logo{font-size:20px;font-weight:800;display:flex;align-items:center;gap:10px;letter-spacing:-.01em}
+.nav-logo img{width:32px;height:32px;border-radius:8px}
+.nav-logo .accent{color:var(--pr2)}
+.nav-links{display:flex;align-items:center;gap:20px}
+.nav-links a{font-size:13px;font-weight:500;color:var(--tx2);transition:color .2s}
 .nav-links a:hover{color:var(--tx)}
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:9px 20px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;border:none}
-.btn-primary{background:var(--ac);color:#fff}.btn-primary:hover{background:var(--ac2)}
-.btn-ghost{background:transparent;color:var(--tx2);border:1px solid var(--bd2)}.btn-ghost:hover{background:var(--sf2);color:var(--tx)}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 22px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;border:none;font-family:var(--f)}
+.btn-primary{background:var(--pr);color:#fff;box-shadow:0 0 20px rgba(139,92,246,.3)}.btn-primary:hover{background:var(--pr3);box-shadow:0 0 30px rgba(139,92,246,.5);transform:translateY(-1px)}
+.btn-cta{background:var(--cta);color:#0F0F23;font-weight:700;box-shadow:0 0 20px rgba(251,191,36,.2)}.btn-cta:hover{background:var(--cta2);box-shadow:0 0 30px rgba(251,191,36,.4);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--tx2);border:1px solid var(--bd)}.btn-ghost:hover{background:var(--glass);color:var(--tx);border-color:var(--bd2)}
 
 /* HERO */
-.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(79,110,247,.06) 0%,transparent 70%);pointer-events:none}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;background:var(--acbg);border:1px solid var(--acbd);font-size:11px;font-weight:600;color:var(--ac2);margin-bottom:24px}
-.hero-badge .pulse{width:6px;height:6px;border-radius:50%;background:var(--gn);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.hero h1{font-size:clamp(36px,5vw,56px);font-weight:800;line-height:1.1;letter-spacing:-.02em;max-width:700px;margin-bottom:16px}
-.hero h1 .gradient{background:linear-gradient(135deg,var(--ac),#7c5cfc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero p{font-size:clamp(15px,1.8vw,18px);color:var(--tx2);max-width:520px;line-height:1.6;margin-bottom:36px;font-weight:400}
-.hero-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
-.hero-actions .btn{padding:12px 28px;font-size:14px;border-radius:12px}
-.hero-stats{display:flex;gap:48px;margin-top:64px}
-.hero-stat{text-align:center}
-.hero-stat .num{font-size:28px;font-weight:800;color:var(--ac2)}
-.hero-stat .label{font-size:11px;color:var(--tx3);margin-top:4px;font-weight:500}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:120px 24px 80px;position:relative;z-index:1}
+.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;max-width:1200px;width:100%;align-items:center}
+.hero-text{max-width:560px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:24px;background:var(--glass);border:1px solid var(--bd);font-size:12px;font-weight:600;color:var(--pr2);margin-bottom:28px}
+.hero-badge .pulse{width:7px;height:7px;border-radius:50%;background:var(--gn);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-size:clamp(36px,4.5vw,58px);font-weight:800;line-height:1.08;letter-spacing:-.03em;margin-bottom:20px}
+.hero h1 .gradient{background:linear-gradient(135deg,var(--pr2),var(--cta));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:17px;color:var(--tx2);line-height:1.7;margin-bottom:36px;font-family:var(--f2);max-width:460px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap}
+.hero-actions .btn{padding:14px 32px;font-size:15px;border-radius:14px}
+.hero-visual{position:relative;display:flex;align-items:center;justify-content:center}
+.hero-cat{width:320px;height:320px;position:relative;z-index:2}
+.hero-cat img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 40px rgba(139,92,246,.3))}
+.hero-glow{position:absolute;width:400px;height:400px;background:radial-gradient(circle,rgba(139,92,246,.2) 0%,transparent 70%);border-radius:50%;z-index:1}
+.hero-stats{display:flex;gap:40px;margin-top:52px}
+.hero-stat{text-align:left}
+.hero-stat .num{font-size:32px;font-weight:800;background:linear-gradient(135deg,var(--pr2),var(--cta));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-stat .label{font-size:12px;color:var(--tx3);margin-top:4px;font-weight:500}
+
+/* GLASS CARD */
+.glass-card{background:rgba(22,22,55,.6);backdrop-filter:blur(20px);border:1px solid var(--bd);border-radius:20px;padding:32px;transition:all .3s}
+.glass-card:hover{border-color:var(--bd2);box-shadow:var(--shadow-glow);transform:translateY(-4px)}
 
 /* FEATURES */
-.features{padding:80px 24px;max-width:1100px;margin:0 auto}
-.section-label{font-size:11px;font-weight:700;color:var(--ac2);text-transform:uppercase;letter-spacing:2px;text-align:center;margin-bottom:12px}
-.section-title{font-size:clamp(24px,3vw,36px);font-weight:800;text-align:center;margin-bottom:48px;letter-spacing:-.01em}
-.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-.feature-card{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:28px;transition:all .2s}
-.feature-card:hover{border-color:var(--bd2);box-shadow:var(--shadow-md);transform:translateY(-2px)}
-.feature-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:16px}
-.feature-card h3{font-size:15px;font-weight:700;margin-bottom:8px}
-.feature-card p{font-size:13px;color:var(--tx2);line-height:1.6}
+.features{padding:100px 24px;max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.section-label{font-size:12px;font-weight:700;color:var(--pr2);text-transform:uppercase;letter-spacing:3px;text-align:center;margin-bottom:12px}
+.section-title{font-size:clamp(28px,3.5vw,42px);font-weight:800;text-align:center;margin-bottom:16px;letter-spacing:-.02em}
+.section-sub{font-size:15px;color:var(--tx2);text-align:center;max-width:500px;margin:0 auto 56px;font-family:var(--f2);line-height:1.6}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.feature-card{position:relative;overflow:hidden}
+.feature-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;background:var(--glass2);border:1px solid var(--bd)}
+.feature-icon svg{width:24px;height:24px;stroke:var(--pr2);fill:none;stroke-width:1.5}
+.feature-card h3{font-size:16px;font-weight:700;margin-bottom:10px}
+.feature-card p{font-size:13px;color:var(--tx2);line-height:1.7;font-family:var(--f2)}
+.feature-card .cat-peek{position:absolute;bottom:-8px;right:-4px;width:64px;opacity:.5;transition:opacity .3s}
+.feature-card:hover .cat-peek{opacity:.85}
+
+/* HOW IT WORKS */
+.how{padding:100px 24px;position:relative;z-index:1}
+.how-inner{max-width:1000px;margin:0 auto}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:56px}
+.step{text-align:center;position:relative}
+.step-num{width:48px;height:48px;border-radius:50%;background:var(--glass2);border:1px solid var(--bd2);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:var(--pr2);margin:0 auto 20px}
+.step-cat{width:80px;height:80px;margin:0 auto 16px;border-radius:50%;overflow:hidden;border:2px solid var(--bd);background:var(--bg2)}
+.step-cat img{width:100%;height:100%;object-fit:cover}
+.step h4{font-size:15px;font-weight:700;margin-bottom:8px}
+.step p{font-size:13px;color:var(--tx2);line-height:1.6;font-family:var(--f2);max-width:260px;margin:0 auto}
+.step-line{position:absolute;top:24px;left:calc(50% + 40px);width:calc(100% - 80px);height:1px;background:linear-gradient(90deg,var(--bd2),transparent)}
 
 /* DOMAINS */
-.domains{padding:80px 24px;max-width:1100px;margin:0 auto}
-.domains-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
-.domain-card{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:24px;text-align:center;transition:all .2s}
-.domain-card:hover{border-color:var(--acbd);box-shadow:var(--shadow)}
-.domain-icon{font-size:32px;margin-bottom:12px}
-.domain-card h4{font-size:14px;font-weight:700;margin-bottom:4px}
-.domain-card p{font-size:11px;color:var(--tx3)}
+.domains{padding:100px 24px;max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.domains-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.domain-card{text-align:center;padding:36px 24px}
+.domain-card .domain-img{width:72px;height:72px;margin:0 auto 16px;border-radius:50%;background:var(--glass2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.domain-card .domain-img img{width:56px;height:56px;object-fit:contain}
+.domain-card h4{font-size:15px;font-weight:700;margin-bottom:6px}
+.domain-card p{font-size:12px;color:var(--tx3);font-family:var(--f2)}
 
 /* COUNTRIES */
-.countries{padding:60px 24px;max-width:800px;margin:0 auto;text-align:center}
-.country-list{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
-.country-tag{padding:8px 18px;border-radius:10px;background:var(--sf);border:1px solid var(--bd);font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px}
-.country-tag .currency{font-size:11px;color:var(--ac2);font-weight:700}
+.countries{padding:80px 24px;max-width:900px;margin:0 auto;text-align:center;position:relative;z-index:1}
+.country-list{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:32px}
+.country-tag{padding:10px 20px;border-radius:12px;background:var(--glass);border:1px solid var(--bd);font-size:13px;font-weight:500;display:flex;align-items:center;gap:8px;transition:all .2s}
+.country-tag:hover{border-color:var(--bd2);background:var(--glass2)}
+.country-tag .currency{font-size:11px;color:var(--cta);font-weight:700}
 
 /* CTA */
-.cta{padding:80px 24px;text-align:center}
-.cta-box{max-width:600px;margin:0 auto;background:var(--sf);border:1px solid var(--bd2);border-radius:20px;padding:48px 40px;box-shadow:var(--shadow-md)}
-.cta-box h2{font-size:24px;font-weight:800;margin-bottom:8px}
-.cta-box p{font-size:14px;color:var(--tx2);margin-bottom:28px}
+.cta{padding:100px 24px;text-align:center;position:relative;z-index:1}
+.cta-box{max-width:700px;margin:0 auto;background:rgba(22,22,55,.6);backdrop-filter:blur(24px);border:1px solid var(--bd2);border-radius:24px;padding:56px 48px;position:relative;overflow:hidden;box-shadow:var(--shadow-glow)}
+.cta-box::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(139,92,246,.05),transparent 30%);animation:spin 8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cta-box h2{font-size:clamp(24px,3vw,36px);font-weight:800;margin-bottom:12px;position:relative}
+.cta-box p{font-size:15px;color:var(--tx2);margin-bottom:32px;font-family:var(--f2);position:relative}
+.cta-box .btn{position:relative}
+.cta-cat{position:absolute;bottom:-10px;right:24px;width:100px;opacity:.6;z-index:0}
 
 /* FOOTER */
-footer{padding:32px 40px;border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--tx3)}
-footer a{color:var(--tx2);font-weight:500}
-footer a:hover{color:var(--tx)}
+footer{padding:40px;border-top:1px solid var(--bd-w);display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--tx3);position:relative;z-index:1}
+footer a{color:var(--tx2);font-weight:500;transition:color .2s}
+footer a:hover{color:var(--pr2)}
 
 /* MOBILE */
+@media(max-width:1024px){
+  .hero-inner{grid-template-columns:1fr;text-align:center}
+  .hero-text{margin:0 auto}
+  .hero p{margin:0 auto 36px}
+  .hero-actions{justify-content:center}
+  .hero-stats{justify-content:center}
+  .hero-stat{text-align:center}
+  .hero-visual{margin-top:40px}
+  .features-grid{grid-template-columns:repeat(2,1fr)}
+  .domains-grid{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:1fr;gap:40px}
+  .step-line{display:none}
+}
 @media(max-width:768px){
-  nav{padding:0 16px}
+  nav{top:8px;left:8px;right:8px;padding:0 16px;height:52px;border-radius:14px}
   .nav-links a:not(.btn){display:none}
   .hero{padding:100px 16px 60px}
-  .hero-stats{gap:24px}
-  .hero-stat .num{font-size:22px}
-  .features,.domains,.countries,.cta{padding:48px 16px}
-  .cta-box{padding:32px 20px}
-  footer{flex-direction:column;gap:8px;text-align:center}
+  .hero-cat{width:220px;height:220px}
+  .hero h1{font-size:32px}
+  .hero-stats{gap:24px;flex-wrap:wrap}
+  .features,.domains,.countries,.cta,.how{padding:60px 16px}
+  .features-grid{grid-template-columns:1fr}
+  .domains-grid{grid-template-columns:repeat(2,1fr)}
+  .cta-box{padding:36px 24px}
+  footer{flex-direction:column;gap:12px;text-align:center;padding:24px 16px}
 }
+@media(max-width:480px){
+  .hero-actions{flex-direction:column;align-items:stretch}
+  .hero-actions .btn{text-align:center}
+  .domains-grid{grid-template-columns:1fr}
+}
+
+/* FLOAT ANIMATION */
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.float{animation:float 4s ease-in-out infinite}
 </style>
 </head>
 <body>
 
+<!-- AMBIENT BG -->
+<div class="ambient">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+</div>
+
 <!-- NAV -->
 <nav>
-  <div class="nav-logo"><span class="dot"></span> SVITA</div>
+  <div class="nav-logo">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="8" fill="#8B5CF6"/><path d="M8 10l6-4 6 4v8l-6 4-6-4V10z" stroke="#fff" stroke-width="1.5" fill="none"/><circle cx="14" cy="14" r="3" fill="#FBBF24"/></svg>
+    <span>SV<span class="accent">ITA</span></span>
+  </div>
   <div class="nav-links">
-    <a href="#features">Возможности</a>
-    <a href="#domains">Домены</a>
-    <a href="dashboard.html" class="btn btn-ghost">Войти</a>
-    <a href="dashboard.html#signup" class="btn btn-primary">Начать бесплатно</a>
+    <a href="#features">Features</a>
+    <a href="#how">How it works</a>
+    <a href="#domains">Domains</a>
+    <a href="dashboard.html" class="btn btn-ghost">Log in</a>
+    <a href="dashboard.html#signup" class="btn btn-primary">Start free</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-badge"><span class="pulse"></span> AI-powered business constructor</div>
-  <h1>Создайте <span class="gradient">бизнес-концепцию</span> за минуты</h1>
-  <p>SVITA генерирует полную бизнес-модель: помещения, персонал, оборудование, услуги, финансы и документы</p>
-  <div class="hero-actions">
-    <a href="dashboard.html#signup" class="btn btn-primary">Попробовать бесплатно</a>
-    <a href="dashboard.html" class="btn btn-ghost">Войти в кабинет</a>
-  </div>
-  <div class="hero-stats">
-    <div class="hero-stat"><div class="num">6</div><div class="label">Этапов конструктора</div></div>
-    <div class="hero-stat"><div class="num">40+</div><div class="label">Стран Европы</div></div>
-    <div class="hero-stat"><div class="num">12</div><div class="label">Валют</div></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge"><span class="pulse"></span> AI-powered business constructor</div>
+      <h1>Build your <span class="gradient">business concept</span> in minutes</h1>
+      <p>SVITA generates a complete business model: premises, staff, equipment, services, financials and legal docs for any European country.</p>
+      <div class="hero-actions">
+        <a href="dashboard.html#signup" class="btn btn-cta">Start free</a>
+        <a href="dashboard.html" class="btn btn-ghost">Log in</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="num">6</div><div class="label">Constructor stages</div></div>
+        <div class="hero-stat"><div class="num">40+</div><div class="label">European countries</div></div>
+        <div class="hero-stat"><div class="num">AI</div><div class="label">Powered analysis</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-glow"></div>
+      <div class="hero-cat float">
+        <img src="img/cybercat-22-buddha.png" alt="Svitiks — SVITA AI mascot meditating">
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- FEATURES -->
 <section class="features" id="features">
-  <div class="section-label">Возможности</div>
-  <div class="section-title">Всё для запуска бизнеса</div>
+  <div class="section-label">Features</div>
+  <div class="section-title">Everything to launch a business</div>
+  <div class="section-sub">From premises layout to ROI calculations — SVITA handles the complexity so you can focus on your vision.</div>
   <div class="features-grid">
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(79,110,247,.08);color:var(--ac2)">🏗</div>
-      <h3>Конструктор помещений</h3>
-      <p>Планировка зон, расчёт площадей, инженерные сети — с учётом санитарных норм</p>
+    <div class="glass-card feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>
+      </div>
+      <h3>Premises Constructor</h3>
+      <p>Zone planning, area calculation, engineering networks — compliant with local sanitary standards.</p>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(26,153,86,.08);color:var(--gn)">👥</div>
-      <h3>Штатное расписание</h3>
-      <p>Подбор персонала, расчёт ФОТ, должностные обязанности по стандартам страны</p>
+    <div class="glass-card feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <h3>Staff Planning</h3>
+      <p>Hiring plan, payroll calculation, job descriptions following country-specific labor regulations.</p>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(124,92,252,.08);color:#7c5cfc">🔧</div>
-      <h3>Каталог оборудования</h3>
-      <p>База поставщиков, актуальные цены, спецификации и гарантии</p>
+    <div class="glass-card feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+      </div>
+      <h3>Equipment Catalog</h3>
+      <p>Supplier database with real prices, specifications, warranties and delivery timelines.</p>
+      <img src="img/cybercat-03-thinking.png" alt="" class="cat-peek">
     </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(192,138,16,.08);color:#c08a10">💰</div>
-      <h3>Финансовая модель</h3>
-      <p>Бюджет, рентабельность, ROI, окупаемость — всё считается автоматически</p>
+    <div class="glass-card feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <h3>Financial Model</h3>
+      <p>Budget breakdown, profitability analysis, ROI calculation, payback period — fully automated.</p>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(214,48,48,.08);color:#d63030">📋</div>
-      <h3>Документация</h3>
-      <p>Sanepid, лицензии, разрешения — чек-листы под каждую страну</p>
+    <div class="glass-card feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      </div>
+      <h3>Legal & Compliance</h3>
+      <p>Licenses, permits, health inspections — checklists tailored to each European country.</p>
     </div>
-    <div class="feature-card">
-      <div class="feature-icon" style="background:rgba(79,110,247,.08);color:var(--ac2)">🤖</div>
-      <h3>AI-анализ</h3>
-      <p>SVITA AI анализирует концепцию, находит риски и предлагает оптимизации</p>
+    <div class="glass-card feature-card">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 017 7c0 5-7 13-7 13S5 14 5 9a7 7 0 017-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      </div>
+      <h3>AI Advisor</h3>
+      <p>SVITA AI analyzes your concept, finds risks and suggests optimizations based on market data.</p>
+      <img src="img/cybercat-02-thumbsup.png" alt="" class="cat-peek">
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="how-inner">
+    <div class="section-label">How it works</div>
+    <div class="section-title">Three steps to your business plan</div>
+    <div class="section-sub">No expertise required. Our AI handles the research, calculations and compliance checks.</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-cat"><img src="img/cybercat-01-wave.png" alt="Svitiks waving"></div>
+        <div class="step-num">1</div>
+        <h4>Set Parameters</h4>
+        <p>Choose business type, city, area, budget and target segment — the AI constructor does the rest.</p>
+        <div class="step-line"></div>
+      </div>
+      <div class="step">
+        <div class="step-cat"><img src="img/cybercat-23-chef.png" alt="Svitiks chef"></div>
+        <div class="step-num">2</div>
+        <h4>AI Generates Concept</h4>
+        <p>SVITA builds complete business model: rooms, staff, equipment, services, costs and documents.</p>
+        <div class="step-line"></div>
+      </div>
+      <div class="step">
+        <div class="step-cat"><img src="img/cybercat-24-business.png" alt="Svitiks business"></div>
+        <div class="step-num">3</div>
+        <h4>Launch & Scale</h4>
+        <p>Download your business plan, share with investors, and start building your dream business.</p>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- DOMAINS -->
 <section class="domains" id="domains">
-  <div class="section-label">Домены</div>
-  <div class="section-title">Какой бизнес запустить?</div>
+  <div class="section-label">Domains</div>
+  <div class="section-title">What business to build?</div>
+  <div class="section-sub">SVITA supports multiple industries with specialized knowledge bases for each domain.</div>
   <div class="domains-grid">
-    <div class="domain-card">
-      <div class="domain-icon">🦷</div>
-      <h4>Стоматология</h4>
-      <p>Семейная, детская, ортодонтия</p>
+    <div class="glass-card domain-card">
+      <div class="domain-img">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--pr2)" stroke-width="1.5"><path d="M12 2C8 2 6 5 6 8c0 2 1 3 2 4l-1 8h10l-1-8c1-1 2-2 2-4 0-3-2-6-6-6z"/><path d="M9 22h6"/></svg>
+      </div>
+      <h4>Dental Clinics</h4>
+      <p>Family, pediatric, orthodontics</p>
     </div>
-    <div class="domain-card">
-      <div class="domain-icon">☕</div>
-      <h4>Кофейня</h4>
-      <p>Specialty, to-go, кондитерская</p>
+    <div class="glass-card domain-card">
+      <div class="domain-img">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--pr2)" stroke-width="1.5"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg>
+      </div>
+      <h4>Coffee & Cafe</h4>
+      <p>Specialty, to-go, bakery</p>
     </div>
-    <div class="domain-card">
-      <div class="domain-icon">💇</div>
-      <h4>Салон красоты</h4>
-      <p>Premium, барбершоп, SPA</p>
+    <div class="glass-card domain-card">
+      <div class="domain-img">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--pr2)" stroke-width="1.5"><circle cx="12" cy="8" r="5"/><path d="M3 21c0-4.4 3.6-8 8-8h2c4.4 0 8 3.6 8 8"/><path d="M15 3l2 3-2 3"/></svg>
+      </div>
+      <h4>Beauty Salon</h4>
+      <p>Premium, barbershop, SPA</p>
     </div>
-    <div class="domain-card">
-      <div class="domain-icon">🍽</div>
-      <h4>Общепит</h4>
-      <p>Ресторан, фастфуд, кейтеринг</p>
+    <div class="glass-card domain-card">
+      <div class="domain-img">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--pr2)" stroke-width="1.5"><path d="M18 2l3 3-3 3M6 22l-3-3 3-3"/><path d="M21 5H9a4 4 0 000 8h6a4 4 0 010 8H3"/></svg>
+      </div>
+      <h4>Restaurant</h4>
+      <p>Fine dining, fast food, catering</p>
     </div>
   </div>
 </section>
 
 <!-- COUNTRIES -->
 <section class="countries">
-  <div class="section-label">География</div>
-  <div class="section-title">Вся Европа, 12 валют</div>
+  <div class="section-label">Geography</div>
+  <div class="section-title">All of Europe, 12 currencies</div>
   <div class="country-list">
-    <div class="country-tag">Польша <span class="currency">PLN</span></div>
-    <div class="country-tag">Чехия <span class="currency">CZK</span></div>
-    <div class="country-tag">Германия <span class="currency">EUR</span></div>
-    <div class="country-tag">Франция <span class="currency">EUR</span></div>
-    <div class="country-tag">Италия <span class="currency">EUR</span></div>
-    <div class="country-tag">Испания <span class="currency">EUR</span></div>
-    <div class="country-tag">Великобритания <span class="currency">GBP</span></div>
-    <div class="country-tag">Швейцария <span class="currency">CHF</span></div>
-    <div class="country-tag">Швеция <span class="currency">SEK</span></div>
-    <div class="country-tag">Норвегия <span class="currency">NOK</span></div>
-    <div class="country-tag">Дания <span class="currency">DKK</span></div>
-    <div class="country-tag">Венгрия <span class="currency">HUF</span></div>
-    <div class="country-tag">Румыния <span class="currency">RON</span></div>
-    <div class="country-tag">Болгария <span class="currency">BGN</span></div>
-    <div class="country-tag">Австрия <span class="currency">EUR</span></div>
-    <div class="country-tag">Нидерланды <span class="currency">EUR</span></div>
-    <div class="country-tag">Бельгия <span class="currency">EUR</span></div>
-    <div class="country-tag">Португалия <span class="currency">EUR</span></div>
+    <div class="country-tag">Poland <span class="currency">PLN</span></div>
+    <div class="country-tag">Czech Republic <span class="currency">CZK</span></div>
+    <div class="country-tag">Germany <span class="currency">EUR</span></div>
+    <div class="country-tag">France <span class="currency">EUR</span></div>
+    <div class="country-tag">Italy <span class="currency">EUR</span></div>
+    <div class="country-tag">Spain <span class="currency">EUR</span></div>
+    <div class="country-tag">United Kingdom <span class="currency">GBP</span></div>
+    <div class="country-tag">Switzerland <span class="currency">CHF</span></div>
+    <div class="country-tag">Sweden <span class="currency">SEK</span></div>
+    <div class="country-tag">Norway <span class="currency">NOK</span></div>
+    <div class="country-tag">Denmark <span class="currency">DKK</span></div>
+    <div class="country-tag">Hungary <span class="currency">HUF</span></div>
+    <div class="country-tag">Romania <span class="currency">RON</span></div>
+    <div class="country-tag">Austria <span class="currency">EUR</span></div>
+    <div class="country-tag">Netherlands <span class="currency">EUR</span></div>
+    <div class="country-tag">Belgium <span class="currency">EUR</span></div>
+    <div class="country-tag">Portugal <span class="currency">EUR</span></div>
   </div>
 </section>
 
 <!-- CTA -->
 <section class="cta">
   <div class="cta-box">
-    <h2>Готовы начать?</h2>
-    <p>Создайте первую бизнес-концепцию бесплатно. Без карты, без ограничений.</p>
-    <a href="dashboard.html#signup" class="btn btn-primary" style="padding:14px 36px;font-size:15px">Создать концепцию</a>
+    <h2>Ready to build your concept?</h2>
+    <p>Create your first business concept for free. No card required, no limits on your first project.</p>
+    <a href="dashboard.html#signup" class="btn btn-cta" style="padding:16px 40px;font-size:16px">Start building</a>
+    <img src="img/cybercat-06-celebrate.png" alt="" class="cta-cat">
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div>SVITA &copy; 2026 &mdash; LABS67</div>
-  <div>
+  <div>SVITA &copy; 2026 &mdash; <a href="https://labs67.com" target="_blank">LABS67</a></div>
+  <div style="display:flex;align-items:center;gap:16px">
     <a href="https://labs67.com" target="_blank">LABS67</a>
+    <a href="https://scyra.labs67.com" target="_blank">SCYRA.AI</a>
   </div>
 </footer>
 
+<div class="lang-switcher"></div>
+<script src="labs67-i18n.js"></script>
 </body>
 </html>
