@@ -27,11 +27,11 @@
 (function () {
   'use strict';
 
-  // PIVOT 2026-04-12: dental PL only — keep PL + EN, drop the other 10 languages.
-  var LANGS = ['pl','en'];
+  // PIVOT 2026-04-12: dental PL — PL+EN+BE+UK (господин читает на BE/UK)
+  var LANGS = ['pl','en','be','uk'];
 
-  var LABELS = { pl: 'PL', en: 'EN' };
-  var SHORT  = { pl: 'PL', en: 'EN' };
+  var LABELS = { pl: 'PL', en: 'EN', be: 'BE', uk: 'UK' };
+  var SHORT  = { pl: 'PL', en: 'EN', be: 'BE', uk: 'UK' };
 
   function isMobile() { return window.innerWidth <= 768; }
 
