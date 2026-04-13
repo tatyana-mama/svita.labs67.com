@@ -12,7 +12,7 @@ function corsHeaders(req: Request){
 
 // Jetson SVITA AI proxy
 const JETSON_URL = Deno.env.get("JETSON_URL") || "https://scyraai-desktop.tail2060da.ts.net/svita-ai"
-const JETSON_TIMEOUT = 90_000
+const JETSON_TIMEOUT = 120_000
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
