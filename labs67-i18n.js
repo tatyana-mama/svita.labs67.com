@@ -27,11 +27,11 @@
 (function () {
   'use strict';
 
-  // PIVOT 2026-04-13: dental PL — PL+EN only (target = PL dentists; expats read EN)
-  var LANGS = ['pl','en'];
+  // PIVOT 2026-04-13: dental PL — PL primary, EN for expats, BE/UK for diaspora dentists
+  var LANGS = ['pl','en','be','uk'];
 
-  var LABELS = { pl: 'PL', en: 'EN' };
-  var SHORT  = { pl: 'PL', en: 'EN' };
+  var LABELS = { pl: 'PL', en: 'EN', be: 'BE', uk: 'UK' };
+  var SHORT  = { pl: 'PL', en: 'EN', be: 'BE', uk: 'UK' };
 
   function isMobile() { return window.innerWidth <= 768; }
 
