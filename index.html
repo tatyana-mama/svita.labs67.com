@@ -4,26 +4,27 @@
 <meta charset="utf-8">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="SVITA — plan otwarcia gabinetu stomatologicznego w Polsce. Realne ceny 2026, dokumenty NFZ i sanepid, budżet startu w 14 dni.">
-<meta property="og:title" content="SVITA — Plan otwarcia gabinetu stomatologicznego w Polsce">
-<meta property="og:description" content="Realne ceny sprzętu od polskich dystrybutorów. Pensje brutto 2026. Dokumenty NFZ. Jednorazowa płatność 199 €.">
+<meta name="description" content="SVITA — plan otwarcia kliniki stomatologicznej w Polsce, tworzony przez zespół 8 lekarzy z partnerem medycznym chirurgiem-implantologiem. Zacznij od bezpłatnej rozmowy.">
+<meta property="og:title" content="SVITA — Plan otwarcia kliniki stomatologicznej w Polsce od zespołu lekarzy">
+<meta property="og:description" content="Zespół 8 stomatologów, partner medyczny — chirurg-implantolog. Plan, dostawcy, dokumenty. Bezpłatna 30-minutowa rozmowa.">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<title>SVITA — Plan otwarcia gabinetu stomatologicznego w Polsce</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>SVITA — Plan otwarcia kliniki stomatologicznej w Polsce | Zespół 8 lekarzy</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-/* SVITA Design System v2 — POST-PIVOT 2026-04-12 — cyan + rose, dark mode */
+/* SVITA Design System v3 — POST-PIVOT 2026-04-13 — team-led, partner medyczny, 3 tiers */
 :root{
   --bg:#0A0E1A;--bg2:#111827;--bg3:#1F2937;
   --glass:rgba(34,211,238,.05);--glass2:rgba(34,211,238,.09);
   --bd:rgba(34,211,238,.15);--bd2:rgba(34,211,238,.28);--bd-w:rgba(255,255,255,.06);
-  --tx:#E2E8F0;--tx2:rgba(226,232,240,.65);--tx3:rgba(226,232,240,.4);
-  --pr:#06B6D4;--pr2:#22D3EE;--pr3:#0891B2;          /* cyan — Svitiks circuit */
-  --cta:#F43F5E;--cta2:#E11D48;                       /* rose — buy/action */
+  --tx:#E2E8F0;--tx2:rgba(226,232,240,.65);--tx3:rgba(226,232,240,.4);--tx1:#fff;
+  --pr:#06B6D4;--pr2:#22D3EE;--pr3:#0891B2;
+  --cta:#F43F5E;--cta2:#E11D48;
   --gn:#34D399;--gnbg:rgba(52,211,153,.1);
+  --gold:#C9A96E;--goldbg:rgba(201,169,110,.08);--goldbd:rgba(201,169,110,.3);
   --r:12px;
-  --f:'Plus Jakarta Sans',-apple-system,system-ui,sans-serif;--f2:'Plus Jakarta Sans',-apple-system,system-ui,sans-serif;
+  --f:'Plus Jakarta Sans',-apple-system,system-ui,sans-serif;
   --shadow:0 4px 30px rgba(0,0,0,.4);
   --shadow-glow:0 0 60px rgba(34,211,238,.15);
 }
@@ -40,7 +41,6 @@ a{color:inherit;text-decoration:none}
 /* NAV */
 nav{position:fixed;top:16px;left:16px;right:16px;height:56px;background:rgba(15,15,35,.75);backdrop-filter:blur(24px) saturate(1.4);border:1px solid var(--bd);border-radius:16px;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 24px;transition:all .3s}
 .nav-logo{font-size:20px;font-weight:800;display:flex;align-items:center;gap:10px;letter-spacing:-.01em}
-.nav-logo img{width:32px;height:32px;border-radius:8px}
 .nav-logo .accent{color:var(--pr2)}
 .nav-links{display:flex;align-items:center;gap:20px}
 .nav-links a{font-size:13px;font-weight:500;color:var(--tx2);transition:color .2s}
@@ -52,125 +52,153 @@ nav{position:fixed;top:16px;left:16px;right:16px;height:56px;background:rgba(15,
 
 /* HERO */
 .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:120px 24px 80px;position:relative;z-index:1}
-.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;max-width:1200px;width:100%;align-items:center}
-.hero-text{max-width:560px}
+.hero-inner{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;max-width:1200px;width:100%;align-items:center}
+.hero-text{max-width:580px}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:24px;background:var(--glass);border:1px solid var(--bd);font-size:12px;font-weight:600;color:var(--pr2);margin-bottom:28px}
 .hero-badge .pulse{width:7px;height:7px;border-radius:50%;background:var(--gn);animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.hero h1{font-size:clamp(36px,4.5vw,58px);font-weight:800;line-height:1.08;letter-spacing:-.03em;margin-bottom:20px}
+.hero h1{font-size:clamp(34px,4.4vw,56px);font-weight:800;line-height:1.08;letter-spacing:-.03em;margin-bottom:20px}
 .hero h1 .gradient{background:linear-gradient(135deg,var(--pr2),var(--cta));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero p{font-size:17px;color:var(--tx2);line-height:1.7;margin-bottom:36px;font-family:var(--f2);max-width:460px}
+.hero p{font-size:16px;color:var(--tx2);line-height:1.7;margin-bottom:32px;max-width:540px}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
-.hero-actions .btn{padding:14px 32px;font-size:15px;border-radius:14px}
-.hero-visual{position:relative;display:flex;align-items:center;justify-content:center}
-.hero-glow{position:absolute;width:520px;height:520px;background:radial-gradient(circle,rgba(34,211,238,.18) 0%,transparent 70%);border-radius:50%;z-index:0;pointer-events:none}
-.chat-box{position:relative;z-index:2;width:100%;max-width:480px;background:rgba(15,15,35,.85);backdrop-filter:blur(24px) saturate(1.4);border:1px solid var(--bd2);border-radius:22px;box-shadow:var(--shadow-glow);overflow:hidden;display:flex;flex-direction:column;min-height:420px}
-.chat-head{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--bd)}
-.chat-head .avatar{width:40px;height:40px;border-radius:50%;background:radial-gradient(circle,rgba(34,211,238,.4),transparent);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.chat-head .avatar img{width:36px;height:36px;object-fit:contain}
-.chat-head .who{font-size:14px;font-weight:700}
-.chat-head .who .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gn);margin-right:6px;animation:pulse 2s infinite}
-.chat-head .status{font-size:11px;color:var(--tx3);margin-top:2px}
-.chat-msgs{flex:1;padding:20px;display:flex;flex-direction:column;gap:12px;overflow-y:auto;max-height:300px}
-.chat-msg{max-width:85%;padding:11px 15px;border-radius:14px;font-size:13px;line-height:1.5;font-family:var(--f2);animation:fadeUp .3s ease}
-.chat-msg.bot{background:var(--glass2);border:1px solid var(--bd);align-self:flex-start;border-bottom-left-radius:4px}
-.chat-msg.user{background:linear-gradient(135deg,var(--pr),var(--pr3));color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
-.chat-msg.typing{display:flex;gap:4px;align-items:center;padding:14px 16px}
-.chat-msg.typing span{width:6px;height:6px;border-radius:50%;background:var(--pr2);animation:typingDot 1.4s infinite}
-.chat-msg.typing span:nth-child(2){animation-delay:.2s}
-.chat-msg.typing span:nth-child(3){animation-delay:.4s}
-@keyframes typingDot{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.chat-form{display:flex;gap:8px;padding:14px;border-top:1px solid var(--bd);background:rgba(0,0,0,.2)}
-.chat-form input{flex:1;background:var(--glass);border:1px solid var(--bd);border-radius:12px;padding:11px 14px;color:var(--tx);font-size:13px;font-family:var(--f);outline:none;transition:border-color .2s}
-.chat-form input:focus{border-color:var(--pr2)}
-.chat-form button{background:var(--pr);border:none;border-radius:12px;width:40px;height:40px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;transition:all .2s;flex-shrink:0}
-.chat-form button:hover{background:var(--pr3);transform:translateY(-1px)}
-.chat-form button svg{width:18px;height:18px;fill:#fff}
-.hero-stats{display:flex;gap:40px;margin-top:52px}
+.hero-actions .btn{padding:14px 30px;font-size:15px;border-radius:14px}
+.hero-cta-sub{margin-top:10px;font-size:12px;color:var(--tx3);font-weight:500}
+.hero-stats{display:flex;gap:36px;margin-top:48px}
 .hero-stat{text-align:left}
-.hero-stat .num{font-size:32px;font-weight:800;background:linear-gradient(135deg,var(--pr2),var(--cta));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero-stat .label{font-size:12px;color:var(--tx3);margin-top:4px;font-weight:500}
+.hero-stat .num{font-size:30px;font-weight:800;background:linear-gradient(135deg,var(--pr2),var(--cta));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.hero-stat .label{font-size:11px;color:var(--tx3);margin-top:6px;font-weight:500;max-width:120px;line-height:1.4}
+
+/* PARTNER CARD (hero right) */
+.partner-card{position:relative;width:100%;max-width:440px;background:rgba(15,15,35,.85);backdrop-filter:blur(24px) saturate(1.4);border:1px solid var(--bd2);border-radius:22px;padding:32px;box-shadow:var(--shadow-glow);overflow:hidden}
+.partner-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at top right,rgba(34,211,238,.14),transparent 60%);pointer-events:none}
+.partner-card .pc-badge{position:relative;display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:20px;background:var(--goldbg);border:1px solid var(--goldbd);color:var(--gold);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:22px}
+.partner-card .pc-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.partner-card .pc-photo{position:relative;width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,rgba(34,211,238,.15),rgba(244,63,94,.1));border:2px solid var(--bd2);display:flex;align-items:center;justify-content:center;margin-bottom:20px;overflow:hidden}
+.partner-card .pc-photo svg{width:64px;height:64px;stroke:var(--pr2);fill:none;stroke-width:1.2;opacity:.8}
+.partner-card .pc-photo .placeholder-hint{position:absolute;bottom:-2px;left:0;right:0;padding:4px;background:rgba(0,0,0,.6);font-size:8px;text-align:center;color:var(--tx3);letter-spacing:1px;text-transform:uppercase}
+.partner-card .pc-name{position:relative;font-size:22px;font-weight:800;color:var(--tx1);margin-bottom:6px;letter-spacing:-.01em}
+.partner-card .pc-role{position:relative;font-size:13px;font-weight:600;color:var(--pr2);margin-bottom:16px;display:inline-flex;align-items:center;gap:8px}
+.partner-card .pc-role::after{content:'PWZ ••••';display:inline-block;font-size:10px;padding:3px 8px;border-radius:6px;background:var(--glass2);border:1px solid var(--bd);color:var(--tx3);font-weight:500;letter-spacing:.5px}
+.partner-card .pc-desc{position:relative;font-size:13px;line-height:1.7;color:var(--tx2);margin-bottom:22px}
+.partner-card .pc-team-row{position:relative;display:flex;align-items:center;gap:12px;padding-top:18px;border-top:1px solid var(--bd)}
+.partner-card .pc-team-avatars{display:flex}
+.partner-card .pc-team-avatars .av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--bg2),var(--bg3));border:2px solid var(--bg);margin-left:-10px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--pr2)}
+.partner-card .pc-team-avatars .av:first-child{margin-left:0}
+.partner-card .pc-team-row .pc-team-text{font-size:12px;color:var(--tx3);line-height:1.4}
+.partner-card .pc-team-row .pc-team-text strong{color:var(--tx);font-weight:700;display:block}
+
+/* SECTIONS */
+.section{padding:100px 24px;max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.section-label{font-size:12px;font-weight:700;color:var(--pr2);text-transform:uppercase;letter-spacing:3px;text-align:center;margin-bottom:12px}
+.section-title{font-size:clamp(28px,3.5vw,42px);font-weight:800;text-align:center;margin-bottom:16px;letter-spacing:-.02em}
+.section-sub{font-size:15px;color:var(--tx2);text-align:center;max-width:620px;margin:0 auto 56px;line-height:1.6}
 
 /* GLASS CARD */
 .glass-card{background:rgba(22,22,55,.6);backdrop-filter:blur(20px);border:1px solid var(--bd);border-radius:20px;padding:32px;transition:all .3s}
 .glass-card:hover{border-color:var(--bd2);box-shadow:var(--shadow-glow);transform:translateY(-4px)}
 
+/* TEAM */
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.team-card{text-align:center;padding:28px 18px;position:relative;background:rgba(22,22,55,.55);border:1px solid var(--bd);border-radius:18px;transition:all .25s}
+.team-card:hover{border-color:var(--bd2);transform:translateY(-3px);box-shadow:0 0 30px rgba(34,211,238,.1)}
+.team-card.partner{border-color:var(--goldbd);background:linear-gradient(180deg,var(--goldbg),rgba(22,22,55,.55));grid-column:span 2;padding:36px 28px}
+.team-card.partner:hover{border-color:var(--gold);box-shadow:0 0 40px rgba(201,169,110,.15)}
+.team-card .tc-avatar{width:84px;height:84px;border-radius:50%;margin:0 auto 16px;background:linear-gradient(135deg,rgba(34,211,238,.12),rgba(244,63,94,.08));border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;position:relative}
+.team-card.partner .tc-avatar{width:104px;height:104px;border-color:var(--goldbd);background:linear-gradient(135deg,rgba(201,169,110,.18),rgba(201,169,110,.06))}
+.team-card .tc-avatar svg{width:42px;height:42px;stroke:var(--pr2);fill:none;stroke-width:1.3;opacity:.75}
+.team-card.partner .tc-avatar svg{stroke:var(--gold);width:54px;height:54px;opacity:.85}
+.team-card .tc-name{font-size:14px;font-weight:700;color:var(--tx1);margin-bottom:4px;letter-spacing:-.01em}
+.team-card.partner .tc-name{font-size:18px;margin-bottom:6px}
+.team-card .tc-role{font-size:11px;color:var(--pr2);font-weight:600;letter-spacing:.3px}
+.team-card.partner .tc-role{color:var(--gold);font-size:12px}
+.team-card .tc-desc{margin-top:14px;padding-top:14px;border-top:1px solid var(--bd);font-size:12px;color:var(--tx2);line-height:1.6}
+.team-card .tc-pwz{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:6px;background:var(--glass);border:1px solid var(--bd);font-size:10px;color:var(--tx3);letter-spacing:1px}
+.team-note{max-width:720px;margin:40px auto 0;padding:16px 22px;background:var(--glass);border:1px solid var(--bd);border-radius:12px;font-size:13px;color:var(--tx2);text-align:center;line-height:1.6}
+
 /* FEATURES */
-.features{padding:100px 24px;max-width:1200px;margin:0 auto;position:relative;z-index:1}
-.section-label{font-size:12px;font-weight:700;color:var(--pr2);text-transform:uppercase;letter-spacing:3px;text-align:center;margin-bottom:12px}
-.section-title{font-size:clamp(28px,3.5vw,42px);font-weight:800;text-align:center;margin-bottom:16px;letter-spacing:-.02em}
-.section-sub{font-size:15px;color:var(--tx2);text-align:center;max-width:500px;margin:0 auto 56px;font-family:var(--f2);line-height:1.6}
 .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .feature-card{position:relative;overflow:hidden}
 .feature-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;background:var(--glass2);border:1px solid var(--bd)}
 .feature-icon svg{width:24px;height:24px;stroke:var(--pr2);fill:none;stroke-width:1.5}
 .feature-card h3{font-size:16px;font-weight:700;margin-bottom:10px}
-.feature-card p{font-size:13px;color:var(--tx2);line-height:1.7;font-family:var(--f2)}
-.feature-card .cat-peek{position:absolute;bottom:-8px;right:-4px;width:90px;opacity:.55;transition:opacity .3s}
-.feature-card:hover .cat-peek{opacity:.85}
+.feature-card p{font-size:13px;color:var(--tx2);line-height:1.7}
 
-/* HOW IT WORKS */
-.how{padding:100px 24px;position:relative;z-index:1}
-.how-inner{max-width:1000px;margin:0 auto}
+/* HONESTY */
+.honesty-inner{max-width:1000px;margin:0 auto}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:56px}
-.step{text-align:center;position:relative}
-.step-num{width:48px;height:48px;border-radius:50%;background:var(--glass2);border:1px solid var(--bd2);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:var(--pr2);margin:0 auto 20px}
-.step-cat{width:120px;height:120px;margin:0 auto 16px;border-radius:50%;overflow:hidden;border:2px solid var(--bd);background:var(--bg2)}
-.step-cat img{width:100%;height:100%;object-fit:contain}
-.step h4{font-size:15px;font-weight:700;margin-bottom:8px}
-.step p{font-size:13px;color:var(--tx2);line-height:1.6;font-family:var(--f2);max-width:260px;margin:0 auto}
-.step-line{position:absolute;top:24px;left:calc(50% + 40px);width:calc(100% - 80px);height:1px;background:linear-gradient(90deg,var(--bd2),transparent)}
+.step{text-align:center;position:relative;padding:32px 24px;background:rgba(22,22,55,.5);border:1px solid var(--bd);border-radius:16px}
+.step-num{width:44px;height:44px;border-radius:50%;background:var(--glass2);border:1px solid var(--bd2);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:var(--pr2);margin:0 auto 20px}
+.step h4{font-size:15px;font-weight:700;margin-bottom:10px}
+.step p{font-size:13px;color:var(--tx2);line-height:1.6}
 
-/* DOMAINS */
-.domains{padding:100px 24px;max-width:1200px;margin:0 auto;position:relative;z-index:1}
-.domains-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
-.domain-card{text-align:center;padding:36px 24px}
-.domain-card .domain-img{width:72px;height:72px;margin:0 auto 16px;border-radius:50%;background:var(--glass2);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.domain-card .domain-img img{width:56px;height:56px;object-fit:contain}
-.domain-card h4{font-size:15px;font-weight:700;margin-bottom:6px}
-.domain-card p{font-size:12px;color:var(--tx3);font-family:var(--f2)}
+/* CASE (Świtlica) */
+.case-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.case-card{text-align:center;padding:28px 18px;background:rgba(22,22,55,.55);border:1px solid var(--bd);border-radius:16px;transition:all .25s}
+.case-card:hover{border-color:var(--bd2)}
+.case-card h4{font-size:12px;font-weight:600;color:var(--tx3);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.case-card p{font-size:17px;font-weight:700;color:var(--pr2)}
+.case-warning{max-width:780px;margin:36px auto 0;padding:20px 26px;background:var(--goldbg);border:1px solid var(--goldbd);border-radius:14px;font-size:14px;line-height:1.7;color:var(--tx2);text-align:center}
+.case-warning::before{content:'⚠';display:inline-block;margin-right:8px;color:var(--gold);font-weight:700}
 
-/* COUNTRIES */
-.countries{padding:80px 24px;max-width:900px;margin:0 auto;text-align:center;position:relative;z-index:1}
-.country-list{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:32px}
-.country-tag{padding:10px 20px;border-radius:12px;background:var(--glass);border:1px solid var(--bd);font-size:13px;font-weight:500;display:flex;align-items:center;gap:8px;transition:all .2s}
-.country-tag:hover{border-color:var(--bd2);background:var(--glass2)}
-.country-tag .currency{font-size:11px;color:var(--cta);font-weight:700}
+/* PRICING — 3 TIERS */
+.tiers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto}
+.tier-card{position:relative;padding:38px 30px;background:rgba(22,22,55,.6);border:1px solid var(--bd);border-radius:20px;display:flex;flex-direction:column;transition:all .3s}
+.tier-card:hover{border-color:var(--bd2);transform:translateY(-4px);box-shadow:var(--shadow-glow)}
+.tier-card.featured{border-color:var(--cta);background:linear-gradient(180deg,rgba(244,63,94,.06),rgba(22,22,55,.6));transform:scale(1.03);box-shadow:0 0 40px rgba(244,63,94,.12)}
+.tier-card.featured:hover{transform:scale(1.03) translateY(-4px)}
+.tier-card .t-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);padding:6px 16px;border-radius:20px;background:var(--cta);color:#fff;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;box-shadow:0 4px 20px rgba(244,63,94,.4)}
+.tier-card .t-label{font-size:11px;font-weight:700;color:var(--pr2);text-transform:uppercase;letter-spacing:2px;margin-bottom:16px}
+.tier-card.featured .t-label{color:var(--cta)}
+.tier-card .t-price{font-size:46px;font-weight:200;letter-spacing:-2px;color:var(--tx1);line-height:1;margin-bottom:4px}
+.tier-card .t-sub{font-size:12px;color:var(--tx3);margin-bottom:22px}
+.tier-card .t-desc{font-size:15px;font-weight:600;color:var(--tx);margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(--bd)}
+.tier-card .t-features{font-size:13px;line-height:1.8;color:var(--tx2);flex:1;margin-bottom:24px}
+.tier-card .t-features div{margin-bottom:6px}
+.tier-card .t-cta{display:block;text-align:center;padding:13px 20px;border-radius:12px;font-size:14px;font-weight:700;background:var(--glass2);color:var(--pr2);border:1px solid var(--bd2);transition:all .2s;font-family:var(--f)}
+.tier-card .t-cta:hover{background:var(--pr);color:#fff;border-color:var(--pr)}
+.tier-card.featured .t-cta{background:var(--cta);color:#fff;border-color:var(--cta);box-shadow:0 0 20px rgba(244,63,94,.3)}
+.tier-card.featured .t-cta:hover{background:var(--cta2);box-shadow:0 0 30px rgba(244,63,94,.5)}
+.pricing-note{max-width:640px;margin:40px auto 0;padding:16px 22px;background:var(--glass);border:1px solid var(--bd);border-radius:12px;font-size:13px;color:var(--tx2);text-align:center;line-height:1.6}
 
-/* CTA */
-.cta{padding:100px 24px;text-align:center;position:relative;z-index:1}
-.cta-box{max-width:700px;margin:0 auto;background:rgba(22,22,55,.6);backdrop-filter:blur(24px);border:1px solid var(--bd2);border-radius:24px;padding:56px 48px;position:relative;overflow:hidden;box-shadow:var(--shadow-glow)}
-.cta-box::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(34,211,238,.05),transparent 30%);animation:spin 8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.cta-box h2{font-size:clamp(24px,3vw,36px);font-weight:800;margin-bottom:12px;position:relative}
-.cta-box p{font-size:15px;color:var(--tx2);margin-bottom:32px;font-family:var(--f2);position:relative}
-.cta-box .btn{position:relative}
-.cta-cat{position:absolute;bottom:-10px;right:24px;width:180px;opacity:.75;z-index:0}
+/* FAQ */
+.faq-box{max-width:780px;margin:0 auto;text-align:left}
+.faq-box details{background:rgba(22,22,55,.55);border:1px solid var(--bd);border-radius:14px;padding:18px 22px;margin-bottom:12px;transition:border-color .2s}
+.faq-box details[open]{border-color:var(--bd2)}
+.faq-box summary{cursor:pointer;font-weight:700;color:var(--tx1);font-size:15px;list-style:none;position:relative;padding-right:24px}
+.faq-box summary::-webkit-details-marker{display:none}
+.faq-box summary::after{content:'+';position:absolute;right:0;top:-2px;font-size:22px;font-weight:300;color:var(--pr2);transition:transform .2s}
+.faq-box details[open] summary::after{transform:rotate(45deg)}
+.faq-box p{margin-top:14px;color:var(--tx2);font-size:14px;line-height:1.75}
 
 /* FOOTER */
-footer{padding:40px;border-top:1px solid var(--bd-w);display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--tx3);position:relative;z-index:1}
+footer{padding:50px 40px 30px;border-top:1px solid var(--bd-w);display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;font-size:12px;color:var(--tx3);position:relative;z-index:1}
+footer .tagline{font-size:15px;color:var(--tx2);max-width:640px;line-height:1.6}
+footer .links{display:flex;gap:24px;flex-wrap:wrap;justify-content:center}
 footer a{color:var(--tx2);font-weight:500;transition:color .2s}
 footer a:hover{color:var(--pr2)}
 
 /* MOBILE */
 @media(max-width:1024px){
-  .hero-inner{grid-template-columns:1fr;text-align:center;gap:20px}
+  .hero-inner{grid-template-columns:1fr;gap:40px;text-align:center}
   .hero-text{margin:0 auto}
   .hero p{margin:0 auto 32px}
   .hero-actions{justify-content:center}
   .hero-stats{justify-content:center}
   .hero-stat{text-align:center}
-  .hero-visual{margin-top:24px;order:-1}
+  .hero-stat .label{max-width:none}
+  .partner-card{margin:0 auto}
+  .team-grid{grid-template-columns:repeat(2,1fr)}
+  .team-card.partner{grid-column:span 2}
   .features-grid{grid-template-columns:repeat(2,1fr)}
-  .domains-grid{grid-template-columns:repeat(2,1fr)}
-  .steps{grid-template-columns:1fr;gap:40px}
-  .step-line{display:none}
+  .tiers-grid{grid-template-columns:1fr;max-width:500px}
+  .tier-card.featured{transform:none}
+  .tier-card.featured:hover{transform:translateY(-4px)}
+  .case-grid{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:1fr;gap:20px}
 }
 @media(max-width:768px){
   nav{top:8px;left:8px;right:8px;padding:0 14px;height:50px;border-radius:14px}
-  .nav-logo{font-size:17px;gap:8px}
-  .nav-logo img{width:26px;height:26px}
+  .nav-logo{font-size:17px}
   .nav-links{gap:8px}
   .nav-links a:not(.btn){display:none}
   .nav-links .btn{padding:8px 14px;font-size:12px;border-radius:10px}
@@ -183,73 +211,48 @@ footer a:hover{color:var(--pr2)}
   .ambient .orb3{display:none}
   .hero{padding:90px 16px 50px;min-height:auto}
   .hero-badge{font-size:11px;padding:6px 12px;margin-bottom:18px}
-  .hero h1{font-size:30px;line-height:1.1;margin-bottom:14px}
-  .hero p{font-size:14px;line-height:1.6;margin-bottom:24px;max-width:100%}
+  .hero h1{font-size:28px;line-height:1.15;margin-bottom:14px}
+  .hero p{font-size:14px;line-height:1.65;margin-bottom:24px}
   .hero-actions{gap:10px;flex-direction:column;align-items:stretch;width:100%}
-  .hero-actions .btn{width:100%;padding:13px 20px;font-size:14px;border-radius:12px}
-  .hero-cat{width:220px;height:220px}
-  .hero-glow{width:240px;height:240px}
-  .hero-stats{gap:22px;flex-wrap:wrap;margin-top:32px}
-  .hero-stat{flex:1 1 calc(33% - 14px);min-width:80px}
+  .hero-actions .btn{width:100%;padding:13px 20px;font-size:14px}
+  .hero-stats{gap:20px;flex-wrap:wrap;margin-top:32px}
+  .hero-stat{flex:1 1 calc(33% - 14px);min-width:90px}
   .hero-stat .num{font-size:24px}
-  .hero-stat .label{font-size:11px;line-height:1.3}
-  .features,.domains,.countries,.cta,.how{padding:60px 16px}
+  .hero-stat .label{font-size:10px}
+  .partner-card{padding:24px;max-width:100%}
+  .partner-card .pc-photo{width:100px;height:100px}
+  .partner-card .pc-name{font-size:18px}
+  .section{padding:60px 16px}
   .section-label{font-size:11px;letter-spacing:2px}
   .section-title{font-size:24px;line-height:1.2}
   .section-sub{font-size:13px;margin-bottom:36px;line-height:1.55}
-  .glass-card{padding:24px;border-radius:16px}
+  .glass-card{padding:22px;border-radius:16px}
+  .team-grid{grid-template-columns:1fr;gap:14px}
+  .team-card.partner{grid-column:span 1;padding:28px 22px}
   .features-grid{grid-template-columns:1fr;gap:14px}
-  .feature-icon{width:46px;height:46px;border-radius:12px;margin-bottom:14px}
+  .feature-icon{width:44px;height:44px;border-radius:12px;margin-bottom:14px}
   .feature-icon svg{width:22px;height:22px}
-  .feature-card h3{font-size:15px;margin-bottom:8px}
-  .feature-card p{font-size:13px;line-height:1.55}
-  .feature-card .cat-peek{width:70px}
-  .how-inner{padding:0}
-  .steps{margin-top:36px;gap:32px}
-  .step-num{width:42px;height:42px;font-size:16px;margin-bottom:14px}
-  .step-cat{width:96px;height:96px;margin-bottom:12px}
-  .step h4{font-size:15px}
-  .step p{font-size:13px;max-width:100%}
-  .domains-grid{grid-template-columns:repeat(2,1fr);gap:12px}
-  .domain-card{padding:24px 14px}
-  .domain-card .domain-img{width:60px;height:60px;margin-bottom:12px}
-  .domain-card .domain-img img{width:46px;height:46px}
-  .domain-card h4{font-size:13px}
-  .domain-card p{font-size:11px}
-  .country-list{gap:8px;margin-top:24px}
-  .country-tag{padding:8px 14px;font-size:12px;border-radius:10px}
-  .cta-box{padding:36px 22px;border-radius:20px}
-  .cta-box h2{font-size:24px;margin-bottom:10px;line-height:1.2}
-  .cta-box p{font-size:13px;margin-bottom:24px;line-height:1.55}
-  .cta-box .btn{width:100%}
-  .cta-cat{width:120px;right:8px;bottom:-6px;opacity:.4}
-  footer{flex-direction:column;gap:10px;text-align:center;padding:24px 16px;font-size:11px}
-  footer>div:last-child{flex-wrap:wrap;justify-content:center;gap:14px}
+  .feature-card h3{font-size:15px}
+  .case-grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .case-card{padding:20px 12px}
+  .case-card p{font-size:14px}
+  .tier-card{padding:30px 22px}
+  .tier-card .t-price{font-size:38px}
+  .faq-box details{padding:16px 18px}
+  .faq-box summary{font-size:14px}
+  .faq-box p{font-size:13px}
+  footer{padding:32px 16px 20px;font-size:11px}
 }
 @media(max-width:480px){
-  .nav-logo .accent{display:inline}
-  .hero h1{font-size:26px}
+  .hero h1{font-size:24px}
   .hero p{font-size:13px}
-  .hero-cat{width:180px;height:180px}
-  .hero-glow{width:200px;height:200px}
   .hero-stats{gap:14px}
   .hero-stat .num{font-size:20px}
-  .hero-stat .label{font-size:10px}
   .section-title{font-size:22px}
-  .domains-grid{grid-template-columns:1fr}
-  .cta-box{padding:30px 18px}
-  .cta-box h2{font-size:21px}
-  .cta-cat{display:none}
-}
-@media(max-width:360px){
-  .nav-logo{font-size:15px}
-  .nav-logo img{width:24px;height:24px}
-  .hero h1{font-size:23px}
-  .hero-cat{width:160px;height:160px}
+  .case-grid{grid-template-columns:1fr}
 }
 
-/* FLOAT ANIMATION */
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .float{animation:float 4s ease-in-out infinite}
 </style>
 </head>
@@ -269,13 +272,14 @@ footer a:hover{color:var(--pr2)}
     <span>SV<span class="accent">ITA</span></span>
   </div>
   <div class="nav-links">
+    <a href="#team" data-i18n="nav_team">Zespół</a>
     <a href="#what" data-i18n="nav_what">Co dostajesz</a>
-    <a href="#case" data-i18n="nav_case">Case Świtlicy</a>
+    <a href="#case" data-i18n="nav_case">Świtlica</a>
     <a href="#pricing" data-i18n="nav_pricing">Cennik</a>
     <a href="#faq" data-i18n="nav_faq">FAQ</a>
     <div class="lang-switcher"></div>
     <a href="https://dashboard.svita.ai" class="btn btn-ghost" data-i18n="nav_login" id="nav-login">Zaloguj</a>
-    <a href="#pricing" class="btn btn-primary" data-i18n="nav_start" id="nav-start">Zamów plan</a>
+    <a href="#pricing" class="btn btn-primary" data-i18n="nav_start" id="nav-start">Umów rozmowę</a>
   </div>
 </nav>
 
@@ -283,221 +287,294 @@ footer a:hover{color:var(--pr2)}
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-text">
-      <div class="hero-badge"><span class="pulse"></span> <span data-i18n="hero_badge">Dentistry only · Poland only · verified 2026 data</span></div>
-      <h1 data-i18n-html="hero_title">Plan for opening a dental practice <span class="gradient">in Poland</span></h1>
-      <p data-i18n="hero_desc">Real equipment prices from Polish distributors. Gross 2026 salaries by voivodeship. Document checklist for NFZ, sanepid, X-ray license. Startup budget and ROI forecast in 14 days — or your money back.</p>
+      <div class="hero-badge"><span class="pulse"></span> <span data-i18n="hero_badge">Zespół 8 stomatologów · Polska · dane 2026</span></div>
+      <h1 data-i18n-html="hero_title">Plan otwarcia kliniki stomatologicznej <span class="gradient">w Polsce</span> — od zespołu lekarzy</h1>
+      <p data-i18n="hero_desc">Zespół ośmiu stomatologów różnych specjalizacji, z partnerem medycznym — chirurgiem-implantologiem. Budujemy własną klinikę Świtlica w Bydgoszczy i dzielimy się każdym krokiem.</p>
       <div class="hero-actions">
-        <a href="#pricing" class="btn btn-cta" data-i18n="hero_cta">Order the plan — €199</a>
-        <a href="https://dashboard.svita.ai" class="btn btn-ghost" data-i18n="nav_login">Log in</a>
+        <a href="#pricing" class="btn btn-cta" data-i18n="hero_cta">Umów bezpłatną rozmowę</a>
+        <a href="#pricing" class="btn btn-ghost" data-i18n="hero_cta_alt">Zobacz cennik</a>
       </div>
-      <div class="hero-cta-sub" data-i18n="hero_cta_sub" style="margin-top:8px;font-size:12px;opacity:.6">One-time payment. No subscription.</div>
+      <div class="hero-cta-sub" data-i18n="hero_cta_sub">30 minut · bez zobowiązań · z lekarzem z zespołu</div>
       <div class="hero-stats">
-        <div class="hero-stat"><div class="num" data-i18n="status_clients_v">1</div><div class="label" data-i18n="status_clients">Clients today</div></div>
-        <div class="hero-stat"><div class="num" data-i18n="status_db_v">50+</div><div class="label" data-i18n="status_db">Verified items</div></div>
-        <div class="hero-stat"><div class="num" data-i18n="status_country_v">PL</div><div class="label" data-i18n="status_country">Coverage</div></div>
+        <div class="hero-stat"><div class="num" data-i18n="stat1_v">8</div><div class="label" data-i18n="stat1_l">stomatologów w zespole</div></div>
+        <div class="hero-stat"><div class="num" data-i18n="stat2_v">1</div><div class="label" data-i18n="stat2_l">chirurg-implantolog (PWZ)</div></div>
+        <div class="hero-stat"><div class="num" data-i18n="stat3_v">2026</div><div class="label" data-i18n="stat3_l">rok otwarcia Świtlicy</div></div>
       </div>
     </div>
+
+    <!-- PARTNER CARD -->
     <div class="hero-visual">
-      <div class="hero-glow"></div>
-      <div class="chat-box" id="heroChat">
-        <div class="chat-head">
-          <div class="avatar" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#c9a96e,#8a7548);border-radius:50%;width:48px;height:48px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8 2 6 5 6 9c0 3 1 5 1 8 0 2 1 3 2 3s2-2 2-4 1-3 1-3 1 1 1 3 1 4 2 4 2-1 2-3c0-3 1-5 1-8 0-4-2-7-6-7z"/></svg></div>
-          <div>
-            <div class="who"><span class="dot"></span>SVITA AI</div>
-            <div class="status" data-i18n="chat_status">online · ready to talk</div>
+      <div class="partner-card">
+        <div class="pc-badge"><span data-i18n="team_partner_badge">Partner medyczny</span></div>
+        <div class="pc-photo">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a6 6 0 016-6h4a6 6 0 016 6v2"/></svg>
+          <div class="placeholder-hint">foto wkrótce</div>
+        </div>
+        <div class="pc-name">dr [IMIĘ NAZWISKO]</div>
+        <div class="pc-role"><span data-i18n="team_partner_role">Chirurg-implantolog · PWZ</span></div>
+        <div class="pc-desc" data-i18n="team_partner_desc">Prowadzi merytoryczną część planu: od zaopatrzenia po procedury kliniczne. Każda rekomendacja w planie jest przez niego zaakceptowana.</div>
+        <div class="pc-team-row">
+          <div class="pc-team-avatars">
+            <div class="av">S1</div><div class="av">S2</div><div class="av">S3</div><div class="av">S4</div><div class="av">+3</div>
+          </div>
+          <div class="pc-team-text">
+            <strong>+ 7 stomatologów</strong>
+            różnych specjalizacji
           </div>
         </div>
-        <div class="chat-msgs" id="chatMsgs">
-          <div class="chat-msg bot" data-i18n="chat_welcome">Hi! Tell me what kind of business you want to launch — café, dental clinic, fitness studio? I'll calculate everything: premises, staff, equipment, budget.</div>
-        </div>
-        <form class="chat-form" id="chatForm" autocomplete="off">
-          <input type="text" id="chatInput" data-i18n-placeholder="chat_placeholder" placeholder="Coffee shop in Warsaw, 80m²..." maxlength="200">
-          <button type="submit" aria-label="Send">
-            <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
-          </button>
-        </form>
       </div>
     </div>
   </div>
+</section>
+
+<!-- TEAM SECTION -->
+<section class="section" id="team">
+  <div class="section-label" data-i18n="team_label">Zespół medyczny</div>
+  <div class="section-title" data-i18n="team_title">Ośmioro lekarzy, jedna klinika</div>
+  <div class="section-sub" data-i18n="team_sub">SVITA nie jest zrobiona przez programistów sprzedających dentystom. Tworzymy ją wspólnie — lekarze, którzy otwierają własną klinikę.</div>
+
+  <div class="team-grid">
+    <!-- Partner card (spans 2 cols) -->
+    <div class="team-card partner">
+      <div class="tc-avatar">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a6 6 0 016-6h4a6 6 0 016 6v2"/></svg>
+      </div>
+      <div class="tc-name">dr [IMIĘ NAZWISKO]</div>
+      <div class="tc-role" data-i18n="team_partner_role">Chirurg-implantolog · PWZ</div>
+      <div class="tc-desc" data-i18n="team_partner_desc">Prowadzi merytoryczną część planu: od zaopatrzenia po procedury kliniczne. Każda rekomendacja w planie jest przez niego zaakceptowana.</div>
+      <div class="tc-pwz">PWZ ••••</div>
+    </div>
+
+    <!-- Regular members (placeholders 1-7 — spread across remaining cols) -->
+    <div class="team-card">
+      <div class="tc-avatar"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a6 6 0 016-6h4a6 6 0 016 6v2"/></svg></div>
+      <div class="tc-name">dr [NAZWISKO 1]</div>
+      <div class="tc-role">Ortodonta</div>
+    </div>
+    <div class="team-card">
+      <div class="tc-avatar"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a6 6 0 016-6h4a6 6 0 016 6v2"/></svg></div>
+      <div class="tc-name">dr [NAZWISKO 2]</div>
+      <div class="tc-role">Endodonta</div>
+    </div>
+    <div class="team-card">
+      <div class="tc-avatar"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a6 6 0 016-6h4a6 6 0 016 6v2"/></svg></div>
+      <div class="tc-name">dr [NAZWISKO 3]</div>
+      <div class="tc-role">Periodontolog</div>
+    </div>
+    <div class="team-card">
+      <div class="tc-avatar"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a6 6 0 016-6h4a6 6 0 016 6v2"/></svg></div>
+      <div class="tc-name">dr [NAZWISKO 4]</div>
+      <div class="tc-role">Stomatolog zachowawczy</div>
+    </div>
+    <div class="team-card">
+      <div class="tc-avatar"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a6 6 0 016-6h4a6 6 0 016 6v2"/></svg></div>
+      <div class="tc-name">dr [NAZWISKO 5]</div>
+      <div class="tc-role">Protetyk</div>
+    </div>
+    <div class="team-card">
+      <div class="tc-avatar"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a6 6 0 016-6h4a6 6 0 016 6v2"/></svg></div>
+      <div class="tc-name">dr [NAZWISKO 6]</div>
+      <div class="tc-role">Pedodonta</div>
+    </div>
+    <div class="team-card">
+      <div class="tc-avatar"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a6 6 0 016-6h4a6 6 0 016 6v2"/></svg></div>
+      <div class="tc-name">dr [NAZWISKO 7]</div>
+      <div class="tc-role">Chirurg stomatologiczny</div>
+    </div>
+  </div>
+
+  <div class="team-note" data-i18n="team_note">Pełna lista zespołu z fotografiami i numerami PWZ dostępna po rejestracji lub na rozmowie. Prywatność naszych lekarzy jest dla nas ważna.</div>
 </section>
 
 <!-- WHAT YOU GET -->
-<section class="features" id="what">
-  <div class="section-label" data-i18n="what_label">What you get</div>
-  <div class="section-title" data-i18n="what_title">6 chapters of your plan</div>
-  <div class="section-sub" data-i18n="what_sub">Every chapter has concrete numbers, sources and shopping lists — no fluff.</div>
+<section class="section" id="what">
+  <div class="section-label" data-i18n="what_label">Co dostajesz</div>
+  <div class="section-title" data-i18n="what_title">6 rozdziałów twojego planu</div>
+  <div class="section-sub" data-i18n="what_sub">Każdy rozdział to konkretne liczby, źródła i lista zakupów — nie ogólniki.</div>
   <div class="features-grid">
     <div class="glass-card feature-card">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>
-      </div>
-      <h3 data-i18n="w1_t">1. Premises</h3>
-      <p data-i18n="w1_d">Minimum area for NFZ, room layout, sanepid requirements, average rent in your city.</p>
+      <div class="feature-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg></div>
+      <h3 data-i18n="w1_t">1. Lokal</h3>
+      <p data-i18n="w1_d">Minimalny metraż dla NFZ, układ pomieszczeń, wymagania sanepid, średnia stawka czynszu w wybranym mieście.</p>
     </div>
     <div class="glass-card feature-card">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-      </div>
-      <h3 data-i18n="w2_t">2. Team and payroll</h3>
-      <p data-i18n="w2_d">Dentist, assistant, hygienist, receptionist — gross 2026 salaries + ZUS and PIT.</p>
+      <div class="feature-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+      <h3 data-i18n="w2_t">2. Zespół i ZUS</h3>
+      <p data-i18n="w2_d">Stomatolog, asystent, higienistka, recepcjonista — pensje brutto 2026 + składki.</p>
     </div>
     <div class="glass-card feature-card">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
-      </div>
-      <h3 data-i18n="w3_t">3. Equipment — real suppliers</h3>
-      <p data-i18n="w3_d">KaVo, Planmeca, Dentsply Sirona, Henry Schein. Warranty, lead time, sales contact.</p>
+      <div class="feature-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
+      <h3 data-i18n="w3_t">3. Sprzęt — realni dostawcy</h3>
+      <p data-i18n="w3_d">KaVo, Planmeca, Dentsply Sirona, Henry Schein — negocjowane przez partnera medycznego.</p>
     </div>
     <div class="glass-card feature-card">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-      </div>
-      <h3 data-i18n="w4_t">4. Documents and licenses</h3>
-      <p data-i18n="w4_d">Register of medical entities, X-ray license from PAA, sanepid, RIDO, RODO templates.</p>
+      <div class="feature-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+      <h3 data-i18n="w4_t">4. Dokumenty i licencje</h3>
+      <p data-i18n="w4_d">RPWDL, zezwolenie PAA na RTG, sanepid, RODO. Wzory wniosków + kontakty urzędów.</p>
     </div>
     <div class="glass-card feature-card">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
-      </div>
-      <h3 data-i18n="w5_t">5. Startup budget</h3>
-      <p data-i18n="w5_d">Line-by-line breakdown: premises, fit-out, equipment, documents, marketing, 3-month reserve.</p>
+      <div class="feature-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+      <h3 data-i18n="w5_t">5. Budżet startu</h3>
+      <p data-i18n="w5_d">Rozbicie pozycja po pozycji: lokal, remont, sprzęt, dokumenty, marketing, rezerwa.</p>
     </div>
     <div class="glass-card feature-card">
-      <div class="feature-icon">
-        <svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M14 7h7v7"/></svg>
-      </div>
-      <h3 data-i18n="w6_t">6. ROI and profitability</h3>
-      <p data-i18n="w6_d">Patients/day, average ticket, margin. Break-even in months. Sensitivity ±20%.</p>
+      <div class="feature-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8M14 7h7v7"/></svg></div>
+      <h3 data-i18n="w6_t">6. ROI i rentowność</h3>
+      <p data-i18n="w6_d">Pacjentów/dzień, średni koszyk, marża. Próg rentowności w miesiącach.</p>
     </div>
   </div>
 </section>
 
-<!-- HONESTY DISCLAIMER -->
-<section class="how" id="honesty">
-  <div class="how-inner">
-    <div class="section-label" data-i18n="honesty_label">What we won't sell you</div>
-    <div class="section-title" data-i18n="honesty_title">What this plan won't do</div>
-    <div class="section-sub" data-i18n="honesty_sub">We're a new tool. You should know what you're getting.</div>
+<!-- HONESTY -->
+<section class="section" id="honesty">
+  <div class="honesty-inner">
+    <div class="section-label" data-i18n="honesty_label">Czego nie sprzedajemy</div>
+    <div class="section-title" data-i18n="honesty_title">Czego ten plan nie zrobi</div>
+    <div class="section-sub" data-i18n="honesty_sub">Jesteśmy zespołem, który sam otwiera klinikę. Wiemy co działa, wiemy co nie — i mówimy wprost.</div>
     <div class="steps">
       <div class="step">
         <div class="step-num">!</div>
-        <h4 data-i18n="h1_t">It won't replace a lawyer</h4>
-        <p data-i18n="h1_d">Every document needs notarization and a lawyer's review. The plan has templates and contact lists — not legal advice.</p>
-        <div class="step-line"></div>
+        <h4 data-i18n="h1_t">Nie zastąpi prawnika</h4>
+        <p data-i18n="h1_d">Każdy dokument trzeba podpisać u notariusza i sprawdzić u radcy prawnego.</p>
       </div>
       <div class="step">
         <div class="step-num">!</div>
-        <h4 data-i18n="h2_t">Prices may shift</h4>
-        <p data-i18n="h2_d">Every number comes from a real 2026-04 offer. Equipment prices will move — every line item shows the date and source.</p>
-        <div class="step-line"></div>
+        <h4 data-i18n="h2_t">Ceny mogą się zmienić</h4>
+        <p data-i18n="h2_d">Wszystkie liczby pochodzą z konkretnych ofert na 2026-04. Aktualizujemy przez 6 miesięcy.</p>
       </div>
       <div class="step">
         <div class="step-num">!</div>
-        <h4 data-i18n="h3_t">We don't sell equipment</h4>
-        <p data-i18n="h3_d">We don't sell equipment, lease premises or hire people for you. We link directly to manufacturers and brokers.</p>
+        <h4 data-i18n="h3_t">Nie sprzedajemy sprzętu</h4>
+        <p data-i18n="h3_d">Nie sprzedajemy unitów, nie wynajmujemy lokali, nie zatrudniamy ludzi za ciebie.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ŚWITLICA CASE -->
-<section class="domains" id="case">
-  <div class="section-label" data-i18n="case_label">First client</div>
-  <div class="section-title" data-i18n="case_title">Świtlica — our own clinic in Bydgoszcz</div>
-  <div class="section-sub" data-i18n="case_sub">Before selling the plan to others, we used it on ourselves. Every number below is real and verifiable.</div>
-  <div class="domains-grid">
-    <div class="glass-card domain-card">
-      <h4 data-i18n="case_budget">Planned budget</h4>
-      <p data-i18n="case_budget_v" style="font-size:18px;font-weight:600;color:var(--pr2)">~1,760,000 PLN</p>
+<section class="section" id="case">
+  <div class="section-label" data-i18n="case_label">Nasz własny projekt</div>
+  <div class="section-title" data-i18n="case_title">Świtlica — klinika zespołu SVITA w Bydgoszczy</div>
+  <div class="section-sub" data-i18n="case_sub">Zanim zaczęliśmy oferować plan, użyliśmy go u siebie. Klinika jest w budowie — każdą decyzję dokumentujemy na żywo.</div>
+  <div class="case-grid">
+    <div class="case-card">
+      <h4 data-i18n="case_budget">Planowany budżet</h4>
+      <p data-i18n="case_budget_v">~1 760 000 PLN</p>
     </div>
-    <div class="glass-card domain-card">
-      <h4 data-i18n="case_open">Planned opening</h4>
-      <p data-i18n="case_open_v" style="font-size:18px;font-weight:600;color:var(--pr2)">September 2026</p>
+    <div class="case-card">
+      <h4 data-i18n="case_open">Planowane otwarcie</h4>
+      <p data-i18n="case_open_v">Wrzesień 2026</p>
     </div>
-    <div class="glass-card domain-card">
-      <h4 data-i18n="case_city">City</h4>
-      <p data-i18n="case_city_v" style="font-size:18px;font-weight:600;color:var(--pr2)">Bydgoszcz</p>
+    <div class="case-card">
+      <h4 data-i18n="case_city">Miasto</h4>
+      <p data-i18n="case_city_v">Bydgoszcz</p>
     </div>
-    <div class="glass-card domain-card">
+    <div class="case-card">
       <h4 data-i18n="case_format">Format</h4>
-      <p data-i18n="case_format_v" style="font-size:18px;font-weight:600;color:var(--pr2)">3 chairs, NFZ + private</p>
+      <p data-i18n="case_format_v">3 fotele · NFZ + prywatnie · implantologia</p>
     </div>
   </div>
-  <div style="max-width:760px;margin:32px auto 0;padding:18px 22px;background:rgba(201,169,110,.08);border:1px solid rgba(201,169,110,.25);border-radius:12px;font-size:14px;line-height:1.6;color:var(--tx2)" data-i18n="case_warning">⚠️ Świtlica hasn't opened yet. We update this plan as we go. Honest work-in-progress, not marketing.</div>
+  <div class="case-warning" data-i18n="case_warning">Klinika jeszcze się nie otworzyła. Aktualizujemy plan w miarę postępów budowy. To uczciwy work-in-progress — dokumentacja w czasie rzeczywistym, nie prezentacja sprzedażowa.</div>
 </section>
 
-<!-- PRICING -->
-<section class="countries" id="pricing">
-  <div class="section-label" data-i18n="pricing_label">Pricing</div>
-  <div class="section-title" data-i18n="pricing_title">One plan. One payment.</div>
-  <div class="section-sub" data-i18n="pricing_sub">No subscriptions, no 5-questions-a-day trials, no PRO/UNLIMITED tiers. Pay once, the plan is yours forever.</div>
+<!-- PRICING — 3 TIERS -->
+<section class="section" id="pricing">
+  <div class="section-label" data-i18n="pricing_label">Cennik</div>
+  <div class="section-title" data-i18n="pricing_title">Trzy poziomy — dla każdego etapu</div>
+  <div class="section-sub" data-i18n="pricing_sub">Zamiast trialu i 12 poziomów PRO — trzy jasne oferty. Zaczynasz od rozmowy, potem wybierasz co naprawdę potrzebne.</div>
 
-  <div style="max-width:560px;margin:40px auto 0;padding:36px;background:rgba(255,255,255,.04);border:1px solid rgba(201,169,110,.3);border-radius:18px;text-align:center">
-    <div style="font-size:56px;font-weight:200;color:var(--pr2);letter-spacing:-2px" data-i18n="price_main">€199</div>
-    <div style="font-size:13px;opacity:.6;margin-bottom:24px" data-i18n="price_main_sub">one-time</div>
-
-    <div style="text-align:left;font-size:14px;line-height:2;color:var(--tx2);border-top:1px solid rgba(255,255,255,.08);padding-top:20px;margin-top:12px">
-      <div style="font-weight:600;color:var(--tx1);margin-bottom:8px" data-i18n="price_includes">Included:</div>
-      <div data-i18n="price_inc1">✓ 6 plan chapters with numbers and sources</div>
-      <div data-i18n="price_inc2">✓ PDF export</div>
-      <div data-i18n="price_inc3">✓ Links to real suppliers</div>
-      <div data-i18n="price_inc4">✓ Document templates: NFZ, sanepid, PAA</div>
-      <div data-i18n="price_inc5">✓ Price updates for 6 months</div>
-      <div data-i18n="price_inc6">✓ 14-day no-questions money-back guarantee</div>
+  <div class="tiers-grid">
+    <!-- TIER 1: AUDIT -->
+    <div class="tier-card">
+      <div class="t-label" data-i18n="tier1_label">Audyt</div>
+      <div class="t-price" data-i18n="tier1_price">49 €</div>
+      <div class="t-sub" data-i18n="tier1_sub">jednorazowo</div>
+      <div class="t-desc" data-i18n="tier1_desc">Audyt twojego pomysłu</div>
+      <div class="t-features">
+        <div data-i18n="tier1_f1">✓ 30-minutowa rozmowa z lekarzem z zespołu</div>
+        <div data-i18n="tier1_f2">✓ Pisemna opinia 2 strony: czy pomysł ma sens</div>
+        <div data-i18n="tier1_f3">✓ 3 konkretne ryzyka dla twojego miasta</div>
+        <div data-i18n="tier1_f4">✓ Rabat 49 € na każdy wyższy pakiet</div>
+      </div>
+      <a href="https://dashboard.svita.ai#signup?tier=audit" class="t-cta" data-i18n="tier1_cta">Zamów audyt</a>
     </div>
 
-    <a href="https://dashboard.svita.ai#signup" class="btn btn-cta" style="display:inline-block;margin-top:24px;padding:14px 36px;font-size:15px" data-i18n="price_cta">Order the plan</a>
+    <!-- TIER 2: FULL PLAN (featured) -->
+    <div class="tier-card featured">
+      <div class="t-badge" data-i18n="tier2_badge">Najpopularniejszy</div>
+      <div class="t-label" data-i18n="tier2_label">Pełny plan</div>
+      <div class="t-price" data-i18n="tier2_price">1 490 €</div>
+      <div class="t-sub" data-i18n="tier2_sub">jednorazowo</div>
+      <div class="t-desc" data-i18n="tier2_desc">Pełny plan + negocjacje</div>
+      <div class="t-features">
+        <div data-i18n="tier2_f1">✓ 6 rozdziałów planu z liczbami i źródłami</div>
+        <div data-i18n="tier2_f2">✓ Negocjacje z 3 dostawcami sprzętu w twoim imieniu</div>
+        <div data-i18n="tier2_f3">✓ Osobisty opiekun — lekarz z zespołu</div>
+        <div data-i18n="tier2_f4">✓ Szablony dokumentów NFZ, sanepid, PAA</div>
+        <div data-i18n="tier2_f5">✓ Aktualizacje cen przez 12 miesięcy</div>
+      </div>
+      <a href="https://dashboard.svita.ai#signup?tier=full" class="t-cta" data-i18n="tier2_cta">Wybierz plan</a>
+    </div>
+
+    <!-- TIER 3: PARTNERSHIP -->
+    <div class="tier-card">
+      <div class="t-label" data-i18n="tier3_label">Partnerstwo</div>
+      <div class="t-price" data-i18n="tier3_price">5 000 €</div>
+      <div class="t-sub" data-i18n="tier3_sub">od · etapowo</div>
+      <div class="t-desc" data-i18n="tier3_desc">Prowadzenie otwarcia pod klucz</div>
+      <div class="t-features">
+        <div data-i18n="tier3_f1">✓ Wszystko z pakietu Pełny plan</div>
+        <div data-i18n="tier3_f2">✓ Wsparcie podczas remontu i zakupów</div>
+        <div data-i18n="tier3_f3">✓ Osobisty partner medyczny przy otwarciu</div>
+        <div data-i18n="tier3_f4">✓ Gwarancja: otwierasz w terminie lub zwracamy 50%</div>
+      </div>
+      <a href="https://dashboard.svita.ai#signup?tier=partnership" class="t-cta" data-i18n="tier3_cta">Umów rozmowę</a>
+    </div>
   </div>
 
-  <div style="max-width:560px;margin:24px auto 0;padding:24px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px">
-    <div style="font-size:18px;font-weight:600;color:var(--tx1);margin-bottom:8px" data-i18n="price_upsell_t">+€99 — 30-minute consultation</div>
-    <div style="font-size:13px;color:var(--tx2);line-height:1.6" data-i18n="price_upsell_d">Zoom with Świtlica's founder. Specific questions, specific answers. Recording is yours.</div>
-  </div>
+  <div class="pricing-note" data-i18n="pricing_note">Każdy pakiet zaczyna się od bezpłatnej 30-minutowej rozmowy. Filtrujemy niedopasowania razem — lepiej dla wszystkich.</div>
 </section>
 
 <!-- FAQ -->
-<section class="cta" id="faq">
-  <div class="cta-box" style="max-width:780px;text-align:left">
-    <div class="section-label" style="text-align:center" data-i18n="faq_label">FAQ</div>
-    <h2 style="text-align:center" data-i18n="faq_title">Questions without BS</h2>
-    <div style="margin-top:32px;display:flex;flex-direction:column;gap:18px">
-      <details style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 20px">
-        <summary style="cursor:pointer;font-weight:600;color:var(--tx1);font-size:15px" data-i18n="q1">Why only dentistry in Poland?</summary>
-        <p style="margin-top:12px;color:var(--tx2);font-size:14px;line-height:1.7" data-i18n="a1">Because doing one niche honestly beats half-baked support for 24 countries.</p>
-      </details>
-      <details style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 20px">
-        <summary style="cursor:pointer;font-weight:600;color:var(--tx1);font-size:15px" data-i18n="q2">How do you know the prices are real?</summary>
-        <p style="margin-top:12px;color:var(--tx2);font-size:14px;line-height:1.7" data-i18n="a2">Every line item shows a date and source.</p>
-      </details>
-      <details style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 20px">
-        <summary style="cursor:pointer;font-weight:600;color:var(--tx1);font-size:15px" data-i18n="q3">Do you have other clinics opened with this plan?</summary>
-        <p style="margin-top:12px;color:var(--tx2);font-size:14px;line-height:1.7" data-i18n="a3">No. Świtlica is first.</p>
-      </details>
-      <details style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 20px">
-        <summary style="cursor:pointer;font-weight:600;color:var(--tx1);font-size:15px" data-i18n="q4">Will the AI generate my plan in an hour?</summary>
-        <p style="margin-top:12px;color:var(--tx2);font-size:14px;line-height:1.7" data-i18n="a4">Draft yes, full plan 14 business days.</p>
-      </details>
-      <details style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 20px">
-        <summary style="cursor:pointer;font-weight:600;color:var(--tx1);font-size:15px" data-i18n="q5">What if I change my mind?</summary>
-        <p style="margin-top:12px;color:var(--tx2);font-size:14px;line-height:1.7" data-i18n="a5">14 days for a no-questions refund.</p>
-      </details>
-      <details style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 20px">
-        <summary style="cursor:pointer;font-weight:600;color:var(--tx1);font-size:15px" data-i18n="q6">Who's behind this?</summary>
-        <p style="margin-top:12px;color:var(--tx2);font-size:14px;line-height:1.7" data-i18n="a6">Artem Wialko, CEO LABS67, Bydgoszcz.</p>
-      </details>
-    </div>
+<section class="section" id="faq">
+  <div class="section-label" data-i18n="faq_label">FAQ</div>
+  <div class="section-title" data-i18n="faq_title">Pytania bez ściemy</div>
+  <div class="faq-box">
+    <details>
+      <summary data-i18n="q1">Dlaczego tylko stomatologia w Polsce?</summary>
+      <p data-i18n="a1">Bo jesteśmy zespołem stomatologów, sami otwieramy klinikę w Bydgoszczy.</p>
+    </details>
+    <details>
+      <summary data-i18n="q2">Skąd pewność że ceny są prawdziwe?</summary>
+      <p data-i18n="a2">Każda pozycja ma datę i źródło: oferta od dystrybutora, mail od handlowca, faktura z naszej własnej kliniki.</p>
+    </details>
+    <details>
+      <summary data-i18n="q3">Macie inne kliniki otwarte z waszego planu?</summary>
+      <p data-i18n="a3">Nie. Świtlica jest pierwsza i jeszcze się otwiera (wrzesień 2026).</p>
+    </details>
+    <details>
+      <summary data-i18n="q4">AI wygeneruje mi plan w godzinę?</summary>
+      <p data-i18n="a4">Szkic — tak, w minutę. Pełny plan — 14 dni roboczych.</p>
+    </details>
+    <details>
+      <summary data-i18n="q5">Co jeśli się rozmyślę?</summary>
+      <p data-i18n="a5">Dlatego zaczynamy od bezpłatnej 30-minutowej rozmowy.</p>
+    </details>
+    <details>
+      <summary data-i18n="q6">Kto za tym stoi?</summary>
+      <p data-i18n="a6">Artem Wialko — założyciel SVITA, technolog, CEO LABS67. Partner medyczny: chirurg-implantolog z PWZ. Zespół: 8 stomatologów.</p>
+    </details>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer style="flex-direction:column;gap:18px;text-align:center;align-items:center">
-  <div data-i18n="foot_tagline" style="font-size:15px;color:var(--tx2);max-width:640px;line-height:1.5">One niche. One payment. Zero BS.</div>
-  <div style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:16px;flex-wrap:wrap">
-    <div>SVITA &copy; 2026 &mdash; <a href="https://labs67.com" target="_blank">LABS67</a></div>
-    <div style="display:flex;align-items:center;gap:16px">
-      <a href="https://labs67.com" target="_blank">LABS67</a>
-      <a href="https://scyra.labs67.com" target="_blank">SCYRA.AI</a>
-    </div>
+<footer>
+  <div class="tagline" data-i18n="foot_tagline">Zespół lekarzy. Jedna klinika. Jeden plan. Zero ściemy.</div>
+  <div class="links">
+    <span>SVITA &copy; 2026</span>
+    <a href="https://labs67.com" target="_blank">LABS67</a>
+    <a href="https://scyra.labs67.com" target="_blank">SCYRA.AI</a>
+    <a href="mailto:hello@svita.ai">hello@svita.ai</a>
   </div>
 </footer>
 
@@ -513,106 +590,22 @@ footer a:hover{color:var(--pr2)}
   var start=document.getElementById('nav-start');
   if(login){login.textContent='Dashboard';login.href='https://dashboard.svita.ai';login.className='btn btn-primary';login.removeAttribute('data-i18n')}
   if(start)start.style.display='none';
-  // Also update hero buttons
   var ha=document.querySelector('.hero-actions');
   if(ha){
     ha.innerHTML='<a href="https://dashboard.svita.ai" class="btn btn-cta" style="padding:14px 32px;font-size:15px;border-radius:14px">Dashboard</a>';
   }
 })();
 
-// ── HERO CHAT — fake AI demo (sells the product, no API call) ──
-(function(){
-  var form = document.getElementById('chatForm');
-  var input = document.getElementById('chatInput');
-  var msgs = document.getElementById('chatMsgs');
-  if(!form || !input || !msgs) return;
-
-  function t(key, fallback){
-    try { return (window.I18N && window.I18N[key] && window.I18N[key][window.labs67i18n.getLang()]) || fallback; }
-    catch(e){ return fallback; }
-  }
-
-  function detect(text){
-    var s = text.toLowerCase();
-    if(/coffee|cafe|кофе|кав|káva|kawa|кафе|barista/.test(s)) return 'coffee';
-    if(/dental|dentist|стомат|зуб|клиник|clinic|zahnarzt|zubn/.test(s)) return 'dental';
-    if(/fitness|gym|зал|спорт|siłown|fitnes/.test(s)) return 'fitness';
-    if(/beauty|salon|салон|красот|spa|frisör|kosmet/.test(s)) return 'beauty';
-    if(/food|restaurant|ресторан|piekarnia|bakery|пекарн|hotel/.test(s)) return 'food';
-    return 'generic';
-  }
-
-  function buildReply(text){
-    // Always return the short teaser. Full detailed plan is generated in the
-    // dashboard chat after handoff (frontend = preview, dashboard = depth).
-    return t('chat_reply_generic', '✓ Analyzing your idea...\n\n📍 Premises: calculating area & district\n👥 Team: building staff & payroll\n🛠 Equipment: matching suppliers\n📋 Documents: licenses for your country\n💰 Budget: startup cost & ROI\n\nOpen Dashboard for the full plan →');
-  }
-
-  function appendMsg(text, cls){
-    var div = document.createElement('div');
-    div.className = 'chat-msg ' + cls;
-    div.textContent = text;
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
-    return div;
-  }
-
-  function appendTyping(){
-    var div = document.createElement('div');
-    div.className = 'chat-msg bot typing';
-    div.innerHTML = '<span></span><span></span><span></span>';
-    msgs.appendChild(div);
-    msgs.scrollTop = msgs.scrollHeight;
-    return div;
-  }
-
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    var val = input.value.trim();
-    if(!val) return;
-    appendMsg(val, 'user');
-    input.value = '';
-    input.disabled = true;
-
-    // 1) "Анализирую..." status text
-    var statusEl = appendMsg(t('chat_analyzing', 'Analyzing...'), 'bot');
-    statusEl.style.opacity = '0.7';
-
-    // 2) typing dots
-    setTimeout(function(){
-      statusEl.remove();
-      var typing = appendTyping();
-      // 3) reply
-      setTimeout(function(){
-        typing.remove();
-        var reply = buildReply(val);
-        // multi-line reply with line breaks preserved
-        var div = document.createElement('div');
-        div.className = 'chat-msg bot';
-        div.style.whiteSpace = 'pre-line';
-        div.textContent = reply;
-        msgs.appendChild(div);
-
-        // ── HANDOFF: store conversation in cross-subdomain cookie ──
-        try {
-          var handoff = JSON.stringify({ u: val, b: reply, k: detect(val), t: Date.now() });
-          document.cookie = 'svita_handoff=' + encodeURIComponent(handoff) + ';path=/;domain=.svita.ai;max-age=3600;SameSite=Lax';
-        } catch(e){}
-
-        // CTA after reply — continues chat in dashboard
-        var cta = document.createElement('a');
-        cta.href = 'https://dashboard.svita.ai/?handoff=1#chat';
-        cta.className = 'chat-msg bot';
-        cta.style.cssText = 'background:linear-gradient(135deg,var(--cta),var(--cta2));color:#fff;font-weight:700;text-decoration:none;display:inline-block;border:none;cursor:pointer';
-        cta.textContent = '→ ' + t('chat_cta', 'Continue in Dashboard');
-        msgs.appendChild(cta);
-        msgs.scrollTop = msgs.scrollHeight;
-        input.disabled = false;
-        input.focus();
-      }, 1400);
-    }, 900);
+// Smooth scroll for nav anchors
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click', function(e){
+    var id = a.getAttribute('href');
+    if(id.length > 1){
+      var el = document.querySelector(id);
+      if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth',block:'start'}); }
+    }
   });
-})();
+});
 </script>
 </body>
 </html>

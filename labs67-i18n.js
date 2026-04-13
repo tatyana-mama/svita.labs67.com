@@ -27,16 +27,16 @@
 (function () {
   'use strict';
 
-  // PIVOT 2026-04-12: dental PL — PL+EN+BE+UK (господин читает на BE/UK)
-  var LANGS = ['pl','en','be','uk'];
+  // PIVOT 2026-04-13: dental PL — PL+EN only (target = PL dentists; expats read EN)
+  var LANGS = ['pl','en'];
 
-  var LABELS = { pl: 'PL', en: 'EN', be: 'BE', uk: 'UK' };
-  var SHORT  = { pl: 'PL', en: 'EN', be: 'BE', uk: 'UK' };
+  var LABELS = { pl: 'PL', en: 'EN' };
+  var SHORT  = { pl: 'PL', en: 'EN' };
 
   function isMobile() { return window.innerWidth <= 768; }
 
   var STORAGE_KEY = 'labs67lang';
-  var DEF = window.LABS67_DEFAULT_LANG || 'be';
+  var DEF = window.LABS67_DEFAULT_LANG || 'pl';
   var cur = localStorage.getItem(STORAGE_KEY) || DEF;
   if (LANGS.indexOf(cur) === -1) cur = DEF;
 
